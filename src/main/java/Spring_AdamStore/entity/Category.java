@@ -5,8 +5,11 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -17,7 +20,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Table(name = "tbl_category")
 @Entity
-public class Category{
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +34,11 @@ public class Category{
     @Enumerated(EnumType.STRING)
     @JoinColumn(name = "status", nullable = false)
     EntityStatus status;
+
+    @CreationTimestamp
+    LocalDate createdAt;
+    @UpdateTimestamp
+    LocalDate updatedAt;
 
 
     @OneToMany(mappedBy = "category")

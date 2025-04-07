@@ -33,12 +33,14 @@ springdoc:
     enabled: true
   swagger-ui:
     enabled: true
-openapi:
-  service:
-    api-docs: adam-store
-    server: http://localhost:${server.port}
-    title: Spring_AdamStore
-    version: 1.0.0
+open:
+  api:
+    title: Spring-Adam-Store
+    version: v1.0.0
+    description: Api Service
+    serverUrl: http://localhost:${server.port}
+    serverName: server dev
+    api-docs: backend-service
 
 
 # JWT
@@ -52,3 +54,5 @@ jwt:
     expiry-in-days: ${JWT_REFRESH_TOKEN_IN_DAYS:20}
   reset:
     expiry-in-minutes: ${JWT_RESET_TOKEN_IN_MINUTES:15}
+
+

@@ -2,6 +2,7 @@ package Spring_AdamStore.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
@@ -21,35 +22,33 @@ import java.util.List;
 public class OpenApiConfig {
 
     @Bean
-    public GroupedOpenApi publicApi(@Value("${openapi.service.api-docs}") String apiDocs) {
+    public OpenAPI openAPI(@Value("${open.api.title}") String title,
+                           @Value("${open.api.version}") String version,
+                           @Value("${open.api.description}") String description,
+                           @Value("${open.api.serverUrl}") String serverUrl,
+                           @Value("${open.api.serverName}") String serverName,
+                           @Value("${server.servlet.context-path}") String contextPath) {
+
+        final String securitySchemeName = "bearerAuth";
+
+        return new OpenAPI().info(new Info().title(title)
+                        .version(version)
+                        .description(description)
+                        .license(new License().name("Apache 2.0").url("https://springdoc.org")))
+                .servers(List.of(new Server().url(serverUrl + contextPath).description(serverName)))
+                .components(new Components()
+                        .addSecuritySchemes(securitySchemeName, new SecurityScheme()
+                                .type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT"))
+                )
+                .security(List.of(new SecurityRequirement().addList(securitySchemeName)));
+    }
+
+    @Bean
+    public GroupedOpenApi groupedOpenApi(@Value("${open.api.api-docs}") String apiDocs){
         return GroupedOpenApi.builder()
                 .group(apiDocs)
                 .packagesToScan("Spring_AdamStore.controller")
                 .build();
-    }
-
-    @Bean
-    public OpenAPI openAPI(
-            @Value("${openapi.service.title}") String title,
-            @Value("${openapi.service.version}") String version,
-            @Value("${openapi.service.server}") String serverUrl,
-            @Value("${server.servlet.context-path}") String contextPath) {
-        final String securitySchemeName = "bearerAuth";
-        return new OpenAPI()
-                .servers(List.of(new Server().url(serverUrl + contextPath)))
-                .components(
-                        new Components()
-                                .addSecuritySchemes(
-                                        securitySchemeName,
-                                        new SecurityScheme()
-                                                .type(SecurityScheme.Type.HTTP)
-                                                .scheme("bearer")
-                                                .bearerFormat("JWT")))
-                .security(List.of(new SecurityRequirement().addList(securitySchemeName)))
-                .info(new Info().title(title)
-                        .description("API documents for Backend service")
-                        .version(version)
-                        .license(new License().name("Apache 2.0").url("https://springdoc.org")));
     }
 
 }

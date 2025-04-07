@@ -22,6 +22,7 @@ public class District {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
      Long id;
 
+    @JoinColumn(nullable = false)
      String name;
 
     @ManyToOne(fetch = FetchType.LAZY)

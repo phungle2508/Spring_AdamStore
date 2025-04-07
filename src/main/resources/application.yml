@@ -8,3 +8,8 @@ spring:
     name: Spring_AdamStore
   profiles:
     active: dev
+
+app:
+  forgot-password:
+    verification-code:
+      expiration-minutes: 5

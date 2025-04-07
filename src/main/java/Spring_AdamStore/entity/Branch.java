@@ -21,6 +21,7 @@ public class Branch {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
      Long id;
 
+    @JoinColumn(nullable = false)
      String name;
      String location;
      String phone;

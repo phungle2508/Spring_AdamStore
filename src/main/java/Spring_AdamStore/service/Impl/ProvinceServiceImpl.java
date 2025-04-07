@@ -24,7 +24,7 @@ public class ProvinceServiceImpl implements ProvinceService {
 
     @Override
     public ProvinceResponse fetchProvinceById(Long id) {
-        Province province = findActiveProvinceById(id);
+        Province province = findProvinceById(id);
 
         return provinceMapper.toProvinceResponse(province);
     }
@@ -34,7 +34,7 @@ public class ProvinceServiceImpl implements ProvinceService {
         return null;
     }
 
-    private Province findActiveProvinceById(Long id) {
+    private Province findProvinceById(Long id) {
         return provinceRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.PROVINCE_NOT_EXISTED));
     }

@@ -39,7 +39,7 @@ public class UserController {
 
 
     @GetMapping("/users/{id}")
-    public ApiResponse<UserResponse> fetchUser(@Positive(message = "ID phải lớn hơn 0")
+    public ApiResponse<UserResponse> fetchById(@Positive(message = "ID phải lớn hơn 0")
                                                @PathVariable long id){
         return ApiResponse.<UserResponse>builder()
                 .code(HttpStatus.OK.value())

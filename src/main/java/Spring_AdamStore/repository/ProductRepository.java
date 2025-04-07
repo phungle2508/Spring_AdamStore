@@ -1,11 +1,12 @@
 package Spring_AdamStore.repository;
 
-import Spring_AdamStore.entity.Province;
+import Spring_AdamStore.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProvinceRepository extends JpaRepository<Province, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long> {
 
+    boolean existsByName(String name);
 
 }

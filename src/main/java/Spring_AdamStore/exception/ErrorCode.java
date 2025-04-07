@@ -25,8 +25,17 @@ public enum ErrorCode {
     TOKEN_TYPE_INVALID(1035, "Loại token không hợp lệ", HttpStatus.UNAUTHORIZED),
     INVALID_REFRESH_TOKEN(1034, "Refresh token không hợp lệ hoặc đã hết hạn", HttpStatus.UNAUTHORIZED),
     PROVINCE_EXISTED(1002, "Province đã tồn tại trong hệ thống", HttpStatus.BAD_REQUEST),
-    PROVINCE_NOT_EXISTED(1003, "Province không tồn tại trong hệ thống", HttpStatus.NOT_FOUND)
-    ;
+    PROVINCE_NOT_EXISTED(1003, "Province không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
+    PRODUCT_EXISTED(1002, "Product đã tồn tại trong hệ thống", HttpStatus.BAD_REQUEST),
+    PRODUCT_NOT_EXISTED(1003, "Product không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
+    CATEGORY_EXISTED(1002, "Category đã tồn tại trong hệ thống", HttpStatus.BAD_REQUEST),
+    CATEGORY_NOT_EXISTED(1003, "Category không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
+    BRANCH_EXISTED(1002, "Branch đã tồn tại trong hệ thống", HttpStatus.BAD_REQUEST),
+    BRANCH_NOT_EXISTED(1003, "Branch không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
+    VERIFICATION_CODE_NOT_FOUND(1018, "Mã xác nhận không hợp lệ", HttpStatus.NOT_FOUND),
+    FORGOT_PASSWORD_TOKEN_NOT_FOUND(1025, "Token đặt lại mật khẩu không tồn tại hoặc đã hết hạn", HttpStatus.NOT_FOUND),
+    VERIFICATION_CODE_EXPIRED(1019, "Mã xác nhận đã hết hạn", HttpStatus.BAD_REQUEST)
+            ;
 
 
 

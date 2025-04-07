@@ -15,6 +15,7 @@ import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.UserMapper;
 import Spring_AdamStore.repository.UserRepository;
 import Spring_AdamStore.service.AuthService;
+import Spring_AdamStore.service.EmailService;
 import Spring_AdamStore.service.RedisTokenService;
 import Spring_AdamStore.service.TokenService;
 import com.nimbusds.jose.JOSEException;
@@ -33,6 +34,7 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
+    private final EmailService emailService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
@@ -65,7 +67,7 @@ public class AuthServiceImpl implements AuthService {
 
 //        user.setRoles(new HashSet<>(Set.of(userHasRoleService.saveUserHasRole(user, RoleEnum.USER))));
 
-//        emailService.sendUserEmailWithRegister(userRepository.save(user));
+        emailService.sendUserEmailWithRegister(user);
 
         return generateAndSaveTokenResponse(user);
     }

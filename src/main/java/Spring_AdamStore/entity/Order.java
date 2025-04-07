@@ -24,9 +24,11 @@ public class Order {
      Long id;
 
      LocalDate orderDate;
+    @JoinColumn(nullable = false)
      Double totalPrice;
 
     @Enumerated(EnumType.STRING)
+    @JoinColumn(nullable = false)
     OrderStatus orderStatus;
 
     @ManyToOne

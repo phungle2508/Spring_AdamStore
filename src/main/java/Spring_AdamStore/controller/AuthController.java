@@ -4,6 +4,9 @@ import Spring_AdamStore.dto.request.*;
 import Spring_AdamStore.dto.response.ApiResponse;
 import Spring_AdamStore.dto.response.TokenResponse;
 import Spring_AdamStore.dto.response.UserResponse;
+import Spring_AdamStore.entity.ForgotPasswordToken;
+import Spring_AdamStore.entity.VerificationCodeEntity;
+import Spring_AdamStore.service.AccountRecoveryService;
 import Spring_AdamStore.service.AuthService;
 import com.nimbusds.jose.JOSEException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,6 +27,7 @@ import java.text.ParseException;
 public class AuthController {
 
     private final AuthService authService;
+    private final AccountRecoveryService accountRecoveryService;
 
     @PostMapping("/login")
     public ApiResponse<TokenResponse> authenticate(@Valid @RequestBody LoginRequest request) throws JOSEException {
@@ -80,6 +84,35 @@ public class AuthController {
         return ApiResponse.<Void>builder()
                 .code(HttpStatus.OK.value())
                 .message("Logout")
+                .build();
+    }
+
+    @Operation(summary = "Forgot Password",
+            description = "API này được sử dụng để quên mật khẩu")
+    @PostMapping("/forgot-password")
+    public ApiResponse<VerificationCodeEntity> forgotPassword(@Valid @RequestBody EmailRequest request) {
+        return ApiResponse.<VerificationCodeEntity>builder()
+                .code(HttpStatus.OK.value())
+                .result(accountRecoveryService.forgotPassword(request))
+                .message("Mã xác nhận đã được gửi vào email của bạn")
+                .build();
+    }
+
+    @PostMapping("/forgot-password/verify-code")
+    public ApiResponse<ForgotPasswordToken> verifyCode(@Valid @RequestBody VerifyCodeRequest request) throws JOSEException {
+        return ApiResponse.<ForgotPasswordToken>builder()
+                .code(HttpStatus.OK.value())
+                .result(accountRecoveryService.verifyForgotPasswordCode(request.getEmail(), request.getVerificationCode()))
+                .message("Mã xác nhận hợp lệ")
+                .build();
+    }
+
+    @PostMapping("/forgot-password/reset-password")
+    public ApiResponse<Void> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        accountRecoveryService.resetPassword(request);
+        return ApiResponse.<Void>builder()
+                .code(HttpStatus.OK.value())
+                .message("Mật khẩu đã được thay đổi thành công")
                 .build();
     }
 }
