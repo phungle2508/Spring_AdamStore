@@ -1,0 +1,10 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /adamstore
+
+spring:
+  application:
+    name: Spring_AdamStore
+  profiles:
+    active: dev
