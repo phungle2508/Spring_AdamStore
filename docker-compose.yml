@@ -7,7 +7,7 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: 123456
-      MYSQL_DATABASE: devjob
+      MYSQL_DATABASE: adamstore
     volumes:
       - adam_store_data:/var/lib/mysql
       - ./initdb.sql:/docker-entrypoint-initdb.d/init.sql
