@@ -1,6 +1,7 @@
 package Spring_AdamStore.service.Impl;
 
 import Spring_AdamStore.constants.EntityStatus;
+import Spring_AdamStore.constants.RoleEnum;
 import Spring_AdamStore.constants.TokenType;
 import Spring_AdamStore.dto.request.LoginRequest;
 import Spring_AdamStore.dto.request.RefreshRequest;
@@ -14,10 +15,12 @@ import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.UserMapper;
 import Spring_AdamStore.repository.UserRepository;
+import Spring_AdamStore.repository.relationship.UserHasRoleRepository;
 import Spring_AdamStore.service.AuthService;
 import Spring_AdamStore.service.EmailService;
 import Spring_AdamStore.service.RedisTokenService;
 import Spring_AdamStore.service.TokenService;
+import Spring_AdamStore.service.relationship.UserHasRoleService;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jwt.SignedJWT;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +31,8 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 @Slf4j(topic = "AUTH-SERVICE")
@@ -39,6 +44,7 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
     private final UserMapper userMapper;
+    private final UserHasRoleService userHasRoleService;
     private final RedisTokenService redisTokenService;
 
     @Override
@@ -65,7 +71,7 @@ public class AuthServiceImpl implements AuthService {
 
         userRepository.save(user);
 
-//        user.setRoles(new HashSet<>(Set.of(userHasRoleService.saveUserHasRole(user, RoleEnum.USER))));
+        user.setRoles(new HashSet<>(Set.of(userHasRoleService.saveUserHasRole(user, RoleEnum.USER))));
 
         emailService.sendUserEmailWithRegister(user);
 
@@ -91,8 +97,6 @@ public class AuthServiceImpl implements AuthService {
 
         // new access token
         String accessToken = tokenService.generateToken(user, TokenType.ACCESS_TOKEN);
-
-//        processUserRolesAndPermissions(user);
 
         return TokenResponse.builder()
                 .accessToken(accessToken)
@@ -136,8 +140,6 @@ public class AuthServiceImpl implements AuthService {
         String refreshToken = tokenService.generateToken(user, TokenType.REFRESH_TOKEN);
 
         tokenService.saveRefreshToken(refreshToken);
-
-//        processUserRolesAndPermissions(user);
 
         return TokenResponse.builder()
                 .accessToken(accessToken)

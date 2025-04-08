@@ -5,7 +5,11 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDate;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
@@ -29,6 +33,11 @@ public class Branch {
     @Enumerated(EnumType.STRING)
     @JoinColumn(name = "status", nullable = false)
     EntityStatus status;
+
+    @CreationTimestamp
+    LocalDate createdAt;
+    @UpdateTimestamp
+    LocalDate updatedAt;
 
 
     @PrePersist

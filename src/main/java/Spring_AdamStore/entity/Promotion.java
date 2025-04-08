@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -35,6 +37,12 @@ public class Promotion {
     @Enumerated(EnumType.STRING)
     @JoinColumn(name = "status", nullable = false)
     EntityStatus status;
+
+    @CreationTimestamp
+    LocalDate createdAt;
+    @UpdateTimestamp
+    LocalDate updatedAt;
+
 
     @OneToMany(mappedBy = "promotion")
     Set<Product> products;

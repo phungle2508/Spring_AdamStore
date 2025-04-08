@@ -50,7 +50,7 @@ public class EmailService {
             Map<String, Object> model = new HashMap<>();
             model.put("name", user.getName());
             this.sendEmail(user.getEmail(),
-                    "Chúc mừng! Tài khoản DevJob của bạn đã được đăng kí thành công",
+                    "Chúc mừng! Tài khoản Adam Store của bạn đã được đăng kí thành công",
                     model,
                     "register"
             );

@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -30,6 +32,11 @@ public class Order {
     @Enumerated(EnumType.STRING)
     @JoinColumn(nullable = false)
     OrderStatus orderStatus;
+
+    @CreationTimestamp
+    LocalDate createdAt;
+    @UpdateTimestamp
+    LocalDate updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

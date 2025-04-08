@@ -4,7 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDate;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
@@ -33,4 +37,9 @@ public class Address {
     @ManyToOne
     @JoinColumn(name = "user_id")
      User user;
+
+    @CreationTimestamp
+    LocalDate createdAt;
+    @UpdateTimestamp
+    LocalDate updatedAt;
 }

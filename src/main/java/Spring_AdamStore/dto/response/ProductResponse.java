@@ -1,6 +1,8 @@
 package Spring_AdamStore.dto.response;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -20,6 +22,9 @@ public class ProductResponse {
     Integer quantity;
     String imageUrl;
 
+    @JsonFormat(pattern = "dd/MM/yyyy")
     LocalDate createdAt;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonFormat(pattern = "dd/MM/yyyy")
     LocalDate updatedAt;
 }

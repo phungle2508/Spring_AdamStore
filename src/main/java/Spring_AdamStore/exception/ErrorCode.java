@@ -34,8 +34,10 @@ public enum ErrorCode {
     BRANCH_NOT_EXISTED(1003, "Branch không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
     VERIFICATION_CODE_NOT_FOUND(1018, "Mã xác nhận không hợp lệ", HttpStatus.NOT_FOUND),
     FORGOT_PASSWORD_TOKEN_NOT_FOUND(1025, "Token đặt lại mật khẩu không tồn tại hoặc đã hết hạn", HttpStatus.NOT_FOUND),
-    VERIFICATION_CODE_EXPIRED(1019, "Mã xác nhận đã hết hạn", HttpStatus.BAD_REQUEST)
-            ;
+    VERIFICATION_CODE_EXPIRED(1019, "Mã xác nhận đã hết hạn", HttpStatus.BAD_REQUEST),
+    ROLE_NOT_EXISTED(1014, "Role không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
+    PERMISSION_NOT_EXISTED(1016, "Permission không tồn tại trong hệ thống", HttpStatus.NOT_FOUND)
+    ;
 
 
 

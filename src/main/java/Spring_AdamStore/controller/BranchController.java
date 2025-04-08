@@ -38,7 +38,7 @@ public class BranchController {
 
 
     @GetMapping("/branches/{id}")
-    public ApiResponse<BranchResponse> fetchUser(@Positive(message = "ID phải lớn hơn 0")
+    public ApiResponse<BranchResponse> fetchById(@Positive(message = "ID phải lớn hơn 0")
                                                    @PathVariable Long id){
         return ApiResponse.<BranchResponse>builder()
                 .code(HttpStatus.OK.value())

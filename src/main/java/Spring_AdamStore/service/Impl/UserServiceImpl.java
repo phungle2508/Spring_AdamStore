@@ -1,23 +1,34 @@
 package Spring_AdamStore.service.Impl;
 
 import Spring_AdamStore.constants.EntityStatus;
+import Spring_AdamStore.constants.RoleEnum;
 import Spring_AdamStore.dto.request.UserCreationRequest;
 import Spring_AdamStore.dto.request.UserUpdateRequest;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.dto.response.UserResponse;
+import Spring_AdamStore.entity.Role;
 import Spring_AdamStore.entity.User;
+import Spring_AdamStore.entity.relationship.UserHasRole;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.UserMapper;
+import Spring_AdamStore.repository.RoleRepository;
 import Spring_AdamStore.repository.UserRepository;
+import Spring_AdamStore.repository.relationship.UserHasRoleRepository;
 import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.UserService;
+import Spring_AdamStore.service.relationship.UserHasRoleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j(topic = "USER-SERVICE")
@@ -28,6 +39,9 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final PageableService pageableService;
+    private final UserHasRoleService userHasRoleService;
+    private final RoleRepository roleRepository;
+    private final UserHasRoleRepository userHasRoleRepository;
 
     @Override
     public UserResponse create(UserCreationRequest request) {
@@ -37,6 +51,21 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         userRepository.save(user);
+
+        // role user mac dinh
+        Set<UserHasRole> roles = new HashSet<>();
+        roles.add(userHasRoleService.saveUserHasRole(user, RoleEnum.USER));
+        if(!CollectionUtils.isEmpty(request.getRoleIds())){
+            Set<Role> roleSet = roleRepository.findAllByIdIn(request.getRoleIds());
+
+            Set<UserHasRole> userRoles = roleSet.stream()
+                    .filter(role -> !role.getName().equals(RoleEnum.USER.toString()))
+                    .map(role -> new UserHasRole(user, role))
+                    .collect(Collectors.toSet());
+
+            roles.addAll(userHasRoleRepository.saveAll(userRoles));
+        }
+        user.setRoles(roles);
 
         return userMapper.toUserResponse(user);
     }
@@ -70,6 +99,25 @@ public class UserServiceImpl implements UserService {
         User userDB = findActiveUserById(id);
 
         userMapper.updateUser(userDB, request);
+
+        if(!CollectionUtils.isEmpty(request.getRoleIds())){
+            userHasRoleRepository.deleteByUser(userDB);
+
+            Set<UserHasRole> roles = new HashSet<>();
+            // role user mac dinh
+            roles.add(userHasRoleService.saveUserHasRole(userDB, RoleEnum.USER));
+
+            Set<Role> roleSet = roleRepository.findAllByIdIn(request.getRoleIds());
+
+            Set<UserHasRole> userRoles = roleSet.stream()
+                    .filter(role -> !role.getName().equals(RoleEnum.USER.toString()))
+                    .map(role -> new UserHasRole(userDB, role))
+                    .collect(Collectors.toSet());
+
+            roles.addAll(userHasRoleRepository.saveAll(userRoles));
+
+            userDB.setRoles(roles);
+        }
 
         return userMapper.toUserResponse(userRepository.save(userDB));
     }

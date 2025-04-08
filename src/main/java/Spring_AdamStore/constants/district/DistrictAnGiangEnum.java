@@ -1,30 +1,44 @@
 package Spring_AdamStore.constants.district;
 
 import Spring_AdamStore.constants.ProvinceEnum;
+import Spring_AdamStore.entity.District;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Getter
+@AllArgsConstructor
 public enum DistrictAnGiangEnum {
 
-    LONG_XUYEN("Thành phố Long Xuyên", ProvinceEnum.AN_GIANG),
-    CHAU_DOC("Thành phố Châu Đốc", ProvinceEnum.AN_GIANG),
+    LONG_XUYEN("Thành phố Long Xuyên"),
+    CHAU_DOC("Thành phố Châu Đốc"),
 
-    // Thị xã
-    TAN_CHAU("Thị xã Tân Châu", ProvinceEnum.AN_GIANG),
+    TAN_CHAU("Thị xã Tân Châu"),
 
-    // Huyện
-    AN_PHU("Huyện An Phú", ProvinceEnum.AN_GIANG),
-    TAN_PHU("Huyện Tân Phú", ProvinceEnum.AN_GIANG),
-    PHU_TAN("Huyện Phú Tân", ProvinceEnum.AN_GIANG),
-    CHAU_PHU("Huyện Châu Phú", ProvinceEnum.AN_GIANG),
-    CHAU_THANH("Huyện Châu Thành", ProvinceEnum.AN_GIANG),
-    CHO_MOI("Huyện Chợ Mới", ProvinceEnum.AN_GIANG),
-    THOAI_SON("Huyện Thoại Sơn", ProvinceEnum.AN_GIANG),
-    TRI_TON("Huyện Tri Tôn", ProvinceEnum.AN_GIANG);
+    AN_PHU("Huyện An Phú"),
+    PHU_TAN("Huyện Phú Tân"),
+    CHAU_PHU("Huyện Châu Phú"),
+    CHAU_THANH("Huyện Châu Thành"),
+    THOAI_SON("Huyện Thoại Sơn"),
+    TRI_TON("Huyện Tri Tôn"),
+    TINH_BIEN("Huyện Tịnh Biên"),
+    CHO_MOI("Huyện Chợ Mới");
 
     private final String name;
-    private final ProvinceEnum province;
 
-    DistrictAnGiangEnum(String name, ProvinceEnum province) {
-        this.name = name;
-        this.province = province;
+    public District toDistrict() {
+        return District.builder()
+                .name(this.name)
+                .province(ProvinceEnum.AN_GIANG.toProvince())
+                .build();
+    }
+
+    public static List<District> getAllDistricts() {
+        return Arrays.stream(DistrictAnGiangEnum.values())
+                .map(DistrictAnGiangEnum::toDistrict)
+                .collect(Collectors.toList());
     }
 }

@@ -1,46 +1,66 @@
 package Spring_AdamStore.constants.district;
 
 import Spring_AdamStore.constants.ProvinceEnum;
+import Spring_AdamStore.entity.District;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Getter
+@AllArgsConstructor
 public enum DistrictHaNoiEnum {
-    // Ha Noi
-    BA_DINH("Ba Đình", ProvinceEnum.HA_NOI),
-    HOAN_KIEM("Hoàn Kiếm", ProvinceEnum.HA_NOI),
-    TAY_HO("Tây Hồ", ProvinceEnum.HA_NOI),
-    LONG_BIEN("Long Biên", ProvinceEnum.HA_NOI),
-    CAU_GIAY("Cầu Giấy", ProvinceEnum.HA_NOI),
-    DONG_DA("Đống Đa", ProvinceEnum.HA_NOI),
-    HAI_BA_TRUNG("Hai Bà Trưng", ProvinceEnum.HA_NOI),
-    HOANG_MAI("Hoàng Mai", ProvinceEnum.HA_NOI),
-    THANH_XUAN("Thanh Xuân", ProvinceEnum.HA_NOI),
 
-    SOC_SON("Sóc Sơn", ProvinceEnum.HA_NOI),
-    DONG_ANH("Đông Anh", ProvinceEnum.HA_NOI),
-    GIA_LAM("Gia Lâm", ProvinceEnum.HA_NOI),
-    NAM_TU_LIEM("Nam Từ Liêm", ProvinceEnum.HA_NOI),
-    BAC_TU_LIEM("Bắc Từ Liêm", ProvinceEnum.HA_NOI),
-    THANH_TRI("Thanh Trì", ProvinceEnum.HA_NOI),
-    THANH_OAI("Thanh Oai", ProvinceEnum.HA_NOI),
-    THACH_THAT("Thạch Thất", ProvinceEnum.HA_NOI),
-    QUOC_OAI("Quốc Oai", ProvinceEnum.HA_NOI),
-    CHUONG_MY("Chương Mỹ", ProvinceEnum.HA_NOI),
-    HOAI_DUC("Hoài Đức", ProvinceEnum.HA_NOI),
-    PHUC_THO("Phúc Thọ", ProvinceEnum.HA_NOI),
-    DAN_PHUONG("Đan Phượng", ProvinceEnum.HA_NOI),
-    MY_DUC("Mỹ Đức", ProvinceEnum.HA_NOI),
-    UNG_HOA("Ứng Hòa", ProvinceEnum.HA_NOI),
-    THUONG_TIN("Thường Tín", ProvinceEnum.HA_NOI),
-    PHU_XUYEN("Phú Xuyên", ProvinceEnum.HA_NOI),
-    BA_VI("Ba Vì", ProvinceEnum.HA_NOI),
-    ME_LINH("Mê Linh", ProvinceEnum.HA_NOI),
+    // Quan
+    BA_DINH("Quận Ba Đình"),
+    HOAN_KIEM("Quận Hoàn Kiếm"),
+    TAY_HO("Quận Tây Hồ"),
+    LONG_BIEN("Quận Long Biên"),
+    CAU_GIAY("Quận Cầu Giấy"),
+    DONG_DA("Quận Đống Đa"),
+    HAI_BA_TRUNG("Quận Hai Bà Trưng"),
+    HOANG_MAI("Quận Hoàng Mai"),
+    THANH_XUAN("Quận Thanh Xuân"),
+    NAM_TU_LIEM("Quận Nam Từ Liêm"),
+    BAC_TU_LIEM("Quận Bắc Từ Liêm"),
+    HA_DONG("Quận Hà Đông"),
 
-    SON_TAY("Sơn Tây", ProvinceEnum.HA_NOI);
+    // Thi xa
+    SON_TAY("Thị xã Sơn Tây"),
+
+    // Huyen
+    SOC_SON("Huyện Sóc Sơn"),
+    DONG_ANH("Huyện Đông Anh"),
+    GIA_LAM("Huyện Gia Lâm"),
+    THANH_TRI("Huyện Thanh Trì"),
+    ME_LINH("Huyện Mê Linh"),
+    BA_VI("Huyện Ba Vì"),
+    PHUC_THO("Huyện Phúc Thọ"),
+    DAN_PHUONG("Huyện Đan Phượng"),
+    HOAI_DUC("Huyện Hoài Đức"),
+    QUOC_OAI("Huyện Quốc Oai"),
+    THACH_THAT("Huyện Thạch Thất"),
+    CHUONG_MY("Huyện Chương Mỹ"),
+    THANH_OAI("Huyện Thanh Oai"),
+    THUONG_TIN("Huyện Thường Tín"),
+    PHU_XUYEN("Huyện Phú Xuyên"),
+    UNG_HOA("Huyện Ứng Hòa"),
+    MY_DUC("Huyện Mỹ Đức");
 
     private final String name;
-    private final ProvinceEnum province;
 
-    DistrictHaNoiEnum(String name, ProvinceEnum province) {
-        this.name = name;
-        this.province = province;
+    public District toDistrict() {
+        return District.builder()
+                .name(this.name)
+                .province(ProvinceEnum.HA_NOI.toProvince())
+                .build();
+    }
+
+    public static List<District> getAllDistricts() {
+        return Arrays.stream(DistrictHaNoiEnum.values())
+                .map(DistrictHaNoiEnum::toDistrict)
+                .collect(Collectors.toList());
     }
 }

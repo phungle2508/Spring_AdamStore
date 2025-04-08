@@ -4,8 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -24,6 +27,11 @@ public class District {
 
     @JoinColumn(nullable = false)
      String name;
+
+    @CreationTimestamp
+    LocalDate createdAt;
+    @UpdateTimestamp
+    LocalDate updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "province_id")

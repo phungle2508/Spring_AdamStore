@@ -1,6 +1,13 @@
 package Spring_AdamStore.constants;
 
+import Spring_AdamStore.entity.Province;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum ProvinceEnum {
+
     AN_GIANG("An Giang"),
     BA_RIA_VUNG_TAU("Bà Rịa - Vũng Tàu"),
     BAC_GIANG("Bắc Giang"),
@@ -65,13 +72,13 @@ public enum ProvinceEnum {
     YEN_BAI("Yên Bái"),
     HO_CHI_MINH("Hồ Chí Minh");
 
+
     private final String name;
 
-    ProvinceEnum(String name) {
-        this.name = name;
-    }
 
-    public String getName() {
-        return name;
+    public Province toProvince(){
+        return Province.builder()
+                .name(this.name())
+                .build();
     }
 }

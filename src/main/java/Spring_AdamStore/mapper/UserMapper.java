@@ -9,7 +9,7 @@ import org.mapstruct.*;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
+@Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS, uses = {RoleMapper.class})
 public interface UserMapper {
 
     User userCreationToUser(UserCreationRequest request);
@@ -18,7 +18,7 @@ public interface UserMapper {
 
     void updateUser(@MappingTarget User user, UserUpdateRequest request);
 
-//    @Mapping(target = "roles", source = "roles", qualifiedByName = "userHasRoleToEntityBasic")
+    @Mapping(target = "roles", source = "roles", qualifiedByName = "userHasRoleToEntityBasic")
     UserResponse toUserResponse(User user);
 
     List<UserResponse> toUserResponseList(List<User> users);
