@@ -28,8 +28,6 @@ public class PromotionController {
 
     private final PromotionService promotionService;
 
-    @Operation(summary = "Create Promotion",
-            description = "API này được sử dụng để tạo Promotion")
     @PostMapping("/promotions")
     public ApiResponse<PromotionResponse> create(@Valid @RequestBody PromotionRequest request){
         return ApiResponse.<PromotionResponse>builder()
@@ -63,8 +61,6 @@ public class PromotionController {
                 .build();
     }
 
-    @Operation(summary = "Update Promotion",
-            description = "API này được sử dụng để update Promotion")
     @PutMapping("/promotions/{id}")
     public ApiResponse<PromotionResponse> update(@Positive(message = "ID phải lớn hơn 0")
                                                @PathVariable Long id, @Valid @RequestBody PromotionRequest request){

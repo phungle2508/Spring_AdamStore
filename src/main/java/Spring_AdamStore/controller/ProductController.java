@@ -25,8 +25,6 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @Operation(summary = "Create Product",
-            description = "API này được sử dụng để tạo Product")
     @PostMapping("/products")
     public ApiResponse<ProductResponse> create(@Valid @RequestBody ProductRequest request){
         return ApiResponse.<ProductResponse>builder()
@@ -60,8 +58,6 @@ public class ProductController {
                 .build();
     }
 
-    @Operation(summary = "Update Product",
-            description = "API này được sử dụng để update Product")
     @PutMapping("/products/{id}")
     public ApiResponse<ProductResponse> update(@Positive(message = "ID phải lớn hơn 0")
                                             @PathVariable Long id, @Valid @RequestBody ProductRequest request){

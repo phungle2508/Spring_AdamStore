@@ -27,8 +27,6 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @Operation(summary = "Create Order",
-            description = "API này được sử dụng để tạo Order")
     @PostMapping("/orders")
     public ApiResponse<OrderResponse> create(@Valid @RequestBody OrderRequest request){
         return ApiResponse.<OrderResponse>builder()
@@ -62,8 +60,6 @@ public class OrderController {
                 .build();
     }
 
-    @Operation(summary = "Update Order",
-            description = "API này được sử dụng để update Order")
     @PutMapping("/orders/{id}")
     public ApiResponse<OrderResponse> update(@Positive(message = "ID phải lớn hơn 0")
                                                  @PathVariable Long id, @Valid @RequestBody OrderRequest request){

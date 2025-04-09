@@ -27,8 +27,6 @@ import org.springframework.web.bind.annotation.*;
 public class CategoryController {
     private final CategoryService categoryService;
 
-    @Operation(summary = "Create Category",
-            description = "API này được sử dụng để tạo Category")
     @PostMapping("/categories")
     public ApiResponse<CategoryResponse> create(@Valid @RequestBody CategoryRequest request){
         return ApiResponse.<CategoryResponse>builder()
@@ -62,8 +60,6 @@ public class CategoryController {
                 .build();
     }
 
-    @Operation(summary = "Update Category",
-            description = "API này được sử dụng để update Category")
     @PutMapping("/categories/{id}")
     public ApiResponse<CategoryResponse> update(@Positive(message = "ID phải lớn hơn 0")
                                                @PathVariable Long id, @Valid @RequestBody CategoryRequest request){

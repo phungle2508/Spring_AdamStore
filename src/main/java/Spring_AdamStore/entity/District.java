@@ -15,7 +15,9 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
-@Table(name = "tbl_district")
+@Table(name = "tbl_district", indexes = {
+        @Index(name = "idx_province_id", columnList = "province_id")
+})
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

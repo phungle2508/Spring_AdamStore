@@ -1,10 +1,8 @@
 package Spring_AdamStore.controller;
 
-import Spring_AdamStore.dto.response.ApiResponse;
-import Spring_AdamStore.dto.response.PageResponse;
-import Spring_AdamStore.dto.response.PromotionResponse;
-import Spring_AdamStore.dto.response.ProvinceResponse;
+import Spring_AdamStore.dto.response.*;
 import Spring_AdamStore.service.ProvinceService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
@@ -43,6 +41,20 @@ public class ProvinceController {
                 .code(HttpStatus.OK.value())
                 .result(provinceService.fetchAll(pageNo, pageSize, sortBy))
                 .message("Fetch All Provinces With Pagination")
+                .build();
+    }
+
+    @Operation(description = "API dùng để lấy danh sách districts theo province")
+    @GetMapping("/provinces/{provinceId}/districts")
+    public ApiResponse<PageResponse<DistrictResponse>> fetchByProvinceId(@RequestParam(defaultValue = "1") int pageNo,
+                                                                         @RequestParam(defaultValue = "10") int pageSize,
+                                                                         @Pattern(regexp = "^(\\w+?)(-)(asc|desc)$", message = "Định dạng của sortBy phải là: field-asc hoặc field-desc")
+                                                                         @RequestParam(required = false) String sortBy,
+                                                                         @PathVariable Long provinceId){
+        return ApiResponse.<PageResponse<DistrictResponse>>builder()
+                .code(HttpStatus.OK.value())
+                .message("Fetch Districts By Province ID With Pagination")
+                .result(provinceService.fetchDistrictsByProvinceId(pageNo, pageSize, sortBy, provinceId))
                 .build();
     }
 

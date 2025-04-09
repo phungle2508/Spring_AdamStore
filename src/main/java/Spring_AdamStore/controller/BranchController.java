@@ -25,8 +25,6 @@ public class BranchController {
 
     private final BranchService branchService;
 
-    @Operation(summary = "Create Branch",
-            description = "API này được sử dụng để tạo Branch")
     @PostMapping("/branches")
     public ApiResponse<BranchResponse> create(@Valid @RequestBody BranchRequest request){
         return ApiResponse.<BranchResponse>builder()
@@ -60,8 +58,7 @@ public class BranchController {
                 .build();
     }
 
-    @Operation(summary = "Update Branch",
-            description = "API này được sử dụng để update Branch")
+
     @PutMapping("/branches/{id}")
     public ApiResponse<BranchResponse> update(@Positive(message = "ID phải lớn hơn 0")
                                                 @PathVariable Long id, @Valid @RequestBody BranchRequest request){
@@ -79,7 +76,7 @@ public class BranchController {
         branchService.delete(id);
         return ApiResponse.<Void>builder()
                 .code(HttpStatus.NO_CONTENT.value())
-                .message("Delete Category By Id")
+                .message("Delete Branch By Id")
                 .result(null)
                 .build();
     }

@@ -25,8 +25,6 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @Operation(summary = "Create Review",
-            description = "API này được sử dụng để tạo Review")
     @PostMapping("/reviews")
     public ApiResponse<ReviewResponse> create(@Valid @RequestBody ReviewRequest request){
         return ApiResponse.<ReviewResponse>builder()
@@ -60,8 +58,7 @@ public class ReviewController {
                 .build();
     }
 
-    @Operation(summary = "Update Review",
-            description = "API này được sử dụng để update Review")
+
     @PutMapping("/reviews/{id}")
     public ApiResponse<ReviewResponse> update(@Positive(message = "ID phải lớn hơn 0")
                                                  @PathVariable Long id, @Valid @RequestBody ReviewRequest request){

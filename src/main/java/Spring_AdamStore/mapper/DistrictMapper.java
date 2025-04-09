@@ -1,10 +1,12 @@
 package Spring_AdamStore.mapper;
 
+import Spring_AdamStore.dto.basic.EntityBasic;
 import Spring_AdamStore.dto.response.DistrictResponse;
 import Spring_AdamStore.dto.response.ProvinceResponse;
 import Spring_AdamStore.entity.District;
 import Spring_AdamStore.entity.Province;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 
 import java.util.List;
@@ -16,4 +18,5 @@ public interface DistrictMapper {
 
     List<DistrictResponse> toDistrictResponseList(List<District> districtList);
 
+    EntityBasic toEntityBasic(District district);
 }

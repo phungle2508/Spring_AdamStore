@@ -42,7 +42,9 @@ public enum ErrorCode {
     PROMOTION_EXISTED(1002, "Promotion đã tồn tại trong hệ thống", HttpStatus.BAD_REQUEST),
     PROMOTION_NOT_EXISTED(1003, "Promotion không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
     REVIEW_NOT_EXISTED(1003, "Review không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
-    DISTRICT_NOT_EXISTED(1003, "District không tồn tại trong hệ thống", HttpStatus.NOT_FOUND)
+    DISTRICT_NOT_EXISTED(1003, "District không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
+    ADDRESS_NOT_EXISTED(1003, "Address không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
+    INVALID_PROVINCE_FOR_DISTRICT(1040, "District không thuộc province đã chọn", HttpStatus.BAD_REQUEST)
     ;
 
 
