@@ -15,6 +15,7 @@ import Spring_AdamStore.mapper.CategoryMapper;
 import Spring_AdamStore.repository.CategoryRepository;
 import Spring_AdamStore.service.CategoryService;
 import Spring_AdamStore.service.PageableService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -42,14 +43,14 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryResponse fetchCategoryById(Long id) {
+    public CategoryResponse fetchById(Long id) {
         Category category = findActiveCategoryById(id);
 
         return categoryMapper.toCategoryResponse(category);
     }
 
     @Override
-    public PageResponse<CategoryResponse> fetchAllCategories(int pageNo, int pageSize, String sortBy) {
+    public PageResponse<CategoryResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
         pageNo = pageNo - 1;
 
         Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
@@ -77,6 +78,7 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryMapper.toCategoryResponse(categoryRepository.save(category));
     }
 
+    @Transactional
     @Override
     public void delete(Long id) {
         Category category = findActiveCategoryById(id);

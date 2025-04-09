@@ -36,7 +36,13 @@ public enum ErrorCode {
     FORGOT_PASSWORD_TOKEN_NOT_FOUND(1025, "Token đặt lại mật khẩu không tồn tại hoặc đã hết hạn", HttpStatus.NOT_FOUND),
     VERIFICATION_CODE_EXPIRED(1019, "Mã xác nhận đã hết hạn", HttpStatus.BAD_REQUEST),
     ROLE_NOT_EXISTED(1014, "Role không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
-    PERMISSION_NOT_EXISTED(1016, "Permission không tồn tại trong hệ thống", HttpStatus.NOT_FOUND)
+    PERMISSION_NOT_EXISTED(1016, "Permission không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
+    ORDER_ITEM_NOT_EXISTED(1003, "OrderItem không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
+    ORDER_NOT_EXISTED(1003, "Order không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
+    PROMOTION_EXISTED(1002, "Promotion đã tồn tại trong hệ thống", HttpStatus.BAD_REQUEST),
+    PROMOTION_NOT_EXISTED(1003, "Promotion không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
+    REVIEW_NOT_EXISTED(1003, "Review không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
+    DISTRICT_NOT_EXISTED(1003, "District không tồn tại trong hệ thống", HttpStatus.NOT_FOUND)
     ;
 
 

@@ -11,6 +11,7 @@ import Spring_AdamStore.mapper.ProductMapper;
 import Spring_AdamStore.repository.ProductRepository;
 import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.ProductService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -39,14 +40,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponse fetchProductById(Long id) {
+    public ProductResponse fetchById(Long id) {
         Product product = findProductById(id);
 
         return productMapper.toProductResponse(product);
     }
 
     @Override
-    public PageResponse<ProductResponse> fetchAllProducts(int pageNo, int pageSize, String sortBy) {
+    public PageResponse<ProductResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
         pageNo = pageNo - 1;
 
         Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
@@ -75,6 +76,7 @@ public class ProductServiceImpl implements ProductService {
         return productMapper.toProductResponse(productRepository.save(product));
     }
 
+    @Transactional
     @Override
     public void delete(Long id) {
         Product product = findProductById(id);

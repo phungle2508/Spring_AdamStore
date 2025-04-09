@@ -11,6 +11,7 @@ import Spring_AdamStore.mapper.BranchMapper;
 import Spring_AdamStore.repository.BranchRepository;
 import Spring_AdamStore.service.BranchService;
 import Spring_AdamStore.service.PageableService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -38,14 +39,14 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
-    public BranchResponse fetchBranchById(Long id) {
+    public BranchResponse fetchById(Long id) {
         Branch branch = findActiveBranchById(id);
 
         return branchMapper.toBranchResponse(branch);
     }
 
     @Override
-    public PageResponse<BranchResponse> fetchAllBranches(int pageNo, int pageSize, String sortBy) {
+    public PageResponse<BranchResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
         pageNo = pageNo - 1;
 
         Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
@@ -74,6 +75,7 @@ public class BranchServiceImpl implements BranchService {
         return branchMapper.toBranchResponse(branchRepository.save(branch));
     }
 
+    @Transactional
     @Override
     public void delete(Long id) {
         Branch branch = findActiveBranchById(id);

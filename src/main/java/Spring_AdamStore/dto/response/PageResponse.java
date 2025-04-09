@@ -1,6 +1,7 @@
 package Spring_AdamStore.dto.response;
 
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 
@@ -9,10 +10,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class PageResponse<T> {
-    private int page;
-    private int size;
-    private long totalPages;
-    private long totalItems;
-    private List<T> items;
+     int page;
+     int size;
+     long totalPages;
+     long totalItems;
+     List<T> items;
 }

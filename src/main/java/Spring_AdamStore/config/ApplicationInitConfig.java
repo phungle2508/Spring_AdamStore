@@ -1,12 +1,18 @@
 package Spring_AdamStore.config;
 
 import Spring_AdamStore.constants.Gender;
+import Spring_AdamStore.constants.ProvinceEnum;
 import Spring_AdamStore.constants.RoleEnum;
+import Spring_AdamStore.entity.District;
+import Spring_AdamStore.entity.Province;
 import Spring_AdamStore.entity.Role;
 import Spring_AdamStore.entity.User;
+import Spring_AdamStore.repository.DistrictRepository;
+import Spring_AdamStore.repository.ProvinceRepository;
 import Spring_AdamStore.repository.RoleRepository;
 import Spring_AdamStore.repository.UserRepository;
 import Spring_AdamStore.service.relationship.UserHasRoleService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +21,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j(topic = "APPLICATION-INITIALIZATION")
 @RequiredArgsConstructor
@@ -26,20 +34,25 @@ public class ApplicationInitConfig {
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final UserHasRoleService userHasRoleService;
+    private final ProvinceRepository provinceRepository;
+    private final DistrictRepository districtRepository;
 
     @NonFinal
     static final String ADMIN_EMAIL = "admin@gmail.com";
 
     @NonFinal
-    static final String ADMIN_PASSWORD = "admin";
+    static final String ADMIN_PASSWORD = "123456";
 
+    @Transactional
     @Bean
     ApplicationRunner applicationRunner() {
-        log.info("INIT APPLICATION....");
+        log.info("INIT APPLICATION STARTING....");
 
         return args -> {
 
             if (roleRepository.count() == 0) {
+                log.info("Initializing roles...");
+
                 Role userRole = roleRepository.save(Role.builder()
                         .name(RoleEnum.USER.name())
                         .description("ROLE_USER")
@@ -55,6 +68,8 @@ public class ApplicationInitConfig {
             }
 
             if (userRepository.countByEmail(ADMIN_EMAIL) == 0) {
+                log.info("Creating default admin account...");
+
                 User admin = userRepository.save(User.builder()
                         .name("Admin")
                         .email(ADMIN_EMAIL)
@@ -66,6 +81,21 @@ public class ApplicationInitConfig {
 
             userHasRoleService.saveUserHasRole(admin, RoleEnum.ADMIN);
             }
+
+            if(provinceRepository.count() == 0){
+                log.info("Initializing Provinces and Districts...");
+
+                List<Province> provinceList = ProvinceEnum.getAllProvinces();
+
+                provinceRepository.saveAllAndFlush(provinceList);
+
+                List<District> allDistricts = provinceList.stream()
+                        .flatMap(province -> province.getDistricts().stream())
+                        .collect(Collectors.toList());
+
+                districtRepository.saveAllAndFlush(allDistricts);
+            }
+
         };
     }
 

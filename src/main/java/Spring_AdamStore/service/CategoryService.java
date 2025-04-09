@@ -9,9 +9,9 @@ public interface CategoryService {
 
     CategoryResponse create(CategoryRequest request);
 
-    CategoryResponse fetchCategoryById(Long id);
+    CategoryResponse fetchById(Long id);
 
-    PageResponse<CategoryResponse> fetchAllCategories(int pageNo, int pageSize, String sortBy);
+    PageResponse<CategoryResponse> fetchAll(int pageNo, int pageSize, String sortBy);
 
     CategoryResponse update(Long id, CategoryRequest request);
 

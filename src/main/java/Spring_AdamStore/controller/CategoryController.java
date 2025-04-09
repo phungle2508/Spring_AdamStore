@@ -45,7 +45,7 @@ public class CategoryController {
         return ApiResponse.<CategoryResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Fetch Category By Id")
-                .result(categoryService.fetchCategoryById(id))
+                .result(categoryService.fetchById(id))
                 .build();
     }
 
@@ -57,7 +57,7 @@ public class CategoryController {
                                                                @RequestParam(required = false) String sortBy){
         return ApiResponse.<PageResponse<CategoryResponse>>builder()
                 .code(HttpStatus.OK.value())
-                .result(categoryService.fetchAllCategories(pageNo, pageSize, sortBy))
+                .result(categoryService.fetchAll(pageNo, pageSize, sortBy))
                 .message("Fetch All Categories With Pagination")
                 .build();
     }
