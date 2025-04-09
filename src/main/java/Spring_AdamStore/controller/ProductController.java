@@ -43,7 +43,7 @@ public class ProductController {
         return ApiResponse.<ProductResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Fetch Product By Id")
-                .result(productService.fetchProductById(id))
+                .result(productService.fetchById(id))
                 .build();
     }
 
@@ -55,7 +55,7 @@ public class ProductController {
                                                             @RequestParam(required = false) String sortBy){
         return ApiResponse.<PageResponse<ProductResponse>>builder()
                 .code(HttpStatus.OK.value())
-                .result(productService.fetchAllProducts(pageNo, pageSize, sortBy))
+                .result(productService.fetchAll(pageNo, pageSize, sortBy))
                 .message("Fetch All Products With Pagination")
                 .build();
     }

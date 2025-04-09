@@ -10,9 +10,9 @@ public interface BranchService {
 
     BranchResponse create(BranchRequest request);
 
-    BranchResponse fetchBranchById(Long id);
+    BranchResponse fetchById(Long id);
 
-    PageResponse<BranchResponse> fetchAllBranches(int pageNo, int pageSize, String sortBy);
+    PageResponse<BranchResponse> fetchAll(int pageNo, int pageSize, String sortBy);
 
     BranchResponse update(Long id, BranchRequest request);
 

@@ -43,7 +43,7 @@ public class BranchController {
         return ApiResponse.<BranchResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Fetch Branch By Id")
-                .result(branchService.fetchBranchById(id))
+                .result(branchService.fetchById(id))
                 .build();
     }
 
@@ -55,7 +55,7 @@ public class BranchController {
                                                                 @RequestParam(required = false) String sortBy){
         return ApiResponse.<PageResponse<BranchResponse>>builder()
                 .code(HttpStatus.OK.value())
-                .result(branchService.fetchAllBranches(pageNo, pageSize, sortBy))
+                .result(branchService.fetchAll(pageNo, pageSize, sortBy))
                 .message("Fetch All Branches With Pagination")
                 .build();
     }

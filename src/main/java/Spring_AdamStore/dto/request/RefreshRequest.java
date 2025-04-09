@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 
-@NoArgsConstructor
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RefreshRequest {

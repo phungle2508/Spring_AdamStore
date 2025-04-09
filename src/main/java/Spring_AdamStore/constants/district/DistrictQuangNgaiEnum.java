@@ -2,6 +2,7 @@ package Spring_AdamStore.constants.district;
 
 import Spring_AdamStore.constants.ProvinceEnum;
 import Spring_AdamStore.entity.District;
+import Spring_AdamStore.entity.Province;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -11,7 +12,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
-public enum DistrictQuangNgaiEnum {
+public enum DistrictQuangNgaiEnum implements DistrictEnum{
 
     QUANG_NGAI("Thành phố Quảng Ngãi"),
     BINH_SON("Huyện Bình Sơn"),
@@ -25,13 +26,7 @@ public enum DistrictQuangNgaiEnum {
     public District toDistrict() {
         return District.builder()
                 .name(this.name)
-                .province(ProvinceEnum.QUANG_NGAI.toProvince())
                 .build();
     }
 
-    public static List<District> getAllDistricts() {
-        return Arrays.stream(DistrictQuangNgaiEnum.values())
-                .map(DistrictQuangNgaiEnum::toDistrict)
-                .collect(Collectors.toList());
-    }
 }

@@ -23,6 +23,7 @@ import Spring_AdamStore.service.TokenService;
 import Spring_AdamStore.service.relationship.UserHasRoleService;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jwt.SignedJWT;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -61,6 +62,7 @@ public class AuthServiceImpl implements AuthService {
         return generateAndSaveTokenResponse(userDB);
     }
 
+    @Transactional
     @Override
     public TokenResponse register(RegisterRequest request) throws JOSEException {
         checkUserExistenceAndStatus(request.getEmail(), request.getPhone());
@@ -105,6 +107,7 @@ public class AuthServiceImpl implements AuthService {
                 .build();
     }
 
+    @Transactional
     @Override
     public void changePassword(String oldPassword, String newPassword) {
         User user = userRepository.findByEmail(getCurrentUsername())
