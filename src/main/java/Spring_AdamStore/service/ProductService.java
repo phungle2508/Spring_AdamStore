@@ -8,9 +8,9 @@ public interface ProductService {
 
     ProductResponse create(ProductRequest request);
 
-    ProductResponse fetchProductById(Long id);
+    ProductResponse fetchById(Long id);
 
-    PageResponse<ProductResponse> fetchAllProducts(int pageNo, int pageSize, String sortBy);
+    PageResponse<ProductResponse> fetchAll(int pageNo, int pageSize, String sortBy);
 
     ProductResponse update(Long id, ProductRequest request);
 
