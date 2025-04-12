@@ -2,6 +2,7 @@
 package Spring_AdamStore.mapper;
 
 import Spring_AdamStore.dto.request.PromotionRequest;
+import Spring_AdamStore.dto.request.PromotionUpdateRequest;
 import Spring_AdamStore.dto.response.PromotionResponse;
 import Spring_AdamStore.entity.Promotion;
 import org.mapstruct.Mapper;
@@ -17,7 +18,7 @@ public interface PromotionMapper {
 
     PromotionResponse toPromotionResponse(Promotion promotion);
 
-    void update(@MappingTarget Promotion promotion,PromotionRequest request);
+    void update(@MappingTarget Promotion promotion, PromotionUpdateRequest request);
 
     List<PromotionResponse> toPromotionResponseList(List<Promotion> promotionList);
 

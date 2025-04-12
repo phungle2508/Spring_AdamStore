@@ -12,18 +12,15 @@ import java.time.LocalDate;
 
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PromotionRequest {
+public class PromotionUpdateRequest {
 
-    @NotBlank(message = "code không được để trống")
+    @NotBlank(message = "Code không được để trống")
     String code;
     String description;
-    @NotNull(message = "discountPercent không được null")
     @Min(value = 0, message = "Discount percent phải lớn hơn 0")
     @Max(value = 100, message = "Discount percent phải nhỏ hơn hoặc bằng 100")
     Integer discountPercent;
-    @NotNull(message = "startDate không được null")
     LocalDate startDate;
-    @NotNull(message = "endDate không được null")
     LocalDate endDate;
 
 }

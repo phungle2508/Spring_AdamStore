@@ -1,12 +1,17 @@
 package Spring_AdamStore.dto.response;
 
 
+import Spring_AdamStore.dto.basic.EntityBasic;
+import Spring_AdamStore.dto.basic.ProductVariantBasic;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
+
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
@@ -20,13 +25,20 @@ public class ProductResponse {
     String description;
 
     Double averageRating;
+    Integer soldQuantity;
     Integer totalReviews;
 
     String createdBy;
     String updatedBy;
-    @JsonFormat(pattern = "dd/MM/yyyy")
     LocalDate createdAt;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonFormat(pattern = "dd/MM/yyyy")
     LocalDate updatedAt;
+
+    EntityBasic category;
+
+    Set<EntityBasic> colors;
+    Set<EntityBasic> sizes;
+
+    Set<ProductImageResponse> productImages;
+
+
 }

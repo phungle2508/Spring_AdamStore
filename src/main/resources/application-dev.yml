@@ -68,4 +68,11 @@ jwt:
   reset:
     expiry-in-minutes: ${JWT_RESET_TOKEN_IN_MINUTES:15}
 
+# Cloudinary
+cloud:
+  name: ${CLOUDINARY_NAME}
+  api-key: ${CLOUDINARY_API_KEY}
+  api-secret: ${CLOUDINARY_API_SECRET}
+  folder-image: adam-store/images
+  max-size-image: 10MB
 

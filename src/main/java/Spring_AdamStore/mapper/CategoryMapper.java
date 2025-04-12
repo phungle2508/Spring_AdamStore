@@ -1,5 +1,6 @@
 package Spring_AdamStore.mapper;
 
+import Spring_AdamStore.dto.basic.EntityBasic;
 import Spring_AdamStore.dto.request.CategoryRequest;
 import Spring_AdamStore.dto.response.CategoryResponse;
 import Spring_AdamStore.dto.response.ProductResponse;
@@ -21,5 +22,7 @@ public interface CategoryMapper {
     void update(@MappingTarget Category category, CategoryRequest request);
 
     List<CategoryResponse> toCategoryResponseList(List<Category> categories);
+
+    EntityBasic toEntityBasic(Category category);
 
 }
