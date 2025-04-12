@@ -31,7 +31,7 @@ public class Promotion {
      Long id;
 
     @JoinColumn(nullable = false)
-     String title;
+    String code;
      String description;
      Integer discountPercent;
     @JoinColumn(nullable = false)
@@ -55,7 +55,7 @@ public class Promotion {
 
 
     @OneToMany(mappedBy = "promotion")
-    Set<Product> products = new HashSet<>();
+    Set<Order> orders = new HashSet<>();
 
     @PrePersist
     public void prePersist() {

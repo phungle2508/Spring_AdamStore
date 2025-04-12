@@ -14,5 +14,4 @@ public class ProductVariantBasic {
     String color;
     String size;
     String product;
-    String imageUrl;
 }

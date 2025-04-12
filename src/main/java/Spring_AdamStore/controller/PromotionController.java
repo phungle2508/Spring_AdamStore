@@ -2,6 +2,7 @@ package Spring_AdamStore.controller;
 
 import Spring_AdamStore.dto.request.ProductRequest;
 import Spring_AdamStore.dto.request.PromotionRequest;
+import Spring_AdamStore.dto.request.PromotionUpdateRequest;
 import Spring_AdamStore.dto.response.ApiResponse;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.dto.response.ProductResponse;
@@ -62,7 +63,7 @@ public class PromotionController {
 
     @PutMapping("/promotions/{id}")
     public ApiResponse<PromotionResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
-                                               @PathVariable Long id, @Valid @RequestBody PromotionRequest request){
+                                               @PathVariable Long id, @Valid @RequestBody PromotionUpdateRequest request){
         return ApiResponse.<PromotionResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Update Promotion By Id")

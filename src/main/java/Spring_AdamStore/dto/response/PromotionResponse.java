@@ -18,8 +18,7 @@ public class PromotionResponse {
 
     Long id;
 
-    @JoinColumn(nullable = false)
-    String title;
+    String code;
     String description;
     Integer discountPercent;
     LocalDate startDate;
@@ -27,9 +26,6 @@ public class PromotionResponse {
 
     String createdBy;
     String updatedBy;
-    @JsonFormat(pattern = "dd/MM/yyyy")
     LocalDate createdAt;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonFormat(pattern = "dd/MM/yyyy")
     LocalDate updatedAt;
 }

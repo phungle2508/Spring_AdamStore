@@ -1,8 +1,11 @@
 package Spring_AdamStore.service;
 
 import Spring_AdamStore.dto.request.ProductRequest;
+import Spring_AdamStore.dto.request.ProductUpdateRequest;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.dto.response.ProductResponse;
+import Spring_AdamStore.dto.response.ReviewResponse;
+import jakarta.validation.constraints.Min;
 
 public interface ProductService {
 
@@ -12,7 +15,9 @@ public interface ProductService {
 
     PageResponse<ProductResponse> fetchAll(int pageNo, int pageSize, String sortBy);
 
-    ProductResponse update(Long id, ProductRequest request);
+    ProductResponse update(Long id, ProductUpdateRequest request);
 
     void delete(Long id);
+
+    PageResponse<ReviewResponse> fetchReviewsByProductId(int pageNo, int pageSize, String sortBy,Long productId);
 }

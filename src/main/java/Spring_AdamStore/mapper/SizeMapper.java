@@ -1,5 +1,6 @@
 package Spring_AdamStore.mapper;
 
+import Spring_AdamStore.dto.basic.EntityBasic;
 import Spring_AdamStore.dto.request.ColorRequest;
 import Spring_AdamStore.dto.request.SizeRequest;
 import Spring_AdamStore.dto.response.ColorResponse;

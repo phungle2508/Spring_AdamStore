@@ -1,6 +1,7 @@
 package Spring_AdamStore.entity;
 
 import Spring_AdamStore.constants.EntityStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -19,19 +20,13 @@ public class ProductImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
      Long id;
 
-     Boolean isDefault;
+     String publicId;
+     String fileName;
      String imageUrl;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "product_id")
      Product product;
-
-    @PrePersist
-    public void prePersist() {
-        if (isDefault == null) {
-            this.isDefault = false;
-        }
-    }
-
 
 }

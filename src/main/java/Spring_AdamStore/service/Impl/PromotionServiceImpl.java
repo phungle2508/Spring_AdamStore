@@ -2,6 +2,7 @@ package Spring_AdamStore.service.Impl;
 
 import Spring_AdamStore.constants.EntityStatus;
 import Spring_AdamStore.dto.request.PromotionRequest;
+import Spring_AdamStore.dto.request.PromotionUpdateRequest;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.dto.response.PromotionResponse;
 import Spring_AdamStore.entity.Promotion;
@@ -31,7 +32,7 @@ public class PromotionServiceImpl implements PromotionService {
 
     @Override
     public PromotionResponse create(PromotionRequest request) {
-        if(promotionRepository.existsByTitle(request.getTitle())){
+        if(promotionRepository.existsByCode(request.getCode())){
             throw new AppException(ErrorCode.PROMOTION_EXISTED);
         }
 
@@ -65,8 +66,8 @@ public class PromotionServiceImpl implements PromotionService {
     }
 
     @Override
-    public PromotionResponse update(Long id, PromotionRequest request) {
-        if(promotionRepository.existsByTitle(request.getTitle())){
+    public PromotionResponse update(Long id, PromotionUpdateRequest request) {
+        if(promotionRepository.existsByCode(request.getCode()) && request.getCode() != null){
             throw new AppException(ErrorCode.PROMOTION_EXISTED);
         }
 

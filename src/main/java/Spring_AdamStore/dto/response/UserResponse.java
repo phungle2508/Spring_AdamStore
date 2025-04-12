@@ -34,10 +34,7 @@ public class UserResponse {
 
     String createdBy;
     String updatedBy;
-    @JsonFormat(pattern = "dd/MM/yyyy")
     LocalDate createdAt;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonFormat(pattern = "dd/MM/yyyy")
     LocalDate updatedAt;
 
     Set<EntityBasic> roles;

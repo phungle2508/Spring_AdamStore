@@ -9,11 +9,9 @@ import java.util.Set;
 
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductRequest {
+public class ProductUpdateRequest {
 
-    @NotBlank(message = "Tên sản phẩm không được để trống")
     String name;
-    @NotBlank(message = "Mô tả sản phẩm không được để trống")
     String description;
     @Min(value = 0, message = "Giá phải lớn hơn hoặc bằng 0")
     @NotNull(message = "price không được null")
@@ -22,16 +20,12 @@ public class ProductRequest {
     @NotNull(message = "quantity không được null")
     Integer quantity;
 
-    @NotNull(message = "categoryId không được null")
     Long categoryId;
 
-    @NotEmpty(message = "colors không được để trống")
     Set<Long> colorIds;
 
-    @NotEmpty(message = "sizes không được để trống")
     Set<Long> sizeIds;
 
-    @Size(min = 1, message = "Cần ít nhất 1 ảnh cho sản phẩm")
     Set<Long> imageIds;
 
 }

@@ -40,9 +40,7 @@ public class Product {
     @ColumnDefault(value = "5.0")
     Double averageRating;
     @ColumnDefault("0")
-    @Column(nullable = false)
     Integer totalReviews;
-    String imageUrl;
 
     @Enumerated(EnumType.STRING)
     @JoinColumn(name = "status", nullable = false)
@@ -63,10 +61,6 @@ public class Product {
     @JoinColumn(name = "category_id")
      Category category;
 
-    @ManyToOne
-    @JoinColumn(name = "promotion_id")
-     Promotion promotion;
-
     @OneToMany(mappedBy = "product")
     Set<Review> reviews = new HashSet<>();
 
@@ -81,6 +75,15 @@ public class Product {
     public void prePersist() {
         if (status == null) {
             this.status = EntityStatus.ACTIVE;
+        }
+        if(soldQuantity == null){
+            this.soldQuantity = 0;
+        }
+        if(averageRating == null){
+            this.averageRating = 5.0;
+        }
+        if(totalReviews == null){
+            this.totalReviews = 0;
         }
     }
 }
