@@ -2,10 +2,7 @@ package Spring_AdamStore.controller;
 
 import Spring_AdamStore.dto.request.CategoryRequest;
 import Spring_AdamStore.dto.request.ProductRequest;
-import Spring_AdamStore.dto.response.ApiResponse;
-import Spring_AdamStore.dto.response.CategoryResponse;
-import Spring_AdamStore.dto.response.PageResponse;
-import Spring_AdamStore.dto.response.ProductResponse;
+import Spring_AdamStore.dto.response.*;
 import Spring_AdamStore.service.CategoryService;
 import Spring_AdamStore.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -78,6 +75,20 @@ public class CategoryController {
                 .code(HttpStatus.NO_CONTENT.value())
                 .message("Delete Category By Id")
                 .result(null)
+                .build();
+    }
+
+    @Operation(description = "API dùng để lấy danh sách products của category")
+    @GetMapping("/categories/{categoryId}/products")
+    public ApiResponse<PageResponse<ProductResponse>> fetchByCategoryId(@RequestParam(defaultValue = "1") int pageNo,
+                                                                         @RequestParam(defaultValue = "10") int pageSize,
+                                                                         @RequestParam(required = false) String sortBy,
+                                                                         @Min(value = 1, message = "categoryId phải lớn hơn 0")
+                                                                         @PathVariable Long categoryId){
+        return ApiResponse.<PageResponse<ProductResponse>>builder()
+                .code(HttpStatus.OK.value())
+                .message("Fetch Districts By Province ID With Pagination")
+                .result(categoryService.fetchByCategoryId(pageNo, pageSize, sortBy, categoryId))
                 .build();
     }
 }

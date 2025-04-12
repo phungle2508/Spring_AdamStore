@@ -21,7 +21,6 @@ public class ProductResponse {
 
     Double averageRating;
     Integer totalReviews;
-    String imageUrl;
 
     String createdBy;
     String updatedBy;

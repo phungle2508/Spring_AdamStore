@@ -17,7 +17,6 @@ import org.springframework.web.filter.CorsFilter;
 
 import java.util.List;
 
-@EnableJpaAuditing
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -79,10 +78,6 @@ public class SecurityConfig {
                         "/swagger-ui*/*swagger-initializer.js","/swagger-ui*/**");
     }
 
-    @Bean
-    public AuditorAware<String> auditorAware() {
-        return new AuditorAwareImpl();
-    }
 
     @Bean
     public PasswordEncoder passwordEncoder(){
