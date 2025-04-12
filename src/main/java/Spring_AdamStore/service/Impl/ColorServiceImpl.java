@@ -13,6 +13,7 @@ import Spring_AdamStore.mapper.ColorMapper;
 import Spring_AdamStore.repository.ColorRepository;
 import Spring_AdamStore.service.ColorService;
 import Spring_AdamStore.service.PageableService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -76,6 +77,7 @@ public class ColorServiceImpl implements ColorService {
         return colorMapper.toColorResponse(colorRepository.save(color));
     }
 
+    @Transactional
     @Override
     public void delete(Long id) {
         Color color = findColorById(id);

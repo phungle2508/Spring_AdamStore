@@ -47,7 +47,6 @@ public class ProvinceController {
     @GetMapping("/provinces/{provinceId}/districts")
     public ApiResponse<PageResponse<DistrictResponse>> fetchByProvinceId(@RequestParam(defaultValue = "1") int pageNo,
                                                                          @RequestParam(defaultValue = "10") int pageSize,
-                                                                         @Pattern(regexp = "^(\\w+?)(-)(asc|desc)$", message = "Định dạng của sortBy phải là: field-asc hoặc field-desc")
                                                                          @RequestParam(required = false) String sortBy,
                                                                          @Min(value = 1, message = "provinceId phải lớn hơn 0")
                                                                          @PathVariable Long provinceId){

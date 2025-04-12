@@ -4,6 +4,7 @@ import Spring_AdamStore.dto.request.CategoryRequest;
 import Spring_AdamStore.dto.request.ProductRequest;
 import Spring_AdamStore.dto.response.CategoryResponse;
 import Spring_AdamStore.dto.response.PageResponse;
+import Spring_AdamStore.dto.response.ProductResponse;
 
 public interface CategoryService {
 
@@ -16,4 +17,6 @@ public interface CategoryService {
     CategoryResponse update(Long id, CategoryRequest request);
 
     void delete(Long id);
+
+    PageResponse<ProductResponse> fetchByCategoryId(int pageNo, int pageSize, String sortBy, Long categoryId);
 }

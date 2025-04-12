@@ -2,17 +2,14 @@ package Spring_AdamStore.service.Impl;
 
 import Spring_AdamStore.constants.EntityStatus;
 import Spring_AdamStore.dto.request.CategoryRequest;
-import Spring_AdamStore.dto.response.CategoryResponse;
-import Spring_AdamStore.dto.response.PageResponse;
-import Spring_AdamStore.dto.response.UserResponse;
-import Spring_AdamStore.entity.Category;
-import Spring_AdamStore.entity.Product;
-import Spring_AdamStore.entity.Province;
-import Spring_AdamStore.entity.User;
+import Spring_AdamStore.dto.response.*;
+import Spring_AdamStore.entity.*;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.CategoryMapper;
+import Spring_AdamStore.mapper.ProductMapper;
 import Spring_AdamStore.repository.CategoryRepository;
+import Spring_AdamStore.repository.ProductRepository;
 import Spring_AdamStore.service.CategoryService;
 import Spring_AdamStore.service.PageableService;
 import jakarta.transaction.Transactional;
@@ -30,6 +27,8 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
     private final PageableService pageableService;
+    private final ProductRepository productRepository;
+    private final ProductMapper productMapper;
 
     @Override
     public CategoryResponse create(CategoryRequest request) {
@@ -86,6 +85,23 @@ public class CategoryServiceImpl implements CategoryService {
         category.setStatus(EntityStatus.INACTIVE);
 
         categoryRepository.save(category);
+    }
+
+    @Override
+    public PageResponse<ProductResponse> fetchByCategoryId(int pageNo, int pageSize, String sortBy, Long categoryId) {
+        pageNo = pageNo - 1;
+
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
+
+        Page<Product> productPage = productRepository.findByCategoryId(categoryId, pageable);
+
+        return PageResponse.<ProductResponse>builder()
+                .page(productPage.getNumber() + 1)
+                .size(productPage.getSize())
+                .totalPages(productPage.getTotalPages())
+                .totalItems(productPage.getTotalElements())
+                .items(productMapper.toProductResponseList(productPage.getContent()))
+                .build();
     }
 
     private Category findActiveCategoryById(Long id) {
