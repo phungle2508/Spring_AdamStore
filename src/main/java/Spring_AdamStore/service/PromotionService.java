@@ -1,6 +1,7 @@
 package Spring_AdamStore.service;
 
 import Spring_AdamStore.dto.request.PromotionRequest;
+import Spring_AdamStore.dto.request.PromotionUpdateRequest;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.dto.response.PromotionResponse;
 
@@ -12,7 +13,7 @@ public interface PromotionService {
 
     PageResponse<PromotionResponse> fetchAll(int pageNo, int pageSize, String sortBy);
 
-    PromotionResponse update(Long id, PromotionRequest request);
+    PromotionResponse update(Long id, PromotionUpdateRequest request);
 
     void delete(Long id);
 }

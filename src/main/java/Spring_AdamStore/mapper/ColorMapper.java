@@ -1,5 +1,6 @@
 package Spring_AdamStore.mapper;
 
+import Spring_AdamStore.dto.basic.EntityBasic;
 import Spring_AdamStore.dto.request.ColorRequest;
 import Spring_AdamStore.dto.response.ColorResponse;
 import Spring_AdamStore.entity.Color;
@@ -19,5 +20,6 @@ public interface ColorMapper {
     void update(@MappingTarget Color color, ColorRequest request);
 
     List<ColorResponse> toColorResponseList(List<Color> colorList);
+
 
 }

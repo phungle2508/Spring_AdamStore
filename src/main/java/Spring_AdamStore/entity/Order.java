@@ -56,4 +56,8 @@ public class Order {
     @JoinColumn(name = "user_id")
      User user;
 
+    @ManyToOne
+    @JoinColumn(name = "promotion_id")
+    Promotion promotion;
+
 }

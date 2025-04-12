@@ -2,6 +2,7 @@ package Spring_AdamStore.service.Impl;
 
 import Spring_AdamStore.constants.EntityStatus;
 import Spring_AdamStore.dto.request.BranchRequest;
+import Spring_AdamStore.dto.request.BranchUpdateRequest;
 import Spring_AdamStore.dto.response.BranchResponse;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.entity.Branch;
@@ -63,7 +64,7 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
-    public BranchResponse update(Long id, BranchRequest request) {
+    public BranchResponse update(Long id, BranchUpdateRequest request) {
         if(branchRepository.existsByName(request.getName())){
             throw new AppException(ErrorCode.CATEGORY_EXISTED);
         }

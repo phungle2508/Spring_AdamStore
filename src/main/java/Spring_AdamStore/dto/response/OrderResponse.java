@@ -21,15 +21,11 @@ import java.time.LocalDate;
 public class OrderResponse {
 
     Long id;
-    @JsonFormat(pattern = "dd/MM/yyyy")
     LocalDate orderDate;
     Double totalPrice;
     OrderStatus orderStatus;
 
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
     LocalDate createdAt;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonFormat(pattern = "dd/MM/yyyy")
     LocalDate updatedAt;
 }

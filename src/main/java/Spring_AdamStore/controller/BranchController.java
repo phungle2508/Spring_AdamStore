@@ -1,6 +1,7 @@
 package Spring_AdamStore.controller;
 
 import Spring_AdamStore.dto.request.BranchRequest;
+import Spring_AdamStore.dto.request.BranchUpdateRequest;
 import Spring_AdamStore.dto.response.ApiResponse;
 import Spring_AdamStore.dto.response.BranchResponse;
 import Spring_AdamStore.dto.response.PageResponse;
@@ -60,7 +61,7 @@ public class BranchController {
 
     @PutMapping("/branches/{id}")
     public ApiResponse<BranchResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
-                                                @PathVariable Long id, @Valid @RequestBody BranchRequest request){
+                                                @PathVariable Long id, @Valid @RequestBody BranchUpdateRequest request){
         return ApiResponse.<BranchResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Update Branch By Id")
