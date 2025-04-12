@@ -16,9 +16,9 @@ import java.time.LocalDate;
 public class ReviewResponse {
 
     Long id;
-
-    Integer rating;
+    Double rating;
     String comment;
+
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     LocalDate createdAt;

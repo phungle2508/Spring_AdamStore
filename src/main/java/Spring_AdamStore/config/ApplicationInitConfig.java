@@ -3,14 +3,9 @@ package Spring_AdamStore.config;
 import Spring_AdamStore.constants.Gender;
 import Spring_AdamStore.constants.ProvinceEnum;
 import Spring_AdamStore.constants.RoleEnum;
-import Spring_AdamStore.entity.District;
-import Spring_AdamStore.entity.Province;
-import Spring_AdamStore.entity.Role;
-import Spring_AdamStore.entity.User;
-import Spring_AdamStore.repository.DistrictRepository;
-import Spring_AdamStore.repository.ProvinceRepository;
-import Spring_AdamStore.repository.RoleRepository;
-import Spring_AdamStore.repository.UserRepository;
+import Spring_AdamStore.constants.SizeEnum;
+import Spring_AdamStore.entity.*;
+import Spring_AdamStore.repository.*;
 import Spring_AdamStore.service.relationship.UserHasRoleService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,6 +32,7 @@ public class ApplicationInitConfig {
     private final UserHasRoleService userHasRoleService;
     private final ProvinceRepository provinceRepository;
     private final DistrictRepository districtRepository;
+    private final SizeRepository sizeRepository;
 
     @NonFinal
     static final String ADMIN_EMAIL = "admin@gmail.com";
@@ -75,7 +72,7 @@ public class ApplicationInitConfig {
                         .email(ADMIN_EMAIL)
                         .phone("099999999")
                         .password(passwordEncoder.encode(ADMIN_PASSWORD))
-                        .age(100)
+                        .dob(LocalDate.now())
                         .gender(Gender.MALE)
                         .build());
 
@@ -94,6 +91,14 @@ public class ApplicationInitConfig {
                         .collect(Collectors.toList());
 
                 districtRepository.saveAllAndFlush(allDistricts);
+            }
+
+            if(sizeRepository.count() == 0){
+                log.info("Initializing Sizes...");
+
+                List<Size> sizeList = SizeEnum.getAllSizes();
+
+                sizeRepository.saveAllAndFlush(sizeList);
             }
 
         };

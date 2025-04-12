@@ -18,10 +18,12 @@ public class ProductResponse {
     Long id;
     String name;
     String description;
-    Double price;
-    Integer quantity;
-    String imageUrl;
 
+    Double averageRating;
+    Integer totalReviews;
+
+    String createdBy;
+    String updatedBy;
     @JsonFormat(pattern = "dd/MM/yyyy")
     LocalDate createdAt;
     @JsonInclude(JsonInclude.Include.NON_NULL)

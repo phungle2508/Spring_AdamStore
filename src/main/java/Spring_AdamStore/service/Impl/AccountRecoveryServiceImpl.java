@@ -125,6 +125,10 @@ public class AccountRecoveryServiceImpl implements AccountRecoveryService {
         User user = userRepository.findByEmail(forgotPasswordToken.getEmail()).orElseThrow(
                 () -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
+        if (!request.getNewPassword().equals(request.getConfirmPassword())) {
+            throw new AppException(ErrorCode.PASSWORD_MISMATCH);
+        }
+
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(user);
 

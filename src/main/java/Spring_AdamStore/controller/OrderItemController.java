@@ -26,8 +26,6 @@ public class OrderItemController {
 
     private final OrderItemService orderItemService;
 
-    @Operation(summary = "Create OrderItem",
-            description = "API này được sử dụng để tạo OrderItem")
     @PostMapping("/items")
     public ApiResponse<OrderItemResponse> create(@Valid @RequestBody OrderItemRequest request){
         return ApiResponse.<OrderItemResponse>builder()
@@ -39,7 +37,7 @@ public class OrderItemController {
 
 
     @GetMapping("/items/{id}")
-    public ApiResponse<OrderItemResponse> fetchById(@Positive(message = "ID phải lớn hơn 0")
+    public ApiResponse<OrderItemResponse> fetchById(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                   @PathVariable Long id){
         return ApiResponse.<OrderItemResponse>builder()
                 .code(HttpStatus.OK.value())
@@ -52,7 +50,6 @@ public class OrderItemController {
     public ApiResponse<PageResponse<OrderItemResponse>> fetchAll(@Min(value = 1, message = "pageNo phải lớn hơn 0")
                                                                @RequestParam(defaultValue = "1") int pageNo,
                                                                @RequestParam(defaultValue = "10") int pageSize,
-                                                               @Pattern(regexp = "^(\\w+?)(-)(asc|desc)$", message = "Định dạng của sortBy phải là: field-asc hoặc field-desc")
                                                                @RequestParam(required = false) String sortBy){
         return ApiResponse.<PageResponse<OrderItemResponse>>builder()
                 .code(HttpStatus.OK.value())
@@ -61,10 +58,8 @@ public class OrderItemController {
                 .build();
     }
 
-    @Operation(summary = "Update Product",
-            description = "API này được sử dụng để update Product")
     @PutMapping("/items/{id}")
-    public ApiResponse<OrderItemResponse> update(@Positive(message = "ID phải lớn hơn 0")
+    public ApiResponse<OrderItemResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                @PathVariable Long id, @Valid @RequestBody OrderItemRequest request){
         return ApiResponse.<OrderItemResponse>builder()
                 .code(HttpStatus.OK.value())
@@ -75,7 +70,7 @@ public class OrderItemController {
 
 
     @DeleteMapping("/items/{id}")
-    public ApiResponse<Void> delete(@Positive(message = "ID phải lớn hơn 0")
+    public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
                                     @PathVariable Long id){
         orderItemService.delete(id);
         return ApiResponse.<Void>builder()

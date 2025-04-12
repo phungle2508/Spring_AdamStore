@@ -34,11 +34,6 @@ public class Permission {
     String apiPath;
     String method;
 
-    @CreationTimestamp
-    LocalDate createdAt;
-    @UpdateTimestamp
-    LocalDate updatedAt;
-
     @OneToMany(mappedBy = "permission")
     @JsonIgnore
     Set<RoleHasPermission> roles = new HashSet<>();

@@ -12,12 +12,12 @@ import Spring_AdamStore.repository.relationship.UserHasRoleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserHasRoleService {
+
     private final UserHasRoleRepository userHasRoleRepository;
     private final RoleRepository roleRepository;
 

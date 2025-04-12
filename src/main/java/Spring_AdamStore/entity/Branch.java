@@ -8,6 +8,8 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
 
 import java.time.LocalDate;
 
@@ -27,13 +29,19 @@ public class Branch {
 
     @JoinColumn(nullable = false)
      String name;
+    @JoinColumn(nullable = false)
      String location;
+    @JoinColumn(nullable = false)
      String phone;
 
     @Enumerated(EnumType.STRING)
     @JoinColumn(name = "status", nullable = false)
     EntityStatus status;
 
+    @CreatedBy
+    String createdBy;
+    @LastModifiedBy
+    String updatedBy;
     @CreationTimestamp
     LocalDate createdAt;
     @UpdateTimestamp

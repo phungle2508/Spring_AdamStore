@@ -10,5 +10,5 @@ public interface DistrictService {
 
     PageResponse<DistrictResponse> fetchAll(int pageNo, int pageSize, String sortBy);
 
-    PageResponse<DistrictResponse> fetchByProvinceId(Long provinceId, int pageNo, int pageSize, String sortBy);
+
 }

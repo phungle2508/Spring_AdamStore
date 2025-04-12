@@ -19,10 +19,5 @@ public class OrderItemResponse {
     Integer quantity;
     Double unitPrice;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
-    LocalDate createdAt;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonFormat(pattern = "dd/MM/yyyy")
-    LocalDate updatedAt;
 
 }

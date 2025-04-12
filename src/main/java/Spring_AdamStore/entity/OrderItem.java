@@ -3,11 +3,7 @@ package Spring_AdamStore.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import java.time.LocalDate;
+import org.hibernate.annotations.ColumnDefault;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
@@ -22,17 +18,17 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
      Long id;
 
+    @JoinColumn(nullable = false)
+    @ColumnDefault(value = "0")
      Integer quantity;
+    @JoinColumn(nullable = false)
+    @ColumnDefault(value = "0")
      Double unitPrice;
 
-    @CreationTimestamp
-    LocalDate createdAt;
-    @UpdateTimestamp
-    LocalDate updatedAt;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
-     Product product;
+    @JoinColumn(name = "product_variant_id", nullable = false)
+    ProductVariant productVariant;
 
     @ManyToOne
     @JoinColumn(name = "order_id")

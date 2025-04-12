@@ -3,10 +3,7 @@ package Spring_AdamStore.service.Impl;
 import Spring_AdamStore.constants.EntityStatus;
 import Spring_AdamStore.constants.RoleEnum;
 import Spring_AdamStore.constants.TokenType;
-import Spring_AdamStore.dto.request.LoginRequest;
-import Spring_AdamStore.dto.request.RefreshRequest;
-import Spring_AdamStore.dto.request.RegisterRequest;
-import Spring_AdamStore.dto.request.TokenRequest;
+import Spring_AdamStore.dto.request.*;
 import Spring_AdamStore.dto.response.TokenResponse;
 import Spring_AdamStore.dto.response.UserResponse;
 import Spring_AdamStore.entity.RedisRevokedToken;
@@ -65,7 +62,11 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     @Override
     public TokenResponse register(RegisterRequest request) throws JOSEException {
-        checkUserExistenceAndStatus(request.getEmail(), request.getPhone());
+        checkPhoneAndEmailExist(request.getEmail(), request.getPhone());
+
+        if (!request.getPassword().equals(request.getConfirmPassword())) {
+            throw new AppException(ErrorCode.PASSWORD_MISMATCH);
+        }
 
         User user = userMapper.registerToUser(request);
 
@@ -109,14 +110,18 @@ public class AuthServiceImpl implements AuthService {
 
     @Transactional
     @Override
-    public void changePassword(String oldPassword, String newPassword) {
+    public void changePassword(ChangePasswordRequest request) {
         User user = userRepository.findByEmail(getCurrentUsername())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
-        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+        if (!request.getNewPassword().equals(request.getConfirmPassword())) {
+            throw new AppException(ErrorCode.PASSWORD_MISMATCH);
+        }
+
+        if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
             throw new AppException(ErrorCode.INVALID_OLD_PASSWORD);
         }
-        user.setPassword(passwordEncoder.encode(newPassword));
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(user);
     }
 
@@ -163,7 +168,7 @@ public class AuthServiceImpl implements AuthService {
         return authentication.getName(); // email
     }
 
-    private void checkUserExistenceAndStatus(String email, String phone) {
+    private void checkPhoneAndEmailExist(String email, String phone) {
         if (userRepository.countByEmailAndStatus(email, EntityStatus.ACTIVE.name()) > 0) {
             throw new AppException(ErrorCode.EMAIL_EXISTED);
         }

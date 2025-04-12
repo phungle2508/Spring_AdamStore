@@ -50,22 +50,6 @@ public class DistrictServiceImpl implements DistrictService {
                 .build();
     }
 
-    @Override
-    public PageResponse<DistrictResponse> fetchByProvinceId(Long provinceId, int pageNo, int pageSize, String sortBy) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
-
-        Page<District> districtPage = districtRepository.findByProvinceId(provinceId, pageable);
-
-        return PageResponse.<DistrictResponse>builder()
-                .page(districtPage.getNumber() + 1)
-                .size(districtPage.getSize())
-                .totalPages(districtPage.getTotalPages())
-                .totalItems(districtPage.getTotalElements())
-                .items(districtMapper.toDistrictResponseList(districtPage.getContent()))
-                .build();
-    }
 
 
     private District findDistrictById(Long id) {

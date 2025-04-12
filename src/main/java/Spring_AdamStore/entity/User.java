@@ -11,6 +11,8 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -35,13 +37,11 @@ public class User{
     String name;
     @Column(unique = true, nullable = false)
     String email;
-    @Column(unique = true, nullable = false)
     String phone;
     String password;
     String avatarUrl;
 
-    @ColumnDefault("18")
-    Integer age;
+    LocalDate dob;
     @Enumerated(EnumType.STRING)
     Gender gender;
 
@@ -49,20 +49,28 @@ public class User{
     @JoinColumn(name = "status", nullable = false)
     EntityStatus status;
 
+
+    @CreatedBy
+    String createdBy;
+    @LastModifiedBy
+    String updatedBy;
     @CreationTimestamp
     LocalDate createdAt;
     @UpdateTimestamp
     LocalDate updatedAt;
 
 
-    @OneToMany(mappedBy = "user")
-     Set<Order> orders;
+    @OneToOne(mappedBy = "user")
+    Cart cart;
 
     @OneToMany(mappedBy = "user")
-     Set<Address> addresses;
+     Set<Order> orders = new HashSet<>();
 
     @OneToMany(mappedBy = "user")
-     Set<Review> reviews;
+     Set<Address> addresses = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+     Set<Review> reviews = new HashSet<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     Set<UserHasRole> roles = new HashSet<>();

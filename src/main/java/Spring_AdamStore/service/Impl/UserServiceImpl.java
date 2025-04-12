@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse create(UserCreationRequest request) {
-        checkUserExistenceAndStatus(request.getEmail(), request.getPhone());
+        checkPhoneAndEmailExist(request.getEmail(), request.getPhone());
         User user = userMapper.userCreationToUser(request);
 
         user.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -131,7 +131,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(userDB);
     }
 
-    private void checkUserExistenceAndStatus(String email, String phone) {
+    private void checkPhoneAndEmailExist(String email, String phone) {
         if (userRepository.countByEmailAndStatus(email, EntityStatus.ACTIVE.name()) > 0) {
             throw new AppException(ErrorCode.EMAIL_EXISTED);
         }
@@ -145,6 +145,8 @@ public class UserServiceImpl implements UserService {
             throw new AppException(ErrorCode.PHONE_DISABLED);
         }
     }
+
+
 
     private User findActiveUserById(Long id) {
         return userRepository.findById(id)

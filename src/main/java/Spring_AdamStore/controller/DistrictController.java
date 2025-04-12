@@ -25,7 +25,7 @@ public class DistrictController {
     private final DistrictService districtService;
 
     @GetMapping("/districts/{id}")
-    public ApiResponse<DistrictResponse> fetchById(@Positive(message = "ID phải lớn hơn 0")
+    public ApiResponse<DistrictResponse> fetchById(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                    @PathVariable Long id){
         return ApiResponse.<DistrictResponse>builder()
                 .code(HttpStatus.OK.value())
@@ -38,7 +38,6 @@ public class DistrictController {
     public ApiResponse<PageResponse<DistrictResponse>> fetchAll(@Min(value = 1, message = "pageNo phải lớn hơn 0")
                                                                 @RequestParam(defaultValue = "1") int pageNo,
                                                                 @RequestParam(defaultValue = "10") int pageSize,
-                                                                @Pattern(regexp = "^(\\w+?)(-)(asc|desc)$", message = "Định dạng của sortBy phải là: field-asc hoặc field-desc")
                                                                 @RequestParam(required = false) String sortBy){
         return ApiResponse.<PageResponse<DistrictResponse>>builder()
                 .code(HttpStatus.OK.value())
@@ -47,17 +46,5 @@ public class DistrictController {
                 .build();
     }
 
-    @Operation(description = "API dùng để lấy danh sách districts theo province")
-    @GetMapping("/districts/{provinceId}")
-    public ApiResponse<PageResponse<DistrictResponse>> fetchByProvinceId(@PathVariable Long provinceId,
-                                                                         @RequestParam(defaultValue = "1") int pageNo,
-                                                                         @RequestParam(defaultValue = "10") int pageSize,
-                                                                         @Pattern(regexp = "^(\\w+?)(-)(asc|desc)$", message = "Định dạng của sortBy phải là: field-asc hoặc field-desc")
-                                                                             @RequestParam(required = false) String sortBy){
-        return ApiResponse.<PageResponse<DistrictResponse>>builder()
-                .code(HttpStatus.OK.value())
-                .message("Fetch Districts By Province ID With Pagination")
-                .result(districtService.fetchByProvinceId(provinceId, pageNo, pageSize, sortBy))
-                .build();
-    }
+
 }

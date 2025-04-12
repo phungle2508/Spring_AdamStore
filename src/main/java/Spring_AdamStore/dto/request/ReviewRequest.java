@@ -1,5 +1,6 @@
 package Spring_AdamStore.dto.request;
 
+import jakarta.validation.constraints.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
@@ -8,7 +9,14 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ReviewRequest {
 
-    Integer rating;
+    @NotNull(message = "Rating không được để trống")
+    @Min(value = 1, message = "Rating phải lớn hơn hoặc bằng 1")
+    @Max(value = 5, message = "Rating phải nhỏ hơn hoặc bằng 5")
+    Double rating;
+    @NotBlank(message = "comment không được để trống")
     String comment;
 
+    @NotNull(message = "Product ID không được để trống")
+    @Min(value = 1, message = "Product ID phải lớn hơn 0")
+    Long productId;
 }

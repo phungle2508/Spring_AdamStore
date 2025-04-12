@@ -8,6 +8,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.annotation.LastModifiedBy;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -25,11 +26,14 @@ public class UserResponse {
     String email;
     String phone;
     String avatarUrl;
-    int age;
+    LocalDate dob;
     @Enumerated(EnumType.STRING)
     Gender gender;
     String address;
 
+
+    String createdBy;
+    String updatedBy;
     @JsonFormat(pattern = "dd/MM/yyyy")
     LocalDate createdAt;
     @JsonInclude(JsonInclude.Include.NON_NULL)

@@ -25,7 +25,8 @@ public class PromotionResponse {
     LocalDate startDate;
     LocalDate endDate;
 
-
+    String createdBy;
+    String updatedBy;
     @JsonFormat(pattern = "dd/MM/yyyy")
     LocalDate createdAt;
     @JsonInclude(JsonInclude.Include.NON_NULL)

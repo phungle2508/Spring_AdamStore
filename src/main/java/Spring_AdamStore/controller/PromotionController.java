@@ -28,8 +28,6 @@ public class PromotionController {
 
     private final PromotionService promotionService;
 
-    @Operation(summary = "Create Promotion",
-            description = "API này được sử dụng để tạo Promotion")
     @PostMapping("/promotions")
     public ApiResponse<PromotionResponse> create(@Valid @RequestBody PromotionRequest request){
         return ApiResponse.<PromotionResponse>builder()
@@ -41,7 +39,7 @@ public class PromotionController {
 
 
     @GetMapping("/promotions/{id}")
-    public ApiResponse<PromotionResponse> fetchById(@Positive(message = "ID phải lớn hơn 0")
+    public ApiResponse<PromotionResponse> fetchById(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                   @PathVariable Long id){
         return ApiResponse.<PromotionResponse>builder()
                 .code(HttpStatus.OK.value())
@@ -54,7 +52,6 @@ public class PromotionController {
     public ApiResponse<PageResponse<PromotionResponse>> fetchAll(@Min(value = 1, message = "pageNo phải lớn hơn 0")
                                                                @RequestParam(defaultValue = "1") int pageNo,
                                                                @RequestParam(defaultValue = "10") int pageSize,
-                                                               @Pattern(regexp = "^(\\w+?)(-)(asc|desc)$", message = "Định dạng của sortBy phải là: field-asc hoặc field-desc")
                                                                @RequestParam(required = false) String sortBy){
         return ApiResponse.<PageResponse<PromotionResponse>>builder()
                 .code(HttpStatus.OK.value())
@@ -63,10 +60,8 @@ public class PromotionController {
                 .build();
     }
 
-    @Operation(summary = "Update Promotion",
-            description = "API này được sử dụng để update Promotion")
     @PutMapping("/promotions/{id}")
-    public ApiResponse<PromotionResponse> update(@Positive(message = "ID phải lớn hơn 0")
+    public ApiResponse<PromotionResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                @PathVariable Long id, @Valid @RequestBody PromotionRequest request){
         return ApiResponse.<PromotionResponse>builder()
                 .code(HttpStatus.OK.value())
@@ -77,7 +72,7 @@ public class PromotionController {
 
 
     @DeleteMapping("/promotions/{id}")
-    public ApiResponse<Void> delete(@Positive(message = "ID phải lớn hơn 0")
+    public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
                                     @PathVariable Long id){
         promotionService.delete(id);
         return ApiResponse.<Void>builder()

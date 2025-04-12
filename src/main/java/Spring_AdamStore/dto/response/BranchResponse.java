@@ -20,6 +20,8 @@ public class BranchResponse {
     String location;
     String phone;
 
+    String createdBy;
+    String updatedBy;
     @JsonFormat(pattern = "dd/MM/yyyy")
     LocalDate createdAt;
     @JsonInclude(JsonInclude.Include.NON_NULL)

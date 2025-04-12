@@ -1,9 +1,11 @@
 package Spring_AdamStore.entity;
 
+import Spring_AdamStore.constants.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 
@@ -21,8 +23,12 @@ public class PaymentHistory {
      Long id;
 
      String paymentMethod;
+     @JoinColumn(nullable = false)
+    @ColumnDefault(value = "0")
      Double totalAmount;
-     String status;
+    @Enumerated(EnumType.STRING)
+    @JoinColumn(nullable = false)
+     PaymentStatus paymentStatus;
      LocalDateTime paymentTime;
      String note;
 

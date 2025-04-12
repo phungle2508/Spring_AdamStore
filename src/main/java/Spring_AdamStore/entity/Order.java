@@ -5,10 +5,12 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -25,8 +27,10 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
      Long id;
 
+    @JoinColumn(nullable = false)
      LocalDate orderDate;
     @JoinColumn(nullable = false)
+    @ColumnDefault(value = "0")
      Double totalPrice;
 
     @Enumerated(EnumType.STRING)
@@ -38,15 +42,18 @@ public class Order {
     @UpdateTimestamp
     LocalDate updatedAt;
 
+    @OneToMany(mappedBy = "order")
+    Set<OrderItem> orderItems = new HashSet<>();;
+
+    @OneToMany(mappedBy = "order")
+    Set<PaymentHistory> payments = new HashSet<>();;
+
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    Address address;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
      User user;
-
-    @OneToMany(mappedBy = "order")
-    Set<OrderItem> orderItems;
-
-
-    @OneToMany(mappedBy = "order")
-    Set<PaymentHistory> payments;
 
 }

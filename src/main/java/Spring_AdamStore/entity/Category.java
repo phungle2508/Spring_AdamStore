@@ -8,8 +8,11 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -35,14 +38,18 @@ public class Category {
     @JoinColumn(name = "status", nullable = false)
     EntityStatus status;
 
+
+    @CreatedBy
+    String createdBy;
+    @LastModifiedBy
+    String updatedBy;
     @CreationTimestamp
     LocalDate createdAt;
     @UpdateTimestamp
     LocalDate updatedAt;
 
-
     @OneToMany(mappedBy = "category")
-    Set<Product> products;
+    Set<Product> products = new HashSet<>();
 
     @PrePersist
     public void prePersist() {
