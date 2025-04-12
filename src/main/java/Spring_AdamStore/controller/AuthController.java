@@ -69,7 +69,7 @@ public class AuthController {
             description = "API này được sử dụng để thay đổi password khi user đã đăng nhập")
     @PostMapping("/change-password")
     public ApiResponse<UserResponse> changePassword(@Valid @RequestBody ChangePasswordRequest request){
-        authService.changePassword(request.getOldPassword(), request.getNewPassword());
+        authService.changePassword(request);
         return ApiResponse.<UserResponse>builder()
                 .code(HttpStatus.OK.value())
                 .result(authService.getMyInfo())

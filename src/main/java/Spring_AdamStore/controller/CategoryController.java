@@ -38,7 +38,7 @@ public class CategoryController {
 
 
     @GetMapping("/categories/{id}")
-    public ApiResponse<CategoryResponse> fetchById(@Positive(message = "ID phải lớn hơn 0")
+    public ApiResponse<CategoryResponse> fetchById(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                   @PathVariable Long id){
         return ApiResponse.<CategoryResponse>builder()
                 .code(HttpStatus.OK.value())
@@ -51,7 +51,6 @@ public class CategoryController {
     public ApiResponse<PageResponse<CategoryResponse>> fetchAll(@Min(value = 1, message = "pageNo phải lớn hơn 0")
                                                                @RequestParam(defaultValue = "1") int pageNo,
                                                                @RequestParam(defaultValue = "10") int pageSize,
-                                                               @Pattern(regexp = "^(\\w+?)(-)(asc|desc)$", message = "Định dạng của sortBy phải là: field-asc hoặc field-desc")
                                                                @RequestParam(required = false) String sortBy){
         return ApiResponse.<PageResponse<CategoryResponse>>builder()
                 .code(HttpStatus.OK.value())
@@ -61,7 +60,7 @@ public class CategoryController {
     }
 
     @PutMapping("/categories/{id}")
-    public ApiResponse<CategoryResponse> update(@Positive(message = "ID phải lớn hơn 0")
+    public ApiResponse<CategoryResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                @PathVariable Long id, @Valid @RequestBody CategoryRequest request){
         return ApiResponse.<CategoryResponse>builder()
                 .code(HttpStatus.OK.value())
@@ -72,7 +71,7 @@ public class CategoryController {
 
 
     @DeleteMapping("/categories/{id}")
-    public ApiResponse<Void> delete(@Positive(message = "ID phải lớn hơn 0")
+    public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
                                     @PathVariable Long id){
         categoryService.delete(id);
         return ApiResponse.<Void>builder()

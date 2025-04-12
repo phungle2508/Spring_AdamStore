@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Getter
@@ -28,14 +29,9 @@ public class UserCreationRequest {
     @NotBlank(message = "Số điện thoại không được để trống")
     @Pattern(regexp = "^0[35789]\\d{8}$", message = "Số điện thoại phải có 10 số và bắt đầu bằng 0")
     String phone;
-    @Size(min = 5, message = "Password phải từ 5 kí tự trở lên")
+    @Size(min = 6, message = "Password phải từ 6 kí tự trở lên")
     @NotBlank(message = "Password không được để trống")
     String password;
-    String avatarUrl;
-    Integer age;
-    @NotNull(message = "gender không được để trống")
-    @EnumPattern(name = "gender", regexp = "FEMALE|MALE|OTHER")
-    Gender gender;
 
     Set<Long> roleIds;
 }

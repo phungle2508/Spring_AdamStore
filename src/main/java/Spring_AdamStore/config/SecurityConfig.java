@@ -3,6 +3,8 @@ package Spring_AdamStore.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -15,7 +17,7 @@ import org.springframework.web.filter.CorsFilter;
 
 import java.util.List;
 
-
+@EnableJpaAuditing
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -77,6 +79,10 @@ public class SecurityConfig {
                         "/swagger-ui*/*swagger-initializer.js","/swagger-ui*/**");
     }
 
+    @Bean
+    public AuditorAware<String> auditorAware() {
+        return new AuditorAwareImpl();
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder(){

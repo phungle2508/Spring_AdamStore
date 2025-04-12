@@ -22,7 +22,7 @@ public class ProvinceController {
     private final ProvinceService provinceService;
 
     @GetMapping("/provinces/{id}")
-    public ApiResponse<ProvinceResponse> fetchById(@Positive(message = "ID phải lớn hơn 0")
+    public ApiResponse<ProvinceResponse> fetchById(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                     @PathVariable Long id){
         return ApiResponse.<ProvinceResponse>builder()
                 .code(HttpStatus.OK.value())
@@ -35,7 +35,6 @@ public class ProvinceController {
     public ApiResponse<PageResponse<ProvinceResponse>> fetchAll(@Min(value = 1, message = "pageNo phải lớn hơn 0")
                                                                  @RequestParam(defaultValue = "1") int pageNo,
                                                                  @RequestParam(defaultValue = "10") int pageSize,
-                                                                 @Pattern(regexp = "^(\\w+?)(-)(asc|desc)$", message = "Định dạng của sortBy phải là: field-asc hoặc field-desc")
                                                                  @RequestParam(required = false) String sortBy){
         return ApiResponse.<PageResponse<ProvinceResponse>>builder()
                 .code(HttpStatus.OK.value())
@@ -50,6 +49,7 @@ public class ProvinceController {
                                                                          @RequestParam(defaultValue = "10") int pageSize,
                                                                          @Pattern(regexp = "^(\\w+?)(-)(asc|desc)$", message = "Định dạng của sortBy phải là: field-asc hoặc field-desc")
                                                                          @RequestParam(required = false) String sortBy,
+                                                                         @Min(value = 1, message = "provinceId phải lớn hơn 0")
                                                                          @PathVariable Long provinceId){
         return ApiResponse.<PageResponse<DistrictResponse>>builder()
                 .code(HttpStatus.OK.value())

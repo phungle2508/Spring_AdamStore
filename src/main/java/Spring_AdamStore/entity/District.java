@@ -30,10 +30,6 @@ public class District {
     @JoinColumn(nullable = false)
      String name;
 
-    @CreationTimestamp
-    LocalDate createdAt;
-    @UpdateTimestamp
-    LocalDate updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "province_id")

@@ -16,7 +16,7 @@ public enum ErrorCode {
     INVALID_PASSWORD(1004, "Mật khẩu không chính xác", HttpStatus.UNAUTHORIZED),
     INVALID_OLD_PASSWORD(1024, "Mật khẩu cũ không chính xác", HttpStatus.BAD_REQUEST),
     INVALID_SORT_FIELD(1022, "Thuộc tính không hợp lệ để sắp xếp", HttpStatus.BAD_REQUEST),
-    INVALID_SORT_FORMAT(1023, "Định dạng sắp xếp không hợp lệ", HttpStatus.BAD_REQUEST),
+    INVALID_SORT_FORMAT(1023, "Định dạng sortBy không hợp lệ phải là: field-asc hoặc field-desc", HttpStatus.BAD_REQUEST),
     EMAIL_SEND_FAILED(1017, "Lỗi khi gửi email", HttpStatus.BAD_REQUEST),
     EMAIL_EXISTED(1036, "Email đã tồn tại trong hệ thống", HttpStatus.BAD_REQUEST),
     EMAIL_DISABLED(1037, "Email của bạn đã bị vô hiệu hóa", HttpStatus.FORBIDDEN),
@@ -44,7 +44,18 @@ public enum ErrorCode {
     REVIEW_NOT_EXISTED(1003, "Review không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
     DISTRICT_NOT_EXISTED(1003, "District không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
     ADDRESS_NOT_EXISTED(1003, "Address không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
-    INVALID_PROVINCE_FOR_DISTRICT(1040, "District không thuộc province đã chọn", HttpStatus.BAD_REQUEST)
+    INVALID_PROVINCE_FOR_DISTRICT(1040, "District không thuộc province đã chọn", HttpStatus.BAD_REQUEST),
+    COLOR_EXISTED(1002, "Color đã tồn tại trong hệ thống", HttpStatus.BAD_REQUEST),
+    COLOR_NOT_EXISTED(1003, "Color không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
+    SIZE_EXISTED(1002, "Size đã tồn tại trong hệ thống", HttpStatus.BAD_REQUEST),
+    SIZE_NOT_EXISTED(1003, "Size không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
+    PASSWORD_MISMATCH(1041, "Mật khẩu nhập lại không khớp", HttpStatus.BAD_REQUEST),
+    CART_ITEM_EXISTED(1002, "CartItem đã tồn tại trong hệ thống", HttpStatus.BAD_REQUEST),
+    CART_ITEM_NOT_EXISTED(1003, "CartItem không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
+    PRODUCT_VARIANT_EXISTED(1002, "ProductVariant đã tồn tại trong hệ thống", HttpStatus.BAD_REQUEST),
+    PRODUCT_VARIANT_NOT_EXISTED(1003, "ProductVariant không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
+    OUT_OF_STOCK(1042, "Không đủ hàng trong kho", HttpStatus.BAD_REQUEST),
+
     ;
 
 

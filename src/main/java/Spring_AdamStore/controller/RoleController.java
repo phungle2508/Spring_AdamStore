@@ -23,7 +23,7 @@ public class RoleController {
     private final RoleService roleService;
 
     @GetMapping("/roles/{id}")
-    public ApiResponse<RoleResponse> fetchRoleById(@Positive(message = "ID phải lớn hơn 0")
+    public ApiResponse<RoleResponse> fetchRoleById(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                    @PathVariable long id){
         return ApiResponse.<RoleResponse>builder()
                 .code(HttpStatus.OK.value())
@@ -36,7 +36,6 @@ public class RoleController {
     public ApiResponse<PageResponse<RoleResponse>> fetchAll(@Min(value = 1, message = "pageNo phải lớn hơn 0")
                                                             @RequestParam(defaultValue = "1") int pageNo,
                                                             @RequestParam(defaultValue = "10") int pageSize,
-                                                            @Pattern(regexp = "^(\\w+?)(-)(asc|desc)$", message = "Định dạng của sortBy phải là: field-asc hoặc field-desc")
                                                             @RequestParam(required = false) String sortBy){
         return ApiResponse.<PageResponse<RoleResponse>>builder()
                 .code(HttpStatus.OK.value())

@@ -19,7 +19,7 @@ import java.time.LocalDate;
 public class AddressResponse {
 
     Long id;
-
+    Boolean isDefault;
     String streetDetail;
 
     EntityBasic district;
@@ -27,10 +27,4 @@ public class AddressResponse {
     EntityBasic province;
 
     UserBasic user;
-
-    @JsonFormat(pattern = "dd/MM/yyyy")
-    LocalDate createdAt;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonFormat(pattern = "dd/MM/yyyy")
-    LocalDate updatedAt;
 }

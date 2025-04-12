@@ -38,21 +38,15 @@ public class AddressServiceImpl implements AddressService {
     public AddressResponse create(AddressRequest request) {
         Address address = addressMapper.toAddress(request);
 
-        if(request.getDistrictId() != null){
-            District district = districtRepository.findById(request.getDistrictId())
-                    .orElseThrow(() -> new AppException(ErrorCode.DISTRICT_NOT_EXISTED));
+        District district = findDistrictById(request.getDistrictId());
 
-            if(request.getProvinceId() != null) {
-                Province province = provinceRepository.findById(request.getProvinceId())
-                        .orElseThrow(() -> new AppException(ErrorCode.PROVINCE_NOT_EXISTED));
+        Province province = findProvinceById(request.getProvinceId());
 
-                if (!district.getProvince().getId().equals(province.getId())) {
-                    throw new AppException(ErrorCode.INVALID_PROVINCE_FOR_DISTRICT);
-                }
-                address.setProvince(province);
-                address.setDistrict(district);
-            }
+        if (!district.getProvince().getId().equals(province.getId())) {
+            throw new AppException(ErrorCode.INVALID_PROVINCE_FOR_DISTRICT);
         }
+        address.setProvince(province);
+        address.setDistrict(district);
 
         User user = userRepository.findByEmail(authService.getCurrentUsername())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
@@ -91,21 +85,15 @@ public class AddressServiceImpl implements AddressService {
 
         addressMapper.update(address, request);
 
-        if(request.getDistrictId() != null){
-            District district = districtRepository.findById(request.getDistrictId())
-                    .orElseThrow(() -> new AppException(ErrorCode.DISTRICT_NOT_EXISTED));
+        District district = findDistrictById(request.getDistrictId());
 
-            if(request.getProvinceId() != null) {
-                Province province = provinceRepository.findById(request.getProvinceId())
-                        .orElseThrow(() -> new AppException(ErrorCode.PROVINCE_NOT_EXISTED));
+        Province province = findProvinceById(request.getProvinceId());
 
-                if (!district.getProvince().getId().equals(province.getId())) {
-                    throw new AppException(ErrorCode.INVALID_PROVINCE_FOR_DISTRICT);
-                }
-                address.setProvince(province);
-                address.setDistrict(district);
-            }
+        if (!district.getProvince().getId().equals(province.getId())) {
+            throw new AppException(ErrorCode.INVALID_PROVINCE_FOR_DISTRICT);
         }
+        address.setProvince(province);
+        address.setDistrict(district);
 
         return addressMapper.toAddressResponse(addressRepository.save(address));
     }
@@ -121,4 +109,16 @@ public class AddressServiceImpl implements AddressService {
         return addressRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.ADDRESS_NOT_EXISTED));
     }
+
+    private District findDistrictById(Long id) {
+        return districtRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.DISTRICT_NOT_EXISTED));
+    }
+
+    private Province findProvinceById(Long id) {
+        return provinceRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.PROVINCE_NOT_EXISTED));
+    }
 }
+
+

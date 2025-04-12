@@ -38,7 +38,7 @@ public class OrderController {
 
 
     @GetMapping("/orders/{id}")
-    public ApiResponse<OrderResponse> fetchById(@Positive(message = "ID phải lớn hơn 0")
+    public ApiResponse<OrderResponse> fetchById(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                     @PathVariable Long id){
         return ApiResponse.<OrderResponse>builder()
                 .code(HttpStatus.OK.value())
@@ -51,7 +51,6 @@ public class OrderController {
     public ApiResponse<PageResponse<OrderResponse>> fetchAll(@Min(value = 1, message = "pageNo phải lớn hơn 0")
                                                                  @RequestParam(defaultValue = "1") int pageNo,
                                                                  @RequestParam(defaultValue = "10") int pageSize,
-                                                                 @Pattern(regexp = "^(\\w+?)(-)(asc|desc)$", message = "Định dạng của sortBy phải là: field-asc hoặc field-desc")
                                                                  @RequestParam(required = false) String sortBy){
         return ApiResponse.<PageResponse<OrderResponse>>builder()
                 .code(HttpStatus.OK.value())
@@ -61,7 +60,7 @@ public class OrderController {
     }
 
     @PutMapping("/orders/{id}")
-    public ApiResponse<OrderResponse> update(@Positive(message = "ID phải lớn hơn 0")
+    public ApiResponse<OrderResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                  @PathVariable Long id, @Valid @RequestBody OrderRequest request){
         return ApiResponse.<OrderResponse>builder()
                 .code(HttpStatus.OK.value())
@@ -72,7 +71,7 @@ public class OrderController {
 
 
     @DeleteMapping("/orders/{id}")
-    public ApiResponse<Void> delete(@Positive(message = "ID phải lớn hơn 0")
+    public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
                                     @PathVariable Long id){
         orderService.delete(id);
         return ApiResponse.<Void>builder()

@@ -8,8 +8,11 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -31,13 +34,20 @@ public class Promotion {
      String title;
      String description;
      Integer discountPercent;
+    @JoinColumn(nullable = false)
      LocalDate startDate;
+    @JoinColumn(nullable = false)
      LocalDate endDate;
 
     @Enumerated(EnumType.STRING)
     @JoinColumn(name = "status", nullable = false)
     EntityStatus status;
 
+
+    @CreatedBy
+    String createdBy;
+    @LastModifiedBy
+    String updatedBy;
     @CreationTimestamp
     LocalDate createdAt;
     @UpdateTimestamp
@@ -45,7 +55,7 @@ public class Promotion {
 
 
     @OneToMany(mappedBy = "promotion")
-    Set<Product> products;
+    Set<Product> products = new HashSet<>();
 
     @PrePersist
     public void prePersist() {

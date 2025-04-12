@@ -38,7 +38,7 @@ public class UserController {
 
 
     @GetMapping("/users/{id}")
-    public ApiResponse<UserResponse> fetchById(@Positive(message = "ID phải lớn hơn 0")
+    public ApiResponse<UserResponse> fetchById(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                @PathVariable long id){
         return ApiResponse.<UserResponse>builder()
                 .code(HttpStatus.OK.value())
@@ -51,7 +51,6 @@ public class UserController {
     public ApiResponse<PageResponse<UserResponse>> fetchAll(@Min(value = 1, message = "pageNo phải lớn hơn 0")
                                                             @RequestParam(defaultValue = "1") int pageNo,
                                                             @RequestParam(defaultValue = "10") int pageSize,
-                                                            @Pattern(regexp = "^(\\w+?)(-)(asc|desc)$", message = "Định dạng của sortBy phải là: field-asc hoặc field-desc")
                                                             @RequestParam(required = false) String sortBy){
         return ApiResponse.<PageResponse<UserResponse>>builder()
                 .code(HttpStatus.OK.value())
@@ -63,7 +62,7 @@ public class UserController {
     @Operation(summary = "Update User (No update Password)",
             description = "API này được sử dụng để update user (Gán company nếu người dùng là HR)")
     @PutMapping("/users/{id}")
-    public ApiResponse<UserResponse> update(@Positive(message = "ID phải lớn hơn 0")
+    public ApiResponse<UserResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
                                             @PathVariable long id,@Valid @RequestBody UserUpdateRequest request){
         return ApiResponse.<UserResponse>builder()
                 .code(HttpStatus.OK.value())
@@ -74,7 +73,7 @@ public class UserController {
 
 
     @DeleteMapping("/users/{id}")
-    public ApiResponse<Void> delete(@Positive(message = "ID phải lớn hơn 0")
+    public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
                                     @PathVariable long id){
         userService.delete(id);
         return ApiResponse.<Void>builder()

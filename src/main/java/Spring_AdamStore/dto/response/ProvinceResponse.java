@@ -18,9 +18,4 @@ public class ProvinceResponse {
     Long id;
     String name;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
-    LocalDate createdAt;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonFormat(pattern = "dd/MM/yyyy")
-    LocalDate updatedAt;
 }

@@ -38,7 +38,7 @@ public class AddressController {
 
 
     @GetMapping("/addresses/{id}")
-    public ApiResponse<AddressResponse> fetchById(@Positive(message = "ID phải lớn hơn 0")
+    public ApiResponse<AddressResponse> fetchById(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                  @PathVariable Long id){
         return ApiResponse.<AddressResponse>builder()
                 .code(HttpStatus.OK.value())
@@ -51,7 +51,6 @@ public class AddressController {
     public ApiResponse<PageResponse<AddressResponse>> fetchAll(@Min(value = 1, message = "pageNo phải lớn hơn 0")
                                                               @RequestParam(defaultValue = "1") int pageNo,
                                                               @RequestParam(defaultValue = "10") int pageSize,
-                                                              @Pattern(regexp = "^(\\w+?)(-)(asc|desc)$", message = "Định dạng của sortBy phải là: field-asc hoặc field-desc")
                                                               @RequestParam(required = false) String sortBy){
         return ApiResponse.<PageResponse<AddressResponse>>builder()
                 .code(HttpStatus.OK.value())
@@ -61,7 +60,7 @@ public class AddressController {
     }
 
     @PutMapping("/addresses/{id}")
-    public ApiResponse<AddressResponse> update(@Positive(message = "ID phải lớn hơn 0")
+    public ApiResponse<AddressResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
                                               @PathVariable Long id, @Valid @RequestBody AddressRequest request){
         return ApiResponse.<AddressResponse>builder()
                 .code(HttpStatus.OK.value())
@@ -72,7 +71,7 @@ public class AddressController {
 
 
     @DeleteMapping("/addresses/{id}")
-    public ApiResponse<Void> delete(@Positive(message = "ID phải lớn hơn 0")
+    public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
                                     @PathVariable Long id){
         addressService.delete(id);
         return ApiResponse.<Void>builder()

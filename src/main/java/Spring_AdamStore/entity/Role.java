@@ -32,11 +32,6 @@ public class Role {
     String name;
     String description;
 
-    @CreationTimestamp
-    LocalDate createdAt;
-    @UpdateTimestamp
-    LocalDate updatedAt;
-
     @OneToMany(mappedBy = "role")
     @JsonIgnore
     Set<UserHasRole> users = new HashSet<>();

@@ -36,7 +36,7 @@ public class ProductController {
 
 
     @GetMapping("/products/{id}")
-    public ApiResponse<ProductResponse> fetchById(@Positive(message = "ID phải lớn hơn 0")
+    public ApiResponse<ProductResponse> fetchById(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                @PathVariable Long id){
         return ApiResponse.<ProductResponse>builder()
                 .code(HttpStatus.OK.value())
@@ -49,7 +49,6 @@ public class ProductController {
     public ApiResponse<PageResponse<ProductResponse>> fetchAll(@Min(value = 1, message = "pageNo phải lớn hơn 0")
                                                             @RequestParam(defaultValue = "1") int pageNo,
                                                             @RequestParam(defaultValue = "10") int pageSize,
-                                                            @Pattern(regexp = "^(\\w+?)(-)(asc|desc)$", message = "Định dạng của sortBy phải là: field-asc hoặc field-desc")
                                                             @RequestParam(required = false) String sortBy){
         return ApiResponse.<PageResponse<ProductResponse>>builder()
                 .code(HttpStatus.OK.value())
@@ -59,7 +58,7 @@ public class ProductController {
     }
 
     @PutMapping("/products/{id}")
-    public ApiResponse<ProductResponse> update(@Positive(message = "ID phải lớn hơn 0")
+    public ApiResponse<ProductResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
                                             @PathVariable Long id, @Valid @RequestBody ProductRequest request){
         return ApiResponse.<ProductResponse>builder()
                 .code(HttpStatus.OK.value())
@@ -70,7 +69,7 @@ public class ProductController {
 
 
     @DeleteMapping("/products/{id}")
-    public ApiResponse<Void> delete(@Positive(message = "ID phải lớn hơn 0")
+    public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
                                     @PathVariable Long id){
         productService.delete(id);
         return ApiResponse.<Void>builder()

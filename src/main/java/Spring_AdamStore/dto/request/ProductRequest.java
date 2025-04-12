@@ -10,8 +10,7 @@ public class ProductRequest {
 
     String name;
     String description;
-    Double price;
-    Integer quantity;
+    Double averageRating;
     String imageUrl;
 
 }

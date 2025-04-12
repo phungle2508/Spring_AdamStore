@@ -8,6 +8,7 @@ import Spring_AdamStore.dto.response.UserResponse;
 import Spring_AdamStore.entity.User;
 import org.mapstruct.*;
 
+import javax.naming.Name;
 import java.util.List;
 
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS, uses = {RoleMapper.class})

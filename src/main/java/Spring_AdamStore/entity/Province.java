@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -24,13 +25,8 @@ public class Province {
     Long id;
     String name;
 
-    @CreationTimestamp
-    LocalDate createdAt;
-    @UpdateTimestamp
-    LocalDate updatedAt;
-
     @OneToMany(mappedBy = "province", fetch = FetchType.LAZY)
-    Set<District> districts;
+    Set<District> districts = new HashSet<>();
 
 
 }
