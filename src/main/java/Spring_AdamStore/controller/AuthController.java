@@ -30,7 +30,7 @@ public class AuthController {
     private final AccountRecoveryService accountRecoveryService;
 
     @PostMapping("/login")
-    public ApiResponse<TokenResponse> authenticate(@Valid @RequestBody LoginRequest request) throws JOSEException {
+    public ApiResponse<TokenResponse> login(@Valid @RequestBody LoginRequest request) throws JOSEException {
         return ApiResponse.<TokenResponse>builder()
                 .code(HttpStatus.OK.value())
                 .result(authService.login(request))

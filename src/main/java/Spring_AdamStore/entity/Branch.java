@@ -10,6 +10,7 @@ import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 
@@ -22,6 +23,7 @@ import java.time.LocalDate;
 @SQLRestriction("status = 'ACTIVE'")
 @Table(name = "tbl_branch")
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Branch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
