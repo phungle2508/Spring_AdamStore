@@ -18,6 +18,7 @@ public interface ProductMapper {
 
     @Mapping(target = "sizes", source = "productVariants", qualifiedByName = "toSizeSet")
     @Mapping(target = "colors", source = "productVariants", qualifiedByName = "toColorSet")
+    @Mapping(target = "price", source = "productVariants", qualifiedByName = "getPriceFromVariant")
     ProductResponse toProductResponse(Product product);
 
     void updateProduct(@MappingTarget Product product, ProductUpdateRequest request);

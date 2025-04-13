@@ -7,6 +7,8 @@ import Spring_AdamStore.dto.response.ProductResponse;
 import Spring_AdamStore.dto.response.ReviewResponse;
 import jakarta.validation.constraints.Min;
 
+import java.util.List;
+
 public interface ProductService {
 
     ProductResponse create(ProductRequest request);
@@ -20,4 +22,6 @@ public interface ProductService {
     void delete(Long id);
 
     PageResponse<ReviewResponse> fetchReviewsByProductId(int pageNo, int pageSize, String sortBy,Long productId);
+
+    PageResponse<ProductResponse> searchProduct(int pageNo, int pageSize, String sortBy, List<String> search);
 }

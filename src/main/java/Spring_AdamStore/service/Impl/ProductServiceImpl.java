@@ -12,23 +12,29 @@ import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.ProductMapper;
 import Spring_AdamStore.mapper.ReviewMapper;
 import Spring_AdamStore.repository.*;
+import Spring_AdamStore.repository.criteria.JobSearchCriteriaQueryConsumer;
+import Spring_AdamStore.repository.criteria.SearchCriteria;
 import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.ProductService;
 import Spring_AdamStore.service.ProductVariantService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @Slf4j(topic = "PRODUCT-SERVICE")
@@ -45,6 +51,8 @@ public class ProductServiceImpl implements ProductService {
     private final SizeRepository sizeRepository;
     private final ReviewMapper reviewMapper;
     private final ProductVariantService productVariantService;
+    @PersistenceContext
+    private EntityManager entityManager;
 
 
     @Transactional
@@ -85,7 +93,7 @@ public class ProductServiceImpl implements ProductService {
     public PageResponse<ProductResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
         pageNo = pageNo - 1;
 
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
+        Pageable pageable = createPageableWithPriceSupport(pageNo, pageSize, sortBy);
 
         Page<Product> productPage = productRepository.findAll(pageable);
 
@@ -150,6 +158,138 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public PageResponse<ProductResponse> searchProduct(int pageNo, int pageSize, String sortBy, List<String> search) {
+        pageNo = pageNo - 1;
+
+        List<SearchCriteria> criteriaList = new ArrayList<>();
+
+        // lay danh sach cac dieu kien search
+        if(search != null){
+            for(String s : search){
+                Pattern pattern = Pattern.compile("(\\w+?)(~|>|<)(.*)");
+                Matcher matcher = pattern.matcher(s);
+                if(matcher.find()){
+                    criteriaList.add(new SearchCriteria(matcher.group(1), matcher.group(2), matcher.group(3)));
+                }
+            }
+        }
+
+        List<Product> productList = getProducList(pageNo, pageSize, sortBy, criteriaList);
+
+        // tong so phan tu
+        Long totalElements = getTotalElements(criteriaList);
+        int totalPages = (int) Math.ceil((double) totalElements / pageSize);
+
+        return PageResponse.<ProductResponse>builder()
+                .page(pageNo + 1)
+                .size(pageSize)
+                .totalPages(totalPages)
+                .totalItems(totalElements)
+                .items(productMapper.toProductResponseList(productList))
+                .build();
+    }
+
+    private List<Product> getProducList(int pageNo, int pageSize, String sortBy, List<SearchCriteria> criteriaList){
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Product> query = builder.createQuery(Product.class);
+        Root<Product> root = query.from(Product.class);
+
+        // Xu ly dieu kien tim kiem
+        Predicate predicate = builder.conjunction();
+
+        Join<Product, ProductVariant> productVariantJoin = root.join("productVariants", JoinType.LEFT);
+
+        // Handle price
+        Iterator<SearchCriteria> iterator = criteriaList.iterator();
+        predicate = handlePriceSearch(builder, productVariantJoin, iterator, predicate);
+
+        if(!CollectionUtils.isEmpty(criteriaList)){ // search job
+            JobSearchCriteriaQueryConsumer queryConsumer = new JobSearchCriteriaQueryConsumer(builder, predicate, root);
+            criteriaList.forEach(queryConsumer);
+
+            predicate = builder.and(predicate, queryConsumer.getPredicate());
+        }
+
+        query.where(predicate);
+
+        // Sort
+        if(StringUtils.hasLength(sortBy)){
+            Pattern pattern = Pattern.compile("(\\w+?)(-)(asc|desc)");
+            Matcher matcher = pattern.matcher(sortBy);
+            if (matcher.find()) {
+                String columnName = matcher.group(1);
+
+                // Sort By Price
+                if (columnName.equalsIgnoreCase("price")) {
+                    if (matcher.group(3).equalsIgnoreCase("desc")) {
+                        query.orderBy(builder.desc(productVariantJoin.get("price")));
+                    } else {
+                        query.orderBy(builder.asc(productVariantJoin.get("price")));
+                    }
+                }
+                // Cac column cua product
+                else {
+                    if (matcher.group(3).equalsIgnoreCase("desc")) {
+                        query.orderBy(builder.desc(root.get(columnName)));
+                    } else {
+                        query.orderBy(builder.asc(root.get(columnName)));
+                    }
+                }
+            }
+        }
+
+        return entityManager.createQuery(query)
+                .setFirstResult(pageNo * pageSize)
+                .setMaxResults(pageSize)
+                .getResultList();
+    }
+
+    private Predicate handlePriceSearch(CriteriaBuilder builder, Join<Product, ProductVariant> productVariantJoin, Iterator<SearchCriteria> iterator, Predicate predicate) {
+        while (iterator.hasNext()) {
+            SearchCriteria criteria = iterator.next();
+            if (criteria.getKey().equals("price")) {
+                Double priceValue = Double.valueOf(criteria.getValue().toString());
+
+                if (criteria.getOperation().equals(">")) {
+                    predicate = builder.and(predicate, builder.greaterThanOrEqualTo(productVariantJoin.get("price"), priceValue));
+                } else if (criteria.getOperation().equals("<")) {
+                    predicate = builder.and(predicate, builder.lessThanOrEqualTo(productVariantJoin.get("price"), priceValue));
+                }
+                iterator.remove();
+            }
+        }
+        return predicate;
+    }
+
+
+    private Long getTotalElements(List<SearchCriteria> criteriaList){
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> countQuery = builder.createQuery(Long.class);
+        Root<Product> root = countQuery.from(Product.class);
+
+        // Xu ly dieu kien tim kiem
+        Predicate predicate = builder.conjunction();
+
+        // Join ProductVariant
+        Join<Product, ProductVariant> productVariantJoin = root.join("productVariants", JoinType.LEFT);
+
+        // Handle price
+        Iterator<SearchCriteria> iterator = criteriaList.iterator();
+        predicate = handlePriceSearch(builder, productVariantJoin, iterator, predicate);
+
+        if(!CollectionUtils.isEmpty(criteriaList)){ // search job
+            JobSearchCriteriaQueryConsumer queryConsumer = new JobSearchCriteriaQueryConsumer(builder, predicate, root);
+            criteriaList.forEach(queryConsumer);
+            predicate = builder.and(predicate, queryConsumer.getPredicate());
+        }
+
+        countQuery.select(builder.count(root));
+        countQuery.where(predicate);
+
+        return entityManager.createQuery(countQuery).getSingleResult();
+    }
+
+    @Override
     public PageResponse<ReviewResponse> fetchReviewsByProductId(int pageNo, int pageSize, String sortBy, Long productId) {
         pageNo = pageNo - 1;
 
@@ -197,6 +337,17 @@ public class ProductServiceImpl implements ProductService {
         productImageSet.forEach(image -> image.setProduct(product));
 
         return new HashSet<>(productImageRepository.saveAll(productImageSet));
+    }
+
+    private Pageable createPageableWithPriceSupport(int pageNo, int pageSize, String sortBy) {
+        if (StringUtils.hasLength(sortBy)) {
+            if (sortBy.equalsIgnoreCase("price-asc") || sortBy.equalsIgnoreCase("price-desc")) {
+                String direction = sortBy.split("-")[1].toUpperCase();
+                Sort sort = Sort.by(new Sort.Order(Sort.Direction.valueOf(direction), "productVariants.price"));
+                return PageRequest.of(pageNo, pageSize, sort);
+            }
+        }
+        return pageableService.createPageable(pageNo, pageSize, sortBy);
     }
 
     @Scheduled(cron = "0 0 0 */7 * ?")
