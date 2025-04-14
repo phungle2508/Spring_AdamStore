@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Cảm ơn bạn đã đăng ký</title>
+    <title>Xác nhận đăng ký</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -28,6 +28,13 @@
             color: #555555;
             line-height: 1.6;
         }
+        .otp {
+            font-size: 28px;
+            font-weight: bold;
+            color: #c8975a;
+            text-align: center;
+            margin: 20px 0;
+        }
         .footer {
             font-size: 12px;
             color: #888888;
@@ -42,9 +49,14 @@
 <body>
 <div class="container">
     <h1>Xin chào <span th:text="${name}"></span>!</h1>
-    <p><strong>Chúng tôi vui mừng thông báo rằng tài khoản Adam Store của bạn đã được đăng ký thành công!</strong></p>
-    <p>Bây giờ, bạn có thể truy cập vào hệ thống Adam Store để mua sắm những sản phẩm thời trang nam cao cấp và cập nhật những ưu đãi mới nhất.</p>
-    <p>Nếu bạn có bất kỳ câu hỏi nào hoặc cần hỗ trợ, đừng ngần ngại liên hệ với chúng tôi.</p>
+    <p><strong>Cảm ơn bạn đã đăng ký tài khoản Adam Store.</strong></p>
+    <p>Để hoàn tất quá trình đăng ký, vui lòng sử dụng mã OTP bên dưới để xác thực tài khoản:</p>
+
+    <div class="otp" th:text="${otp}"></div>
+
+    <p>Mã OTP này sẽ hết hạn sau vài phút. Vui lòng không chia sẻ mã này với bất kỳ ai để đảm bảo an toàn cho tài khoản của bạn.</p>
+
+    <p>Nếu bạn không yêu cầu đăng ký tài khoản, vui lòng bỏ qua email này.</p>
 
     <div class="footer">
         <p>Trân trọng,</p>

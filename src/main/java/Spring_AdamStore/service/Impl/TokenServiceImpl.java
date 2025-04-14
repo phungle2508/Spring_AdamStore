@@ -6,7 +6,7 @@ import Spring_AdamStore.entity.User;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.repository.RefreshTokenRepository;
-import Spring_AdamStore.repository.RevokedTokenRepository;
+import Spring_AdamStore.repository.RedisRevokedTokenRepository;
 import Spring_AdamStore.service.TokenService;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
@@ -31,7 +31,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class TokenServiceImpl implements TokenService {
 
-    private final RevokedTokenRepository revokedTokenRepository;
+    private final RedisRevokedTokenRepository revokedTokenRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Value("${jwt.signer-key}")
