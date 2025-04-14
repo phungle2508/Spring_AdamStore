@@ -45,16 +45,16 @@ public class EmailService {
     }
 
 
-    public void sendUserEmailWithRegister(User user){
-        if(user != null){
-            Map<String, Object> model = new HashMap<>();
-            model.put("name", user.getName());
-            this.sendEmail(user.getEmail(),
-                    "Chúc mừng! Tài khoản Adam Store của bạn đã được đăng kí thành công",
-                    model,
-                    "register"
-            );
-        }
+    public void sendOtpRegisterEmail(String email, String name, String otp) {
+        Map<String, Object> model = new HashMap<>();
+        model.put("name", name);
+        model.put("otp", otp);
+
+        sendEmail(email,
+                "Xác thực đăng ký tài khoản Adam Store",
+                model,
+                "otp-register"
+        );
     }
 
     public void sendPasswordResetCode(User user, String verificationCode) {

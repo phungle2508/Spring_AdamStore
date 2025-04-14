@@ -4,8 +4,9 @@ import Spring_AdamStore.dto.request.*;
 import Spring_AdamStore.dto.response.ApiResponse;
 import Spring_AdamStore.dto.response.TokenResponse;
 import Spring_AdamStore.dto.response.UserResponse;
+import Spring_AdamStore.dto.response.VerificationCodeResponse;
 import Spring_AdamStore.entity.ForgotPasswordToken;
-import Spring_AdamStore.entity.VerificationCodeEntity;
+import Spring_AdamStore.entity.RedisVerificationCode;
 import Spring_AdamStore.service.AccountRecoveryService;
 import Spring_AdamStore.service.AuthService;
 import com.nimbusds.jose.JOSEException;
@@ -39,11 +40,22 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ApiResponse<TokenResponse> register(@Valid @RequestBody RegisterRequest request) throws JOSEException {
-        return ApiResponse.<TokenResponse>builder()
+    public ApiResponse<VerificationCodeResponse> register(@Valid @RequestBody RegisterRequest request) throws JOSEException {
+
+
+        return ApiResponse.<VerificationCodeResponse>builder()
                 .code(HttpStatus.CREATED.value())
                 .result(authService.register(request))
-                .message("Register")
+                .message("Mã xác thực đã được gửi đến email của bạn. Vui lòng kiểm tra email và xác thực để hoàn tất quá trình đăng ký")
+                .build();
+    }
+
+    @PostMapping("/register/verify")
+    public ApiResponse<TokenResponse> verifyCodeAndRegister(@Valid @RequestBody VerifyCodeRequest request) throws JOSEException {
+        return ApiResponse.<TokenResponse>builder()
+                .code(HttpStatus.CREATED.value())
+                .result(authService.verifyCodeAndRegister(request))
+                .message("Đăng ký thành công")
                 .build();
     }
 
@@ -90,8 +102,8 @@ public class AuthController {
     @Operation(summary = "Forgot Password",
             description = "API này được sử dụng để quên mật khẩu")
     @PostMapping("/forgot-password")
-    public ApiResponse<VerificationCodeEntity> forgotPassword(@Valid @RequestBody EmailRequest request) {
-        return ApiResponse.<VerificationCodeEntity>builder()
+    public ApiResponse<VerificationCodeResponse> forgotPassword(@Valid @RequestBody EmailRequest request) {
+        return ApiResponse.<VerificationCodeResponse>builder()
                 .code(HttpStatus.OK.value())
                 .result(accountRecoveryService.forgotPassword(request))
                 .message("Mã xác nhận đã được gửi vào email của bạn")

@@ -6,17 +6,17 @@ import Spring_AdamStore.constants.TokenType;
 import Spring_AdamStore.dto.request.*;
 import Spring_AdamStore.dto.response.TokenResponse;
 import Spring_AdamStore.dto.response.UserResponse;
+import Spring_AdamStore.dto.response.VerificationCodeResponse;
+import Spring_AdamStore.entity.RedisPendingUser;
 import Spring_AdamStore.entity.RedisRevokedToken;
+import Spring_AdamStore.entity.RedisVerificationCode;
 import Spring_AdamStore.entity.User;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.UserMapper;
+import Spring_AdamStore.repository.RedisPendingUserRepository;
 import Spring_AdamStore.repository.UserRepository;
-import Spring_AdamStore.repository.relationship.UserHasRoleRepository;
-import Spring_AdamStore.service.AuthService;
-import Spring_AdamStore.service.EmailService;
-import Spring_AdamStore.service.RedisTokenService;
-import Spring_AdamStore.service.TokenService;
+import Spring_AdamStore.service.*;
 import Spring_AdamStore.service.relationship.UserHasRoleService;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jwt.SignedJWT;
@@ -28,9 +28,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import static Spring_AdamStore.constants.VerificationType.REGISTER;
 
 @Service
 @Slf4j(topic = "AUTH-SERVICE")
@@ -44,6 +47,8 @@ public class AuthServiceImpl implements AuthService {
     private final UserMapper userMapper;
     private final UserHasRoleService userHasRoleService;
     private final RedisTokenService redisTokenService;
+    private final RedisVerificationCodeService redisVerificationCodeService;
+    private final RedisPendingUserRepository redisPendingUserRepository;
 
     @Override
     public TokenResponse login(LoginRequest request) throws JOSEException {
@@ -55,28 +60,52 @@ public class AuthServiceImpl implements AuthService {
         if(!isAuthenticated){
             throw new AppException(ErrorCode.INVALID_PASSWORD);
         }
-
         return generateAndSaveTokenResponse(userDB);
     }
 
     @Transactional
     @Override
-    public TokenResponse register(RegisterRequest request) throws JOSEException {
+    public VerificationCodeResponse register(RegisterRequest request) {
         checkPhoneAndEmailExist(request.getEmail(), request.getPhone());
 
         if (!request.getPassword().equals(request.getConfirmPassword())) {
             throw new AppException(ErrorCode.PASSWORD_MISMATCH);
         }
+        RedisPendingUser redisPendingUser = userMapper.registerToRedis(request);
 
-        User user = userMapper.registerToUser(request);
+        redisPendingUser.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        RedisVerificationCode redisVerificationCode = redisVerificationCodeService
+                .saveVerificationCode(redisPendingUser.getEmail(), REGISTER);
+
+        long ttl = java.time.Duration.between(LocalDateTime.now(), redisVerificationCode.getExpirationTime()).getSeconds();
+        redisPendingUser.setTtl(ttl);
+
+        redisPendingUserRepository.save(redisPendingUser);
+        emailService.sendOtpRegisterEmail(redisPendingUser.getEmail(),
+                redisPendingUser.getName(), redisVerificationCode.getVerificationCode());
+
+        return VerificationCodeResponse.builder()
+                .email(redisVerificationCode.getEmail())
+                .verificationCode(redisVerificationCode.getVerificationCode())
+                .expirationTime(redisVerificationCode.getExpirationTime())
+                .build();
+    }
+
+    @Override
+    public TokenResponse verifyCodeAndRegister(VerifyCodeRequest request) throws JOSEException {
+        RedisVerificationCode code = redisVerificationCodeService
+                .getVerificationCode(request.getEmail(), REGISTER, request.getVerificationCode());
+
+        RedisPendingUser pendingUser = redisPendingUserRepository
+                .findById(request.getEmail())
+                .orElseThrow(() -> new AppException(ErrorCode.PENDING_USER_NOT_FOUND));
+
+        User user = userMapper.redisToUser(pendingUser);
 
         userRepository.save(user);
 
         user.setRoles(new HashSet<>(Set.of(userHasRoleService.saveUserHasRole(user, RoleEnum.USER))));
-
-        emailService.sendUserEmailWithRegister(user);
 
         return generateAndSaveTokenResponse(user);
     }
@@ -167,6 +196,8 @@ public class AuthServiceImpl implements AuthService {
         }
         return authentication.getName(); // email
     }
+
+
 
     private void checkPhoneAndEmailExist(String email, String phone) {
         if (userRepository.countByEmailAndStatus(email, EntityStatus.ACTIVE.name()) > 0) {
