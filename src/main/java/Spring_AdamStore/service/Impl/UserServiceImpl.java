@@ -4,14 +4,18 @@ import Spring_AdamStore.constants.EntityStatus;
 import Spring_AdamStore.constants.RoleEnum;
 import Spring_AdamStore.dto.request.UserCreationRequest;
 import Spring_AdamStore.dto.request.UserUpdateRequest;
+import Spring_AdamStore.dto.response.AddressResponse;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.dto.response.UserResponse;
+import Spring_AdamStore.entity.Address;
 import Spring_AdamStore.entity.Role;
 import Spring_AdamStore.entity.User;
 import Spring_AdamStore.entity.relationship.UserHasRole;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
+import Spring_AdamStore.mapper.AddressMapper;
 import Spring_AdamStore.mapper.UserMapper;
+import Spring_AdamStore.repository.AddressRepository;
 import Spring_AdamStore.repository.RoleRepository;
 import Spring_AdamStore.repository.UserRepository;
 import Spring_AdamStore.repository.relationship.UserHasRoleRepository;
@@ -42,6 +46,8 @@ public class UserServiceImpl implements UserService {
     private final UserHasRoleService userHasRoleService;
     private final RoleRepository roleRepository;
     private final UserHasRoleRepository userHasRoleRepository;
+    private final AddressRepository addressRepository;
+    private final AddressMapper addressMapper;
 
     @Override
     public UserResponse create(UserCreationRequest request) {
@@ -129,6 +135,25 @@ public class UserServiceImpl implements UserService {
         userDB.setStatus(EntityStatus.INACTIVE);
 
         userRepository.save(userDB);
+    }
+
+    @Override
+    public PageResponse<AddressResponse> getAllAddressesByUserId(int pageNo, int pageSize, String sortBy, Long userId) {
+        pageNo = pageNo - 1;
+
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
+
+        User userDB = findActiveUserById(userId);
+
+        Page<Address> addressPage = addressRepository.findAllByUserId(userDB.getId(), pageable);
+
+        return PageResponse.<AddressResponse>builder()
+                .page(addressPage.getNumber() + 1)
+                .size(addressPage.getSize())
+                .totalPages(addressPage.getTotalPages())
+                .totalItems(addressPage.getTotalElements())
+                .items(addressMapper.toAddressResponseList(addressPage.getContent()))
+                .build();
     }
 
     private void checkPhoneAndEmailExist(String email, String phone) {

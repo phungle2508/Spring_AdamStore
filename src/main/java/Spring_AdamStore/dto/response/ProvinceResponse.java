@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class ProvinceResponse {
 
-    Long id;
-    String name;
+   Long id;
+   String name;
 
 }

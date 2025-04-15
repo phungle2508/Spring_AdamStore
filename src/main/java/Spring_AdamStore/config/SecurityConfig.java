@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.http.HttpMethod;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -17,6 +19,7 @@ import org.springframework.web.filter.CorsFilter;
 
 import java.util.List;
 
+@EnableAsync
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -26,16 +29,22 @@ public class SecurityConfig {
     private final CustomJwtAuthenticationConverter customJwtAuthenticationConverter;
 
     private final String[] PUBLIC_URLS  = {
-            "/v1/auth/login", "/v1/auth/register", "/v1/auth/logout",
-            "/v1/auth/refresh-token",
-            "/v1/auth/forgot-password", "/v1/auth/forgot-password/verify-code",
-            "/v1/auth/forgot-password/reset-password"
+            "/v1/auth/login","/v1/auth/register", "/v1/auth/register/*", "/v1/auth/logout",
+            "/v1/auth/refresh-token", "/v1/auth/forgot-password", "/v1/auth/forgot-password/*"
+    };
+
+    private final String[] GET_URLS  = {
+            "/v1/branches", "/v1/branches/*",
+            "/v1/products", "/v1/products/*",
+            "/v1/categories", "/v1/categories/*"
     };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(request -> request.requestMatchers(PUBLIC_URLS).permitAll()
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers(PUBLIC_URLS).permitAll()
+                        .requestMatchers(HttpMethod.GET, GET_URLS).permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 ->
                         oauth2.jwt(

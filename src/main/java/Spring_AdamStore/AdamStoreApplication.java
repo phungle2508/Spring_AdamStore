@@ -11,7 +11,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class AdamStoreApplication {
 
 
-
 	public static void main(String[] args) {
 		Dotenv dotenv = Dotenv.configure()
 				.directory(System.getProperty("user.dir"))

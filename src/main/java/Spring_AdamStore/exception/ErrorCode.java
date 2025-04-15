@@ -32,7 +32,8 @@ public enum ErrorCode {
     CATEGORY_NOT_EXISTED(1003, "Category không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
     BRANCH_EXISTED(1002, "Branch đã tồn tại trong hệ thống", HttpStatus.BAD_REQUEST),
     BRANCH_NOT_EXISTED(1003, "Branch không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
-    VERIFICATION_CODE_NOT_FOUND(1018, "Mã xác nhận không hợp lệ", HttpStatus.NOT_FOUND),
+    VERIFICATION_CODE_NOT_FOUND(1018, "Mã xác minh không tồn tại", HttpStatus.NOT_FOUND),
+    VERIFICATION_CODE_INVALID(1020, "Mã xác minh không đúng. Vui lòng thử lại.", HttpStatus.BAD_REQUEST),
     FORGOT_PASSWORD_TOKEN_NOT_FOUND(1025, "Token đặt lại mật khẩu không tồn tại hoặc đã hết hạn", HttpStatus.NOT_FOUND),
     VERIFICATION_CODE_EXPIRED(1019, "Mã xác nhận đã hết hạn", HttpStatus.BAD_REQUEST),
     ROLE_NOT_EXISTED(1014, "Role không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
@@ -44,7 +45,8 @@ public enum ErrorCode {
     REVIEW_NOT_EXISTED(1003, "Review không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
     DISTRICT_NOT_EXISTED(1003, "District không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
     ADDRESS_NOT_EXISTED(1003, "Address không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
-    INVALID_PROVINCE_FOR_DISTRICT(1040, "District không thuộc province đã chọn", HttpStatus.BAD_REQUEST),
+    INVALID_PROVINCE_FOR_DISTRICT(1040, "District không thuộc Province đã chọn", HttpStatus.BAD_REQUEST),
+    INVALID_DISTRICT_FOR_WARD(1040, "Ward không thuộc District đã chọn", HttpStatus.BAD_REQUEST),
     COLOR_EXISTED(1002, "Color đã tồn tại trong hệ thống", HttpStatus.BAD_REQUEST),
     COLOR_NOT_EXISTED(1003, "Color không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
     SIZE_EXISTED(1002, "Size đã tồn tại trong hệ thống", HttpStatus.BAD_REQUEST),
@@ -57,8 +59,10 @@ public enum ErrorCode {
     OUT_OF_STOCK(1042, "Không đủ hàng trong kho", HttpStatus.BAD_REQUEST),
     INVALID_PRODUCT_IMAGE_LIST(2003, "Danh sách Ảnh không hợp lệ", HttpStatus.BAD_REQUEST),
     INVALID_PRODUCT_COLOR_LIST(2004, "Danh sách Màu không hợp lệ", HttpStatus.BAD_REQUEST),
-    INVALID_PRODUCT_SIZE_LIST(2005, "Danh sách Size không hợp lệ", HttpStatus.BAD_REQUEST)
-
+    INVALID_PRODUCT_SIZE_LIST(2005, "Danh sách Size không hợp lệ", HttpStatus.BAD_REQUEST),
+    CODE_TYPE_INVALID(1035, "Loại verificationCode không hợp lệ", HttpStatus.UNAUTHORIZED),
+    PENDING_USER_NOT_FOUND(1043, "Không tìm thấy thông tin đăng ký", HttpStatus.NOT_FOUND),
+    WARD_NOT_EXISTED(1003, "Ward không tồn tại trong hệ thống", HttpStatus.NOT_FOUND)
     ;
 
 

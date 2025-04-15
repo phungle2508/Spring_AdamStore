@@ -22,6 +22,8 @@ public class AddressResponse {
     Boolean isDefault;
     String streetDetail;
 
+    EntityBasic ward;
+
     EntityBasic district;
 
     EntityBasic province;

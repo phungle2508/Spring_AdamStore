@@ -1,7 +1,7 @@
 package Spring_AdamStore.service.Impl;
 
 import Spring_AdamStore.entity.RedisRevokedToken;
-import Spring_AdamStore.repository.RevokedTokenRepository;
+import Spring_AdamStore.repository.RedisRevokedTokenRepository;
 import Spring_AdamStore.service.RedisTokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class RedisTokenServiceImpl implements RedisTokenService {
 
-    private final RevokedTokenRepository revokedTokenRepository;
+    private final RedisRevokedTokenRepository revokedTokenRepository;
 
 
     @Override

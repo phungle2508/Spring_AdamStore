@@ -1,12 +1,8 @@
 package Spring_AdamStore.service.Impl;
 
-import Spring_AdamStore.dto.response.DistrictResponse;
-import Spring_AdamStore.dto.response.PageResponse;
-import Spring_AdamStore.dto.response.ProvinceResponse;
-import Spring_AdamStore.dto.response.ReviewResponse;
+import Spring_AdamStore.dto.response.*;
 import Spring_AdamStore.entity.District;
 import Spring_AdamStore.entity.Province;
-import Spring_AdamStore.entity.Review;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.DistrictMapper;
@@ -17,9 +13,14 @@ import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.ProvinceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 @Service
 @Slf4j(topic = "PROVINCE-SERVICE")
@@ -31,6 +32,14 @@ public class ProvinceServiceImpl implements ProvinceService {
     private final PageableService pageableService;
     private final DistrictMapper districtMapper;
     private final DistrictRepository districtRepository;
+    private final RestTemplate restTemplate;
+
+    @Value("${ghn.province-url}")
+    private String provinceUrl;
+
+    @Value("${ghn.token}")
+    private String ghnToken;
+
 
     @Override
     public ProvinceResponse fetchById(Long id) {
@@ -57,7 +66,7 @@ public class ProvinceServiceImpl implements ProvinceService {
     }
 
     @Override
-    public PageResponse<DistrictResponse> fetchDistrictsByProvinceId(int pageNo, int pageSize, String sortBy, Long provinceId) {
+    public PageResponse<DistrictResponse> fetchDistrictsByProvinceId(int pageNo, int pageSize, String sortBy, Integer provinceId) {
         pageNo = pageNo - 1;
 
         Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
@@ -77,5 +86,35 @@ public class ProvinceServiceImpl implements ProvinceService {
     private Province findProvinceById(Long id) {
         return provinceRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.PROVINCE_NOT_EXISTED));
+    }
+
+    public List<Province> loadProvincesFromGhn(){
+        log.info("Starting API call to GHN to fetch list of provinces");
+
+        // Set header token
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("token", ghnToken);
+
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        try {
+            ResponseEntity<GhnProvinceResponse> response = restTemplate.exchange(
+                    provinceUrl,
+                    HttpMethod.POST,
+                    requestEntity,
+                    GhnProvinceResponse.class
+            );
+
+            if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
+                List<GhnProvince> ghnProvinceList = response.getBody().getData();
+
+                return provinceMapper.GhnProvinceListToProvinceList(ghnProvinceList);
+            }
+
+        } catch (Exception e) {
+            log.error("Lỗi khi gọi API GHN để lấy Tỉnh: {}", e.getMessage(), e);
+            throw new RuntimeException("Lỗi khi gọi API GHN (Tỉnh) : " + e.getMessage(), e);
+        }
+        return List.of();
     }
 }

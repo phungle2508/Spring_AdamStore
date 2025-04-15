@@ -1,9 +1,6 @@
 package Spring_AdamStore.controller;
 
-import Spring_AdamStore.dto.response.ApiResponse;
-import Spring_AdamStore.dto.response.DistrictResponse;
-import Spring_AdamStore.dto.response.PageResponse;
-import Spring_AdamStore.dto.response.ProvinceResponse;
+import Spring_AdamStore.dto.response.*;
 import Spring_AdamStore.service.DistrictService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.constraints.Min;
@@ -46,5 +43,19 @@ public class DistrictController {
                 .build();
     }
 
+    @Operation(description = "API dùng để lấy danh sách wards theo district")
+    @GetMapping("/districts/{districtId}/wards")
+    public ApiResponse<PageResponse<WardResponse>> fetchWardsByDistrict(@Min(value = 1, message = "pageNo phải lớn hơn 0")
+                                                                            @RequestParam(defaultValue = "1") int pageNo,
+                                                                        @RequestParam(defaultValue = "10") int pageSize,
+                                                                        @RequestParam(required = false) String sortBy,
+                                                                        @Min(value = 1, message = "provinceId phải lớn hơn 0")
+                                                                            @PathVariable Integer districtId) {
+        return ApiResponse.<PageResponse<WardResponse>>builder()
+                .code(HttpStatus.OK.value())
+                .message("Fetch All Wards for District")
+                .result(districtService.fetchWardsByDistrictId(pageNo, pageSize, sortBy, districtId))
+                .build();
+    }
 
 }

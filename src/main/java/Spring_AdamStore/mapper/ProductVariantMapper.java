@@ -17,6 +17,14 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface ProductVariantMapper {
 
+    @Named("getPriceFromVariant")
+    default Double getPriceFromFirstVariant(Set<ProductVariant> variants) {
+        return variants.stream()
+                .findFirst()
+                .map(ProductVariant::getPrice)
+                .orElse(0.0);
+    }
+
     @Named("toSizeSet")
     default Set<EntityBasic> toSizeSet(Set<ProductVariant> productVariants) {
         return new HashSet<>(productVariants.stream()

@@ -2,6 +2,7 @@ package Spring_AdamStore.controller;
 
 import Spring_AdamStore.dto.request.UserCreationRequest;
 import Spring_AdamStore.dto.request.UserUpdateRequest;
+import Spring_AdamStore.dto.response.AddressResponse;
 import Spring_AdamStore.dto.response.ApiResponse;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.dto.response.UserResponse;
@@ -80,6 +81,20 @@ public class UserController {
                 .code(HttpStatus.NO_CONTENT.value())
                 .message("Delete User By Id")
                 .result(null)
+                .build();
+    }
+
+    @GetMapping("/users/{userId}/addresses")
+    public ApiResponse<PageResponse<AddressResponse>> getAddressesByUserId(@Min(value = 1, message = "pageNo phải lớn hơn 0")
+                                                                               @RequestParam(defaultValue = "1") int pageNo,
+                                                                           @RequestParam(defaultValue = "10") int pageSize,
+                                                                           @RequestParam(required = false) String sortBy,
+                                                                           @Min(value = 1, message = "userId phải lớn hơn 0")
+                                                                               @PathVariable Long userId) {
+        return ApiResponse.<PageResponse<AddressResponse>>builder()
+                .code(HttpStatus.OK.value())
+                .message("Fetch Addresses By User Id With Pagination")
+                .result(userService.getAllAddressesByUserId(pageNo, pageSize, sortBy, userId))
                 .build();
     }
 

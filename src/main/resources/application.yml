@@ -9,7 +9,11 @@ spring:
   profiles:
     active: dev
 
-app:
-  forgot-password:
+auth:
+  register:
     verification-code:
       expiration-minutes: 5
+
+  forgot-password:
+    verification-code:
+      expiration-minutes: 10

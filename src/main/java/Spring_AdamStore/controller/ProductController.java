@@ -18,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j(topic = "PRODUCT-CONTROLLER")
 @RequiredArgsConstructor
 @Validated
@@ -78,6 +80,20 @@ public class ProductController {
                 .code(HttpStatus.NO_CONTENT.value())
                 .message("Delete Product By Id")
                 .result(null)
+                .build();
+    }
+
+    @Operation(description = "Api này dùng để search product, giá trị của search: field~value hoặc field>value hoặc field<value")
+    @GetMapping("/products/search")
+    public ApiResponse<PageResponse<ProductResponse>> searchCompany(@Min(value = 1, message = "pageNo phải lớn hơn 0")
+                                                                    @RequestParam(defaultValue = "1") int pageNo,
+                                                                    @RequestParam(defaultValue = "10") int pageSize,
+                                                                    @RequestParam(required = false) String sortBy,
+                                                                    @RequestParam(required = false) List<String> search){
+        return ApiResponse.<PageResponse<ProductResponse>>builder()
+                .code(HttpStatus.OK.value())
+                .result(productService.searchProduct(pageNo, pageSize, sortBy, search))
+                .message("Search Products based on attributes with pagination")
                 .build();
     }
 

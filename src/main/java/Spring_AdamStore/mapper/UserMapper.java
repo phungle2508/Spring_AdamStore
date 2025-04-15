@@ -5,6 +5,7 @@ import Spring_AdamStore.dto.request.RegisterRequest;
 import Spring_AdamStore.dto.request.UserCreationRequest;
 import Spring_AdamStore.dto.request.UserUpdateRequest;
 import Spring_AdamStore.dto.response.UserResponse;
+import Spring_AdamStore.entity.RedisPendingUser;
 import Spring_AdamStore.entity.User;
 import org.mapstruct.*;
 
@@ -16,7 +17,9 @@ public interface UserMapper {
 
     User userCreationToUser(UserCreationRequest request);
 
-    User registerToUser(RegisterRequest request);
+    RedisPendingUser registerToRedis(RegisterRequest request);
+
+    User redisToUser(RedisPendingUser redisPendingUser);
 
     void updateUser(@MappingTarget User user, UserUpdateRequest request);
 
