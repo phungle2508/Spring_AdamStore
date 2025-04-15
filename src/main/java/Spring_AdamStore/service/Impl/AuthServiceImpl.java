@@ -7,13 +7,11 @@ import Spring_AdamStore.dto.request.*;
 import Spring_AdamStore.dto.response.TokenResponse;
 import Spring_AdamStore.dto.response.UserResponse;
 import Spring_AdamStore.dto.response.VerificationCodeResponse;
-import Spring_AdamStore.entity.RedisPendingUser;
-import Spring_AdamStore.entity.RedisRevokedToken;
-import Spring_AdamStore.entity.RedisVerificationCode;
-import Spring_AdamStore.entity.User;
+import Spring_AdamStore.entity.*;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.UserMapper;
+import Spring_AdamStore.repository.CartRepository;
 import Spring_AdamStore.repository.RedisPendingUserRepository;
 import Spring_AdamStore.repository.UserRepository;
 import Spring_AdamStore.service.*;
@@ -45,10 +43,12 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
     private final UserMapper userMapper;
+    private final CartService cartService;
     private final UserHasRoleService userHasRoleService;
     private final RedisTokenService redisTokenService;
     private final RedisVerificationCodeService redisVerificationCodeService;
     private final RedisPendingUserRepository redisPendingUserRepository;
+    private final CurrentUserService currentUserService;
 
     @Override
     public TokenResponse login(LoginRequest request) throws JOSEException {
@@ -92,6 +92,7 @@ public class AuthServiceImpl implements AuthService {
                 .build();
     }
 
+    @Transactional
     @Override
     public TokenResponse verifyCodeAndRegister(VerifyCodeRequest request) throws JOSEException {
         RedisVerificationCode code = redisVerificationCodeService
@@ -107,13 +108,15 @@ public class AuthServiceImpl implements AuthService {
 
         user.setRoles(new HashSet<>(Set.of(userHasRoleService.saveUserHasRole(user, RoleEnum.USER))));
 
+        cartService.createCartForUser(user);
+
         return generateAndSaveTokenResponse(user);
     }
 
     @Override
     public UserResponse getMyInfo() {
-        User user = userRepository.findByEmail(getCurrentUsername()).orElseThrow(
-                () -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        User user = userRepository.findByEmail(currentUserService.getCurrentUsername())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         return userMapper.toUserResponse(user);
     }
@@ -140,7 +143,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     @Override
     public void changePassword(ChangePasswordRequest request) {
-        User user = userRepository.findByEmail(getCurrentUsername())
+        User user = userRepository.findByEmail(currentUserService.getCurrentUsername())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         if (!request.getNewPassword().equals(request.getConfirmPassword())) {
@@ -185,19 +188,6 @@ public class AuthServiceImpl implements AuthService {
                 .email(user.getEmail())
                 .build();
     }
-
-    // info tu access token
-    @Override
-    public String getCurrentUsername(){
-        var context = SecurityContextHolder.getContext();
-        var authentication = context.getAuthentication();
-        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-            throw new AppException(ErrorCode.UNAUTHORIZED);
-        }
-        return authentication.getName(); // email
-    }
-
-
 
     private void checkPhoneAndEmailExist(String email, String phone) {
         if (userRepository.countByEmailAndStatus(email, EntityStatus.ACTIVE.name()) > 0) {

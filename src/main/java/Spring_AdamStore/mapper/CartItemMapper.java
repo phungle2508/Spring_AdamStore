@@ -8,6 +8,7 @@ import Spring_AdamStore.entity.Cart;
 import Spring_AdamStore.entity.CartItem;
 import Spring_AdamStore.entity.Color;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValueCheckStrategy;
 
@@ -16,11 +17,9 @@ import java.util.List;
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface CartItemMapper {
 
-    CartItem toCartItem(CartItemRequest request);
 
+    @Mapping(target = "productVariantBasic", source = "productVariant")
     CartItemResponse toCartItemResponse(CartItem cartItem);
-
-    void update(@MappingTarget CartItem cartItem, CartItemRequest request);
 
     List<CartItemResponse> toCartItemResponseList(List<CartItem> cartItemList);
 

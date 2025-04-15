@@ -67,8 +67,10 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_EXISTED));
         product.setCategory(category);
 
-        Set<ProductImage> productImageSet = setProductImages(request.getImageIds(), product);
-        product.setProductImages(productImageSet);
+        if(!CollectionUtils.isEmpty(request.getImageIds())){
+            Set<ProductImage> productImageSet = setProductImages(request.getImageIds(), product);
+            product.setProductImages(productImageSet);
+        }
 
         productRepository.save(product);
 

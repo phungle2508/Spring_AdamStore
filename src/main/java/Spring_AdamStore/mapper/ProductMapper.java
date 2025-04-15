@@ -1,8 +1,10 @@
 package Spring_AdamStore.mapper;
 
+import Spring_AdamStore.dto.basic.EntityBasic;
 import Spring_AdamStore.dto.request.ProductRequest;
 import Spring_AdamStore.dto.request.ProductUpdateRequest;
 import Spring_AdamStore.dto.response.ProductResponse;
+import Spring_AdamStore.entity.Color;
 import Spring_AdamStore.entity.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -24,4 +26,8 @@ public interface ProductMapper {
     void updateProduct(@MappingTarget Product product, ProductUpdateRequest request);
 
     List<ProductResponse> toProductResponseList(List<Product> products);
+
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "name", source = "name")
+    EntityBasic toEntityBasic(Product product);
 }

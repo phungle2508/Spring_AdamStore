@@ -8,6 +8,7 @@ import Spring_AdamStore.dto.response.SizeResponse;
 import Spring_AdamStore.entity.Color;
 import Spring_AdamStore.entity.Size;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValueCheckStrategy;
 
@@ -24,4 +25,8 @@ public interface SizeMapper {
 
     List<SizeResponse> toSizeResponseList(List<Size> sizeList);
 
+
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "name", source = "name")
+    EntityBasic toEntityBasic(Size size);
 }

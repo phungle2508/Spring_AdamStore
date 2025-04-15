@@ -26,7 +26,5 @@ public interface AuthService {
 
     void logout(TokenRequest request) throws ParseException, JOSEException;
 
-    String getCurrentUsername();
-
 
 }

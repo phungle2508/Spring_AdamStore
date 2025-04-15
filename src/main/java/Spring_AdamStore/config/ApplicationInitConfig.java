@@ -5,6 +5,7 @@ import Spring_AdamStore.constants.RoleEnum;
 import Spring_AdamStore.constants.SizeEnum;
 import Spring_AdamStore.entity.*;
 import Spring_AdamStore.repository.*;
+import Spring_AdamStore.service.CartService;
 import Spring_AdamStore.service.DistrictService;
 import Spring_AdamStore.service.ProvinceService;
 import Spring_AdamStore.service.WardService;
@@ -36,6 +37,7 @@ public class ApplicationInitConfig {
     private final ProvinceService provinceService;
     private final DistrictService districtService;
     private final SizeRepository sizeRepository;
+    private final CartService cartService;
     private final WardService wardService;
     private final WardRepository wardRepository;
 
@@ -82,6 +84,8 @@ public class ApplicationInitConfig {
                         .build());
 
             userHasRoleService.saveUserHasRole(admin, RoleEnum.ADMIN);
+
+            cartService.createCartForUser(admin);
             }
 
             if(sizeRepository.count() == 0){

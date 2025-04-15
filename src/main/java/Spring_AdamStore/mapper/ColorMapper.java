@@ -4,7 +4,9 @@ import Spring_AdamStore.dto.basic.EntityBasic;
 import Spring_AdamStore.dto.request.ColorRequest;
 import Spring_AdamStore.dto.response.ColorResponse;
 import Spring_AdamStore.entity.Color;
+import Spring_AdamStore.entity.Size;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValueCheckStrategy;
 
@@ -21,5 +23,7 @@ public interface ColorMapper {
 
     List<ColorResponse> toColorResponseList(List<Color> colorList);
 
-
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "name", source = "name")
+    EntityBasic toEntityBasic(Color color);
 }

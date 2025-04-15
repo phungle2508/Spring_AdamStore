@@ -62,7 +62,8 @@ public enum ErrorCode {
     INVALID_PRODUCT_SIZE_LIST(2005, "Danh sách Size không hợp lệ", HttpStatus.BAD_REQUEST),
     CODE_TYPE_INVALID(1035, "Loại verificationCode không hợp lệ", HttpStatus.UNAUTHORIZED),
     PENDING_USER_NOT_FOUND(1043, "Không tìm thấy thông tin đăng ký", HttpStatus.NOT_FOUND),
-    WARD_NOT_EXISTED(1003, "Ward không tồn tại trong hệ thống", HttpStatus.NOT_FOUND)
+    WARD_NOT_EXISTED(1003, "Ward không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
+    CART_NOT_EXISTED(1003, "Cart không tồn tại trong hệ thống", HttpStatus.NOT_FOUND)
     ;
 
 

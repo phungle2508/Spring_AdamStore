@@ -26,7 +26,7 @@ public class OrderItemController {
 
     private final OrderItemService orderItemService;
 
-    @PostMapping("/items")
+    @PostMapping("/order-items")
     public ApiResponse<OrderItemResponse> create(@Valid @RequestBody OrderItemRequest request){
         return ApiResponse.<OrderItemResponse>builder()
                 .code(HttpStatus.CREATED.value())
@@ -36,7 +36,7 @@ public class OrderItemController {
     }
 
 
-    @GetMapping("/items/{id}")
+    @GetMapping("/order-items/{id}")
     public ApiResponse<OrderItemResponse> fetchById(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                   @PathVariable Long id){
         return ApiResponse.<OrderItemResponse>builder()
@@ -46,7 +46,7 @@ public class OrderItemController {
                 .build();
     }
 
-    @GetMapping("/items")
+    @GetMapping("/order-items")
     public ApiResponse<PageResponse<OrderItemResponse>> fetchAll(@Min(value = 1, message = "pageNo phải lớn hơn 0")
                                                                @RequestParam(defaultValue = "1") int pageNo,
                                                                @RequestParam(defaultValue = "10") int pageSize,
@@ -58,7 +58,7 @@ public class OrderItemController {
                 .build();
     }
 
-    @PutMapping("/items/{id}")
+    @PutMapping("/order-items/{id}")
     public ApiResponse<OrderItemResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                @PathVariable Long id, @Valid @RequestBody OrderItemRequest request){
         return ApiResponse.<OrderItemResponse>builder()
@@ -69,7 +69,7 @@ public class OrderItemController {
     }
 
 
-    @DeleteMapping("/items/{id}")
+    @DeleteMapping("/order-items/{id}")
     public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
                                     @PathVariable Long id){
         orderItemService.delete(id);

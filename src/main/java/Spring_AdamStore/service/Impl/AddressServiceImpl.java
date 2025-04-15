@@ -11,6 +11,7 @@ import Spring_AdamStore.mapper.AddressMapper;
 import Spring_AdamStore.repository.*;
 import Spring_AdamStore.service.AddressService;
 import Spring_AdamStore.service.AuthService;
+import Spring_AdamStore.service.CurrentUserService;
 import Spring_AdamStore.service.PageableService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +30,7 @@ public class AddressServiceImpl implements AddressService {
     private final DistrictRepository districtRepository;
     private final ProvinceRepository provinceRepository;
     private final WardRepository wardRepository;
-    private final AuthService authService;
+    private final CurrentUserService currentUserService;
     private final UserRepository userRepository;
 
     @Override
@@ -54,7 +55,7 @@ public class AddressServiceImpl implements AddressService {
         address.setProvince(province);
         address.setDistrict(district);
 
-        User user = userRepository.findByEmail(authService.getCurrentUsername())
+        User user = userRepository.findByEmail(currentUserService.getCurrentUsername())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         address.setUser(user);
 

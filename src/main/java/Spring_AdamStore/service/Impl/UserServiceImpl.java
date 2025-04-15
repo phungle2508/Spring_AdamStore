@@ -19,9 +19,11 @@ import Spring_AdamStore.repository.AddressRepository;
 import Spring_AdamStore.repository.RoleRepository;
 import Spring_AdamStore.repository.UserRepository;
 import Spring_AdamStore.repository.relationship.UserHasRoleRepository;
+import Spring_AdamStore.service.CartService;
 import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.UserService;
 import Spring_AdamStore.service.relationship.UserHasRoleService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -47,9 +49,11 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final UserHasRoleRepository userHasRoleRepository;
     private final AddressRepository addressRepository;
+    private final CartService cartService;
     private final AddressMapper addressMapper;
 
     @Override
+    @Transactional
     public UserResponse create(UserCreationRequest request) {
         checkPhoneAndEmailExist(request.getEmail(), request.getPhone());
         User user = userMapper.userCreationToUser(request);
@@ -72,6 +76,8 @@ public class UserServiceImpl implements UserService {
             roles.addAll(userHasRoleRepository.saveAll(userRoles));
         }
         user.setRoles(roles);
+
+        cartService.createCartForUser(user);
 
         return userMapper.toUserResponse(user);
     }
@@ -101,6 +107,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserResponse update(Long id, UserUpdateRequest request) {
         User userDB = findActiveUserById(id);
 

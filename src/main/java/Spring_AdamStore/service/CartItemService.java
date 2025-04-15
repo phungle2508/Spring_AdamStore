@@ -2,6 +2,7 @@
 package Spring_AdamStore.service;
 
 import Spring_AdamStore.dto.request.CartItemRequest;
+import Spring_AdamStore.dto.request.CartItemUpdateRequest;
 import Spring_AdamStore.dto.request.ColorRequest;
 import Spring_AdamStore.dto.response.CartItemResponse;
 import Spring_AdamStore.dto.response.ColorResponse;
@@ -15,7 +16,7 @@ public interface CartItemService {
 
     PageResponse<CartItemResponse> fetchAll(int pageNo, int pageSize, String sortBy);
 
-    CartItemResponse update(Long id, CartItemRequest request);
+    CartItemResponse update(Long id, CartItemUpdateRequest request);
 
     void delete(Long id);
 }
