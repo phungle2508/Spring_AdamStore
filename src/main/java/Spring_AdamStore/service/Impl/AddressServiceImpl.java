@@ -8,10 +8,7 @@ import Spring_AdamStore.entity.*;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.AddressMapper;
-import Spring_AdamStore.repository.AddressRepository;
-import Spring_AdamStore.repository.DistrictRepository;
-import Spring_AdamStore.repository.ProvinceRepository;
-import Spring_AdamStore.repository.UserRepository;
+import Spring_AdamStore.repository.*;
 import Spring_AdamStore.service.AddressService;
 import Spring_AdamStore.service.AuthService;
 import Spring_AdamStore.service.PageableService;
@@ -31,6 +28,7 @@ public class AddressServiceImpl implements AddressService {
     private final PageableService pageableService;
     private final DistrictRepository districtRepository;
     private final ProvinceRepository provinceRepository;
+    private final WardRepository wardRepository;
     private final AuthService authService;
     private final UserRepository userRepository;
 
@@ -38,13 +36,21 @@ public class AddressServiceImpl implements AddressService {
     public AddressResponse create(AddressRequest request) {
         Address address = addressMapper.toAddress(request);
 
+        Ward ward = findWardById(request.getWardCode());
+
         District district = findDistrictById(request.getDistrictId());
+
+        if (!ward.getDistrict().getId().equals(district.getId())) {
+            throw new AppException(ErrorCode.INVALID_DISTRICT_FOR_WARD);
+        }
 
         Province province = findProvinceById(request.getProvinceId());
 
         if (!district.getProvince().getId().equals(province.getId())) {
             throw new AppException(ErrorCode.INVALID_PROVINCE_FOR_DISTRICT);
         }
+
+        address.setWard(ward);
         address.setProvince(province);
         address.setDistrict(district);
 
@@ -85,13 +91,21 @@ public class AddressServiceImpl implements AddressService {
 
         addressMapper.update(address, request);
 
+        Ward ward = findWardById(request.getWardCode());
+
         District district = findDistrictById(request.getDistrictId());
+
+        if (!ward.getDistrict().getId().equals(district.getId())) {
+            throw new AppException(ErrorCode.INVALID_DISTRICT_FOR_WARD);
+        }
 
         Province province = findProvinceById(request.getProvinceId());
 
         if (!district.getProvince().getId().equals(province.getId())) {
             throw new AppException(ErrorCode.INVALID_PROVINCE_FOR_DISTRICT);
         }
+
+        address.setWard(ward);
         address.setProvince(province);
         address.setDistrict(district);
 
@@ -108,6 +122,11 @@ public class AddressServiceImpl implements AddressService {
     private Address findAddressById(Long id) {
         return addressRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.ADDRESS_NOT_EXISTED));
+    }
+
+    private Ward findWardById(String id) {
+        return wardRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.WARD_NOT_EXISTED));
     }
 
     private District findDistrictById(Long id) {

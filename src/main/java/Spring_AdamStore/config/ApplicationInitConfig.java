@@ -1,11 +1,13 @@
 package Spring_AdamStore.config;
 
 import Spring_AdamStore.constants.Gender;
-import Spring_AdamStore.constants.ProvinceEnum;
 import Spring_AdamStore.constants.RoleEnum;
 import Spring_AdamStore.constants.SizeEnum;
 import Spring_AdamStore.entity.*;
 import Spring_AdamStore.repository.*;
+import Spring_AdamStore.service.DistrictService;
+import Spring_AdamStore.service.ProvinceService;
+import Spring_AdamStore.service.WardService;
 import Spring_AdamStore.service.relationship.UserHasRoleService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +19,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +33,11 @@ public class ApplicationInitConfig {
     private final UserHasRoleService userHasRoleService;
     private final ProvinceRepository provinceRepository;
     private final DistrictRepository districtRepository;
+    private final ProvinceService provinceService;
+    private final DistrictService districtService;
     private final SizeRepository sizeRepository;
+    private final WardService wardService;
+    private final WardRepository wardRepository;
 
     @NonFinal
     static final String ADMIN_EMAIL = "admin@gmail.com";
@@ -40,7 +45,7 @@ public class ApplicationInitConfig {
     @NonFinal
     static final String ADMIN_PASSWORD = "123456";
 
-    @Transactional
+
     @Bean
     ApplicationRunner applicationRunner() {
         log.info("INIT APPLICATION STARTING....");
@@ -79,20 +84,6 @@ public class ApplicationInitConfig {
             userHasRoleService.saveUserHasRole(admin, RoleEnum.ADMIN);
             }
 
-            if(provinceRepository.count() == 0){
-                log.info("Initializing Provinces and Districts...");
-
-                List<Province> provinceList = ProvinceEnum.getAllProvinces();
-
-                provinceRepository.saveAllAndFlush(provinceList);
-
-                List<District> allDistricts = provinceList.stream()
-                        .flatMap(province -> province.getDistricts().stream())
-                        .collect(Collectors.toList());
-
-                districtRepository.saveAllAndFlush(allDistricts);
-            }
-
             if(sizeRepository.count() == 0){
                 log.info("Initializing Sizes...");
 
@@ -101,9 +92,33 @@ public class ApplicationInitConfig {
                 sizeRepository.saveAllAndFlush(sizeList);
             }
 
+            if(provinceRepository.count() == 0){
+                log.info("Initializing Provinces and Districts...");
+
+                List<Province> provinceList = provinceService.loadProvincesFromGhn();
+
+                provinceRepository.saveAllAndFlush(provinceList);
+
+                provinceList.forEach(this::saveAllDistrictsByProvince);
+            }
+
         };
     }
 
+    private void saveAllDistrictsByProvince(Province province){
+        List<District> districtList = districtService.loadDistrictsFromGhn(province.getId());
+        districtList.forEach(district -> district.setProvince(province));
 
+        districtRepository.saveAllAndFlush(districtList);
+
+        districtList.forEach(this::saveAllWardsByDistrict);
+    }
+
+    private void saveAllWardsByDistrict(District district){
+        List<Ward> wardList = wardService.loadWardsFromGhn(district.getId());
+        wardList.forEach(ward -> ward.setDistrict(district));
+
+        wardRepository.saveAllAndFlush(wardList);
+    }
 
 }

@@ -1,11 +1,8 @@
 package Spring_AdamStore.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDate;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
@@ -13,9 +10,10 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProvinceResponse {
+public class GhnWard {
 
-   Long id;
-   String name;
-
+    @JsonProperty("WardCode")
+     String wardCode;
+    @JsonProperty("WardName")
+     String wardName;
 }

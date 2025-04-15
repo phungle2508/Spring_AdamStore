@@ -5,6 +5,7 @@ import Spring_AdamStore.dto.request.OrderRequest;
 import Spring_AdamStore.dto.response.OrderItemResponse;
 import Spring_AdamStore.dto.response.OrderResponse;
 import Spring_AdamStore.dto.response.PageResponse;
+import Spring_AdamStore.dto.response.ShippingFeeResponse;
 
 public interface OrderService {
 
@@ -17,5 +18,7 @@ public interface OrderService {
     OrderResponse update(Long id, OrderRequest request);
 
     void delete(Long id);
+
+    ShippingFeeResponse shippingCost(Double totalPrice, String toWardCode, Integer toDistrictId);
 
 }

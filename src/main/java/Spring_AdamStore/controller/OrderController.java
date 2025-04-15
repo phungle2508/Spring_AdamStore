@@ -2,10 +2,7 @@ package Spring_AdamStore.controller;
 
 import Spring_AdamStore.dto.request.OrderItemRequest;
 import Spring_AdamStore.dto.request.OrderRequest;
-import Spring_AdamStore.dto.response.ApiResponse;
-import Spring_AdamStore.dto.response.OrderItemResponse;
-import Spring_AdamStore.dto.response.OrderResponse;
-import Spring_AdamStore.dto.response.PageResponse;
+import Spring_AdamStore.dto.response.*;
 import Spring_AdamStore.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -78,6 +75,20 @@ public class OrderController {
                 .code(HttpStatus.NO_CONTENT.value())
                 .message("Delete Order By Id")
                 .result(null)
+                .build();
+    }
+
+    @Operation(summary = "Calculate Shipping Fee",
+    description = "Api này dùng để tính phí ship của đơn hàng " +
+            "(totalPrice: giá tiền sản phẩm, toWardCode: code (phường/xã) của người nhận, toDistrictId: id quận/huyện người nhận)")
+    @PostMapping("/shipping/calculate-fee")
+    public ApiResponse<ShippingFeeResponse> calculateShippingFee(@RequestParam Double totalPrice,
+                                                                 @RequestParam String toWardCode,
+                                                                 @RequestParam Integer toDistrictId){
+        return ApiResponse.<ShippingFeeResponse>builder()
+                .code(HttpStatus.NO_CONTENT.value())
+                .message("Calculate Shipping Fee")
+                .result(orderService.shippingCost(totalPrice, toWardCode, toDistrictId))
                 .build();
     }
 }

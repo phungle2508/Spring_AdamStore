@@ -21,8 +21,7 @@ import java.util.Set;
 @Entity
 public class Province {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    Integer id;
     String name;
 
     @OneToMany(mappedBy = "province", fetch = FetchType.LAZY)

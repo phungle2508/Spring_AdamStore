@@ -24,8 +24,7 @@ import java.util.Set;
 @Entity
 public class District {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-     Long id;
+    Integer id;
 
     @JoinColumn(nullable = false)
      String name;

@@ -33,6 +33,11 @@ public class Address {
     @JoinColumn(nullable = false)
     String streetDetail;
 
+
+    @ManyToOne
+    @JoinColumn(name = "ward_id", nullable = false)
+    Ward ward;
+
     @ManyToOne
     @JoinColumn(name = "district_id", nullable = false)
      District district;

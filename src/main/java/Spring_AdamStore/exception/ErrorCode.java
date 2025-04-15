@@ -45,7 +45,8 @@ public enum ErrorCode {
     REVIEW_NOT_EXISTED(1003, "Review không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
     DISTRICT_NOT_EXISTED(1003, "District không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
     ADDRESS_NOT_EXISTED(1003, "Address không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
-    INVALID_PROVINCE_FOR_DISTRICT(1040, "District không thuộc province đã chọn", HttpStatus.BAD_REQUEST),
+    INVALID_PROVINCE_FOR_DISTRICT(1040, "District không thuộc Province đã chọn", HttpStatus.BAD_REQUEST),
+    INVALID_DISTRICT_FOR_WARD(1040, "Ward không thuộc District đã chọn", HttpStatus.BAD_REQUEST),
     COLOR_EXISTED(1002, "Color đã tồn tại trong hệ thống", HttpStatus.BAD_REQUEST),
     COLOR_NOT_EXISTED(1003, "Color không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
     SIZE_EXISTED(1002, "Size đã tồn tại trong hệ thống", HttpStatus.BAD_REQUEST),
@@ -60,8 +61,8 @@ public enum ErrorCode {
     INVALID_PRODUCT_COLOR_LIST(2004, "Danh sách Màu không hợp lệ", HttpStatus.BAD_REQUEST),
     INVALID_PRODUCT_SIZE_LIST(2005, "Danh sách Size không hợp lệ", HttpStatus.BAD_REQUEST),
     CODE_TYPE_INVALID(1035, "Loại verificationCode không hợp lệ", HttpStatus.UNAUTHORIZED),
-    PENDING_USER_NOT_FOUND(1043, "Không tìm thấy thông tin đăng ký", HttpStatus.NOT_FOUND)
-
+    PENDING_USER_NOT_FOUND(1043, "Không tìm thấy thông tin đăng ký", HttpStatus.NOT_FOUND),
+    WARD_NOT_EXISTED(1003, "Ward không tồn tại trong hệ thống", HttpStatus.NOT_FOUND)
     ;
 
 

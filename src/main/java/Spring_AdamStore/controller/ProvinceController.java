@@ -49,7 +49,7 @@ public class ProvinceController {
                                                                          @RequestParam(defaultValue = "10") int pageSize,
                                                                          @RequestParam(required = false) String sortBy,
                                                                          @Min(value = 1, message = "provinceId phải lớn hơn 0")
-                                                                         @PathVariable Long provinceId){
+                                                                         @PathVariable Integer provinceId){
         return ApiResponse.<PageResponse<DistrictResponse>>builder()
                 .code(HttpStatus.OK.value())
                 .message("Fetch Districts By Province ID With Pagination")

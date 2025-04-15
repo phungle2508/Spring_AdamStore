@@ -21,9 +21,9 @@ public class VerificationCodeServiceImpl implements RedisVerificationCodeService
 
     private final RedisVerificationCodeRepository redisVerificationCodeRepository;
 
-    @Value("${app.forgot-password.verification-code.expiration-minutes}")
+    @Value("${auth.forgot-password.verification-code.expiration-minutes}")
     private long forgotPasswordExpiration;
-    @Value("${app.register.verification-code.expiration-minutes}")
+    @Value("${auth.register.verification-code.expiration-minutes}")
     private long registerExpiration;
 
 
