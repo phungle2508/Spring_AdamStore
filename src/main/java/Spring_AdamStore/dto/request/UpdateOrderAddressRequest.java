@@ -8,12 +8,10 @@ import lombok.experimental.FieldDefaults;
 
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class OrderItemRequest {
+public class UpdateOrderAddressRequest {
 
     @Min(value = 0, message = "productVariantId phải lớn hơn hoặc bằng 0")
     @NotNull(message = "productVariantId không được null")
-    Long productVariantId;
-    @Min(value = 0, message = "quantity phải lớn hơn hoặc bằng 0")
-    @NotNull(message = "quantity không được null")
-    int quantity;
+    Long addressId;
+
 }

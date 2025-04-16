@@ -5,9 +5,7 @@ import Spring_AdamStore.dto.request.ReviewRequest;
 import Spring_AdamStore.dto.request.ReviewUpdateRequest;
 import Spring_AdamStore.dto.response.ReviewResponse;
 import Spring_AdamStore.entity.Review;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValueCheckStrategy;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -18,6 +16,7 @@ public interface ReviewMapper {
 
     ReviewResponse toReviewResponse(Review review);
 
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void update(@MappingTarget Review review, ReviewUpdateRequest request);
 
     List<ReviewResponse> toReviewResponseList(List<Review> reviewList);

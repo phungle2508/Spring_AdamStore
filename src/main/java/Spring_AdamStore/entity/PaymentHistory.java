@@ -1,5 +1,6 @@
 package Spring_AdamStore.entity;
 
+import Spring_AdamStore.constants.PaymentMethod;
 import Spring_AdamStore.constants.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,15 +23,18 @@ public class PaymentHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
      Long id;
 
-     String paymentMethod;
+    @Enumerated(EnumType.STRING)
+    @JoinColumn(nullable = false)
+    PaymentMethod paymentMethod;
+
      @JoinColumn(nullable = false)
-    @ColumnDefault(value = "0")
      Double totalAmount;
+
     @Enumerated(EnumType.STRING)
     @JoinColumn(nullable = false)
      PaymentStatus paymentStatus;
+
      LocalDateTime paymentTime;
-     String note;
 
     @ManyToOne
     @JoinColumn(name = "order_id")

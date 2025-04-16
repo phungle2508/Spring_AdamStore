@@ -9,6 +9,11 @@ spring:
   profiles:
     active: dev
 
+app:
+  admin:
+    email: admin@gmail.com
+    password: 123456
+
 auth:
   register:
     verification-code:

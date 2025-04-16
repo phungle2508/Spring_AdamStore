@@ -21,6 +21,9 @@ public interface ProductVariantMapper {
     ProductVariantResponse toProductVariantResponse(ProductVariant productVariant);
 
     @Mapping(target = "id", source = "id")
+    @Mapping(target = "product", source = "product")
+    @Mapping(target = "color", source = "color")
+    @Mapping(target = "size", source = "size")
     ProductVariantBasic toProductVariantBasic(ProductVariant productVariant);
 
     @Named("getPriceFromVariant")
@@ -30,6 +33,15 @@ public interface ProductVariantMapper {
                 .map(ProductVariant::getPrice)
                 .orElse(0.0);
     }
+
+    @Named("getQuantityFromVariant")
+    default Integer getQuantityFromFirstVariant(Set<ProductVariant> variants) {
+        return variants.stream()
+                .findFirst()
+                .map(ProductVariant::getQuantity)
+                .orElse(0);
+    }
+
 
     @Named("toSizeSet")
     default Set<EntityBasic> toSizeSet(Set<ProductVariant> productVariants) {

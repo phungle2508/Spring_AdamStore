@@ -1,11 +1,9 @@
 package Spring_AdamStore.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import Spring_AdamStore.dto.basic.ProductVariantBasic;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDate;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
@@ -16,8 +14,9 @@ import java.time.LocalDate;
 public class OrderItemResponse {
 
     Long id;
-    Integer quantity;
+
     Double unitPrice;
+    Integer quantity;
 
-
+    ProductVariantBasic productVariant;
 }

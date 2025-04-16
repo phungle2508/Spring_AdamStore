@@ -55,6 +55,7 @@ public class AccountRecoveryServiceImpl implements AccountRecoveryService {
         try {
             RedisVerificationCode redisVerificationCode = redisVerificationCodeService
                     .saveVerificationCode(user.getEmail(), FORGOT_PASSWORD);
+
             emailService.sendPasswordResetCode(user, redisVerificationCode.getVerificationCode());
 
             return VerificationCodeResponse.builder()
@@ -71,7 +72,7 @@ public class AccountRecoveryServiceImpl implements AccountRecoveryService {
 
     @Override
     public ForgotPasswordToken verifyForgotPasswordCode(String email, String verificationCode) throws JOSEException {
-        RedisVerificationCode verificationCodeEntity = redisVerificationCodeService
+        RedisVerificationCode redisVerificationCode = redisVerificationCodeService
                 .getVerificationCode(email, FORGOT_PASSWORD, verificationCode);
 
         User user = userRepository.findByEmail(email).orElseThrow(
@@ -84,7 +85,7 @@ public class AccountRecoveryServiceImpl implements AccountRecoveryService {
                 .expiryTime(LocalDateTime.now().plusMinutes(resetTokenExpiration))
                 .build();
 
-        redisVerificationCodeRepository.delete(verificationCodeEntity);
+        redisVerificationCodeRepository.delete(redisVerificationCode);
 
         return forgotPasswordTokenRepository.save(token);
     }

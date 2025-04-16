@@ -5,9 +5,7 @@ import Spring_AdamStore.dto.request.PromotionRequest;
 import Spring_AdamStore.dto.request.PromotionUpdateRequest;
 import Spring_AdamStore.dto.response.PromotionResponse;
 import Spring_AdamStore.entity.Promotion;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValueCheckStrategy;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -18,6 +16,7 @@ public interface PromotionMapper {
 
     PromotionResponse toPromotionResponse(Promotion promotion);
 
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void update(@MappingTarget Promotion promotion, PromotionUpdateRequest request);
 
     List<PromotionResponse> toPromotionResponseList(List<Promotion> promotionList);

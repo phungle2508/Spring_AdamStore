@@ -27,6 +27,7 @@ public class ProductResponse {
     Double averageRating;
     Integer soldQuantity;
     Integer totalReviews;
+    Integer quantity;
     Double price;
 
     String createdBy;

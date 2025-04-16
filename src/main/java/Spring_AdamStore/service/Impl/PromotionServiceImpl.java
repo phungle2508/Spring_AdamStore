@@ -31,6 +31,7 @@ public class PromotionServiceImpl implements PromotionService {
 
 
     @Override
+    @Transactional
     public PromotionResponse create(PromotionRequest request) {
         if(promotionRepository.existsByCode(request.getCode())){
             throw new AppException(ErrorCode.PROMOTION_EXISTED);

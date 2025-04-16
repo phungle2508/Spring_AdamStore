@@ -72,10 +72,6 @@ public class CartItemServiceImpl implements CartItemService {
                     .cart(cart)
                     .build();
         }
-        // update productVariant
-        productVariant.setQuantity(productVariant.getQuantity() - request.getQuantity());
-        productVariantRepository.save(productVariant);
-
         return cartItemMapper.toCartItemResponse(cartItemRepository.save(cartItem));
     }
 
@@ -111,6 +107,7 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         CartItem cartItem = findCartItemById(id);
 

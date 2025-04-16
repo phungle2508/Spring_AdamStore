@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 @Service
-@Slf4j(topic = "USER-SERVICE")
+@Slf4j(topic = "VERIFICATION-CODE-SERVICE")
 @RequiredArgsConstructor
 public class VerificationCodeServiceImpl implements RedisVerificationCodeService {
 
@@ -62,6 +62,7 @@ public class VerificationCodeServiceImpl implements RedisVerificationCodeService
         }
     }
 
+    @Override
     public RedisVerificationCode getVerificationCode(String email, VerificationType type, String verificationCode){
         String redisKey = email + ":" + type;
 

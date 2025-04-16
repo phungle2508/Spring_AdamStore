@@ -1,6 +1,7 @@
 package Spring_AdamStore.mapper;
 
 import Spring_AdamStore.dto.basic.EntityBasic;
+import Spring_AdamStore.dto.basic.WardBasic;
 import Spring_AdamStore.dto.response.GhnWard;
 import Spring_AdamStore.dto.response.WardResponse;
 import Spring_AdamStore.entity.Ward;
@@ -23,5 +24,5 @@ public interface WardMapper {
 
     List<WardResponse> toWardResponseList(List<Ward> wardList);
 
-    EntityBasic toEntityBasic(Ward ward);
+    WardBasic toWardBasic(Ward ward);
 }

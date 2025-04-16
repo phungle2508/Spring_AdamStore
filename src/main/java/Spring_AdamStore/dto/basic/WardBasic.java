@@ -7,10 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserBasic {
-
-    Long id;
+public class WardBasic {
+    Long code;
     String name;
-    String email;
-    String phone;
 }

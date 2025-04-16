@@ -1,14 +1,12 @@
 package Spring_AdamStore.controller;
 
-import Spring_AdamStore.dto.request.OrderItemRequest;
 import Spring_AdamStore.dto.request.OrderRequest;
+import Spring_AdamStore.dto.request.UpdateOrderAddressRequest;
 import Spring_AdamStore.dto.response.*;
 import Spring_AdamStore.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -56,13 +54,15 @@ public class OrderController {
                 .build();
     }
 
-    @PutMapping("/orders/{id}")
-    public ApiResponse<OrderResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
-                                                 @PathVariable Long id, @Valid @RequestBody OrderRequest request){
+    @Operation(summary = "Update Address for Order",
+    description = "Cập nhập đia chỉ cho đơn hàng ở trạng thái PENDING hoặc PROCESSING")
+    @PutMapping("/orders/{orderId}/address")
+    public ApiResponse<OrderResponse> updateAddress(@Min(value = 1, message = "orderId phải lớn hơn 0")
+                                                 @PathVariable Long orderId, @Valid @RequestBody UpdateOrderAddressRequest request){
         return ApiResponse.<OrderResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Update Order By Id")
-                .result(orderService.update(id, request))
+                .result(orderService.updateAddress(orderId, request))
                 .build();
     }
 

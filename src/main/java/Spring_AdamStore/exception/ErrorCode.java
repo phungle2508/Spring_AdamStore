@@ -63,7 +63,11 @@ public enum ErrorCode {
     CODE_TYPE_INVALID(1035, "Loại verificationCode không hợp lệ", HttpStatus.UNAUTHORIZED),
     PENDING_USER_NOT_FOUND(1043, "Không tìm thấy thông tin đăng ký", HttpStatus.NOT_FOUND),
     WARD_NOT_EXISTED(1003, "Ward không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
-    CART_NOT_EXISTED(1003, "Cart không tồn tại trong hệ thống", HttpStatus.NOT_FOUND)
+    CART_NOT_EXISTED(1003, "Cart không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
+    PROMOTION_EXPIRED(1040, "Khuyến mãi đã hết hạn hoặc không hợp lệ", HttpStatus.BAD_REQUEST),
+    ORDER_CANNOT_UPDATE_ADDRESS(2001, "Không thể cập nhật địa chỉ khi đơn hàng đã được giao hoặc huỷ", HttpStatus.BAD_REQUEST),
+    ADDRESS_NOT_BELONG_TO_USER(1009, "Địa chỉ không thuộc về người dùng hiện tại", HttpStatus.FORBIDDEN),
+    ORDER_NOT_BELONG_TO_USER(2002, "Đơn hàng không thuộc về người dùng hiện tại", HttpStatus.FORBIDDEN)
     ;
 
 

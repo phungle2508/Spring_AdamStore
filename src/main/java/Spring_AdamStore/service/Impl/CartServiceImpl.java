@@ -35,6 +35,7 @@ public class CartServiceImpl implements CartService {
     private final CartItemMapper cartItemMapper;
     private final PageableService pageableService;
 
+
     public void createCartForUser(User user){
         Cart cart = Cart.builder()
                 .user(user)
@@ -42,7 +43,6 @@ public class CartServiceImpl implements CartService {
 
         cartRepository.save(cart);
     }
-
 
     public PageResponse<CartItemResponse> getCartItemsOfCurrentUser(int pageNo, int pageSize, String sortBy) {
         pageNo = pageNo - 1;

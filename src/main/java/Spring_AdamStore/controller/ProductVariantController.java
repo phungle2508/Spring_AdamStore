@@ -1,18 +1,17 @@
 package Spring_AdamStore.controller;
 
+import Spring_AdamStore.dto.request.ProductVariantUpdateRequest;
 import Spring_AdamStore.dto.response.ApiResponse;
 import Spring_AdamStore.dto.response.ProductVariantResponse;
 import Spring_AdamStore.service.ProductVariantService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j(topic = "PRODUCT-VARIANT-CONTROLLER")
 @RequiredArgsConstructor
@@ -39,6 +38,16 @@ public class ProductVariantController {
                 .build();
     }
 
-
-
+    @Operation(summary = "Update price and quantity for a product variant",
+            description = "API để cập nhật giá và số lượng cho ProductVariant")
+    @PutMapping("/product-variants/{id}")
+    public ApiResponse<ProductVariantResponse> updatePriceAndQuantity(@Min(value = 1, message = "productVariantId phải lớn hơn 0")
+                                                                          @PathVariable Long id,
+                                                                      @RequestBody @Valid ProductVariantUpdateRequest request) {
+        return ApiResponse.<ProductVariantResponse>builder()
+                .code(HttpStatus.OK.value())
+                .message("Update price quantity of Product-variant")
+                .result(productVariantService.updatePriceAndQuantity(id, request))
+                .build();
+    }
 }

@@ -4,9 +4,7 @@ import Spring_AdamStore.dto.request.BranchRequest;
 import Spring_AdamStore.dto.request.BranchUpdateRequest;
 import Spring_AdamStore.dto.response.BranchResponse;
 import Spring_AdamStore.entity.Branch;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValueCheckStrategy;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -17,6 +15,7 @@ public interface BranchMapper {
 
     BranchResponse toBranchResponse(Branch branch);
 
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void update(@MappingTarget Branch branch, BranchUpdateRequest request);
 
     List<BranchResponse> toBranchResponseList(List<Branch> branchList);

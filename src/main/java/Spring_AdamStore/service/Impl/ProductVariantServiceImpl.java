@@ -1,5 +1,6 @@
 package Spring_AdamStore.service.Impl;
 
+import Spring_AdamStore.dto.request.ProductVariantUpdateRequest;
 import Spring_AdamStore.dto.response.ProductVariantResponse;
 import Spring_AdamStore.entity.Color;
 import Spring_AdamStore.entity.Product;
@@ -10,6 +11,7 @@ import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.ProductVariantMapper;
 import Spring_AdamStore.repository.ProductVariantRepository;
 import Spring_AdamStore.service.ProductVariantService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -88,5 +90,17 @@ public class ProductVariantServiceImpl implements ProductVariantService {
         }
 
         return new HashSet<>(productVariantRepository.saveAll(oldVariants));
+    }
+
+    @Override
+    @Transactional
+    public ProductVariantResponse updatePriceAndQuantity(Long id, ProductVariantUpdateRequest request) {
+        ProductVariant productVariant = productVariantRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_VARIANT_NOT_EXISTED));
+
+        productVariant.setPrice(request.getPrice());
+        productVariant.setQuantity(request.getQuantity());
+
+        return productVariantMapper.toProductVariantResponse(productVariantRepository.save(productVariant));
     }
 }

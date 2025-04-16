@@ -21,6 +21,7 @@ public interface UserMapper {
 
     User redisToUser(RedisPendingUser redisPendingUser);
 
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateUser(@MappingTarget User user, UserUpdateRequest request);
 
     @Mapping(target = "roles", source = "roles", qualifiedByName = "userHasRoleToEntityBasic")

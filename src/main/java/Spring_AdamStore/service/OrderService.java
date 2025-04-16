@@ -1,8 +1,7 @@
 package Spring_AdamStore.service;
 
-import Spring_AdamStore.dto.request.OrderItemRequest;
 import Spring_AdamStore.dto.request.OrderRequest;
-import Spring_AdamStore.dto.response.OrderItemResponse;
+import Spring_AdamStore.dto.request.UpdateOrderAddressRequest;
 import Spring_AdamStore.dto.response.OrderResponse;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.dto.response.ShippingFeeResponse;
@@ -15,7 +14,7 @@ public interface OrderService {
 
     PageResponse<OrderResponse> fetchAll(int pageNo, int pageSize, String sortBy);
 
-    OrderResponse update(Long id, OrderRequest request);
+    OrderResponse updateAddress(Long id, UpdateOrderAddressRequest request);
 
     void delete(Long id);
 
