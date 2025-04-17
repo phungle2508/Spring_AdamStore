@@ -1,12 +1,17 @@
 package Spring_AdamStore.controller;
 
 import Spring_AdamStore.dto.request.OrderRequest;
+import Spring_AdamStore.dto.request.PaymentCallbackRequest;
 import Spring_AdamStore.dto.request.UpdateOrderAddressRequest;
 import Spring_AdamStore.dto.response.*;
 import Spring_AdamStore.service.OrderService;
+import Spring_AdamStore.service.ShippingService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,7 +26,11 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
 
     private final OrderService orderService;
+    private final ShippingService shippingService;
 
+
+    @Operation(summary = "Create Order",
+            description = "Api này dùng để tạo đơn hàng")
     @PostMapping("/orders")
     public ApiResponse<OrderResponse> create(@Valid @RequestBody OrderRequest request){
         return ApiResponse.<OrderResponse>builder()
@@ -88,7 +97,50 @@ public class OrderController {
         return ApiResponse.<ShippingFeeResponse>builder()
                 .code(HttpStatus.NO_CONTENT.value())
                 .message("Calculate Shipping Fee")
-                .result(orderService.shippingCost(totalPrice, toWardCode, toDistrictId))
+                .result(shippingService.shippingCost(totalPrice, toWardCode, toDistrictId))
                 .build();
     }
+
+    @Operation(summary = "Payment for Order",
+            description = "Api này dùng để thanh toán đơn hàng thông qua VNPAY")
+    @GetMapping("/orders/{orderId}/vn-pay")
+    public ApiResponse<VNPayResponse> pay(@Min(value = 1, message = "ID phải lớn hơn 0")
+                                              @PathVariable Long orderId, HttpServletRequest request) {
+        return ApiResponse.<VNPayResponse>builder()
+                .code(HttpStatus.OK.value())
+                .message("Tạo thành công URL thanh toán VNPay")
+                .result(orderService.processPayment(orderId, request))
+                .build();
+    }
+
+    @Operation(summary = "Payment CallBack for Order",
+            description = "Api này dùng để xử lý sau khi thanh toán đơn hàng")
+    @PostMapping("/orders/vn-pay-callback")
+    public ApiResponse<OrderResponse> payCallbackHandler(@Valid @RequestBody PaymentCallbackRequest request) {
+        String status = request.getResponseCode();
+        if (status.equals("00")) {
+            return ApiResponse.<OrderResponse>builder()
+                    .code(1000)
+                    .message("Thanh toán thành công")
+                    .result(orderService.updateOrderAfterPayment(request))
+                    .build();
+        } else {
+            log.error("Thanh toán không thành công với mã phản hồi: " + status);
+            orderService.handleFailedPayment(request);
+            return new ApiResponse<>(4000, "Thanh toán thất bại", null);
+        }
+    }
+
+    @Operation(summary = "Retry Payment for Order",
+            description = "Api này dùng để thanh toán lại đơn hàng(khi đang trong phần chờ thanh toán)")
+    @GetMapping("/orders/{orderId}/retry-payment")
+    public ApiResponse<VNPayResponse> retryPayment(@Min(value = 1, message = "ID phải lớn hơn 0")
+                                                       @PathVariable Long orderId, HttpServletRequest request) {
+        return ApiResponse.<VNPayResponse>builder()
+                .code(HttpStatus.OK.value())
+                .message("Tạo thành công URL thanh toán VNPay")
+                .result(orderService.retryPayment(orderId, request))
+                .build();
+    }
+
 }

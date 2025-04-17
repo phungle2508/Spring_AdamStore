@@ -23,6 +23,8 @@ public class PaymentHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
      Long id;
 
+    Boolean isPrimary;
+
     @Enumerated(EnumType.STRING)
     @JoinColumn(nullable = false)
     PaymentMethod paymentMethod;

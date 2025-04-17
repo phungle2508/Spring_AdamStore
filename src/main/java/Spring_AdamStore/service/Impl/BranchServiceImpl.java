@@ -31,7 +31,11 @@ public class BranchServiceImpl implements BranchService {
     @Override
     public BranchResponse create(BranchRequest request) {
         if(branchRepository.existsByName(request.getName())){
-            throw new AppException(ErrorCode.CATEGORY_EXISTED);
+            throw new AppException(ErrorCode.BRANCH_EXISTED);
+        }
+
+        if(branchRepository.existsByPhone(request.getPhone())){
+            throw new AppException(ErrorCode.PHONE_EXISTED);
         }
 
         Branch branch = branchMapper.toBranch(request);
@@ -66,7 +70,11 @@ public class BranchServiceImpl implements BranchService {
     @Override
     public BranchResponse update(Long id, BranchUpdateRequest request) {
         if(branchRepository.existsByName(request.getName())){
-            throw new AppException(ErrorCode.CATEGORY_EXISTED);
+            throw new AppException(ErrorCode.BRANCH_EXISTED);
+        }
+
+        if(branchRepository.existsByPhone(request.getPhone())){
+            throw new AppException(ErrorCode.PHONE_EXISTED);
         }
 
         Branch branch = findActiveBranchById(id);

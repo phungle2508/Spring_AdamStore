@@ -1,10 +1,15 @@
 package Spring_AdamStore.service;
 
 import Spring_AdamStore.dto.request.OrderRequest;
+import Spring_AdamStore.dto.request.PaymentCallbackRequest;
 import Spring_AdamStore.dto.request.UpdateOrderAddressRequest;
 import Spring_AdamStore.dto.response.OrderResponse;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.dto.response.ShippingFeeResponse;
+import Spring_AdamStore.dto.response.VNPayResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 
 public interface OrderService {
 
@@ -18,6 +23,11 @@ public interface OrderService {
 
     void delete(Long id);
 
-    ShippingFeeResponse shippingCost(Double totalPrice, String toWardCode, Integer toDistrictId);
+    VNPayResponse processPayment(Long orderId, HttpServletRequest request);
 
+    OrderResponse updateOrderAfterPayment(PaymentCallbackRequest request);
+
+    void handleFailedPayment(PaymentCallbackRequest request);
+
+    VNPayResponse retryPayment(Long orderId, HttpServletRequest request);
 }

@@ -1,6 +1,7 @@
 server:
   port: 8080
 
+# Profile
 spring:
   config:
     activate:
@@ -27,7 +28,7 @@ spring:
       port: ${REDIS_PORT:6379}
       password: ${REDIS_PASSWORD:123456}
 
-
+# Email
   mail:
     host: ${MAIL_HOST:smtp.gmail.com}
     port: ${MAIL_PORT:587}
@@ -40,7 +41,7 @@ spring:
           starttls:
             enable: ${MAIL_SMTP_STARTTLS_ENABLE:true}
 
-
+# Swagger
 springdoc:
   api-docs:
     enabled: true
@@ -94,4 +95,14 @@ shipping:
   width: 20
   height: 1000
 
+# VNPAY
+payment:
+  vnPay:
+    url: ${VNPAY_URL}
+    tmn-code: ${VNPAY_TMN_CODE}
+    secret-key: ${VNPAY_SECRET_KEY}
+    return-url: ${VNPAY_RETURN_URL}
+    version: ${VNPAY_VERSION}
+    command: ${VNPAY_COMMAND}
+    order-type: ${VNPAY_ORDER_TYPE}
 
