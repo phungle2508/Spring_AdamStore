@@ -4,6 +4,7 @@ import Spring_AdamStore.config.VNPAYConfig;
 import Spring_AdamStore.constants.OrderStatus;
 import Spring_AdamStore.constants.PaymentMethod;
 import Spring_AdamStore.constants.PaymentStatus;
+import Spring_AdamStore.constants.RoleEnum;
 import Spring_AdamStore.dto.request.*;
 import Spring_AdamStore.dto.response.*;
 import Spring_AdamStore.entity.*;
@@ -11,24 +12,34 @@ import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.OrderMapper;
 import Spring_AdamStore.repository.*;
+import Spring_AdamStore.repository.criteria.SearchCriteriaQueryConsumer;
+import Spring_AdamStore.repository.criteria.SearchCriteria;
 import Spring_AdamStore.service.CurrentUserService;
 import Spring_AdamStore.service.OrderService;
+import Spring_AdamStore.service.PageableService;
+import Spring_AdamStore.service.relationship.UserHasRoleService;
 import Spring_AdamStore.util.VNPayUtil;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static Spring_AdamStore.constants.OrderStatus.PENDING;
 
@@ -47,7 +58,12 @@ public class OrderServiceImpl implements OrderService {
     private final OrderItemRepository orderItemRepository;
     private final PromotionRepository promotionRepository;
     private final PaymentHistoryRepository paymentHistoryRepository;
+    private final UserHasRoleService userHasRoleService;
     private final VNPAYConfig vnPayConfig;
+    private final PageableService pageableService;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
 
     @Override
@@ -141,7 +157,118 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public PageResponse<OrderResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
-        return null;
+        pageNo = pageNo - 1;
+
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
+
+        Page<Order> orderPage = orderRepository.findAll(pageable);
+
+        return PageResponse.<OrderResponse>builder()
+                .page(orderPage.getNumber() + 1)
+                .size(orderPage.getSize())
+                .totalPages(orderPage.getTotalPages())
+                .totalItems(orderPage.getTotalElements())
+                .items(orderMapper.toOrderResponseList(orderPage.getContent()))
+                .build();
+    }
+
+    @Override
+    public PageResponse<OrderResponse> searchOrder(int pageNo, int pageSize, String sortBy, List<String> search) {
+        pageNo = pageNo - 1;
+
+        List<SearchCriteria> criteriaList = new ArrayList<>();
+
+        // Lay danh sach dieu kien
+        if(search != null){
+            for(String s : search){
+                Pattern pattern = Pattern.compile("(\\w+?)(~|>|<)(.*)");
+                Matcher matcher = pattern.matcher(s);
+                if(matcher.find()){
+                    criteriaList.add(new SearchCriteria(matcher.group(1), matcher.group(2), matcher.group(3)));
+                }
+            }
+        }
+        List<Order> orderList = getOrderList(pageNo, pageSize, sortBy, criteriaList);
+
+        Long totalElements = getTotalElements(criteriaList);
+        int totalPages = (int) Math.ceil((double) totalElements / pageSize);
+
+        return PageResponse.<OrderResponse>builder()
+                .page(pageNo + 1)
+                .size(pageSize)
+                .totalPages(totalPages)
+                .totalItems(totalElements)
+                .items(orderMapper.toOrderResponseList(orderList))
+                .build();
+    }
+
+    private List<Order> getOrderList(int pageNo, int pageSize, String sortBy, List<SearchCriteria> criteriaList) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Order> query = builder.createQuery(Order.class);
+        Root<Order> root = query.from(Order.class);
+
+        // xu ly dieu kien
+        Predicate predicate = builder.conjunction();
+
+        // check user
+        User currentUser = userRepository.findByEmail(currentUserService.getCurrentUsername())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        boolean isAdmin = userHasRoleService.checkRoleForUser(currentUser, RoleEnum.ADMIN);
+        if(!isAdmin){
+            predicate = builder.and(predicate, builder.equal(root.get("user").get("id"), currentUser.getId()));
+        }
+
+        // search
+        if(!CollectionUtils.isEmpty(criteriaList)){
+            SearchCriteriaQueryConsumer queryConsumer = new SearchCriteriaQueryConsumer(builder, predicate, root);
+            criteriaList.forEach(queryConsumer);
+
+            predicate = builder.and(predicate, queryConsumer.getPredicate());
+        }
+
+        query.where(predicate);
+
+        // Sort
+        if(StringUtils.hasLength(sortBy)){
+            Pattern pattern = Pattern.compile("(\\w+?)(-)(asc|desc)");
+            Matcher matcher = pattern.matcher(sortBy);
+            if(matcher.find()){
+                String columnName = matcher.group(1);
+
+                if(matcher.group(3).equalsIgnoreCase("desc")){
+                    query.orderBy(builder.desc(root.get(columnName)));
+                }else{
+                    query.orderBy(builder.asc(root.get(columnName)));
+                }
+            }
+        }
+
+        return entityManager.createQuery(query)
+                .setFirstResult(pageNo * pageSize)
+                .setMaxResults(pageSize)
+                .getResultList();
+    }
+
+    private Long getTotalElements(List<SearchCriteria> criteriaList) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> countQuery = builder.createQuery(Long.class);
+        Root<Order> root = countQuery.from(Order.class);
+
+        // Xu ly dieu kien tim kiem
+        Predicate predicate = builder.conjunction();
+
+        // search
+        if(!CollectionUtils.isEmpty(criteriaList)){
+            SearchCriteriaQueryConsumer queryConsumer = new SearchCriteriaQueryConsumer(builder, predicate, root);
+            criteriaList.forEach(queryConsumer);
+
+            predicate = builder.and(predicate, queryConsumer.getPredicate());
+        }
+
+        countQuery.select(builder.count(root));
+        countQuery.where(predicate);
+
+        return entityManager.createQuery(countQuery).getSingleResult();
     }
 
     @Override
@@ -271,5 +398,7 @@ public class OrderServiceImpl implements OrderService {
                 .paymentUrl(paymentUrl)
                 .build();
     }
+
+
 
 }
