@@ -11,6 +11,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 
+import java.util.List;
+
 public interface OrderService {
 
     OrderResponse create(OrderRequest request);
@@ -30,4 +32,6 @@ public interface OrderService {
     void handleFailedPayment(PaymentCallbackRequest request);
 
     VNPayResponse retryPayment(Long orderId, HttpServletRequest request);
+
+    PageResponse<OrderResponse> searchOrder(int pageNo, int pageSize, String sortBy, List<String> search);
 }

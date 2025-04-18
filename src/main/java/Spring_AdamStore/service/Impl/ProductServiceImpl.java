@@ -12,7 +12,7 @@ import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.ProductMapper;
 import Spring_AdamStore.mapper.ReviewMapper;
 import Spring_AdamStore.repository.*;
-import Spring_AdamStore.repository.criteria.JobSearchCriteriaQueryConsumer;
+import Spring_AdamStore.repository.criteria.SearchCriteriaQueryConsumer;
 import Spring_AdamStore.repository.criteria.SearchCriteria;
 import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.ProductService;
@@ -206,7 +206,7 @@ public class ProductServiceImpl implements ProductService {
         predicate = handlePriceSearch(builder, productVariantJoin, iterator, predicate);
 
         if(!CollectionUtils.isEmpty(criteriaList)){ // search job
-            JobSearchCriteriaQueryConsumer queryConsumer = new JobSearchCriteriaQueryConsumer(builder, predicate, root);
+            SearchCriteriaQueryConsumer queryConsumer = new SearchCriteriaQueryConsumer(builder, predicate, root);
             criteriaList.forEach(queryConsumer);
 
             predicate = builder.and(predicate, queryConsumer.getPredicate());
@@ -280,7 +280,7 @@ public class ProductServiceImpl implements ProductService {
         predicate = handlePriceSearch(builder, productVariantJoin, iterator, predicate);
 
         if(!CollectionUtils.isEmpty(criteriaList)){ // search job
-            JobSearchCriteriaQueryConsumer queryConsumer = new JobSearchCriteriaQueryConsumer(builder, predicate, root);
+            SearchCriteriaQueryConsumer queryConsumer = new SearchCriteriaQueryConsumer(builder, predicate, root);
             criteriaList.forEach(queryConsumer);
             predicate = builder.and(predicate, queryConsumer.getPredicate());
         }

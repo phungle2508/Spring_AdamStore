@@ -15,11 +15,6 @@ public interface UserHasRoleRepository extends JpaRepository<UserHasRole,Long> {
 
     void deleteByUser(User user);
 
-    List<UserHasRole> findByRoleId(Long roleId);
-
-    @Query(value = "SELECT * FROM tbl_user_has_role WHERE user_id = :userId AND state = :state",
-            nativeQuery = true)
-    List<UserHasRole> findByUserIdAndState(@Param("userId") Long userId,
-                                           @Param("state") String state);
+    UserHasRole findUserHasRoleByUserAndRole (User user, Role role);
 
 }

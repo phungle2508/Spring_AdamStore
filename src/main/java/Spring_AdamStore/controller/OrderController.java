@@ -18,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j(topic = "ORDER-CONTROLLER")
 @RequiredArgsConstructor
 @Validated
@@ -60,6 +62,19 @@ public class OrderController {
                 .code(HttpStatus.OK.value())
                 .result(orderService.fetchAll(pageNo, pageSize, sortBy))
                 .message("Fetch All Orders With Pagination")
+                .build();
+    }
+
+    @GetMapping("/orders/search")
+    public ApiResponse<PageResponse<OrderResponse>> searchCompany(@Min(value = 1, message = "pageNo phải lớn hơn 0")
+                                                                    @RequestParam(defaultValue = "1") int pageNo,
+                                                                    @RequestParam(defaultValue = "10") int pageSize,
+                                                                    @RequestParam(required = false) String sortBy,
+                                                                    @RequestParam(required = false) List<String> search){
+        return ApiResponse.<PageResponse<OrderResponse>>builder()
+                .code(HttpStatus.OK.value())
+                .result(orderService.searchOrder(pageNo, pageSize, sortBy, search))
+                .message("Search Products based on attributes with pagination")
                 .build();
     }
 
