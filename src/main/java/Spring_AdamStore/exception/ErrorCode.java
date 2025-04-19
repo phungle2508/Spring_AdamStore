@@ -69,7 +69,8 @@ public enum ErrorCode {
     ADDRESS_NOT_BELONG_TO_USER(1009, "Địa chỉ không thuộc về người dùng hiện tại", HttpStatus.FORBIDDEN),
     ORDER_NOT_BELONG_TO_USER(2002, "Đơn hàng không thuộc về người dùng hiện tại", HttpStatus.FORBIDDEN),
     PAYMENT_HISTORY_NOT_EXISTED(1003, "PaymentHistory không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
-    INVALID_ORDER_STATUS(1100, "Đơn hàng không ở trạng thái PENDING", HttpStatus.FORBIDDEN)
+    INVALID_ORDER_STATUS(1100, "Đơn hàng không ở trạng thái PENDING", HttpStatus.FORBIDDEN),
+    PROMOTION_ALREADY_USED(1038, "Bạn đã sử dụng mã khuyến mãi này rồi", HttpStatus.BAD_REQUEST)
     ;
 
 

@@ -54,7 +54,7 @@ public class BranchServiceImpl implements BranchService {
     public PageResponse<BranchResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
         pageNo = pageNo - 1;
 
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Branch.class);
 
         Page<Branch> branchPage = branchRepository.findAll(pageable);
 

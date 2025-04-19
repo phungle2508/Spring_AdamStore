@@ -40,8 +40,7 @@ public class ReviewServiceImpl implements ReviewService {
     public ReviewResponse create(ReviewRequest request) {
         Review review = reviewMapper.toReview(request);
 
-        User user = userRepository.findByEmail(currentUserService.getCurrentUsername())
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        User user = currentUserService.getCurrentUser();
         review.setUser(user);
 
         Product product = productRepository.findById(request.getProductId())
@@ -62,7 +61,7 @@ public class ReviewServiceImpl implements ReviewService {
     public PageResponse<ReviewResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
         pageNo = pageNo - 1;
 
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Review.class);
 
         Page<Review> reviewPage = reviewRepository.findAll(pageable);
 

@@ -75,7 +75,7 @@ public class ProductImageServiceImpl implements ProductImageService {
     public PageResponse<ProductImageResponse> getAllFiles(int pageNo, int pageSize, String sortBy) {
         pageNo = pageNo - 1;
 
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, ProductImage.class);
 
         Page<ProductImage> productImagePage = productImageRepository.findAll(pageable);
 

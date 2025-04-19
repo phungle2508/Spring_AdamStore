@@ -8,6 +8,7 @@ import Spring_AdamStore.constants.RoleEnum;
 import Spring_AdamStore.dto.request.*;
 import Spring_AdamStore.dto.response.*;
 import Spring_AdamStore.entity.*;
+import Spring_AdamStore.entity.relationship.PromotionUsage;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.OrderMapper;
@@ -17,6 +18,7 @@ import Spring_AdamStore.repository.criteria.SearchCriteria;
 import Spring_AdamStore.service.CurrentUserService;
 import Spring_AdamStore.service.OrderService;
 import Spring_AdamStore.service.PageableService;
+import Spring_AdamStore.service.relationship.PromotionUsageService;
 import Spring_AdamStore.service.relationship.UserHasRoleService;
 import Spring_AdamStore.util.VNPayUtil;
 import jakarta.persistence.EntityManager;
@@ -61,6 +63,7 @@ public class OrderServiceImpl implements OrderService {
     private final UserHasRoleService userHasRoleService;
     private final VNPAYConfig vnPayConfig;
     private final PageableService pageableService;
+    private final PromotionUsageService promotionUsageService;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -70,8 +73,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public OrderResponse create(OrderRequest request) {
         // user
-        User user = userRepository.findByEmail(currentUserService.getCurrentUsername())
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        User user = currentUserService.getCurrentUser();
 
         // address
         Address address = addressRepository.findById(request.getAddressId())
@@ -121,13 +123,10 @@ public class OrderServiceImpl implements OrderService {
             Promotion promotion =  promotionRepository.findById(request.getPromotionId())
                     .orElseThrow(() -> new AppException(ErrorCode.PROMOTION_NOT_EXISTED));
 
-            if (promotion.getStartDate().isAfter(LocalDate.now()) || promotion.getEndDate().isBefore(LocalDate.now())) {
-                throw new AppException(ErrorCode.PROMOTION_EXPIRED);
-            }
+            PromotionUsage promotionUsage = promotionUsageService.applyPromotion(promotion, order, user);
 
-            double discount = totalPrice * (promotion.getDiscountPercent() / 100.0);
-            totalPrice -= discount;
-            order.setPromotion(promotion);
+            totalPrice -= promotionUsage.getDiscountAmount();
+            order.setPromotionUsage(promotionUsage);
         }
 
         order.setTotalPrice(totalPrice);
@@ -159,7 +158,7 @@ public class OrderServiceImpl implements OrderService {
     public PageResponse<OrderResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
         pageNo = pageNo - 1;
 
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Order.class);
 
         Page<Order> orderPage = orderRepository.findAll(pageable);
 
@@ -211,8 +210,7 @@ public class OrderServiceImpl implements OrderService {
         Predicate predicate = builder.conjunction();
 
         // check user
-        User currentUser = userRepository.findByEmail(currentUserService.getCurrentUsername())
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        User currentUser = currentUserService.getCurrentUser();
         boolean isAdmin = userHasRoleService.checkRoleForUser(currentUser, RoleEnum.ADMIN);
         if(!isAdmin){
             predicate = builder.and(predicate, builder.equal(root.get("user").get("id"), currentUser.getId()));

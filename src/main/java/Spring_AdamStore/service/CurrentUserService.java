@@ -1,7 +1,9 @@
 package Spring_AdamStore.service;
 
+import Spring_AdamStore.entity.User;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
+import Spring_AdamStore.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class CurrentUserService {
 
+    private final UserRepository userRepository;
+
     // info tu access token
     public String getCurrentUsername(){
         var context = SecurityContextHolder.getContext();
@@ -19,6 +23,11 @@ public class CurrentUserService {
             throw new AppException(ErrorCode.UNAUTHORIZED);
         }
         return authentication.getName(); // email
+    }
+
+    public User getCurrentUser(){
+        return  userRepository.findByEmail(getCurrentUsername())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
     }
 
 }

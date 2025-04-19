@@ -53,7 +53,7 @@ public class PromotionServiceImpl implements PromotionService {
     public PageResponse<PromotionResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
         pageNo = pageNo - 1;
 
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Promotion.class);
 
         Page<Promotion> promotionPage = promotionRepository.findAll(pageable);
 

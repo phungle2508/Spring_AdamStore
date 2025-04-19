@@ -2,6 +2,7 @@ package Spring_AdamStore.entity;
 
 import Spring_AdamStore.constants.EntityStatus;
 import Spring_AdamStore.constants.Gender;
+import Spring_AdamStore.entity.relationship.PromotionUsage;
 import Spring_AdamStore.entity.relationship.UserHasRole;
 import jakarta.persistence.*;
 import lombok.*;
@@ -76,6 +77,9 @@ public class User{
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     Set<UserHasRole> roles = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    Set<PromotionUsage> promotionUsages = new HashSet<>();
 
     @PrePersist
     public void prePersist() {

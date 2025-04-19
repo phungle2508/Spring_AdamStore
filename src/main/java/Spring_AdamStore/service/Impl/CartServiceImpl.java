@@ -47,10 +47,9 @@ public class CartServiceImpl implements CartService {
     public PageResponse<CartItemResponse> getCartItemsOfCurrentUser(int pageNo, int pageSize, String sortBy) {
         pageNo = pageNo - 1;
 
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, CartItem.class);
 
-        User user = userRepository.findByEmail(currentUserService.getCurrentUsername())
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        User user = currentUserService.getCurrentUser();
 
         Cart cart = cartRepository.findByUserId(user.getId())
                 .orElseThrow(()->new AppException(ErrorCode.CART_NOT_EXISTED));
