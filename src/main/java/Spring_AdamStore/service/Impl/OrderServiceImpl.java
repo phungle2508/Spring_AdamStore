@@ -33,6 +33,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -398,5 +399,31 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void updateOrderStatusProcessingToShipped() {
+        log.info("Update Order From Processing To Shipped");
+
+        LocalDate currentDate = LocalDate.now();
+
+        List<Order> orderList = orderRepository.findByOrderStatusAndOrderDateBefore(OrderStatus.PROCESSING,
+                currentDate.minusDays(1));
+
+        orderList.forEach(order ->  order.setOrderStatus(OrderStatus.SHIPPED));
+        orderRepository.saveAll(orderList);
+    }
+
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void updateOrderStatusShippedToDelivered() {
+        log.info("Update Order From Shipped To Delivered");
+
+        LocalDate currentDate = LocalDate.now();
+
+        List<Order> orderList = orderRepository.findByOrderStatusAndOrderDateBefore(OrderStatus.SHIPPED,
+                currentDate.minusDays(5));
+
+        orderList.forEach(order ->  order.setOrderStatus(OrderStatus.DELIVERED));
+        orderRepository.saveAll(orderList);
+
+    }
 
 }
