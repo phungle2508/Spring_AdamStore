@@ -3,13 +3,13 @@ package Spring_AdamStore.service.Impl;
 import Spring_AdamStore.constants.EntityStatus;
 import Spring_AdamStore.dto.request.ProductRequest;
 import Spring_AdamStore.dto.request.ProductUpdateRequest;
-import Spring_AdamStore.dto.response.PageResponse;
-import Spring_AdamStore.dto.response.ProductResponse;
-import Spring_AdamStore.dto.response.ReviewResponse;
+import Spring_AdamStore.dto.response.*;
 import Spring_AdamStore.entity.*;
+import Spring_AdamStore.entity.Order;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.ProductMapper;
+import Spring_AdamStore.mapper.ProductVariantMapper;
 import Spring_AdamStore.mapper.ReviewMapper;
 import Spring_AdamStore.repository.*;
 import Spring_AdamStore.repository.criteria.SearchCriteriaQueryConsumer;
@@ -51,6 +51,8 @@ public class ProductServiceImpl implements ProductService {
     private final SizeRepository sizeRepository;
     private final ReviewMapper reviewMapper;
     private final ProductVariantService productVariantService;
+    private final ProductVariantRepository productVariantRepository;
+    private final ProductVariantMapper productVariantMapper;
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -188,6 +190,23 @@ public class ProductServiceImpl implements ProductService {
                 .totalPages(totalPages)
                 .totalItems(totalElements)
                 .items(productMapper.toProductResponseList(productList))
+                .build();
+    }
+
+    @Override
+    public PageResponse<ProductVariantResponse> getVariantsByProductId(int pageNo, int pageSize, String sortBy, Long productId) {
+        pageNo = pageNo - 1;
+
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, ProductVariant.class);
+
+        Page<ProductVariant> productVariantPage = productVariantRepository.findAllByProductId(productId, pageable);
+
+        return PageResponse.<ProductVariantResponse>builder()
+                .page(productVariantPage.getNumber() + 1)
+                .size(productVariantPage.getSize())
+                .totalPages(productVariantPage.getTotalPages())
+                .totalItems(productVariantPage.getTotalElements())
+                .items(productVariantMapper.toProductVariantResponseList(productVariantPage.getContent()))
                 .build();
     }
 
