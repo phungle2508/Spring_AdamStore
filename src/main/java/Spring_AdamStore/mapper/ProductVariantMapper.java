@@ -20,6 +20,8 @@ public interface ProductVariantMapper {
 
     ProductVariantResponse toProductVariantResponse(ProductVariant productVariant);
 
+    List<ProductVariantResponse> toProductVariantResponseList(List<ProductVariant> productVariantList);
+
     @Mapping(target = "id", source = "id")
     @Mapping(target = "product", source = "product")
     @Mapping(target = "color", source = "color")

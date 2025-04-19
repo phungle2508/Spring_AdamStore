@@ -2,6 +2,8 @@ package Spring_AdamStore.repository;
 
 import Spring_AdamStore.entity.Branch;
 import Spring_AdamStore.entity.ProductVariant;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,5 +17,7 @@ public interface ProductVariantRepository extends JpaRepository<ProductVariant, 
 
     Optional<ProductVariant> findByProductIdAndColorIdAndSizeId(Long productId, Long colorId, Long sizeId);
 
+
+    Page<ProductVariant> findAllByProductId(Long productId, Pageable pageable);
 
 }

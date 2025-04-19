@@ -2,10 +2,7 @@ package Spring_AdamStore.controller;
 
 import Spring_AdamStore.dto.request.ProductRequest;
 import Spring_AdamStore.dto.request.ProductUpdateRequest;
-import Spring_AdamStore.dto.response.ApiResponse;
-import Spring_AdamStore.dto.response.PageResponse;
-import Spring_AdamStore.dto.response.ProductResponse;
-import Spring_AdamStore.dto.response.ReviewResponse;
+import Spring_AdamStore.dto.response.*;
 import Spring_AdamStore.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -108,6 +105,21 @@ public class ProductController {
                 .code(HttpStatus.OK.value())
                 .message("Fetch Reviews By Product Id")
                 .result(productService.fetchReviewsByProductId(pageNo, pageSize, sortBy, productId))
+                .build();
+    }
+
+    @Operation(description = "Api này dùng để lấy tất ca Product-Variants theo Product")
+    @GetMapping("/products/{productId}/product-variants")
+    public ApiResponse<PageResponse<ProductVariantResponse>> getVariantsByProductId(@Min(value = 1, message = "pageNo phải lớn hơn 0")
+                                                                          @RequestParam(defaultValue = "1") int pageNo,
+                                                                      @RequestParam(defaultValue = "10") int pageSize,
+                                                                      @RequestParam(required = false) String sortBy,
+                                                                      @Min(value = 1, message = "ID phải lớn hơn 0")
+                                                                          @PathVariable Long productId){
+        return ApiResponse.<PageResponse<ProductVariantResponse>>builder()
+                .code(HttpStatus.OK.value())
+                .message("Fetch All product-variants by product")
+                .result(productService.getVariantsByProductId(pageNo, pageSize, sortBy, productId))
                 .build();
     }
 }
