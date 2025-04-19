@@ -106,7 +106,7 @@ public class AuthController {
         return ApiResponse.<VerificationCodeResponse>builder()
                 .code(HttpStatus.OK.value())
                 .result(accountRecoveryService.forgotPassword(request))
-                .message("Mã xác nhận đã được gửi vào email của bạn")
+                .message("Mã xác nhận đã được gửi vào email của bạn. Vui lòng kiểm tra để hoàn tất quá trình lấy lại mật khẩu")
                 .build();
     }
 

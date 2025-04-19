@@ -12,4 +12,5 @@ public class UserBasic {
     Long id;
     String name;
     String email;
+    String phone;
 }

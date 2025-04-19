@@ -31,6 +31,7 @@ public class PromotionServiceImpl implements PromotionService {
 
 
     @Override
+    @Transactional
     public PromotionResponse create(PromotionRequest request) {
         if(promotionRepository.existsByCode(request.getCode())){
             throw new AppException(ErrorCode.PROMOTION_EXISTED);
@@ -52,7 +53,7 @@ public class PromotionServiceImpl implements PromotionService {
     public PageResponse<PromotionResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
         pageNo = pageNo - 1;
 
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Promotion.class);
 
         Page<Promotion> promotionPage = promotionRepository.findAll(pageable);
 

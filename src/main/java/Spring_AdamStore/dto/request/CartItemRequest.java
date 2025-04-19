@@ -11,11 +11,12 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CartItemRequest {
 
-    @NotNull(message = "quantity không được để trống")
-    @Min(value = 0, message = "quantity phải lớn hơn hoặc bằng 0")
-    Integer quantity;
-
-    @NotNull(message = "productVariantId không được để trống")
+    @Min(value = 1, message = "productVariantId phải lớn hơn 0")
+    @NotNull(message = "productVariantId không được null")
     Long productVariantId;
+
+    @Min(value = 1, message = "quantity phải lớn hơn 0")
+    @NotNull(message = "quantity không được null")
+    Integer quantity;
 
 }

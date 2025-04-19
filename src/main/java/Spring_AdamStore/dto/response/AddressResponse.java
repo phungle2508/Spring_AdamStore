@@ -2,9 +2,7 @@ package Spring_AdamStore.dto.response;
 
 import Spring_AdamStore.dto.basic.EntityBasic;
 import Spring_AdamStore.dto.basic.UserBasic;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.JoinColumn;
+import Spring_AdamStore.dto.basic.WardBasic;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -19,14 +17,16 @@ import java.time.LocalDate;
 public class AddressResponse {
 
     Long id;
+
+    UserBasic user;
+
     Boolean isDefault;
     String streetDetail;
 
-    EntityBasic ward;
+    WardBasic ward;
 
     EntityBasic district;
 
     EntityBasic province;
 
-    UserBasic user;
 }

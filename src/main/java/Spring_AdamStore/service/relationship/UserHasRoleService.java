@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-@Slf4j
+@Slf4j(topic = "USER-HAS-ROLE-SERVICE")
 @Service
 @RequiredArgsConstructor
 public class UserHasRoleService {
@@ -26,6 +26,17 @@ public class UserHasRoleService {
                 .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_EXISTED));
 
         return userHasRoleRepository.save(new UserHasRole(user, role));
+    }
+
+    public UserHasRole findUserHasRole(User user, RoleEnum roleEnum){
+        Role role = roleRepository.findByName(roleEnum.name())
+                .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_EXISTED));
+
+        return userHasRoleRepository.findUserHasRoleByUserAndRole(user, role);
+    }
+
+    public boolean checkRoleForUser(User user, RoleEnum roleEnum){
+        return findUserHasRole(user, roleEnum) != null;
     }
 
 }

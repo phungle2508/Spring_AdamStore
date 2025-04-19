@@ -12,6 +12,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
+import java.util.List;
+
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
@@ -25,6 +27,10 @@ public class OrderResponse {
     Double totalPrice;
     OrderStatus orderStatus;
 
+
+    AddressResponse address;
+
+    List<OrderItemResponse> orderItems;
 
     LocalDate createdAt;
     LocalDate updatedAt;

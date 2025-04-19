@@ -1,6 +1,7 @@
 package Spring_AdamStore.entity;
 
 import Spring_AdamStore.constants.OrderStatus;
+import Spring_AdamStore.entity.relationship.PromotionUsage;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -48,6 +49,9 @@ public class Order {
     @OneToMany(mappedBy = "order")
     Set<PaymentHistory> payments = new HashSet<>();;
 
+    @OneToOne(mappedBy = "order")
+     PromotionUsage promotionUsage;
+
     @ManyToOne
     @JoinColumn(name = "address_id")
     Address address;
@@ -56,8 +60,5 @@ public class Order {
     @JoinColumn(name = "user_id")
      User user;
 
-    @ManyToOne
-    @JoinColumn(name = "promotion_id")
-    Promotion promotion;
 
 }

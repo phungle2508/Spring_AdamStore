@@ -51,7 +51,7 @@ public class ColorServiceImpl implements ColorService {
     public PageResponse<ColorResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
         pageNo = pageNo - 1;
 
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Color.class);
 
         Page<Color> colorPage = colorRepository.findAll(pageable);
 

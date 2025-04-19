@@ -52,7 +52,7 @@ public class ProvinceServiceImpl implements ProvinceService {
     public PageResponse<ProvinceResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
         pageNo = pageNo - 1;
 
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Province.class);
 
         Page<Province> provincePage = provinceRepository.findAll(pageable);
 
@@ -69,7 +69,7 @@ public class ProvinceServiceImpl implements ProvinceService {
     public PageResponse<DistrictResponse> fetchDistrictsByProvinceId(int pageNo, int pageSize, String sortBy, Integer provinceId) {
         pageNo = pageNo - 1;
 
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, District.class);
 
         Page<District> districtPage = districtRepository.findByProvinceId(provinceId, pageable);
 

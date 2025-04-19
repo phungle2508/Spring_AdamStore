@@ -31,7 +31,6 @@ public class ProductRequest {
     @NotEmpty(message = "sizes không được để trống")
     Set<Long> sizeIds;
 
-    @Size(min = 1, message = "Cần ít nhất 1 ảnh cho sản phẩm")
     Set<Long> imageIds;
 
 }

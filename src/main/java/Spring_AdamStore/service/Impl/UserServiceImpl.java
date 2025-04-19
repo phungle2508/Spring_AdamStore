@@ -6,22 +6,26 @@ import Spring_AdamStore.dto.request.UserCreationRequest;
 import Spring_AdamStore.dto.request.UserUpdateRequest;
 import Spring_AdamStore.dto.response.AddressResponse;
 import Spring_AdamStore.dto.response.PageResponse;
+import Spring_AdamStore.dto.response.PromotionResponse;
 import Spring_AdamStore.dto.response.UserResponse;
-import Spring_AdamStore.entity.Address;
-import Spring_AdamStore.entity.Role;
-import Spring_AdamStore.entity.User;
+import Spring_AdamStore.entity.*;
 import Spring_AdamStore.entity.relationship.UserHasRole;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.AddressMapper;
+import Spring_AdamStore.mapper.PromotionMapper;
 import Spring_AdamStore.mapper.UserMapper;
 import Spring_AdamStore.repository.AddressRepository;
+import Spring_AdamStore.repository.PromotionRepository;
 import Spring_AdamStore.repository.RoleRepository;
 import Spring_AdamStore.repository.UserRepository;
 import Spring_AdamStore.repository.relationship.UserHasRoleRepository;
+import Spring_AdamStore.service.CartService;
+import Spring_AdamStore.service.CurrentUserService;
 import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.UserService;
 import Spring_AdamStore.service.relationship.UserHasRoleService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -30,6 +34,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -47,9 +52,15 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final UserHasRoleRepository userHasRoleRepository;
     private final AddressRepository addressRepository;
+    private final CartService cartService;
     private final AddressMapper addressMapper;
+    private final PromotionRepository promotionRepository;
+    private final CurrentUserService currentUserService;
+    private final PromotionMapper promotionMapper;
+
 
     @Override
+    @Transactional
     public UserResponse create(UserCreationRequest request) {
         checkPhoneAndEmailExist(request.getEmail(), request.getPhone());
         User user = userMapper.userCreationToUser(request);
@@ -73,6 +84,8 @@ public class UserServiceImpl implements UserService {
         }
         user.setRoles(roles);
 
+        cartService.createCartForUser(user);
+
         return userMapper.toUserResponse(user);
     }
 
@@ -87,7 +100,7 @@ public class UserServiceImpl implements UserService {
     public PageResponse<UserResponse> fetchAllUsers(int pageNo, int pageSize, String sortBy) {
         pageNo = pageNo - 1;
 
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, User.class);
 
         Page<User> userPage = userRepository.findAll(pageable);
 
@@ -101,6 +114,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserResponse update(Long id, UserUpdateRequest request) {
         User userDB = findActiveUserById(id);
 
@@ -141,7 +155,7 @@ public class UserServiceImpl implements UserService {
     public PageResponse<AddressResponse> getAllAddressesByUserId(int pageNo, int pageSize, String sortBy, Long userId) {
         pageNo = pageNo - 1;
 
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Address.class);
 
         User userDB = findActiveUserById(userId);
 
@@ -153,6 +167,25 @@ public class UserServiceImpl implements UserService {
                 .totalPages(addressPage.getTotalPages())
                 .totalItems(addressPage.getTotalElements())
                 .items(addressMapper.toAddressResponseList(addressPage.getContent()))
+                .build();
+    }
+
+    @Override
+    public PageResponse<PromotionResponse> getPromotionsByUserId(int pageNo, int pageSize, String sortBy) {
+        pageNo = pageNo - 1;
+
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Promotion.class);
+
+        User user = currentUserService.getCurrentUser();
+
+        Page<Promotion> promotionPage = promotionRepository.findAllAvailableForCustomer(user.getId(), LocalDate.now(), pageable);
+
+        return PageResponse.<PromotionResponse>builder()
+                .page(promotionPage.getNumber() + 1)
+                .size(promotionPage.getSize())
+                .totalPages(promotionPage.getTotalPages())
+                .totalItems(promotionPage.getTotalElements())
+                .items(promotionMapper.toPromotionResponseList(promotionPage.getContent()))
                 .build();
     }
 

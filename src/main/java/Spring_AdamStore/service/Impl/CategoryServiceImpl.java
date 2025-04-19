@@ -52,7 +52,7 @@ public class CategoryServiceImpl implements CategoryService {
     public PageResponse<CategoryResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
         pageNo = pageNo - 1;
 
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Category.class);
 
         Page<Category> categoryPage = categoryRepository.findAll(pageable);
 
@@ -91,7 +91,7 @@ public class CategoryServiceImpl implements CategoryService {
     public PageResponse<ProductResponse> fetchByCategoryId(int pageNo, int pageSize, String sortBy, Long categoryId) {
         pageNo = pageNo - 1;
 
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Product.class);
 
         Page<Product> productPage = productRepository.findByCategoryId(categoryId, pageable);
 

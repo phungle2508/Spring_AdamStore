@@ -10,4 +10,6 @@ public interface BranchRepository extends JpaRepository<Branch, Long> {
 
     boolean existsByName(String name);
 
+    boolean existsByPhone(String phone);
+
 }

@@ -1,7 +1,9 @@
 package Spring_AdamStore.service.Impl;
 
 import Spring_AdamStore.dto.request.CartItemRequest;
+import Spring_AdamStore.dto.request.CartItemUpdateRequest;
 import Spring_AdamStore.dto.response.CartItemResponse;
+import Spring_AdamStore.dto.response.ColorResponse;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.entity.*;
 import Spring_AdamStore.exception.AppException;
@@ -13,8 +15,13 @@ import Spring_AdamStore.repository.ProductVariantRepository;
 import Spring_AdamStore.repository.UserRepository;
 import Spring_AdamStore.service.AuthService;
 import Spring_AdamStore.service.CartItemService;
+import Spring_AdamStore.service.CurrentUserService;
+import Spring_AdamStore.service.PageableService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -28,21 +35,17 @@ public class CartItemServiceImpl implements CartItemService {
     private final ProductVariantRepository productVariantRepository;
     private final CartRepository cartRepository;
     private final UserRepository userRepository;
-    private final AuthService authService;
+    private final PageableService pageableService;
     private final CartItemMapper cartItemMapper;
+    private final CurrentUserService currentUserService;
 
     @Override
+    @Transactional
     public CartItemResponse create(CartItemRequest request) {
-
-        User user = userRepository.findByEmail(authService.getCurrentUsername())
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        User user = currentUserService.getCurrentUser();
 
         Cart cart = cartRepository.findByUserId(user.getId())
-                .orElseGet(() -> {
-                    Cart newCart = new Cart();
-                    newCart.setUser(user);
-                    return cartRepository.save(newCart);
-                });
+                .orElseThrow(()->new AppException(ErrorCode.CART_NOT_EXISTED));
 
         ProductVariant productVariant = productVariantRepository.findById(request.getProductVariantId())
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_VARIANT_NOT_EXISTED));
@@ -55,42 +58,58 @@ public class CartItemServiceImpl implements CartItemService {
         Optional<CartItem> existingCartItem = cartItemRepository
                 .findByCartIdAndProductVariantId(cart.getId(), request.getProductVariantId());
 
+        CartItem cartItem;
         if (existingCartItem.isPresent()) {
-            CartItem cartItem = existingCartItem.get();
+            cartItem = existingCartItem.get();
             cartItem.setQuantity(cartItem.getQuantity() + request.getQuantity());
-
-            return cartItemMapper.toCartItemResponse(cartItemRepository.save(cartItem));
-        }
-        else{
-            CartItem cartItem = new CartItem().builder()
+        } else{
+            cartItem = CartItem.builder()
                     .quantity(request.getQuantity())
                     .price(productVariant.getPrice())
                     .productVariant(productVariant)
                     .cart(cart)
                     .build();
-
-            return cartItemMapper.toCartItemResponse(cartItemRepository.save(cartItem));
         }
+        return cartItemMapper.toCartItemResponse(cartItemRepository.save(cartItem));
     }
 
     @Override
     public CartItemResponse fetchById(Long id) {
-        return null;
+        CartItem cartItem = findCartItemById(id);
+        return cartItemMapper.toCartItemResponse(cartItem);
     }
 
     @Override
     public PageResponse<CartItemResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
-        return null;
+        pageNo = pageNo - 1;
+
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, CartItem.class);
+
+        Page<CartItem> cartItemPage = cartItemRepository.findAll(pageable);
+
+        return PageResponse.<CartItemResponse>builder()
+                .page(cartItemPage.getNumber() + 1)
+                .size(cartItemPage.getSize())
+                .totalPages(cartItemPage.getTotalPages())
+                .totalItems(cartItemPage.getTotalElements())
+                .items(cartItemMapper.toCartItemResponseList(cartItemPage.getContent()))
+                .build();
     }
 
     @Override
-    public CartItemResponse update(Long id, CartItemRequest request) {
-        return null;
+    public CartItemResponse update(Long id, CartItemUpdateRequest request) {
+        CartItem cartItem = findCartItemById(id);
+
+        cartItem.setQuantity(request.getQuantity());
+        return cartItemMapper.toCartItemResponse(cartItemRepository.save(cartItem));
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
+        CartItem cartItem = findCartItemById(id);
 
+        cartItemRepository.delete(cartItem);
     }
 
     private CartItem findCartItemById(Long id) {

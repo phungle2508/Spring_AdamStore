@@ -51,7 +51,7 @@ public class WardServiceImpl implements WardService {
     public PageResponse<WardResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
         pageNo = pageNo - 1;
 
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Ward.class);
 
         Page<Ward> wardPage = wardRepository.findAll(pageable);
 

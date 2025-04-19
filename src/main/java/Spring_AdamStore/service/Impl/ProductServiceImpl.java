@@ -12,7 +12,7 @@ import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.ProductMapper;
 import Spring_AdamStore.mapper.ReviewMapper;
 import Spring_AdamStore.repository.*;
-import Spring_AdamStore.repository.criteria.JobSearchCriteriaQueryConsumer;
+import Spring_AdamStore.repository.criteria.SearchCriteriaQueryConsumer;
 import Spring_AdamStore.repository.criteria.SearchCriteria;
 import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.ProductService;
@@ -67,8 +67,10 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_EXISTED));
         product.setCategory(category);
 
-        Set<ProductImage> productImageSet = setProductImages(request.getImageIds(), product);
-        product.setProductImages(productImageSet);
+        if(!CollectionUtils.isEmpty(request.getImageIds())){
+            Set<ProductImage> productImageSet = setProductImages(request.getImageIds(), product);
+            product.setProductImages(productImageSet);
+        }
 
         productRepository.save(product);
 
@@ -204,7 +206,7 @@ public class ProductServiceImpl implements ProductService {
         predicate = handlePriceSearch(builder, productVariantJoin, iterator, predicate);
 
         if(!CollectionUtils.isEmpty(criteriaList)){ // search job
-            JobSearchCriteriaQueryConsumer queryConsumer = new JobSearchCriteriaQueryConsumer(builder, predicate, root);
+            SearchCriteriaQueryConsumer queryConsumer = new SearchCriteriaQueryConsumer(builder, predicate, root);
             criteriaList.forEach(queryConsumer);
 
             predicate = builder.and(predicate, queryConsumer.getPredicate());
@@ -278,7 +280,7 @@ public class ProductServiceImpl implements ProductService {
         predicate = handlePriceSearch(builder, productVariantJoin, iterator, predicate);
 
         if(!CollectionUtils.isEmpty(criteriaList)){ // search job
-            JobSearchCriteriaQueryConsumer queryConsumer = new JobSearchCriteriaQueryConsumer(builder, predicate, root);
+            SearchCriteriaQueryConsumer queryConsumer = new SearchCriteriaQueryConsumer(builder, predicate, root);
             criteriaList.forEach(queryConsumer);
             predicate = builder.and(predicate, queryConsumer.getPredicate());
         }
@@ -293,7 +295,7 @@ public class ProductServiceImpl implements ProductService {
     public PageResponse<ReviewResponse> fetchReviewsByProductId(int pageNo, int pageSize, String sortBy, Long productId) {
         pageNo = pageNo - 1;
 
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Review.class);
 
         Product product = findProductById(productId);
 
@@ -347,7 +349,7 @@ public class ProductServiceImpl implements ProductService {
                 return PageRequest.of(pageNo, pageSize, sort);
             }
         }
-        return pageableService.createPageable(pageNo, pageSize, sortBy);
+        return pageableService.createPageable(pageNo, pageSize, sortBy, Product.class);
     }
 
     @Scheduled(cron = "0 0 0 */7 * ?")

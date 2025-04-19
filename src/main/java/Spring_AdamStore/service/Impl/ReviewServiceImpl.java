@@ -15,6 +15,7 @@ import Spring_AdamStore.repository.ProductRepository;
 import Spring_AdamStore.repository.ReviewRepository;
 import Spring_AdamStore.repository.UserRepository;
 import Spring_AdamStore.service.AuthService;
+import Spring_AdamStore.service.CurrentUserService;
 import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.ReviewService;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +30,8 @@ import org.springframework.stereotype.Service;
 public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
+    private final CurrentUserService currentUserService;
     private final ReviewMapper reviewMapper;
-    private final AuthService authService;
     private final UserRepository userRepository;
     private final PageableService pageableService;
     private final ProductRepository productRepository;
@@ -39,8 +40,7 @@ public class ReviewServiceImpl implements ReviewService {
     public ReviewResponse create(ReviewRequest request) {
         Review review = reviewMapper.toReview(request);
 
-        User user = userRepository.findByEmail(authService.getCurrentUsername())
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        User user = currentUserService.getCurrentUser();
         review.setUser(user);
 
         Product product = productRepository.findById(request.getProductId())
@@ -61,7 +61,7 @@ public class ReviewServiceImpl implements ReviewService {
     public PageResponse<ReviewResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
         pageNo = pageNo - 1;
 
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Review.class);
 
         Page<Review> reviewPage = reviewRepository.findAll(pageable);
 

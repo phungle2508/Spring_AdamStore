@@ -11,6 +11,7 @@ import Spring_AdamStore.mapper.AddressMapper;
 import Spring_AdamStore.repository.*;
 import Spring_AdamStore.service.AddressService;
 import Spring_AdamStore.service.AuthService;
+import Spring_AdamStore.service.CurrentUserService;
 import Spring_AdamStore.service.PageableService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +30,7 @@ public class AddressServiceImpl implements AddressService {
     private final DistrictRepository districtRepository;
     private final ProvinceRepository provinceRepository;
     private final WardRepository wardRepository;
-    private final AuthService authService;
+    private final CurrentUserService currentUserService;
     private final UserRepository userRepository;
 
     @Override
@@ -54,8 +55,7 @@ public class AddressServiceImpl implements AddressService {
         address.setProvince(province);
         address.setDistrict(district);
 
-        User user = userRepository.findByEmail(authService.getCurrentUsername())
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        User user = currentUserService.getCurrentUser();
         address.setUser(user);
 
         return addressMapper.toAddressResponse(addressRepository.save(address));
@@ -72,7 +72,7 @@ public class AddressServiceImpl implements AddressService {
     public PageResponse<AddressResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
         pageNo = pageNo - 1;
 
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Address.class);
 
         Page<Address> addressPage = addressRepository.findAll(pageable);
 

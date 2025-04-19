@@ -33,7 +33,7 @@ public class Branch {
      String name;
     @JoinColumn(nullable = false)
      String location;
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = false, unique = true)
      String phone;
 
     @Enumerated(EnumType.STRING)

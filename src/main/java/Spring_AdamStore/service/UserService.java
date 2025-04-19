@@ -4,6 +4,7 @@ import Spring_AdamStore.dto.request.UserCreationRequest;
 import Spring_AdamStore.dto.request.UserUpdateRequest;
 import Spring_AdamStore.dto.response.AddressResponse;
 import Spring_AdamStore.dto.response.PageResponse;
+import Spring_AdamStore.dto.response.PromotionResponse;
 import Spring_AdamStore.dto.response.UserResponse;
 import jakarta.validation.constraints.Min;
 
@@ -21,4 +22,5 @@ public interface UserService {
 
     PageResponse<AddressResponse> getAllAddressesByUserId(int pageNo, int pageSize, String sortBy, Long userId);
 
+    PageResponse<PromotionResponse> getPromotionsByUserId(int pageNo, int pageSize, String sortBy);
 }

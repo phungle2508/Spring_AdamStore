@@ -2,10 +2,7 @@ package Spring_AdamStore.controller;
 
 import Spring_AdamStore.dto.request.UserCreationRequest;
 import Spring_AdamStore.dto.request.UserUpdateRequest;
-import Spring_AdamStore.dto.response.AddressResponse;
-import Spring_AdamStore.dto.response.ApiResponse;
-import Spring_AdamStore.dto.response.PageResponse;
-import Spring_AdamStore.dto.response.UserResponse;
+import Spring_AdamStore.dto.response.*;
 import Spring_AdamStore.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -84,6 +81,7 @@ public class UserController {
                 .build();
     }
 
+    @Operation(description = "Api lấy tất cả địa chỉ của user")
     @GetMapping("/users/{userId}/addresses")
     public ApiResponse<PageResponse<AddressResponse>> getAddressesByUserId(@Min(value = 1, message = "pageNo phải lớn hơn 0")
                                                                                @RequestParam(defaultValue = "1") int pageNo,
@@ -95,6 +93,19 @@ public class UserController {
                 .code(HttpStatus.OK.value())
                 .message("Fetch Addresses By User Id With Pagination")
                 .result(userService.getAllAddressesByUserId(pageNo, pageSize, sortBy, userId))
+                .build();
+    }
+
+    @Operation(description = "Api lấy tất cả mã giảm giá mà user có thể sử dụng")
+    @GetMapping("/users/promotions/available")
+    public ApiResponse<PageResponse<PromotionResponse>> getPromotionsByUserId(@Min(value = 1, message = "pageNo phải lớn hơn 0")
+                                                                                  @RequestParam(defaultValue = "1") int pageNo,
+                                                                              @RequestParam(defaultValue = "10") int pageSize,
+                                                                              @RequestParam(required = false) String sortBy){
+        return ApiResponse.<PageResponse<PromotionResponse>>builder()
+                .code(HttpStatus.OK.value())
+                .result(userService.getPromotionsByUserId(pageNo, pageSize, sortBy))
+                .message("Fetch Promotions By User With Pagination")
                 .build();
     }
 

@@ -6,9 +6,7 @@ import Spring_AdamStore.dto.response.AddressResponse;
 import Spring_AdamStore.dto.response.BranchResponse;
 import Spring_AdamStore.entity.Address;
 import Spring_AdamStore.entity.Branch;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValueCheckStrategy;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -19,6 +17,7 @@ public interface AddressMapper {
 
     AddressResponse toAddressResponse(Address address);
 
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void update(@MappingTarget Address address, AddressRequest request);
 
     List<AddressResponse> toAddressResponseList(List<Address> addressList);

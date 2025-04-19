@@ -1,19 +1,24 @@
 package Spring_AdamStore.controller;
 
-import Spring_AdamStore.dto.request.OrderItemRequest;
 import Spring_AdamStore.dto.request.OrderRequest;
+import Spring_AdamStore.dto.request.PaymentCallbackRequest;
+import Spring_AdamStore.dto.request.UpdateOrderAddressRequest;
 import Spring_AdamStore.dto.response.*;
 import Spring_AdamStore.service.OrderService;
+import Spring_AdamStore.service.ShippingService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j(topic = "ORDER-CONTROLLER")
 @RequiredArgsConstructor
@@ -23,7 +28,11 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
 
     private final OrderService orderService;
+    private final ShippingService shippingService;
 
+
+    @Operation(summary = "Create Order",
+            description = "Api này dùng để tạo đơn hàng")
     @PostMapping("/orders")
     public ApiResponse<OrderResponse> create(@Valid @RequestBody OrderRequest request){
         return ApiResponse.<OrderResponse>builder()
@@ -56,13 +65,28 @@ public class OrderController {
                 .build();
     }
 
-    @PutMapping("/orders/{id}")
-    public ApiResponse<OrderResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
-                                                 @PathVariable Long id, @Valid @RequestBody OrderRequest request){
+    @GetMapping("/orders/search")
+    public ApiResponse<PageResponse<OrderResponse>> searchCompany(@Min(value = 1, message = "pageNo phải lớn hơn 0")
+                                                                    @RequestParam(defaultValue = "1") int pageNo,
+                                                                    @RequestParam(defaultValue = "10") int pageSize,
+                                                                    @RequestParam(required = false) String sortBy,
+                                                                    @RequestParam(required = false) List<String> search){
+        return ApiResponse.<PageResponse<OrderResponse>>builder()
+                .code(HttpStatus.OK.value())
+                .result(orderService.searchOrder(pageNo, pageSize, sortBy, search))
+                .message("Search Products based on attributes with pagination")
+                .build();
+    }
+
+    @Operation(summary = "Update Address for Order",
+    description = "Cập nhập đia chỉ cho đơn hàng ở trạng thái PENDING hoặc PROCESSING")
+    @PutMapping("/orders/{orderId}/address")
+    public ApiResponse<OrderResponse> updateAddress(@Min(value = 1, message = "orderId phải lớn hơn 0")
+                                                 @PathVariable Long orderId, @Valid @RequestBody UpdateOrderAddressRequest request){
         return ApiResponse.<OrderResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Update Order By Id")
-                .result(orderService.update(id, request))
+                .result(orderService.updateAddress(orderId, request))
                 .build();
     }
 
@@ -88,7 +112,50 @@ public class OrderController {
         return ApiResponse.<ShippingFeeResponse>builder()
                 .code(HttpStatus.NO_CONTENT.value())
                 .message("Calculate Shipping Fee")
-                .result(orderService.shippingCost(totalPrice, toWardCode, toDistrictId))
+                .result(shippingService.shippingCost(totalPrice, toWardCode, toDistrictId))
                 .build();
     }
+
+    @Operation(summary = "Payment for Order",
+            description = "Api này dùng để thanh toán đơn hàng thông qua VNPAY")
+    @GetMapping("/orders/{orderId}/vn-pay")
+    public ApiResponse<VNPayResponse> pay(@Min(value = 1, message = "ID phải lớn hơn 0")
+                                              @PathVariable Long orderId, HttpServletRequest request) {
+        return ApiResponse.<VNPayResponse>builder()
+                .code(HttpStatus.OK.value())
+                .message("Tạo thành công URL thanh toán VNPay")
+                .result(orderService.processPayment(orderId, request))
+                .build();
+    }
+
+    @Operation(summary = "Payment CallBack for Order",
+            description = "Api này dùng để xử lý sau khi thanh toán đơn hàng")
+    @PostMapping("/orders/vn-pay-callback")
+    public ApiResponse<OrderResponse> payCallbackHandler(@Valid @RequestBody PaymentCallbackRequest request) {
+        String status = request.getResponseCode();
+        if (status.equals("00")) {
+            return ApiResponse.<OrderResponse>builder()
+                    .code(1000)
+                    .message("Thanh toán thành công")
+                    .result(orderService.updateOrderAfterPayment(request))
+                    .build();
+        } else {
+            log.error("Thanh toán không thành công với mã phản hồi: " + status);
+            orderService.handleFailedPayment(request);
+            return new ApiResponse<>(4000, "Thanh toán thất bại", null);
+        }
+    }
+
+    @Operation(summary = "Retry Payment for Order",
+            description = "Api này dùng để thanh toán lại đơn hàng(khi đang trong phần chờ thanh toán)")
+    @GetMapping("/orders/{orderId}/retry-payment")
+    public ApiResponse<VNPayResponse> retryPayment(@Min(value = 1, message = "ID phải lớn hơn 0")
+                                                       @PathVariable Long orderId, HttpServletRequest request) {
+        return ApiResponse.<VNPayResponse>builder()
+                .code(HttpStatus.OK.value())
+                .message("Tạo thành công URL thanh toán VNPay")
+                .result(orderService.retryPayment(orderId, request))
+                .build();
+    }
+
 }

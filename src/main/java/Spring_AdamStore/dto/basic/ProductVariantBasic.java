@@ -11,7 +11,7 @@ public class ProductVariantBasic {
 
     Long id;
 
-    String color;
-    String size;
-    String product;
+    EntityBasic color;
+    EntityBasic size;
+    EntityBasic product;
 }
