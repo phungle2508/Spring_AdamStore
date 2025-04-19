@@ -295,7 +295,7 @@ public class ProductServiceImpl implements ProductService {
     public PageResponse<ReviewResponse> fetchReviewsByProductId(int pageNo, int pageSize, String sortBy, Long productId) {
         pageNo = pageNo - 1;
 
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Review.class);
 
         Product product = findProductById(productId);
 
@@ -349,7 +349,7 @@ public class ProductServiceImpl implements ProductService {
                 return PageRequest.of(pageNo, pageSize, sort);
             }
         }
-        return pageableService.createPageable(pageNo, pageSize, sortBy);
+        return pageableService.createPageable(pageNo, pageSize, sortBy, Product.class);
     }
 
     @Scheduled(cron = "0 0 0 */7 * ?")

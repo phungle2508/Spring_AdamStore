@@ -42,8 +42,7 @@ public class CartItemServiceImpl implements CartItemService {
     @Override
     @Transactional
     public CartItemResponse create(CartItemRequest request) {
-        User user = userRepository.findByEmail(currentUserService.getCurrentUsername())
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        User user = currentUserService.getCurrentUser();
 
         Cart cart = cartRepository.findByUserId(user.getId())
                 .orElseThrow(()->new AppException(ErrorCode.CART_NOT_EXISTED));
@@ -63,8 +62,7 @@ public class CartItemServiceImpl implements CartItemService {
         if (existingCartItem.isPresent()) {
             cartItem = existingCartItem.get();
             cartItem.setQuantity(cartItem.getQuantity() + request.getQuantity());
-        }
-        else{
+        } else{
             cartItem = CartItem.builder()
                     .quantity(request.getQuantity())
                     .price(productVariant.getPrice())
@@ -85,7 +83,7 @@ public class CartItemServiceImpl implements CartItemService {
     public PageResponse<CartItemResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
         pageNo = pageNo - 1;
 
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, CartItem.class);
 
         Page<CartItem> cartItemPage = cartItemRepository.findAll(pageable);
 

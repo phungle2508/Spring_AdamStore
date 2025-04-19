@@ -115,8 +115,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public UserResponse getMyInfo() {
-        User user = userRepository.findByEmail(currentUserService.getCurrentUsername())
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        User user = currentUserService.getCurrentUser();
 
         return userMapper.toUserResponse(user);
     }
@@ -143,8 +142,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     @Override
     public void changePassword(ChangePasswordRequest request) {
-        User user = userRepository.findByEmail(currentUserService.getCurrentUsername())
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        User user = currentUserService.getCurrentUser();
 
         if (!request.getNewPassword().equals(request.getConfirmPassword())) {
             throw new AppException(ErrorCode.PASSWORD_MISMATCH);

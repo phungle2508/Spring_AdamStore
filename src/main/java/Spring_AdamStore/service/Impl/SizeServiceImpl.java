@@ -39,7 +39,7 @@ public class SizeServiceImpl implements SizeService {
     public PageResponse<SizeResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
         pageNo = pageNo - 1;
 
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy);
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Size.class);
 
         Page<Size> sizePage = sizeRepository.findAll(pageable);
 

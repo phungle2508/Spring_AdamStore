@@ -1,6 +1,7 @@
 package Spring_AdamStore.entity;
 
 import Spring_AdamStore.constants.EntityStatus;
+import Spring_AdamStore.entity.relationship.PromotionUsage;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -57,7 +58,8 @@ public class Promotion {
 
 
     @OneToMany(mappedBy = "promotion")
-    Set<Order> orders = new HashSet<>();
+    Set<PromotionUsage> promotionUsages = new HashSet<>();
+
 
     @PrePersist
     public void prePersist() {
