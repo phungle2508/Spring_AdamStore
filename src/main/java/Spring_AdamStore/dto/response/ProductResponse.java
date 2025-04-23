@@ -24,6 +24,7 @@ public class ProductResponse {
     String name;
     String description;
 
+    Boolean isAvailable;
     Double averageRating;
     Integer soldQuantity;
     Integer totalReviews;

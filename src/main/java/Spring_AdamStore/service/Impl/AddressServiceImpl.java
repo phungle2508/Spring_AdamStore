@@ -31,7 +31,7 @@ public class AddressServiceImpl implements AddressService {
     private final ProvinceRepository provinceRepository;
     private final WardRepository wardRepository;
     private final CurrentUserService currentUserService;
-    private final UserRepository userRepository;
+    private final OrderRepository orderRepository;
 
     @Override
     public AddressResponse create(AddressRequest request) {
@@ -115,6 +115,8 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public void delete(Long id) {
         Address address = findAddressById(id);
+        address.getOrders().forEach(order -> order.setAddress(null));
+        orderRepository.saveAll(address.getOrders());
 
         addressRepository.delete(address);
     }

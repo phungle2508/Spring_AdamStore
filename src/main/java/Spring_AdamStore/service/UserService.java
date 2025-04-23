@@ -20,7 +20,10 @@ public interface UserService {
 
     void delete(Long id);
 
-    PageResponse<AddressResponse> getAllAddressesByUserId(int pageNo, int pageSize, String sortBy, Long userId);
+    PageResponse<AddressResponse> getAllAddressesByUser(int pageNo, int pageSize, String sortBy);
 
-    PageResponse<PromotionResponse> getPromotionsByUserId(int pageNo, int pageSize, String sortBy);
+    PageResponse<PromotionResponse> getPromotionsByUser(int pageNo, int pageSize, String sortBy);
+
+    UserResponse restore(long id);
+
 }

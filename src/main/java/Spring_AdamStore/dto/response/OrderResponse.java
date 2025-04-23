@@ -1,6 +1,7 @@
 package Spring_AdamStore.dto.response;
 
 import Spring_AdamStore.constants.OrderStatus;
+import Spring_AdamStore.dto.basic.UserBasic;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.EnumType;
@@ -27,6 +28,8 @@ public class OrderResponse {
     Double totalPrice;
     OrderStatus orderStatus;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    UserBasic user;
 
     AddressResponse address;
 

@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
@@ -23,6 +24,7 @@ import java.util.Set;
 @Setter
 @Table(name = "tbl_promotion")
 @SQLRestriction("status = 'ACTIVE'")
+@SQLDelete(sql = "UPDATE tbl_promotion SET status = 'INACTIVE' WHERE id = ?")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -62,7 +64,7 @@ public class Promotion {
 
 
     @PrePersist
-    public void prePersist() {
+    public void handleBeforeCreate() {
         if (status == null) {
             this.status = EntityStatus.ACTIVE;
         }

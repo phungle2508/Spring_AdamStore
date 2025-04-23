@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
@@ -21,15 +22,17 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLRestriction("status = 'ACTIVE'")
+@SQLDelete(sql = "UPDATE tbl_branch SET status = 'INACTIVE' WHERE id = ?")
 @Table(name = "tbl_branch")
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class Branch {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
      Long id;
 
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = false, unique = true)
      String name;
     @JoinColumn(nullable = false)
      String location;
@@ -37,7 +40,7 @@ public class Branch {
      String phone;
 
     @Enumerated(EnumType.STRING)
-    @JoinColumn(name = "status", nullable = false)
+    @Column(name = "status", nullable = false)
     EntityStatus status;
 
     @CreatedBy
@@ -51,7 +54,7 @@ public class Branch {
 
 
     @PrePersist
-    public void prePersist() {
+    public void handleBeforeCreate() {
         if (status == null) {
             this.status = EntityStatus.ACTIVE;
         }

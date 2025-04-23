@@ -45,6 +45,7 @@ public class UserController {
                 .build();
     }
 
+    @Operation(summary = "Fetch All Users For Admin")
     @GetMapping("/users")
     public ApiResponse<PageResponse<UserResponse>> fetchAll(@Min(value = 1, message = "pageNo phải lớn hơn 0")
                                                             @RequestParam(defaultValue = "1") int pageNo,
@@ -53,7 +54,7 @@ public class UserController {
         return ApiResponse.<PageResponse<UserResponse>>builder()
                 .code(HttpStatus.OK.value())
                 .result(userService.fetchAllUsers(pageNo, pageSize, sortBy))
-                .message("Fetch All Users With Pagination")
+                .message("Fetch All Users For Admin")
                 .build();
     }
 
@@ -70,41 +71,52 @@ public class UserController {
     }
 
 
+    @Operation(summary = "Soft Delete User")
     @DeleteMapping("/users/{id}")
     public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
                                     @PathVariable long id){
         userService.delete(id);
         return ApiResponse.<Void>builder()
                 .code(HttpStatus.NO_CONTENT.value())
-                .message("Delete User By Id")
+                .message("Soft Delete User By Id")
                 .result(null)
                 .build();
     }
 
-    @Operation(description = "Api lấy tất cả địa chỉ của user")
-    @GetMapping("/users/{userId}/addresses")
-    public ApiResponse<PageResponse<AddressResponse>> getAddressesByUserId(@Min(value = 1, message = "pageNo phải lớn hơn 0")
-                                                                               @RequestParam(defaultValue = "1") int pageNo,
-                                                                           @RequestParam(defaultValue = "10") int pageSize,
-                                                                           @RequestParam(required = false) String sortBy,
-                                                                           @Min(value = 1, message = "userId phải lớn hơn 0")
-                                                                               @PathVariable Long userId) {
-        return ApiResponse.<PageResponse<AddressResponse>>builder()
-                .code(HttpStatus.OK.value())
-                .message("Fetch Addresses By User Id With Pagination")
-                .result(userService.getAllAddressesByUserId(pageNo, pageSize, sortBy, userId))
+    @Operation(summary = "Restore User")
+    @PatchMapping("/users/{id}/restore")
+    public ApiResponse<UserResponse> restore(@Min(value = 1, message = "ID phải lớn hơn 0")
+                                    @PathVariable long id){
+        return ApiResponse.<UserResponse>builder()
+                .code(HttpStatus.NO_CONTENT.value())
+                .message("Restore User By Id")
+                .result(userService.restore(id))
                 .build();
     }
 
-    @Operation(description = "Api lấy tất cả mã giảm giá mà user có thể sử dụng")
+    @Operation(description = "Api lấy tất cả địa chỉ của user")
+    @GetMapping("/users/addresses")
+    public ApiResponse<PageResponse<AddressResponse>> getAddressesByUser(@Min(value = 1, message = "pageNo phải lớn hơn 0")
+                                                                               @RequestParam(defaultValue = "1") int pageNo,
+                                                                           @RequestParam(defaultValue = "10") int pageSize,
+                                                                           @RequestParam(required = false) String sortBy) {
+        return ApiResponse.<PageResponse<AddressResponse>>builder()
+                .code(HttpStatus.OK.value())
+                .message("Fetch Addresses By User Id With Pagination")
+                .result(userService.getAllAddressesByUser(pageNo, pageSize, sortBy))
+                .build();
+    }
+
+    @Operation(summary = "Fetch Promotions By User",
+            description = "Api lấy tất cả mã giảm giá mà user có thể sử dụng")
     @GetMapping("/users/promotions/available")
-    public ApiResponse<PageResponse<PromotionResponse>> getPromotionsByUserId(@Min(value = 1, message = "pageNo phải lớn hơn 0")
+    public ApiResponse<PageResponse<PromotionResponse>> getPromotionsByUser(@Min(value = 1, message = "pageNo phải lớn hơn 0")
                                                                                   @RequestParam(defaultValue = "1") int pageNo,
                                                                               @RequestParam(defaultValue = "10") int pageSize,
                                                                               @RequestParam(required = false) String sortBy){
         return ApiResponse.<PageResponse<PromotionResponse>>builder()
                 .code(HttpStatus.OK.value())
-                .result(userService.getPromotionsByUserId(pageNo, pageSize, sortBy))
+                .result(userService.getPromotionsByUser(pageNo, pageSize, sortBy))
                 .message("Fetch Promotions By User With Pagination")
                 .build();
     }

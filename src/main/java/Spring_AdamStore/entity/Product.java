@@ -3,12 +3,10 @@ package Spring_AdamStore.entity;
 import Spring_AdamStore.constants.EntityStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SQLRestriction;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -17,11 +15,14 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import static Spring_AdamStore.constants.EntityStatus.ACTIVE;
+
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
-@SQLRestriction("status = 'ACTIVE'")
 @Table(name = "tbl_product")
+@SQLDelete(sql = "UPDATE tbl_product SET status = 'INACTIVE' WHERE id = ?")
+@SQLRestriction("status = 'ACTIVE'")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -37,6 +38,7 @@ public class Product {
     String name;
     @Column(columnDefinition = "MEDIUMTEXT")
     String description;
+    Boolean isAvailable;
     @ColumnDefault(value = "0")
     Integer soldQuantity;
     @ColumnDefault(value = "5.0")
@@ -45,9 +47,8 @@ public class Product {
     Integer totalReviews;
 
     @Enumerated(EnumType.STRING)
-    @JoinColumn(name = "status", nullable = false)
+    @Column(name = "status", nullable = false)
     EntityStatus status;
-
 
     @CreatedBy
     String createdBy;
@@ -74,9 +75,9 @@ public class Product {
     Set<ProductVariant> productVariants = new HashSet<>();
 
     @PrePersist
-    public void prePersist() {
-        if (status == null) {
-            this.status = EntityStatus.ACTIVE;
+    public void handleBeforeCreate() {
+        if(status == null){
+            this.status = ACTIVE;
         }
         if(soldQuantity == null){
             this.soldQuantity = 0;
@@ -86,6 +87,9 @@ public class Product {
         }
         if(totalReviews == null){
             this.totalReviews = 0;
+        }
+        if(isAvailable == null){
+            this.isAvailable = true;
         }
     }
 }

@@ -22,6 +22,7 @@ public enum ErrorCode {
     EMAIL_DISABLED(1037, "Email của bạn đã bị vô hiệu hóa", HttpStatus.FORBIDDEN),
     PHONE_EXISTED(1038, "Phone đã tồn tại trong hệ thống", HttpStatus.BAD_REQUEST),
     PHONE_DISABLED(1039, "Phone của bạn đã bị vô hiệu hóa", HttpStatus.FORBIDDEN),
+    USER_DISABLED(1039, "User đã bị vô hiệu hóa", HttpStatus.FORBIDDEN),
     TOKEN_TYPE_INVALID(1035, "Loại token không hợp lệ", HttpStatus.UNAUTHORIZED),
     INVALID_REFRESH_TOKEN(1034, "Refresh token không hợp lệ hoặc đã hết hạn", HttpStatus.UNAUTHORIZED),
     PROVINCE_EXISTED(1002, "Province đã tồn tại trong hệ thống", HttpStatus.BAD_REQUEST),
@@ -70,7 +71,13 @@ public enum ErrorCode {
     ORDER_NOT_BELONG_TO_USER(2002, "Đơn hàng không thuộc về người dùng hiện tại", HttpStatus.FORBIDDEN),
     PAYMENT_HISTORY_NOT_EXISTED(1003, "PaymentHistory không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
     INVALID_ORDER_STATUS(1100, "Đơn hàng không ở trạng thái PENDING", HttpStatus.FORBIDDEN),
-    PROMOTION_ALREADY_USED(1038, "Bạn đã sử dụng mã khuyến mãi này rồi", HttpStatus.BAD_REQUEST)
+    PROMOTION_ALREADY_USED(1038, "Bạn đã sử dụng mã khuyến mãi này rồi", HttpStatus.BAD_REQUEST),
+    CATEGORY_DELETE_CONFLICT(1040, "Không thể xóa danh mục vì vẫn còn sản phẩm đang hoạt động", HttpStatus.CONFLICT),
+    PROMOTION_USAGE_CONFLICT(1050, "Không thể xóa promotion này vì đã được sử dụng trong đơn hàng", HttpStatus.FORBIDDEN),
+    USER_HAS_ACTIVE_PROMOTION_USAGE(1052, "Không thể xóa người dùng vì đã từng sử dụng khuyến mãi", HttpStatus.FORBIDDEN),
+    USER_HAS_ACTIVE_ORDER(1053, "Người dùng có đơn hàng đang ở trạng thái Processing, Shipped hoặc Delivered", HttpStatus.FORBIDDEN),
+    PRODUCT_VARIANT_USED_IN_ORDER(2001, "Không thể xóa mềm Product (Product Variant) vì đã được sử dụng trong đơn hàng.", HttpStatus.FORBIDDEN)
+
     ;
 
 

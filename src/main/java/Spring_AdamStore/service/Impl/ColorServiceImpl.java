@@ -11,6 +11,7 @@ import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.ColorMapper;
 import Spring_AdamStore.repository.ColorRepository;
+import Spring_AdamStore.repository.ProductVariantRepository;
 import Spring_AdamStore.service.ColorService;
 import Spring_AdamStore.service.PageableService;
 import jakarta.transaction.Transactional;
@@ -27,6 +28,7 @@ public class ColorServiceImpl implements ColorService {
 
     private final ColorRepository colorRepository;
     private final ColorMapper colorMapper;
+    private final ProductVariantRepository productVariantRepository;
     private final PageableService pageableService;
 
     @Override
@@ -81,6 +83,8 @@ public class ColorServiceImpl implements ColorService {
     @Override
     public void delete(Long id) {
         Color color = findColorById(id);
+
+        productVariantRepository.deleteAll(color.getProductVariants());
 
         colorRepository.delete(color);
     }

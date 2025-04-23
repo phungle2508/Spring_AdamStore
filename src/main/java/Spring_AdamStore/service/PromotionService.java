@@ -4,6 +4,7 @@ import Spring_AdamStore.dto.request.PromotionRequest;
 import Spring_AdamStore.dto.request.PromotionUpdateRequest;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.dto.response.PromotionResponse;
+import jakarta.validation.constraints.Min;
 
 public interface PromotionService {
 
@@ -16,4 +17,6 @@ public interface PromotionService {
     PromotionResponse update(Long id, PromotionUpdateRequest request);
 
     void delete(Long id);
+
+    PromotionResponse restore(long id);
 }

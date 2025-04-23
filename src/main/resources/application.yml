@@ -9,6 +9,14 @@ spring:
   profiles:
     active: dev
 
+
+  # Max Size Upload
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+
 app:
   admin:
     email: admin@gmail.com

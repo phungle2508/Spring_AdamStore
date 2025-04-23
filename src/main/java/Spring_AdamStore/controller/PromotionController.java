@@ -3,10 +3,7 @@ package Spring_AdamStore.controller;
 import Spring_AdamStore.dto.request.ProductRequest;
 import Spring_AdamStore.dto.request.PromotionRequest;
 import Spring_AdamStore.dto.request.PromotionUpdateRequest;
-import Spring_AdamStore.dto.response.ApiResponse;
-import Spring_AdamStore.dto.response.PageResponse;
-import Spring_AdamStore.dto.response.ProductResponse;
-import Spring_AdamStore.dto.response.PromotionResponse;
+import Spring_AdamStore.dto.response.*;
 import Spring_AdamStore.service.ProductService;
 import Spring_AdamStore.service.PromotionService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,6 +46,8 @@ public class PromotionController {
                 .build();
     }
 
+
+    @Operation(summary = "Fetch All Promotions For Admin")
     @GetMapping("/promotions")
     public ApiResponse<PageResponse<PromotionResponse>> fetchAll(@Min(value = 1, message = "pageNo phải lớn hơn 0")
                                                                @RequestParam(defaultValue = "1") int pageNo,
@@ -57,7 +56,7 @@ public class PromotionController {
         return ApiResponse.<PageResponse<PromotionResponse>>builder()
                 .code(HttpStatus.OK.value())
                 .result(promotionService.fetchAll(pageNo, pageSize, sortBy))
-                .message("Fetch All Promotions With Pagination")
+                .message("Fetch All Promotions For Admin")
                 .build();
     }
 
@@ -72,15 +71,27 @@ public class PromotionController {
     }
 
 
+    @Operation(summary = "Soft delete Promotion")
     @DeleteMapping("/promotions/{id}")
     public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
                                     @PathVariable Long id){
         promotionService.delete(id);
         return ApiResponse.<Void>builder()
                 .code(HttpStatus.NO_CONTENT.value())
-                .message("Delete Promotion By Id")
+                .message("Soft Delete Promotion By Id")
                 .result(null)
                 .build();
     }
 
+    @Operation(summary = "Restore Promotion",
+    description = "Api này để khôi phục Promotion")
+    @PatchMapping("/promotions/{id}/restore")
+    public ApiResponse<PromotionResponse> restore(@Min(value = 1, message = "Id phải lớn hơn 0")
+                                                 @PathVariable long id) {
+        return ApiResponse.<PromotionResponse>builder()
+                .code(HttpStatus.OK.value())
+                .message("Restore Promotion By Id")
+                .result(promotionService.restore(id))
+                .build();
+    }
 }

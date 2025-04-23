@@ -16,6 +16,7 @@ public class ProductVariantResponse {
 
     Double price;
     Integer quantity;
+    Boolean isAvailable;
 
     EntityBasic product;
     EntityBasic size;

@@ -5,11 +5,13 @@ import Spring_AdamStore.dto.request.PromotionRequest;
 import Spring_AdamStore.dto.request.PromotionUpdateRequest;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.dto.response.PromotionResponse;
+import Spring_AdamStore.entity.Branch;
 import Spring_AdamStore.entity.Promotion;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.PromotionMapper;
 import Spring_AdamStore.repository.PromotionRepository;
+import Spring_AdamStore.repository.relationship.PromotionUsageRepository;
 import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.PromotionService;
 import jakarta.transaction.Transactional;
@@ -18,6 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import static Spring_AdamStore.constants.EntityStatus.ACTIVE;
 
 
 @Service
@@ -28,6 +32,7 @@ public class PromotionServiceImpl implements PromotionService {
     private final PromotionRepository promotionRepository;
     private final PromotionMapper promotionMapper;
     private final PageableService pageableService;
+    private final PromotionUsageRepository promotionUsageRepository;
 
 
     @Override
@@ -55,7 +60,7 @@ public class PromotionServiceImpl implements PromotionService {
 
         Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Promotion.class);
 
-        Page<Promotion> promotionPage = promotionRepository.findAll(pageable);
+        Page<Promotion> promotionPage = promotionRepository.findAllPromotions(pageable);
 
         return PageResponse.<PromotionResponse>builder()
                 .page(promotionPage.getNumber() + 1)
@@ -84,10 +89,20 @@ public class PromotionServiceImpl implements PromotionService {
     public void delete(Long id) {
         Promotion promotion = findPromotionById(id);
 
-        promotion.setStatus(EntityStatus.INACTIVE);
+        if(promotionUsageRepository.existsByPromotionId(promotion.getId())){
+            throw new AppException(ErrorCode.PROMOTION_USAGE_CONFLICT);
+        }
+        promotionRepository.delete(promotion);
 
-        promotionRepository.save(promotion);
+    }
 
+    @Override
+    public PromotionResponse restore(long id) {
+        Promotion promotion = promotionRepository.findPromotionById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.BRANCH_NOT_EXISTED));
+
+        promotion.setStatus(ACTIVE);
+        return promotionMapper.toPromotionResponse(promotionRepository.save(promotion));
     }
 
     private Promotion findPromotionById(Long id) {

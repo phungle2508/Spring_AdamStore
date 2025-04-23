@@ -1,6 +1,9 @@
 package Spring_AdamStore.repository;
 
+import Spring_AdamStore.entity.Branch;
 import Spring_AdamStore.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,6 +16,12 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     Optional<User> findByEmail(String email);
 
+    @Query(value = "SELECT COUNT(*) FROM tbl_user u WHERE u.id = :id AND u.status = :status", nativeQuery = true)
+    Integer countById(@Param("id") Long id, @Param("status") String status);
+
+    @Query(value = "SELECT * FROM tbl_user u WHERE u.id = :id", nativeQuery = true)
+    Optional<User> findUserById(@Param("id") Long id);
+
     @Query(value = "SELECT COUNT(*) FROM tbl_user WHERE email = :email", nativeQuery = true)
     Integer countByEmail(@Param("email") String email);
 
@@ -21,4 +30,10 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     @Query(value = "SELECT COUNT(*) FROM tbl_user WHERE phone = :phone AND status = :status", nativeQuery = true)
     Integer countByPhoneAndStatus(@Param("phone") String phone, @Param("status") String status);
+
+
+    @Query(value = "SELECT * FROM tbl_user",
+            countQuery = "SELECT COUNT(*) FROM tbl_user",
+            nativeQuery = true)
+    Page<User> findAllUsers(Pageable pageable);
 }

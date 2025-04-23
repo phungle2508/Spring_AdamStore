@@ -13,4 +13,7 @@ public interface PaymentHistoryService {
     PageResponse<PaymentHistoryResponse> searchPaymentHistories(int pageNo, int pageSize, String sortBy,
                                                                 LocalDateTime startDate, LocalDateTime endDate,
                                                                 PaymentStatus paymentStatus);
+
+    void delete(Long id);
+
 }

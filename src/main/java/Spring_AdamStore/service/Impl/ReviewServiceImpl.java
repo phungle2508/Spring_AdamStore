@@ -32,7 +32,6 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
     private final CurrentUserService currentUserService;
     private final ReviewMapper reviewMapper;
-    private final UserRepository userRepository;
     private final PageableService pageableService;
     private final ProductRepository productRepository;
 

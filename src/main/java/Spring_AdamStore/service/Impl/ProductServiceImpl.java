@@ -36,6 +36,9 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static Spring_AdamStore.constants.EntityStatus.ACTIVE;
+import static Spring_AdamStore.constants.EntityStatus.INACTIVE;
+
 @Service
 @Slf4j(topic = "PRODUCT-SERVICE")
 @RequiredArgsConstructor
@@ -110,6 +113,25 @@ public class ProductServiceImpl implements ProductService {
                 .build();
     }
 
+    @Override
+    public PageResponse<ProductResponse> fetchAllProductsForAdmin(int pageNo, int pageSize, String sortBy) {
+        pageNo = pageNo - 1;
+
+        Pageable pageable = createPageableWithPriceSupport(pageNo, pageSize, sortBy);
+
+        Page<Product> productPage = productRepository.findAllProducts(pageable);
+
+        return PageResponse.<ProductResponse>builder()
+                .page(productPage.getNumber() + 1)
+                .size(productPage.getSize())
+                .totalPages(productPage.getTotalPages())
+                .totalItems(productPage.getTotalElements())
+                .items(productMapper.toProductResponseList(productPage.getContent()))
+                .build();
+    }
+
+
+
     @Transactional
     @Override
     public ProductResponse update(Long id, ProductUpdateRequest request) {
@@ -156,10 +178,21 @@ public class ProductServiceImpl implements ProductService {
     public void delete(Long id) {
         Product product = findProductById(id);
 
-        product.setStatus(EntityStatus.INACTIVE);
+        product.getProductVariants().forEach(productVariant ->
+                productVariantService.delete(productVariant.getId()));
 
-        productRepository.save(product);
+        productRepository.delete(product);
     }
+
+    @Override
+    public ProductResponse restore(long id) {
+        Product product = productRepository.findProductById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
+
+        product.setStatus(ACTIVE);
+        return productMapper.toProductResponse(productRepository.save(product));
+    }
+
 
     @Override
     public PageResponse<ProductResponse> searchProduct(int pageNo, int pageSize, String sortBy, List<String> search) {
@@ -209,6 +242,24 @@ public class ProductServiceImpl implements ProductService {
                 .items(productVariantMapper.toProductVariantResponseList(productVariantPage.getContent()))
                 .build();
     }
+
+    @Override
+    public PageResponse<ProductVariantResponse> getVariantsByProductIdForAdmin(int pageNo, int pageSize, String sortBy, Long productId) {
+        pageNo = pageNo - 1;
+
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, ProductVariant.class);
+
+        Page<ProductVariant> productVariantPage = productVariantRepository.findAllVariantsByProductId(productId, pageable);
+
+        return PageResponse.<ProductVariantResponse>builder()
+                .page(productVariantPage.getNumber() + 1)
+                .size(productVariantPage.getSize())
+                .totalPages(productVariantPage.getTotalPages())
+                .totalItems(productVariantPage.getTotalElements())
+                .items(productVariantMapper.toProductVariantResponseList(productVariantPage.getContent()))
+                .build();
+    }
+
 
     private List<Product> getProducList(int pageNo, int pageSize, String sortBy, List<SearchCriteria> criteriaList){
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
@@ -373,6 +424,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Scheduled(cron = "0 0 0 */7 * ?")
     public void updateProductRatings() {
+        log.info("Update Products Ratings");
+
         List<Product> productList = productRepository.findAll();
         for (Product product : productList) {
             double avgRating = reviewRepository.getAverageRatingByProductId(product.getId());
@@ -381,6 +434,32 @@ public class ProductServiceImpl implements ProductService {
             product.setTotalReviews(totalReviews);
             productRepository.save(product);
         }
-        log.info("Update Products Ratings");
+    }
+
+    @Scheduled(cron = "0 0 * * * ?")
+    @Transactional
+    public void checkProductsAvailability() {
+        log.info("The product availability check...");
+
+        Iterable<ProductVariant> productVariants = productVariantRepository.findAll();
+        for (ProductVariant variant : productVariants) {
+            if (variant.getQuantity() == 0) {
+                variant.setIsAvailable(false);
+                productVariantRepository.save(variant);
+            }
+        }
+
+        List<Product> products = productRepository.findAll();
+        for (Product product : products) {
+            boolean allVariantsUnavailable = product.getProductVariants().stream()
+                    .filter(variant -> variant.getStatus() == EntityStatus.ACTIVE)
+                    .noneMatch(ProductVariant::getIsAvailable);
+
+            if (allVariantsUnavailable) {
+                product.setIsAvailable(false);
+                productRepository.save(product);
+            }
+
+        }
     }
 }
