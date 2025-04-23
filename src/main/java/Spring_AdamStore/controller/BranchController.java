@@ -46,6 +46,8 @@ public class BranchController {
                 .build();
     }
 
+    @Operation(summary = "Fetch All Branches For User",
+    description = "API để lấy tất cả Branch (ACTIVE) cho user")
     @GetMapping("/branches")
     public ApiResponse<PageResponse<BranchResponse>> fetchAll(@Min(value = 1, message = "pageNo phải lớn hơn 0")
                                                                 @RequestParam(defaultValue = "1") int pageNo,
@@ -54,7 +56,21 @@ public class BranchController {
         return ApiResponse.<PageResponse<BranchResponse>>builder()
                 .code(HttpStatus.OK.value())
                 .result(branchService.fetchAll(pageNo, pageSize, sortBy))
-                .message("Fetch All Branches With Pagination")
+                .message("Fetch All Branches For User")
+                .build();
+    }
+
+    @Operation(summary = "Fetch All Branches For Admin",
+    description = "API này để lấy tất cả Branch (cả ACTIVE và INACTIVE) cho admin quản lý")
+    @GetMapping("/branches/admin")
+    public ApiResponse<PageResponse<BranchResponse>> fetchAllBranchesForAdmin(@Min(value = 1, message = "pageNo phải lớn hơn 0")
+                                                                                  @RequestParam(defaultValue = "1") int pageNo,
+                                                                              @RequestParam(defaultValue = "10") int pageSize,
+                                                                              @RequestParam(required = false) String sortBy){
+        return ApiResponse.<PageResponse<BranchResponse>>builder()
+                .code(HttpStatus.OK.value())
+                .result(branchService.fetchAllBranchesForAdmin(pageNo, pageSize, sortBy))
+                .message("Fetch All Branches For Admin")
                 .build();
     }
 
@@ -70,14 +86,28 @@ public class BranchController {
     }
 
 
+    @Operation(summary = "Soft Delete Branch",
+    description = "Api này để soft delete branch")
     @DeleteMapping("/branches/{id}")
     public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
                                     @PathVariable Long id){
         branchService.delete(id);
         return ApiResponse.<Void>builder()
                 .code(HttpStatus.NO_CONTENT.value())
-                .message("Delete Branch By Id")
+                .message("Soft Delete Branch By Id")
                 .result(null)
+                .build();
+    }
+
+    @Operation(summary = "Restore Branch",
+    description = "Api này để khôi phục Branch")
+    @PatchMapping("/branches/{id}/restore")
+    public ApiResponse<BranchResponse> restore(@Min(value = 1, message = "Id phải lớn hơn 0")
+                                             @PathVariable long id) {
+        return ApiResponse.<BranchResponse>builder()
+                .code(HttpStatus.OK.value())
+                .message("Restore Branch By Id")
+                .result(branchService.restore(id))
                 .build();
     }
 }

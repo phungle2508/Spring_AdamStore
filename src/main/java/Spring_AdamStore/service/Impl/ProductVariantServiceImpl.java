@@ -9,6 +9,8 @@ import Spring_AdamStore.entity.Size;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.ProductVariantMapper;
+import Spring_AdamStore.repository.CartItemRepository;
+import Spring_AdamStore.repository.OrderItemRepository;
 import Spring_AdamStore.repository.ProductVariantRepository;
 import Spring_AdamStore.service.ProductVariantService;
 import jakarta.transaction.Transactional;
@@ -20,6 +22,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static Spring_AdamStore.constants.EntityStatus.ACTIVE;
+import static Spring_AdamStore.constants.EntityStatus.INACTIVE;
+
 @Service
 @Slf4j(topic = "PRODUCT-VARIANT-SERVICE")
 @RequiredArgsConstructor
@@ -27,6 +32,8 @@ public class ProductVariantServiceImpl implements ProductVariantService {
 
     private final ProductVariantRepository productVariantRepository;
     private final ProductVariantMapper productVariantMapper;
+    private final CartItemRepository cartItemRepository;
+    private final OrderItemRepository orderItemRepository;
 
 
     @Override
@@ -48,6 +55,7 @@ public class ProductVariantServiceImpl implements ProductVariantService {
                 ProductVariant variant = ProductVariant.builder()
                         .price(price)
                         .quantity(quantity)
+                        .isAvailable(true)
                         .product(product)
                         .size(size)
                         .color(color)
@@ -101,6 +109,30 @@ public class ProductVariantServiceImpl implements ProductVariantService {
         productVariant.setPrice(request.getPrice());
         productVariant.setQuantity(request.getQuantity());
 
+        return productVariantMapper.toProductVariantResponse(productVariantRepository.save(productVariant));
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        ProductVariant productVariant = productVariantRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_VARIANT_NOT_EXISTED));
+
+        if(orderItemRepository.existsByProductVariantId(productVariant.getId())){
+            throw new AppException(ErrorCode.PRODUCT_VARIANT_USED_IN_ORDER);
+        }
+
+        cartItemRepository.deleteAll(productVariant.getCartItems());
+
+        productVariantRepository.delete(productVariant);
+    }
+
+    @Override
+    public ProductVariantResponse restore(long id) {
+        ProductVariant productVariant = productVariantRepository.findProductVariantById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_VARIANT_NOT_EXISTED));
+
+        productVariant.setStatus(ACTIVE);
         return productVariantMapper.toProductVariantResponse(productVariantRepository.save(productVariant));
     }
 }

@@ -43,4 +43,15 @@ public class PaymentHistoryController {
                 .result(paymentHistoryService.searchPaymentHistories(pageNo, pageSize, sortBy, startDate, endDate, paymentStatus))
                 .build();
     }
+
+    @DeleteMapping("/payment-histories/{id}")
+    public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
+                                    @PathVariable Long id){
+        paymentHistoryService.delete(id);
+        return ApiResponse.<Void>builder()
+                .code(HttpStatus.NO_CONTENT.value())
+                .message("Delete Payment-History By Id")
+                .result(null)
+                .build();
+    }
 }

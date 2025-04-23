@@ -28,4 +28,9 @@ public interface ProductService {
 
     PageResponse<ProductVariantResponse> getVariantsByProductId(int pageNo, int pageSize, String sortBy, Long productId);
 
+    PageResponse<ProductResponse> fetchAllProductsForAdmin(int pageNo, int pageSize, String sortBy);
+
+    ProductResponse restore(long id);
+
+    PageResponse<ProductVariantResponse> getVariantsByProductIdForAdmin(int pageNo, int pageSize, String sortBy, Long productId);
 }

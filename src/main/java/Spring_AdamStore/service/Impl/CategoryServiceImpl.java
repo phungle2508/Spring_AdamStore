@@ -19,6 +19,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import static Spring_AdamStore.constants.EntityStatus.ACTIVE;
+
 @Service
 @Slf4j(topic = "CATEGORY-SERVICE")
 @RequiredArgsConstructor
@@ -66,6 +68,25 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public PageResponse<CategoryResponse> fetchAllCategoriesForAdmin(int pageNo, int pageSize, String sortBy) {
+        pageNo = pageNo - 1;
+
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Category.class);
+
+        Page<Category> categoryPage = categoryRepository.findAllCategories(pageable);
+
+        return PageResponse.<CategoryResponse>builder()
+                .page(categoryPage.getNumber() + 1)
+                .size(categoryPage.getSize())
+                .totalPages(categoryPage.getTotalPages())
+                .totalItems(categoryPage.getTotalElements())
+                .items(categoryMapper.toCategoryResponseList(categoryPage.getContent()))
+                .build();
+
+    }
+
+
+    @Override
     public CategoryResponse update(Long id, CategoryRequest request) {
         if(categoryRepository.existsByName(request.getName())){
             throw new AppException(ErrorCode.CATEGORY_EXISTED);
@@ -82,9 +103,19 @@ public class CategoryServiceImpl implements CategoryService {
     public void delete(Long id) {
         Category category = findActiveCategoryById(id);
 
-        category.setStatus(EntityStatus.INACTIVE);
+        if(productRepository.countActiveProductsByCategoryId(category.getId(), ACTIVE.name()) > 0){
+            throw new AppException(ErrorCode.CATEGORY_DELETE_CONFLICT);
+        }
+        categoryRepository.delete(category);
+    }
 
-        categoryRepository.save(category);
+    @Override
+    public CategoryResponse restore(long id) {
+        Category category = categoryRepository.findCategoryById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_EXISTED));
+
+        category.setStatus(ACTIVE);
+        return categoryMapper.toCategoryResponse(categoryRepository.save(category));
     }
 
     @Override
@@ -94,6 +125,23 @@ public class CategoryServiceImpl implements CategoryService {
         Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Product.class);
 
         Page<Product> productPage = productRepository.findByCategoryId(categoryId, pageable);
+
+        return PageResponse.<ProductResponse>builder()
+                .page(productPage.getNumber() + 1)
+                .size(productPage.getSize())
+                .totalPages(productPage.getTotalPages())
+                .totalItems(productPage.getTotalElements())
+                .items(productMapper.toProductResponseList(productPage.getContent()))
+                .build();
+    }
+
+    @Override
+    public PageResponse<ProductResponse> fetchByCategoryIdForAdmin(int pageNo, int pageSize, String sortBy, Long categoryId) {
+        pageNo = pageNo - 1;
+
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Product.class);
+
+        Page<Product> productPage = productRepository.findAllByCategoryId(categoryId, pageable);
 
         return PageResponse.<ProductResponse>builder()
                 .page(productPage.getNumber() + 1)

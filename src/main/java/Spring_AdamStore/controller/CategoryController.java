@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/v1")
 @RestController
 public class CategoryController {
+
     private final CategoryService categoryService;
 
     @PostMapping("/categories")
@@ -44,6 +45,8 @@ public class CategoryController {
                 .build();
     }
 
+    @Operation(summary = "Fetch All Categories For User",
+    description = "Api này để lấy tất cả Categories (ACTIVE) cho User")
     @GetMapping("/categories")
     public ApiResponse<PageResponse<CategoryResponse>> fetchAll(@Min(value = 1, message = "pageNo phải lớn hơn 0")
                                                                @RequestParam(defaultValue = "1") int pageNo,
@@ -52,7 +55,21 @@ public class CategoryController {
         return ApiResponse.<PageResponse<CategoryResponse>>builder()
                 .code(HttpStatus.OK.value())
                 .result(categoryService.fetchAll(pageNo, pageSize, sortBy))
-                .message("Fetch All Categories With Pagination")
+                .message("Fetch All Categories For User")
+                .build();
+    }
+
+    @Operation(summary = "Fetch All Categories For Admin",
+            description = "Api này để lấy tất cả Categories (cả ACTIVE và INACTIVE) cho Admin")
+    @GetMapping("/categories/admin")
+    public ApiResponse<PageResponse<CategoryResponse>> fetchAllCategoriesForAdmin(@Min(value = 1, message = "pageNo phải lớn hơn 0")
+                                                                              @RequestParam(defaultValue = "1") int pageNo,
+                                                                              @RequestParam(defaultValue = "10") int pageSize,
+                                                                              @RequestParam(required = false) String sortBy){
+        return ApiResponse.<PageResponse<CategoryResponse>>builder()
+                .code(HttpStatus.OK.value())
+                .result(categoryService.fetchAllCategoriesForAdmin(pageNo, pageSize, sortBy))
+                .message("Fetch All Categories For Admin")
                 .build();
     }
 
@@ -67,18 +84,31 @@ public class CategoryController {
     }
 
 
+    @Operation(summary = "Soft Delete Category")
     @DeleteMapping("/categories/{id}")
     public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
                                     @PathVariable Long id){
         categoryService.delete(id);
         return ApiResponse.<Void>builder()
                 .code(HttpStatus.NO_CONTENT.value())
-                .message("Delete Category By Id")
+                .message("Soft Delete Category By Id")
                 .result(null)
                 .build();
     }
 
-    @Operation(description = "API dùng để lấy danh sách products của category")
+    @Operation(summary = "Restore Category")
+    @PatchMapping("/categories/{id}/restore")
+    public ApiResponse<CategoryResponse> restore(@Min(value = 1, message = "Id phải lớn hơn 0")
+                                               @PathVariable long id) {
+        return ApiResponse.<CategoryResponse>builder()
+                .code(HttpStatus.OK.value())
+                .message("Restore Category By Id")
+                .result(categoryService.restore(id))
+                .build();
+    }
+
+    @Operation(summary = "Fetch All Products By Category For User",
+            description = "API dùng để lấy danh sách products của category cho user")
     @GetMapping("/categories/{categoryId}/products")
     public ApiResponse<PageResponse<ProductResponse>> fetchByCategoryId(@RequestParam(defaultValue = "1") int pageNo,
                                                                          @RequestParam(defaultValue = "10") int pageSize,
@@ -87,8 +117,24 @@ public class CategoryController {
                                                                          @PathVariable Long categoryId){
         return ApiResponse.<PageResponse<ProductResponse>>builder()
                 .code(HttpStatus.OK.value())
-                .message("Fetch Districts By Province ID With Pagination")
+                .message("Fetch All Products By Category For User")
                 .result(categoryService.fetchByCategoryId(pageNo, pageSize, sortBy, categoryId))
                 .build();
     }
+
+    @Operation(summary = "Fetch All Products By Category For Admin",
+            description = "API dùng để lấy danh sách products của category cho admin")
+    @GetMapping("/categories/{categoryId}/products/admin")
+    public ApiResponse<PageResponse<ProductResponse>> fetchByCategoryIdForAdmin(@RequestParam(defaultValue = "1") int pageNo,
+                                                                        @RequestParam(defaultValue = "10") int pageSize,
+                                                                        @RequestParam(required = false) String sortBy,
+                                                                        @Min(value = 1, message = "categoryId phải lớn hơn 0")
+                                                                        @PathVariable Long categoryId){
+        return ApiResponse.<PageResponse<ProductResponse>>builder()
+                .code(HttpStatus.OK.value())
+                .message("Fetch All Products By Category For Admin")
+                .result(categoryService.fetchByCategoryIdForAdmin(pageNo, pageSize, sortBy, categoryId))
+                .build();
+    }
+
 }

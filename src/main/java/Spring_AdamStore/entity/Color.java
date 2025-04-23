@@ -26,6 +26,5 @@ public class Color {
     String name;
 
     @OneToMany(mappedBy = "color")
-    @JsonIgnore
     Set<ProductVariant> productVariants = new HashSet<>();
 }

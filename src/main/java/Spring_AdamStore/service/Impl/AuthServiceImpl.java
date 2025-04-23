@@ -10,6 +10,7 @@ import Spring_AdamStore.dto.response.VerificationCodeResponse;
 import Spring_AdamStore.entity.*;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
+import Spring_AdamStore.mapper.RoleMapper;
 import Spring_AdamStore.mapper.UserMapper;
 import Spring_AdamStore.repository.CartRepository;
 import Spring_AdamStore.repository.RedisPendingUserRepository;
@@ -49,6 +50,7 @@ public class AuthServiceImpl implements AuthService {
     private final RedisVerificationCodeService redisVerificationCodeService;
     private final RedisPendingUserRepository redisPendingUserRepository;
     private final CurrentUserService currentUserService;
+    private final RoleMapper roleMapper;
 
     @Override
     public TokenResponse login(LoginRequest request) throws JOSEException {
@@ -136,6 +138,7 @@ public class AuthServiceImpl implements AuthService {
                 .accessToken(accessToken)
                 .refreshToken(request.getRefreshToken())
                 .email(email)
+                .roles(roleMapper.userHasRoleToEntityBasicSet(user.getRoles()))
                 .build();
     }
 
@@ -184,6 +187,7 @@ public class AuthServiceImpl implements AuthService {
                 .refreshToken(refreshToken)
                 .authenticated(true)
                 .email(user.getEmail())
+                .roles(roleMapper.userHasRoleToEntityBasicSet(user.getRoles()))
                 .build();
     }
 

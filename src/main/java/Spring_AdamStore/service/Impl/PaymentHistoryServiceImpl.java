@@ -8,6 +8,8 @@ import Spring_AdamStore.dto.response.PaymentHistoryResponse;
 import Spring_AdamStore.entity.Order;
 import Spring_AdamStore.entity.PaymentHistory;
 import Spring_AdamStore.entity.User;
+import Spring_AdamStore.exception.AppException;
+import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.PaymentHistoryMapper;
 import Spring_AdamStore.repository.PaymentHistoryRepository;
 import Spring_AdamStore.repository.criteria.SearchCriteria;
@@ -61,6 +63,14 @@ public class PaymentHistoryServiceImpl implements PaymentHistoryService {
                 .totalItems(paymentHistoryPage.getTotalElements())
                 .items(paymentHistoryMapper.toPaymentHistoryResponseList(paymentHistoryPage.getContent()))
                 .build();
+    }
+
+    @Override
+    public void delete(Long id) {
+        PaymentHistory paymentHistory = paymentHistoryRepository.findById(id)
+                .orElseThrow(()-> new AppException(ErrorCode.PAYMENT_HISTORY_NOT_EXISTED));
+
+        paymentHistoryRepository.delete(paymentHistory);
     }
 
 }

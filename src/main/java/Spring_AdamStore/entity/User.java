@@ -5,13 +5,11 @@ import Spring_AdamStore.constants.Gender;
 import Spring_AdamStore.entity.relationship.PromotionUsage;
 import Spring_AdamStore.entity.relationship.UserHasRole;
 import jakarta.persistence.*;
+import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SQLRestriction;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -25,6 +23,7 @@ import java.util.Set;
 @Setter
 @Table(name = "tbl_user")
 @SQLRestriction("status = 'ACTIVE'")
+@SQLDelete(sql = "UPDATE tbl_user SET status = 'INACTIVE' WHERE id = ?")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -49,7 +48,7 @@ public class User{
     Gender gender;
 
     @Enumerated(EnumType.STRING)
-    @JoinColumn(name = "status", nullable = false)
+    @Column(name = "status", nullable = false)
     EntityStatus status;
 
 
@@ -82,7 +81,7 @@ public class User{
     Set<PromotionUsage> promotionUsages = new HashSet<>();
 
     @PrePersist
-    public void prePersist() {
+    public void handleBeforeCreate() {
         if (status == null) {
             this.status = EntityStatus.ACTIVE;
         }

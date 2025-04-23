@@ -24,4 +24,8 @@ public interface ProductVariantService {
     Set<ProductVariant> updatePriceAndQuantity(Product product, Double price, Integer quantity);
 
     ProductVariantResponse updatePriceAndQuantity(Long id, ProductVariantUpdateRequest request);
+
+    void delete(Long id);
+
+    ProductVariantResponse restore(long id);
 }

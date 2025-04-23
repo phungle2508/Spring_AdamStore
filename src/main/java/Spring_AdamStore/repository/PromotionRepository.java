@@ -1,5 +1,6 @@
 package Spring_AdamStore.repository;
 
+import Spring_AdamStore.entity.Branch;
 import Spring_AdamStore.entity.OrderItem;
 import Spring_AdamStore.entity.Promotion;
 import org.springframework.data.domain.Page;
@@ -11,12 +12,20 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PromotionRepository extends JpaRepository<Promotion, Long> {
 
     boolean existsByCode(String code);
 
+    @Query(value = "SELECT * FROM tbl_promotion p WHERE p.id = :id", nativeQuery = true)
+    Optional<Promotion> findPromotionById(@Param("id") Long id);
+
+    @Query(value = "SELECT * FROM tbl_promotion",
+            countQuery = "SELECT COUNT(*) FROM tbl_promotion",
+            nativeQuery = true)
+    Page<Promotion> findAllPromotions(Pageable pageable);
 
     @Query("SELECT p " +
             "FROM Promotion p " +

@@ -1,6 +1,7 @@
 package Spring_AdamStore.service.Impl;
 
 import Spring_AdamStore.constants.EntityStatus;
+import Spring_AdamStore.constants.OrderStatus;
 import Spring_AdamStore.constants.RoleEnum;
 import Spring_AdamStore.dto.request.UserCreationRequest;
 import Spring_AdamStore.dto.request.UserUpdateRequest;
@@ -15,10 +16,8 @@ import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.AddressMapper;
 import Spring_AdamStore.mapper.PromotionMapper;
 import Spring_AdamStore.mapper.UserMapper;
-import Spring_AdamStore.repository.AddressRepository;
-import Spring_AdamStore.repository.PromotionRepository;
-import Spring_AdamStore.repository.RoleRepository;
-import Spring_AdamStore.repository.UserRepository;
+import Spring_AdamStore.repository.*;
+import Spring_AdamStore.repository.relationship.PromotionUsageRepository;
 import Spring_AdamStore.repository.relationship.UserHasRoleRepository;
 import Spring_AdamStore.service.CartService;
 import Spring_AdamStore.service.CurrentUserService;
@@ -36,8 +35,12 @@ import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static Spring_AdamStore.constants.EntityStatus.ACTIVE;
+import static redis.clients.jedis.resps.StreamConsumerInfo.INACTIVE;
 
 @Service
 @Slf4j(topic = "USER-SERVICE")
@@ -55,7 +58,9 @@ public class UserServiceImpl implements UserService {
     private final CartService cartService;
     private final AddressMapper addressMapper;
     private final PromotionRepository promotionRepository;
+    private final OrderRepository orderRepository;
     private final CurrentUserService currentUserService;
+    private final PromotionUsageRepository promotionUsageRepository;
     private final PromotionMapper promotionMapper;
 
 
@@ -102,7 +107,7 @@ public class UserServiceImpl implements UserService {
 
         Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, User.class);
 
-        Page<User> userPage = userRepository.findAll(pageable);
+        Page<User> userPage = userRepository.findAllUsers(pageable);
 
         return PageResponse.<UserResponse>builder()
                 .page(userPage.getNumber() + 1)
@@ -146,20 +151,36 @@ public class UserServiceImpl implements UserService {
     public void delete(Long id) {
         User userDB = findActiveUserById(id);
 
-        userDB.setStatus(EntityStatus.INACTIVE);
+        List<OrderStatus> activeStatuses = List.of(OrderStatus.PROCESSING, OrderStatus.SHIPPED, OrderStatus.DELIVERED);
+        if(orderRepository.existsByUserIdAndOrderStatusIn(userDB.getId(), activeStatuses)){
+            throw new AppException(ErrorCode.USER_HAS_ACTIVE_ORDER);
+        }
 
-        userRepository.save(userDB);
+        if(promotionUsageRepository.existsByUserId(userDB.getId())){
+            throw new AppException(ErrorCode.USER_HAS_ACTIVE_PROMOTION_USAGE);
+        }
+
+        userRepository.delete(userDB);
     }
 
     @Override
-    public PageResponse<AddressResponse> getAllAddressesByUserId(int pageNo, int pageSize, String sortBy, Long userId) {
+    public UserResponse restore(long id) {
+        User userDB = userRepository.findUserById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        userDB.setStatus(ACTIVE);
+        return userMapper.toUserResponse(userRepository.save(userDB));
+    }
+
+    @Override
+    public PageResponse<AddressResponse> getAllAddressesByUser(int pageNo, int pageSize, String sortBy) {
         pageNo = pageNo - 1;
 
         Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Address.class);
 
-        User userDB = findActiveUserById(userId);
+        User user = currentUserService.getCurrentUser();
 
-        Page<Address> addressPage = addressRepository.findAllByUserId(userDB.getId(), pageable);
+        Page<Address> addressPage = addressRepository.findAllByUserId(user.getId(), pageable);
 
         return PageResponse.<AddressResponse>builder()
                 .page(addressPage.getNumber() + 1)
@@ -171,7 +192,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PageResponse<PromotionResponse> getPromotionsByUserId(int pageNo, int pageSize, String sortBy) {
+    public PageResponse<PromotionResponse> getPromotionsByUser(int pageNo, int pageSize, String sortBy) {
         pageNo = pageNo - 1;
 
         Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Promotion.class);
@@ -189,11 +210,13 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
+
+
     private void checkPhoneAndEmailExist(String email, String phone) {
-        if (userRepository.countByEmailAndStatus(email, EntityStatus.ACTIVE.name()) > 0) {
+        if (userRepository.countByEmailAndStatus(email, ACTIVE.name()) > 0) {
             throw new AppException(ErrorCode.EMAIL_EXISTED);
         }
-        if (userRepository.countByPhoneAndStatus(phone, EntityStatus.ACTIVE.name()) > 0) {
+        if (userRepository.countByPhoneAndStatus(phone, ACTIVE.name()) > 0) {
             throw new AppException(ErrorCode.PHONE_EXISTED);
         }
         if (userRepository.countByEmailAndStatus(email, EntityStatus.INACTIVE.name()) > 0) {
@@ -207,6 +230,9 @@ public class UserServiceImpl implements UserService {
 
 
     private User findActiveUserById(Long id) {
+        if(userRepository.countById(id, EntityStatus.INACTIVE.name()) > 0){
+            throw new AppException(ErrorCode.USER_DISABLED);
+        }
         return userRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
     }

@@ -19,6 +19,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import static Spring_AdamStore.constants.EntityStatus.ACTIVE;
+
 @Service
 @Slf4j(topic = "BRANCH-SERVICE")
 @RequiredArgsConstructor
@@ -30,11 +32,11 @@ public class BranchServiceImpl implements BranchService {
 
     @Override
     public BranchResponse create(BranchRequest request) {
-        if(branchRepository.existsByName(request.getName())){
+        if(branchRepository.countByName(request.getName()) > 0){
             throw new AppException(ErrorCode.BRANCH_EXISTED);
         }
 
-        if(branchRepository.existsByPhone(request.getPhone())){
+        if(branchRepository.countByPhone(request.getPhone()) > 0){
             throw new AppException(ErrorCode.PHONE_EXISTED);
         }
 
@@ -68,12 +70,29 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
+    public PageResponse<BranchResponse> fetchAllBranchesForAdmin(int pageNo, int pageSize, String sortBy) {
+        pageNo = pageNo - 1;
+
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Branch.class);
+
+        Page<Branch> branchPage = branchRepository.findAllBranches(pageable);
+
+        return PageResponse.<BranchResponse>builder()
+                .page(branchPage.getNumber() + 1)
+                .size(branchPage.getSize())
+                .totalPages(branchPage.getTotalPages())
+                .totalItems(branchPage.getTotalElements())
+                .items(branchMapper.toBranchResponseList(branchPage.getContent()))
+                .build();
+    }
+
+    @Override
     public BranchResponse update(Long id, BranchUpdateRequest request) {
-        if(branchRepository.existsByName(request.getName())){
+        if(branchRepository.countByName(request.getName()) > 0){
             throw new AppException(ErrorCode.BRANCH_EXISTED);
         }
 
-        if(branchRepository.existsByPhone(request.getPhone())){
+        if(branchRepository.countByPhone(request.getPhone()) > 0){
             throw new AppException(ErrorCode.PHONE_EXISTED);
         }
 
@@ -89,10 +108,18 @@ public class BranchServiceImpl implements BranchService {
     public void delete(Long id) {
         Branch branch = findActiveBranchById(id);
 
-        branch.setStatus(EntityStatus.INACTIVE);
-
-        branchRepository.save(branch);
+        branchRepository.delete(branch);
     }
+
+    @Override
+    public BranchResponse restore(long id) {
+        Branch branch = branchRepository.findBranchById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.BRANCH_NOT_EXISTED));
+
+        branch.setStatus(ACTIVE);
+        return branchMapper.toBranchResponse(branchRepository.save(branch));
+    }
+
 
     private Branch findActiveBranchById(Long id) {
         return branchRepository.findById(id)

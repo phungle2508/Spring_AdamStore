@@ -28,14 +28,14 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
      Long id;
 
-    @JoinColumn(nullable = false)
+    @Column(nullable = false)
      LocalDate orderDate;
-    @JoinColumn(nullable = false)
+    @Column(nullable = false)
     @ColumnDefault(value = "0")
      Double totalPrice;
 
     @Enumerated(EnumType.STRING)
-    @JoinColumn(nullable = false)
+    @Column(nullable = false)
     OrderStatus orderStatus;
 
     @CreationTimestamp

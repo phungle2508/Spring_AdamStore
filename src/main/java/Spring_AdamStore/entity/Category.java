@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
@@ -23,6 +24,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tbl_category")
+@SQLRestriction("status = 'ACTIVE'")
+@SQLDelete(sql = "UPDATE tbl_category SET status = 'INACTIVE' WHERE id = ?")
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class Category {
@@ -31,13 +34,13 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     String name;
     @Column(columnDefinition = "MEDIUMTEXT")
     String description;
 
     @Enumerated(EnumType.STRING)
-    @JoinColumn(name = "status", nullable = false)
+    @Column(name = "status", nullable = false)
     EntityStatus status;
 
 
@@ -54,7 +57,7 @@ public class Category {
     Set<Product> products = new HashSet<>();
 
     @PrePersist
-    public void prePersist() {
+    public void handleBeforeCreate() {
         if (status == null) {
             this.status = EntityStatus.ACTIVE;
         }

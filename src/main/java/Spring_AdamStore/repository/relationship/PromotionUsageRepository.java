@@ -10,4 +10,8 @@ import org.springframework.stereotype.Repository;
 public interface PromotionUsageRepository extends JpaRepository<PromotionUsage, Long> {
 
     boolean existsByUserAndPromotion(User user, Promotion promotion);
+
+    Boolean existsByPromotionId(Long promotionId);
+
+    Boolean existsByUserId(Long userId);
 }

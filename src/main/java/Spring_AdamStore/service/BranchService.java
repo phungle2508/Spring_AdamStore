@@ -6,6 +6,7 @@ import Spring_AdamStore.dto.request.CategoryRequest;
 import Spring_AdamStore.dto.response.BranchResponse;
 import Spring_AdamStore.dto.response.CategoryResponse;
 import Spring_AdamStore.dto.response.PageResponse;
+import jakarta.validation.constraints.Min;
 
 public interface BranchService {
 
@@ -18,4 +19,8 @@ public interface BranchService {
     BranchResponse update(Long id, BranchUpdateRequest request);
 
     void delete(Long id);
+
+    PageResponse<BranchResponse> fetchAllBranchesForAdmin(int pageNo, int pageSize, String sortBy);
+
+    BranchResponse restore(long id);
 }

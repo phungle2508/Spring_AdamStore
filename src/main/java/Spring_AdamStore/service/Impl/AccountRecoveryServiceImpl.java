@@ -1,5 +1,6 @@
 package Spring_AdamStore.service.Impl;
 
+import Spring_AdamStore.constants.EntityStatus;
 import Spring_AdamStore.constants.TokenType;
 import Spring_AdamStore.dto.request.EmailRequest;
 import Spring_AdamStore.dto.request.ResetPasswordRequest;

@@ -7,6 +7,7 @@ import Spring_AdamStore.entity.relationship.UserHasRole;
 import org.mapstruct.*;
 
 import java.util.List;
+import java.util.Set;
 
 
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS, uses = {PermissionMapper.class})
@@ -17,10 +18,12 @@ public interface RoleMapper {
 
     List<RoleResponse> toRoleResponseList(List<Role> roles);
 
-    @Mapping(target = "id", source = "userHasRole.role.id")
-    @Mapping(target = "name", source = "userHasRole.role.name")
+
+    @Mapping(target = "id", source = "role.id")
+    @Mapping(target = "name", source = "role.name")
     @Named("userHasRoleToEntityBasic")
     EntityBasic userHasRoleToEntityBasic(UserHasRole userHasRole);
 
-
+    @IterableMapping(qualifiedByName = "userHasRoleToEntityBasic")
+    Set<EntityBasic> userHasRoleToEntityBasicSet(Set<UserHasRole> userHasRoleSet);
 }

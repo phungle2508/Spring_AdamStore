@@ -46,6 +46,8 @@ public class ProductController {
                 .build();
     }
 
+    @Operation(summary = "Fetch All Products For User",
+    description = "Api này để lấy các Products (ACTIVE) cho user")
     @GetMapping("/products")
     public ApiResponse<PageResponse<ProductResponse>> fetchAll(@Min(value = 1, message = "pageNo phải lớn hơn 0")
                                                             @RequestParam(defaultValue = "1") int pageNo,
@@ -54,9 +56,24 @@ public class ProductController {
         return ApiResponse.<PageResponse<ProductResponse>>builder()
                 .code(HttpStatus.OK.value())
                 .result(productService.fetchAll(pageNo, pageSize, sortBy))
-                .message("Fetch All Products With Pagination")
+                .message("Fetch All Products For User")
                 .build();
     }
+
+    @Operation(summary = "Fetch All Products For Admin",
+            description = "Api này để lấy các Products (cả ACTIVE và INACTIVE) cho admin")
+    @GetMapping("/products/admin")
+    public ApiResponse<PageResponse<ProductResponse>> fetchAllProductsForAdmin(@Min(value = 1, message = "pageNo phải lớn hơn 0")
+                                                               @RequestParam(defaultValue = "1") int pageNo,
+                                                               @RequestParam(defaultValue = "10") int pageSize,
+                                                               @RequestParam(required = false) String sortBy){
+        return ApiResponse.<PageResponse<ProductResponse>>builder()
+                .code(HttpStatus.OK.value())
+                .result(productService.fetchAllProductsForAdmin(pageNo, pageSize, sortBy))
+                .message("Fetch All Products For Admin")
+                .build();
+    }
+
 
     @PutMapping("/products/{id}")
     public ApiResponse<ProductResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
@@ -69,14 +86,26 @@ public class ProductController {
     }
 
 
+    @Operation(summary = "Soft Delete Product")
     @DeleteMapping("/products/{id}")
     public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
                                     @PathVariable Long id){
         productService.delete(id);
         return ApiResponse.<Void>builder()
                 .code(HttpStatus.NO_CONTENT.value())
-                .message("Delete Product By Id")
+                .message("Soft Delete Product By Id")
                 .result(null)
+                .build();
+    }
+
+    @Operation(summary = "Restore Product")
+    @PatchMapping("/products/{id}/restore")
+    public ApiResponse<ProductResponse> restore(@Min(value = 1, message = "Id phải lớn hơn 0")
+                                               @PathVariable long id) {
+        return ApiResponse.<ProductResponse>builder()
+                .code(HttpStatus.OK.value())
+                .message("Restore Product By Id")
+                .result(productService.restore(id))
                 .build();
     }
 
@@ -108,7 +137,8 @@ public class ProductController {
                 .build();
     }
 
-    @Operation(description = "Api này dùng để lấy tất ca Product-Variants theo Product")
+    @Operation(summary = "Fetch All product-variants by product For User",
+            description = "Api này dùng để lấy tất ca Product-Variants (ACTIVE) theo Product cho user")
     @GetMapping("/products/{productId}/product-variants")
     public ApiResponse<PageResponse<ProductVariantResponse>> getVariantsByProductId(@Min(value = 1, message = "pageNo phải lớn hơn 0")
                                                                           @RequestParam(defaultValue = "1") int pageNo,
@@ -118,8 +148,24 @@ public class ProductController {
                                                                           @PathVariable Long productId){
         return ApiResponse.<PageResponse<ProductVariantResponse>>builder()
                 .code(HttpStatus.OK.value())
-                .message("Fetch All product-variants by product")
+                .message("Fetch All product-variants by product For User")
                 .result(productService.getVariantsByProductId(pageNo, pageSize, sortBy, productId))
+                .build();
+    }
+
+    @Operation(summary = "Fetch All product-variants by product for Admin",
+            description = "Api này dùng để lấy tất ca Product-Variants (cả ACTIVE và INACTIVE) theo Product cho admin")
+    @GetMapping("/products/{productId}/product-variants/admin")
+    public ApiResponse<PageResponse<ProductVariantResponse>> getVariantsByProductIdForAdmin(@Min(value = 1, message = "pageNo phải lớn hơn 0")
+                                                                                    @RequestParam(defaultValue = "1") int pageNo,
+                                                                                    @RequestParam(defaultValue = "10") int pageSize,
+                                                                                    @RequestParam(required = false) String sortBy,
+                                                                                    @Min(value = 1, message = "ID phải lớn hơn 0")
+                                                                                    @PathVariable Long productId){
+        return ApiResponse.<PageResponse<ProductVariantResponse>>builder()
+                .code(HttpStatus.OK.value())
+                .message("Fetch All product-variants by product for Admin")
+                .result(productService.getVariantsByProductIdForAdmin(pageNo, pageSize, sortBy, productId))
                 .build();
     }
 }

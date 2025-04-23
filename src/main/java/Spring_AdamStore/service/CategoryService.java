@@ -5,6 +5,7 @@ import Spring_AdamStore.dto.request.ProductRequest;
 import Spring_AdamStore.dto.response.CategoryResponse;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.dto.response.ProductResponse;
+import jakarta.validation.constraints.Min;
 
 public interface CategoryService {
 
@@ -19,4 +20,10 @@ public interface CategoryService {
     void delete(Long id);
 
     PageResponse<ProductResponse> fetchByCategoryId(int pageNo, int pageSize, String sortBy, Long categoryId);
+
+    PageResponse<CategoryResponse> fetchAllCategoriesForAdmin(int pageNo, int pageSize, String sortBy);
+
+    CategoryResponse restore(long id);
+
+    PageResponse<ProductResponse> fetchByCategoryIdForAdmin(int pageNo, int pageSize, String sortBy, Long categoryId);
 }

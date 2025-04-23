@@ -15,6 +15,7 @@ import Spring_AdamStore.mapper.OrderMapper;
 import Spring_AdamStore.repository.*;
 import Spring_AdamStore.repository.criteria.SearchCriteriaQueryConsumer;
 import Spring_AdamStore.repository.criteria.SearchCriteria;
+import Spring_AdamStore.repository.relationship.PromotionUsageRepository;
 import Spring_AdamStore.service.CurrentUserService;
 import Spring_AdamStore.service.OrderService;
 import Spring_AdamStore.service.PageableService;
@@ -33,6 +34,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -54,7 +56,6 @@ public class OrderServiceImpl implements OrderService {
     private final OrderMapper orderMapper;
 
     private final CurrentUserService currentUserService;
-    private final UserRepository userRepository;
     private final AddressRepository addressRepository;
     private final ProductVariantRepository productVariantRepository;
     private final OrderItemRepository orderItemRepository;
@@ -64,6 +65,7 @@ public class OrderServiceImpl implements OrderService {
     private final VNPAYConfig vnPayConfig;
     private final PageableService pageableService;
     private final PromotionUsageService promotionUsageService;
+    private final PromotionUsageRepository promotionUsageRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -83,6 +85,7 @@ public class OrderServiceImpl implements OrderService {
                 .user(user)
                 .address(address)
                 .orderStatus(PENDING)
+                .totalPrice(0.0)
                 .orderDate(LocalDate.now())
                 .build();
 
@@ -114,7 +117,6 @@ public class OrderServiceImpl implements OrderService {
             orderItemSet.add(orderItem);
             totalPrice += orderItem.getQuantity() * orderItem.getUnitPrice();
         }
-
         orderItemRepository.saveAll(orderItemSet);
         order.setOrderItems(orderItemSet);
 
@@ -299,6 +301,12 @@ public class OrderServiceImpl implements OrderService {
     public void delete(Long id) {
         Order order = findOrderById(id);
 
+        orderItemRepository.deleteAll(order.getOrderItems());
+
+        paymentHistoryRepository.deleteAll(order.getPayments());
+
+        promotionUsageRepository.delete(order.getPromotionUsage());
+
         orderRepository.delete(order);
     }
 
@@ -398,5 +406,45 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void updateOrderStatusProcessingToShipped() {
+        log.info("Update Order From Processing To Shipped");
+
+        LocalDate currentDate = LocalDate.now();
+
+        List<Order> orderList = orderRepository.findByOrderStatusAndOrderDateBefore(OrderStatus.PROCESSING,
+                currentDate.minusDays(1));
+
+        orderList.forEach(order ->  order.setOrderStatus(OrderStatus.SHIPPED));
+        orderRepository.saveAll(orderList);
+    }
+
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void updateOrderStatusShippedToDelivered() {
+        log.info("Update Order From Shipped To Delivered");
+
+        LocalDate currentDate = LocalDate.now();
+
+        List<Order> orderList = orderRepository.findByOrderStatusAndOrderDateBefore(OrderStatus.SHIPPED,
+                currentDate.minusDays(5));
+
+        orderList.forEach(order ->  order.setOrderStatus(OrderStatus.DELIVERED));
+        orderRepository.saveAll(orderList);
+
+    }
+
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void cancelPendingOrdersOverOneDay() {
+        log.info("Cancel Pending Orders Over One Day");
+
+        LocalDate currentDate = LocalDate.now();
+
+        List<Order> orderList = orderRepository.findByOrderStatusAndOrderDateBefore(PENDING,
+                currentDate.minusDays(1));
+
+        orderList.forEach(order ->  order.setOrderStatus(OrderStatus.CANCELLED));
+        orderRepository.saveAll(orderList);
+
+    }
 
 }
