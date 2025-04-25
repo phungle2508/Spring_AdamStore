@@ -49,10 +49,10 @@ springdoc:
     enabled: true
 open:
   api:
-    title: Spring-Adam-Store
-    version: v1.0.0
-    description: Api Service
-    serverUrl: http://localhost:${server.port}
+    title: ${OPEN_API_TITLE}
+    version: ${OPEN_API_VERSION}
+    description: ${OPEN_API_DESCRIPTION}
+    serverUrl: http://${SERVER_IP}:${server.port}
     serverName: server dev
     api-docs: backend-service
 
