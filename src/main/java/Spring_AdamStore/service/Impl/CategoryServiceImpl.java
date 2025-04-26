@@ -106,6 +106,7 @@ public class CategoryServiceImpl implements CategoryService {
         if(productRepository.countActiveProductsByCategoryId(category.getId(), ACTIVE.name()) > 0){
             throw new AppException(ErrorCode.CATEGORY_DELETE_CONFLICT);
         }
+
         categoryRepository.delete(category);
     }
 
