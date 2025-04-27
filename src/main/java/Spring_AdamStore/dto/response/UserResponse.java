@@ -1,5 +1,6 @@
 package Spring_AdamStore.dto.response;
 
+import Spring_AdamStore.constants.EntityStatus;
 import Spring_AdamStore.constants.Gender;
 import Spring_AdamStore.dto.basic.EntityBasic;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -25,6 +26,8 @@ public class UserResponse {
     String name;
     String email;
     String phone;
+    @Enumerated(EnumType.STRING)
+    EntityStatus status;
     String avatarUrl;
     LocalDate dob;
     @Enumerated(EnumType.STRING)
