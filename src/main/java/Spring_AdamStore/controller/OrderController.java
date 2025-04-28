@@ -106,8 +106,7 @@ public class OrderController {
     }
 
     @Operation(summary = "Calculate Shipping Fee",
-    description = "Api này dùng để tính phí ship của đơn hàng " +
-            "(totalPrice: giá tiền sản phẩm, toWardCode: code (phường/xã) của người nhận, toDistrictId: id quận/huyện người nhận)")
+    description = "Api này dùng để tính phí ship của đơn hàng")
     @PostMapping("/shipping/calculate-fee")
     public ApiResponse<ShippingFeeResponse> calculateShippingFee(@RequestBody ShippingRequest request){
         return ApiResponse.<ShippingFeeResponse>builder()
