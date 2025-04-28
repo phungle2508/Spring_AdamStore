@@ -31,6 +31,7 @@ public class BranchServiceImpl implements BranchService {
     private final PageableService pageableService;
 
     @Override
+    @Transactional
     public BranchResponse create(BranchRequest request) {
         if(branchRepository.countByName(request.getName()) > 0){
             throw new AppException(ErrorCode.BRANCH_EXISTED);

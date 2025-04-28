@@ -62,11 +62,9 @@ public class OrderServiceImpl implements OrderService {
     private final PromotionRepository promotionRepository;
     private final PaymentHistoryRepository paymentHistoryRepository;
     private final UserHasRoleService userHasRoleService;
-    private final VNPAYConfig vnPayConfig;
     private final PageableService pageableService;
     private final PromotionUsageService promotionUsageService;
     private final PromotionUsageRepository promotionUsageRepository;
-
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -272,6 +270,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderResponse updateAddress(Long id, UpdateOrderAddressRequest request) {
         Order order = findOrderById(id);
 
@@ -316,97 +315,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-    @Override
-    public VNPayResponse processPayment(Long orderId, HttpServletRequest request) {
-        Order order = findOrderById(orderId);
-
-        if (!order.getOrderStatus().equals(OrderStatus.PENDING)) {
-            throw new AppException(ErrorCode.INVALID_ORDER_STATUS);
-        }
-
-        return VNPayResponse.builder()
-                .code("OK")
-                .message("Mã thanh toán đã được tạo thành công. Bạn sẽ được chuyển đến cổng thanh toán để hoàn tất giao dịch.")
-                .paymentUrl(createVnPayPayment(order, request))
-                .build();
-    }
-
-    public String createVnPayPayment(Order order, HttpServletRequest request) {
-        Map<String, String> vnpParamsMap = vnPayConfig.getVNPayConfig();
-
-        long amount = (long) (100 * order.getTotalPrice());
-
-        vnpParamsMap.put("vnp_Amount", String.valueOf(amount));
-
-        vnpParamsMap.put("vnp_IpAddr", VNPayUtil.getIpAddress(request));
-
-        // Tao chuoi da ma hoa
-        String queryUrl = VNPayUtil.getPaymentURL(vnpParamsMap, true);
-
-        // Tao chuoi chua ma hoa
-        String hashData = VNPayUtil.getPaymentURL(vnpParamsMap, false);
-        // Thêm vnp_SecureHash vào URL
-        String vnpSecureHash = VNPayUtil.hmacSHA512(vnPayConfig.getSecretKey(), hashData);
-
-        queryUrl += "&vnp_SecureHash=" + vnpSecureHash;
-
-        // Tao URL Final
-        return vnPayConfig.getVnp_PayUrl() + "?" + queryUrl;
-    }
-
-    @Override
-    public OrderResponse updateOrderAfterPayment(PaymentCallbackRequest request) {
-        Order order = findOrderById(request.getOrderId());
-        order.setOrderStatus(OrderStatus.PROCESSING);
-
-        PaymentHistory  paymentHistory = paymentHistoryRepository.findByOrderIdAndPaymentStatus(order.getId(), PaymentStatus.PENDING)
-                .orElseThrow(() -> new AppException(ErrorCode.PAYMENT_HISTORY_NOT_EXISTED));
-        paymentHistory.setIsPrimary(true);
-        paymentHistory.setPaymentStatus(PaymentStatus.PAID);
-        paymentHistory.setPaymentTime(LocalDateTime.now());
-        paymentHistoryRepository.save(paymentHistory);
-
-        return orderMapper.toOrderResponse(orderRepository.save(order));
-    }
-
-    public void handleFailedPayment(PaymentCallbackRequest request){
-        Order order = findOrderById(request.getOrderId());
-        PaymentHistory  paymentHistory = paymentHistoryRepository.findByOrderIdAndPaymentStatus(order.getId(), PaymentStatus.PENDING)
-                .orElseThrow(() -> new AppException(ErrorCode.PAYMENT_HISTORY_NOT_EXISTED));
-
-        paymentHistory.setPaymentStatus(PaymentStatus.FAILED);
-        paymentHistoryRepository.save(paymentHistory);
-
-    }
-
-    @Override
-    public VNPayResponse retryPayment(Long orderId, HttpServletRequest request) {
-        Order order = findOrderById(orderId);
-
-        if (!order.getOrderStatus().equals(OrderStatus.PENDING)) {
-            throw new AppException(ErrorCode.INVALID_ORDER_STATUS);
-        }
-
-        String paymentUrl = createVnPayPayment(order, request);
-
-        paymentHistoryRepository.save(PaymentHistory.builder()
-                .isPrimary(false)
-                .paymentMethod(PaymentMethod.VNPAY)
-                .totalAmount(order.getTotalPrice())
-                .paymentStatus(PaymentStatus.PENDING)
-                .paymentTime(LocalDateTime.now())
-                .order(order)
-                .build());
-
-        return VNPayResponse.builder()
-                .code("OK")
-                .message("Mã thanh toán đã được tạo thành công. Bạn sẽ được chuyển đến cổng thanh toán để hoàn tất giao dịch.")
-                .paymentUrl(paymentUrl)
-                .build();
-    }
-
-
     @Scheduled(cron = "0 0 0 * * ?")
+    @Transactional
     public void updateOrderStatusProcessingToShipped() {
         log.info("Update Order From Processing To Shipped");
 
@@ -420,6 +330,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Scheduled(cron = "0 0 0 * * ?")
+    @Transactional
     public void updateOrderStatusShippedToDelivered() {
         log.info("Update Order From Shipped To Delivered");
 
@@ -434,6 +345,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Scheduled(cron = "0 0 0 * * ?")
+    @Transactional
     public void cancelPendingOrdersOverOneDay() {
         log.info("Cancel Pending Orders Over One Day");
 
@@ -444,7 +356,6 @@ public class OrderServiceImpl implements OrderService {
 
         orderList.forEach(order ->  order.setOrderStatus(OrderStatus.CANCELLED));
         orderRepository.saveAll(orderList);
-
     }
 
 }

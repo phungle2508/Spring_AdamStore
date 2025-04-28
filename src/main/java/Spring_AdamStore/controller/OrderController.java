@@ -2,9 +2,11 @@ package Spring_AdamStore.controller;
 
 import Spring_AdamStore.dto.request.OrderRequest;
 import Spring_AdamStore.dto.request.PaymentCallbackRequest;
+import Spring_AdamStore.dto.request.ShippingRequest;
 import Spring_AdamStore.dto.request.UpdateOrderAddressRequest;
 import Spring_AdamStore.dto.response.*;
 import Spring_AdamStore.service.OrderService;
+import Spring_AdamStore.service.PaymentService;
 import Spring_AdamStore.service.ShippingService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,6 +31,7 @@ public class OrderController {
 
     private final OrderService orderService;
     private final ShippingService shippingService;
+    private final PaymentService paymentService;
 
 
     @Operation(summary = "Create Order",
@@ -106,13 +109,11 @@ public class OrderController {
     description = "Api này dùng để tính phí ship của đơn hàng " +
             "(totalPrice: giá tiền sản phẩm, toWardCode: code (phường/xã) của người nhận, toDistrictId: id quận/huyện người nhận)")
     @PostMapping("/shipping/calculate-fee")
-    public ApiResponse<ShippingFeeResponse> calculateShippingFee(@RequestParam Double totalPrice,
-                                                                 @RequestParam String toWardCode,
-                                                                 @RequestParam Integer toDistrictId){
+    public ApiResponse<ShippingFeeResponse> calculateShippingFee(@RequestBody ShippingRequest request){
         return ApiResponse.<ShippingFeeResponse>builder()
                 .code(HttpStatus.NO_CONTENT.value())
                 .message("Calculate Shipping Fee")
-                .result(shippingService.shippingCost(totalPrice, toWardCode, toDistrictId))
+                .result(shippingService.shippingCost(request))
                 .build();
     }
 
@@ -124,7 +125,7 @@ public class OrderController {
         return ApiResponse.<VNPayResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Tạo thành công URL thanh toán VNPay")
-                .result(orderService.processPayment(orderId, request))
+                .result(paymentService.processPayment(orderId, request))
                 .build();
     }
 
@@ -137,11 +138,11 @@ public class OrderController {
             return ApiResponse.<OrderResponse>builder()
                     .code(1000)
                     .message("Thanh toán thành công")
-                    .result(orderService.updateOrderAfterPayment(request))
+                    .result(paymentService.updateOrderAfterPayment(request))
                     .build();
         } else {
             log.error("Thanh toán không thành công với mã phản hồi: " + status);
-            orderService.handleFailedPayment(request);
+            paymentService.handleFailedPayment(request);
             return new ApiResponse<>(4000, "Thanh toán thất bại", null);
         }
     }
@@ -154,7 +155,7 @@ public class OrderController {
         return ApiResponse.<VNPayResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Tạo thành công URL thanh toán VNPay")
-                .result(orderService.retryPayment(orderId, request))
+                .result(paymentService.retryPayment(orderId, request))
                 .build();
     }
 

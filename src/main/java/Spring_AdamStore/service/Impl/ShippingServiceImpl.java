@@ -1,8 +1,17 @@
 package Spring_AdamStore.service.Impl;
 
+import Spring_AdamStore.dto.request.OrderItemRequest;
 import Spring_AdamStore.dto.request.ShippingFeeRequest;
+import Spring_AdamStore.dto.request.ShippingRequest;
 import Spring_AdamStore.dto.response.GhnResponse;
 import Spring_AdamStore.dto.response.ShippingFeeResponse;
+import Spring_AdamStore.entity.Address;
+import Spring_AdamStore.entity.OrderItem;
+import Spring_AdamStore.entity.ProductVariant;
+import Spring_AdamStore.exception.AppException;
+import Spring_AdamStore.exception.ErrorCode;
+import Spring_AdamStore.repository.AddressRepository;
+import Spring_AdamStore.repository.ProductVariantRepository;
 import Spring_AdamStore.service.ShippingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +28,8 @@ import java.util.Map;
 public class ShippingServiceImpl implements ShippingService {
 
     private final RestTemplate restTemplate;
+    private final ProductVariantRepository productVariantRepository;
+    private final AddressRepository addressRepository;
 
     @Value("${ghn.token}")
     private String ghnToken;
@@ -49,13 +60,30 @@ public class ShippingServiceImpl implements ShippingService {
 
 
     @Override
-    public ShippingFeeResponse shippingCost(Double totalPrice, String toWardCode, Integer toDistrictId){
+    public ShippingFeeResponse shippingCost(ShippingRequest request){
+
+        // Total price
+        double totalPrice = 0.0;
+        for(OrderItemRequest orderItemRequest : request.getOrderItems()){
+            ProductVariant productVariant = productVariantRepository.findById(orderItemRequest.getProductVariantId())
+                    .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_VARIANT_NOT_EXISTED));
+
+            // check sl hang con
+            if (productVariant.getQuantity() < orderItemRequest.getQuantity()) {
+                throw new AppException(ErrorCode.OUT_OF_STOCK);
+            }
+            totalPrice += orderItemRequest.getQuantity() * productVariant.getPrice();
+        }
         int insuranceValue = (int) Math.round(totalPrice);
 
-        ShippingFeeRequest request = ShippingFeeRequest.builder()
+        // Address
+        Address address = addressRepository.findById(request.getAddressId())
+                .orElseThrow(() -> new AppException(ErrorCode.ADDRESS_NOT_EXISTED));
+
+        ShippingFeeRequest shippingFeeRequest = ShippingFeeRequest.builder()
                 .insuranceValue(insuranceValue)
-                .toWardCode(toWardCode)
-                .toDistrictId(toDistrictId)
+                .toWardCode(address.getWard().getCode())
+                .toDistrictId(address.getDistrict().getId())
                 .coupon(null)
                 .fromDistrictId(fromDistrictId)
                 .weight(weight)
@@ -65,7 +93,7 @@ public class ShippingServiceImpl implements ShippingService {
                 .serviceTypeId(serviceTypeId)
                 .build();
 
-        return calculateShippingFee(request);
+        return calculateShippingFee(shippingFeeRequest);
     }
 
     public ShippingFeeResponse calculateShippingFee(ShippingFeeRequest request) {

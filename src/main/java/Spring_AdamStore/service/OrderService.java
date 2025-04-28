@@ -25,13 +25,5 @@ public interface OrderService {
 
     void delete(Long id);
 
-    VNPayResponse processPayment(Long orderId, HttpServletRequest request);
-
-    OrderResponse updateOrderAfterPayment(PaymentCallbackRequest request);
-
-    void handleFailedPayment(PaymentCallbackRequest request);
-
-    VNPayResponse retryPayment(Long orderId, HttpServletRequest request);
-
     PageResponse<OrderResponse> searchOrder(int pageNo, int pageSize, String sortBy, List<String> search);
 }
