@@ -2,6 +2,7 @@ package Spring_AdamStore.service.Impl;
 
 import Spring_AdamStore.constants.TokenType;
 import Spring_AdamStore.entity.RefreshToken;
+import Spring_AdamStore.entity.Role;
 import Spring_AdamStore.entity.User;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
@@ -24,7 +25,10 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j(topic = "TOKEN-SERVICE")
@@ -65,6 +69,7 @@ public class TokenServiceImpl implements TokenService {
                 .issueTime(new Date())
                 .expirationTime(Date.from(Instant.now().plusSeconds(durationInSeconds)))
                 .jwtID(UUID.randomUUID().toString())
+                .claim("roles", getRolesFromUser(user))
                 .build();
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
 
@@ -74,6 +79,12 @@ public class TokenServiceImpl implements TokenService {
         jwsObject.sign(new MACSigner(getKey(type).getBytes()));
 
         return jwsObject.serialize();
+    }
+
+    private Set<String> getRolesFromUser(User user) {
+        return user.getRoles().stream()
+                .map(userHasRole -> userHasRole.getRole().getName())
+                .collect(Collectors.toSet());
     }
 
     @Override

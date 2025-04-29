@@ -1,6 +1,5 @@
 package Spring_AdamStore.service.Impl;
 
-import Spring_AdamStore.constants.EntityStatus;
 import Spring_AdamStore.constants.TokenType;
 import Spring_AdamStore.dto.request.EmailRequest;
 import Spring_AdamStore.dto.request.ResetPasswordRequest;
@@ -38,11 +37,11 @@ import static Spring_AdamStore.constants.VerificationType.FORGOT_PASSWORD;
 public class AccountRecoveryServiceImpl implements AccountRecoveryService {
 
     private final UserRepository userRepository;
+    private final EmailService emailService;
     private final RedisVerificationCodeRepository redisVerificationCodeRepository;
     private final TokenService tokenService;
     private final ForgotPasswordTokenRepository forgotPasswordTokenRepository;
     private final PasswordEncoder passwordEncoder;
-    private final EmailService emailService;
     private final RedisVerificationCodeService redisVerificationCodeService;
 
     @Value("${jwt.reset.expiry-in-minutes}")
@@ -53,22 +52,17 @@ public class AccountRecoveryServiceImpl implements AccountRecoveryService {
     public VerificationCodeResponse forgotPassword(EmailRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-        try {
-            RedisVerificationCode redisVerificationCode = redisVerificationCodeService
+        RedisVerificationCode redisVerificationCode = redisVerificationCodeService
                     .saveVerificationCode(user.getEmail(), FORGOT_PASSWORD);
 
-            emailService.sendPasswordResetCode(user, redisVerificationCode.getVerificationCode());
+        emailService.sendPasswordResetCode(user.getEmail(), user.getName(), redisVerificationCode.getVerificationCode());
 
-            return VerificationCodeResponse.builder()
-                    .email(redisVerificationCode.getEmail())
-                    .verificationCode(redisVerificationCode.getVerificationCode())
-                    .expirationTime(redisVerificationCode.getExpirationTime())
-                    .build();
+        return VerificationCodeResponse.builder()
+                .email(redisVerificationCode.getEmail())
+                .verificationCode(redisVerificationCode.getVerificationCode())
+                .expirationTime(redisVerificationCode.getExpirationTime())
+                .build();
 
-        } catch (Exception e) {
-            log.error("Lỗi gửi email: ", e);
-            throw new AppException(ErrorCode.EMAIL_SEND_FAILED);
-        }
     }
 
     @Override

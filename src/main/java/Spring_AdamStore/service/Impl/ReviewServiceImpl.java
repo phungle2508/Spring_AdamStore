@@ -18,6 +18,7 @@ import Spring_AdamStore.service.AuthService;
 import Spring_AdamStore.service.CurrentUserService;
 import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.ReviewService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -36,6 +37,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final ProductRepository productRepository;
 
     @Override
+    @Transactional
     public ReviewResponse create(ReviewRequest request) {
         Review review = reviewMapper.toReview(request);
 
@@ -74,6 +76,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    @Transactional
     public ReviewResponse update(Long id, ReviewUpdateRequest request) {
         Review review = findReviewById(id);
 

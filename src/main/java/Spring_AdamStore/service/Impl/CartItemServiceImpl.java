@@ -97,6 +97,7 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     @Override
+    @Transactional
     public CartItemResponse update(Long id, CartItemUpdateRequest request) {
         CartItem cartItem = findCartItemById(id);
 

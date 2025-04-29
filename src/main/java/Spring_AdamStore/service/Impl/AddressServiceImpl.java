@@ -37,6 +37,7 @@ public class AddressServiceImpl implements AddressService {
     private final OrderRepository orderRepository;
 
     @Override
+    @Transactional
     public AddressResponse create(AddressRequest request) {
         Address address = addressMapper.toAddress(request);
 
@@ -99,6 +100,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
+    @Transactional
     public AddressResponse update(Long id, AddressRequest request) {
         Address address = findAddressById(id);
 

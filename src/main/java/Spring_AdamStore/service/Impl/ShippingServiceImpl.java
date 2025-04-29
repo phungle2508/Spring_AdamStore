@@ -13,6 +13,7 @@ import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.repository.AddressRepository;
 import Spring_AdamStore.repository.ProductVariantRepository;
 import Spring_AdamStore.service.ShippingService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -60,6 +61,7 @@ public class ShippingServiceImpl implements ShippingService {
 
 
     @Override
+    @Transactional
     public ShippingFeeResponse shippingCost(ShippingRequest request){
 
         // Total price

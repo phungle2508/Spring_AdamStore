@@ -28,18 +28,16 @@ spring:
       port: ${REDIS_PORT:6379}
       password: ${REDIS_PASSWORD:123456}
 
-# Email
-  mail:
-    host: ${MAIL_HOST:smtp.gmail.com}
-    port: ${MAIL_PORT:587}
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
-    properties:
-      mail:
-        smtp:
-          auth: ${MAIL_SMTP_AUTH:true}
-          starttls:
-            enable: ${MAIL_SMTP_STARTTLS_ENABLE:true}
+
+# SendGrid
+  sendgrid:
+    apiKey: ${SENDGRID_API_KEY}
+    sender:
+      email: ${SENDGRID_SENDER_EMAIL}
+    template-id:
+      otp-register: ${SENDGRID_TEMPLATE_OTP_REGISTER}
+      reset-password-verification: ${SENDGRID_TEMPLATE_RESET_PASSWORD_VERIFICATION}
+
 
 # Swagger
 springdoc:
