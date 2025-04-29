@@ -47,6 +47,7 @@ public class ProductVariantServiceImpl implements ProductVariantService {
 
 
     @Override
+    @Transactional
     public Set<ProductVariant> saveProductVariant(Product product, Set<Size> sizeSet, Set<Color> colorSet, Double price, Integer quantity) {
         Set<ProductVariant> productVariantSet = new HashSet<>();
 

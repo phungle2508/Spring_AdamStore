@@ -33,6 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final ProductMapper productMapper;
 
     @Override
+    @Transactional
     public CategoryResponse create(CategoryRequest request) {
         if(categoryRepository.existsByName(request.getName())){
             throw new AppException(ErrorCode.CATEGORY_EXISTED);
@@ -87,6 +88,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     @Override
+    @Transactional
     public CategoryResponse update(Long id, CategoryRequest request) {
         if(categoryRepository.existsByName(request.getName())){
             throw new AppException(ErrorCode.CATEGORY_EXISTED);

@@ -88,6 +88,7 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
+    @Transactional
     public BranchResponse update(Long id, BranchUpdateRequest request) {
         if(branchRepository.countByName(request.getName()) > 0){
             throw new AppException(ErrorCode.BRANCH_EXISTED);

@@ -17,6 +17,7 @@ import Spring_AdamStore.repository.PaymentHistoryRepository;
 import Spring_AdamStore.service.PaymentService;
 import Spring_AdamStore.util.VNPayUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -74,6 +75,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    @Transactional
     public OrderResponse updateOrderAfterPayment(PaymentCallbackRequest request) {
         Order order = findOrderById(request.getOrderId());
         order.setOrderStatus(OrderStatus.PROCESSING);

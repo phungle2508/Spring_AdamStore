@@ -15,6 +15,7 @@ import Spring_AdamStore.service.AuthService;
 import Spring_AdamStore.service.CartService;
 import Spring_AdamStore.service.CurrentUserService;
 import Spring_AdamStore.service.PageableService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -36,6 +37,7 @@ public class CartServiceImpl implements CartService {
     private final PageableService pageableService;
 
 
+    @Transactional
     public void createCartForUser(User user){
         Cart cart = Cart.builder()
                 .user(user)

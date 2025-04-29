@@ -4,8 +4,6 @@ import Spring_AdamStore.dto.response.*;
 import Spring_AdamStore.service.DistrictService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
