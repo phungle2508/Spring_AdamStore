@@ -26,7 +26,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<Product> findAllByCategoryId(Long categoryId, Pageable pageable);
 
 
-    @Query(value = "SELECT COUNT(*) FROM tbl_product p WHERE p.categoryId = :categoryId AND p.status = :status", nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM tbl_product p WHERE p.category_id = :categoryId AND p.status = :status", nativeQuery = true)
     Long countActiveProductsByCategoryId(@Param("categoryId") Long categoryId, @Param("status") String status);
 
     @Query(value = "SELECT * FROM tbl_product",

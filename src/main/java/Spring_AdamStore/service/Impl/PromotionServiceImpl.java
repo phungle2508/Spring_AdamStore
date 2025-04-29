@@ -72,6 +72,7 @@ public class PromotionServiceImpl implements PromotionService {
     }
 
     @Override
+    @Transactional
     public PromotionResponse update(Long id, PromotionUpdateRequest request) {
         if(promotionRepository.existsByCode(request.getCode()) && request.getCode() != null){
             throw new AppException(ErrorCode.PROMOTION_EXISTED);

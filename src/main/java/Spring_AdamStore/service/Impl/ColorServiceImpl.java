@@ -32,6 +32,7 @@ public class ColorServiceImpl implements ColorService {
     private final PageableService pageableService;
 
     @Override
+    @Transactional
     public ColorResponse create(ColorRequest request) {
         if(colorRepository.existsByName(request.getName())){
             throw new AppException(ErrorCode.COLOR_EXISTED);
@@ -67,6 +68,7 @@ public class ColorServiceImpl implements ColorService {
     }
 
     @Override
+    @Transactional
     public ColorResponse update(Long id, ColorRequest request) {
         if(colorRepository.existsByName(request.getName())){
             throw new AppException(ErrorCode.COLOR_EXISTED);

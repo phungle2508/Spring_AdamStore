@@ -39,7 +39,6 @@ import static Spring_AdamStore.constants.VerificationType.REGISTER;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-    private final EmailService emailService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
@@ -50,6 +49,7 @@ public class AuthServiceImpl implements AuthService {
     private final RedisVerificationCodeService redisVerificationCodeService;
     private final RedisPendingUserRepository redisPendingUserRepository;
     private final CurrentUserService currentUserService;
+    private final EmailService emailService;
     private final RoleMapper roleMapper;
 
     @Override
@@ -84,6 +84,7 @@ public class AuthServiceImpl implements AuthService {
         redisPendingUser.setTtl(ttl);
 
         redisPendingUserRepository.save(redisPendingUser);
+
         emailService.sendOtpRegisterEmail(redisPendingUser.getEmail(),
                 redisPendingUser.getName(), redisVerificationCode.getVerificationCode());
 
@@ -101,7 +102,7 @@ public class AuthServiceImpl implements AuthService {
                 .getVerificationCode(request.getEmail(), REGISTER, request.getVerificationCode());
 
         RedisPendingUser pendingUser = redisPendingUserRepository
-                .findById(request.getEmail())
+                .findById(code.getEmail())
                 .orElseThrow(() -> new AppException(ErrorCode.PENDING_USER_NOT_FOUND));
 
         User user = userMapper.redisToUser(pendingUser);

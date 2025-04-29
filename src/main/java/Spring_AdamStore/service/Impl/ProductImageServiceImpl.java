@@ -12,6 +12,7 @@ import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.ProductImageService;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,6 +45,7 @@ public class ProductImageServiceImpl implements ProductImageService {
     private static final List<String> IMAGE_TYPES = Arrays.asList("image/jpeg", "image/png", "image/gif", "image/webp");
 
     @Override
+    @Transactional
     public ProductImageResponse uploadFile(MultipartFile file) throws FileException, IOException {
         if (file == null || file.isEmpty()) {
             throw new FileException("File trống. Không thể lưu trữ file");
@@ -63,6 +65,7 @@ public class ProductImageServiceImpl implements ProductImageService {
         return productImageMapper.toProductImageResponse(productImageRepository.save(productImage));
     }
 
+    @Transactional
     public void deleteFile(Long id) throws FileException, IOException {
         ProductImage productImage = productImageRepository.findById(id)
                 .orElseThrow(()-> new FileException("File không tồn tại trong hệ thống"));

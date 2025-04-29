@@ -1,17 +1,12 @@
 package Spring_AdamStore.controller;
 
 import Spring_AdamStore.dto.request.AddressRequest;
-import Spring_AdamStore.dto.request.BranchRequest;
 import Spring_AdamStore.dto.response.AddressResponse;
 import Spring_AdamStore.dto.response.ApiResponse;
-import Spring_AdamStore.dto.response.BranchResponse;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.service.AddressService;
-import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

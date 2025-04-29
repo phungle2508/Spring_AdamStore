@@ -33,6 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final ProductMapper productMapper;
 
     @Override
+    @Transactional
     public CategoryResponse create(CategoryRequest request) {
         if(categoryRepository.existsByName(request.getName())){
             throw new AppException(ErrorCode.CATEGORY_EXISTED);
@@ -87,6 +88,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     @Override
+    @Transactional
     public CategoryResponse update(Long id, CategoryRequest request) {
         if(categoryRepository.existsByName(request.getName())){
             throw new AppException(ErrorCode.CATEGORY_EXISTED);
@@ -106,10 +108,12 @@ public class CategoryServiceImpl implements CategoryService {
         if(productRepository.countActiveProductsByCategoryId(category.getId(), ACTIVE.name()) > 0){
             throw new AppException(ErrorCode.CATEGORY_DELETE_CONFLICT);
         }
+
         categoryRepository.delete(category);
     }
 
     @Override
+    @Transactional
     public CategoryResponse restore(long id) {
         Category category = categoryRepository.findCategoryById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_EXISTED));

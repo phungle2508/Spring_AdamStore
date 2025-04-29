@@ -1,75 +1,97 @@
 package Spring_AdamStore.service;
 
-import Spring_AdamStore.entity.User;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
+import com.sendgrid.Method;
+import com.sendgrid.Request;
+import com.sendgrid.Response;
+import com.sendgrid.SendGrid;
+import com.sendgrid.helpers.mail.Mail;
+import com.sendgrid.helpers.mail.objects.Email;
+import com.sendgrid.helpers.mail.objects.Personalization;
 import lombok.RequiredArgsConstructor;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.scheduling.annotation.Async;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.context.Context;
-import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j(topic = "EMAIL-SERVICE")
 @RequiredArgsConstructor
 @Service
 public class EmailService {
 
-    private final JavaMailSender javaMailSender;
-    private final SpringTemplateEngine templateEngine;
+    private final SendGrid sendGrid;
+
+    @Value("${spring.sendgrid.sender.email}")
+    private String fromEmail;
+
+    @Value("${spring.sendgrid.template-id.otp-register}")
+    private String templateIdOtpRegister;
+
+    @Value("${spring.sendgrid.template-id.reset-password-verification}")
+    private String templateIdResetPasswordVerification;
 
 
-    @Async
-    public void sendEmail(String to, String subject, Map<String, Object> model, String templateName){
-        MimeMessage message = this.javaMailSender.createMimeMessage();
+    public void sendTemplateEmail(String toEmail, String subject, String templateId, Map<String, String> dynamicData) {
         try {
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            Email from = new Email(fromEmail);
+            Email to = new Email(toEmail);
 
-            Context context = new Context();
-            context.setVariables(model);
+            Mail mail = new Mail();
+            mail.setFrom(from);
+            mail.setTemplateId(templateId);
 
-            String htmlContent = templateEngine.process(templateName, context);
 
-            helper.setTo(to);
-            helper.setSubject(subject);
-            helper.setText(htmlContent, true);
+            Personalization personalization = new Personalization();
+            personalization.addTo(to);
 
-            javaMailSender.send(message);
-        }
-        catch (MessagingException e) {
+            for (Map.Entry<String, String> entry : dynamicData.entrySet()) {
+                personalization.addDynamicTemplateData(entry.getKey(), entry.getValue());
+            }
+            personalization.addDynamicTemplateData("subject", subject);
+
+            mail.addPersonalization(personalization);
+
+            // Send Email with SendGrid API
+            Request request = new Request();
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+            request.setBody(mail.build());
+
+            Response response = sendGrid.api(request);
+
+            if (response.getStatusCode() == 202) {
+                log.info("Email sent successfully to {} ", toEmail);
+            } else {
+                log.error("Failed to send email to {}. StatusCode: {}, Body: {}", toEmail, response.getStatusCode(), response.getBody());
+            }
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
 
-    public void sendOtpRegisterEmail(String email, String name, String otp) {
-        Map<String, Object> model = new HashMap<>();
-        model.put("name", name);
-        model.put("otp", otp);
+    public void sendOtpRegisterEmail(String toEmail, String name, String otp) {
+        Map<String, String> dynamicData = new HashMap<>();
+        dynamicData.put("name", name);
+        dynamicData.put("otp", otp);
 
-        sendEmail(email,
-                "Xác thực đăng ký tài khoản Adam Store",
-                model,
-                "otp-register"
-        );
+        sendTemplateEmail(toEmail,
+                "Hoàn tất đăng ký Adam Store - Mã xác thực",
+                templateIdOtpRegister,
+                dynamicData);
     }
 
-    public void sendPasswordResetCode(User user, String verificationCode) {
-        if (user != null && verificationCode != null) {
 
-            Map<String, Object> model = new HashMap<>();
-            model.put("name", user.getName());
-            model.put("verificationCode", verificationCode);
-            model.put("expirationTime", "10 phút");
+    public void sendPasswordResetCode(String toEmail, String name, String verificationCode) {
+        Map<String, String> dynamicData = new HashMap<>();
+        dynamicData.put("name", name);
+        dynamicData.put("verificationCode", verificationCode);
 
-            this.sendEmail(user.getEmail(),
-                    "Mã xác nhận của bạn để khôi phục mật khẩu",
-                    model,
-                    "password-reset-verification"
-            );
-        }
+        sendTemplateEmail(toEmail,
+                "Đặt lại mật khẩu Adam Store - Mã xác thực",
+                templateIdResetPasswordVerification,
+                dynamicData);
     }
 }

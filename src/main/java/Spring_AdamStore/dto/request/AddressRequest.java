@@ -12,6 +12,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AddressRequest {
 
+    @NotNull(message = "isDefault không được để trống")
     Boolean isDefault;
 
     @NotBlank(message = "streetDetail không được để trống")

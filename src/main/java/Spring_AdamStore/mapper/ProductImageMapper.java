@@ -1,12 +1,8 @@
 package Spring_AdamStore.mapper;
 
-import Spring_AdamStore.dto.request.BranchRequest;
-import Spring_AdamStore.dto.response.BranchResponse;
 import Spring_AdamStore.dto.response.ProductImageResponse;
-import Spring_AdamStore.entity.Branch;
 import Spring_AdamStore.entity.ProductImage;
 import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValueCheckStrategy;
 
 import java.util.List;

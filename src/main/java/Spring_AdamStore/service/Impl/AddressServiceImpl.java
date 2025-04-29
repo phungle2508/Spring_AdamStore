@@ -13,11 +13,14 @@ import Spring_AdamStore.service.AddressService;
 import Spring_AdamStore.service.AuthService;
 import Spring_AdamStore.service.CurrentUserService;
 import Spring_AdamStore.service.PageableService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @Slf4j(topic = "ADDRESS-SERVICE")
@@ -34,6 +37,7 @@ public class AddressServiceImpl implements AddressService {
     private final OrderRepository orderRepository;
 
     @Override
+    @Transactional
     public AddressResponse create(AddressRequest request) {
         Address address = addressMapper.toAddress(request);
 
@@ -57,6 +61,16 @@ public class AddressServiceImpl implements AddressService {
 
         User user = currentUserService.getCurrentUser();
         address.setUser(user);
+
+        if (Boolean.TRUE.equals(request.getIsDefault())) {
+            List<Address> addressList = addressRepository.findAllByUser(user);
+            addressList.stream()
+                    .filter(Address::getIsDefault)
+                    .forEach(userAddress -> {
+                        userAddress.setIsDefault(false);
+                        addressRepository.save(userAddress);
+                    });
+        }
 
         return addressMapper.toAddressResponse(addressRepository.save(address));
     }
@@ -86,6 +100,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
+    @Transactional
     public AddressResponse update(Long id, AddressRequest request) {
         Address address = findAddressById(id);
 
@@ -109,10 +124,21 @@ public class AddressServiceImpl implements AddressService {
         address.setProvince(province);
         address.setDistrict(district);
 
+        if (Boolean.TRUE.equals(request.getIsDefault())) {
+            List<Address> addressList = addressRepository.findAllByUser(address.getUser());
+            addressList.stream()
+                    .filter(Address::getIsDefault)
+                    .forEach(userAddress -> {
+                        userAddress.setIsDefault(false);
+                        addressRepository.save(userAddress);
+                    });
+        }
+
         return addressMapper.toAddressResponse(addressRepository.save(address));
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         Address address = findAddressById(id);
         address.getOrders().forEach(order -> order.setAddress(null));

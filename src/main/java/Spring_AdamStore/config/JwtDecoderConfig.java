@@ -12,7 +12,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class JwtDecoderConfig {
 
     @Value("${jwt.signer-key}")
-    protected String SIGNER_KEY;
+    private String SIGNER_KEY;
 
     @Bean
     public NimbusJwtDecoder nimbusJwtDecoder(){

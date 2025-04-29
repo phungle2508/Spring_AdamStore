@@ -22,6 +22,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -66,6 +67,7 @@ public class PaymentHistoryServiceImpl implements PaymentHistoryService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         PaymentHistory paymentHistory = paymentHistoryRepository.findById(id)
                 .orElseThrow(()-> new AppException(ErrorCode.PAYMENT_HISTORY_NOT_EXISTED));
