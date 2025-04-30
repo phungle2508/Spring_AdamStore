@@ -1,9 +1,12 @@
 package Spring_AdamStore.dto.response;
 
+import Spring_AdamStore.constants.EntityStatus;
 import Spring_AdamStore.dto.basic.EntityBasic;
 import Spring_AdamStore.dto.basic.UserBasic;
 import Spring_AdamStore.dto.basic.WardBasic;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -20,7 +23,12 @@ public class AddressResponse {
     Long id;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    UserBasic user;
+    String userName;
+    @Enumerated(EnumType.STRING)
+    EntityStatus status;
+
+    Boolean isVisible;
+
 
     Boolean isDefault;
     String streetDetail;
@@ -30,5 +38,6 @@ public class AddressResponse {
     EntityBasic district;
 
     EntityBasic province;
+
 
 }

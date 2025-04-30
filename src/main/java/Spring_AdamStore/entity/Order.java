@@ -9,6 +9,7 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -44,10 +45,10 @@ public class Order {
     LocalDate updatedAt;
 
     @OneToMany(mappedBy = "order")
-    Set<OrderItem> orderItems = new HashSet<>();;
+    Set<OrderItem> orderItems = new HashSet<>();
 
     @OneToMany(mappedBy = "order")
-    Set<PaymentHistory> payments = new HashSet<>();;
+    Set<PaymentHistory> payments = new HashSet<>();
 
     @OneToOne(mappedBy = "order")
      PromotionUsage promotionUsage;

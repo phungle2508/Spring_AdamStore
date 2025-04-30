@@ -180,7 +180,7 @@ public class UserServiceImpl implements UserService {
 
         User user = currentUserService.getCurrentUser();
 
-        Page<Address> addressPage = addressRepository.findAllByUserId(user.getId(), pageable);
+        Page<Address> addressPage = addressRepository.findAllByUserIdAndIsVisible(user.getId(), true, pageable);
 
         return PageResponse.<AddressResponse>builder()
                 .page(addressPage.getNumber() + 1)

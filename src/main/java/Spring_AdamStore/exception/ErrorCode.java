@@ -76,7 +76,10 @@ public enum ErrorCode {
     PROMOTION_USAGE_CONFLICT(1064, "Không thể xóa Promotion này vì đã được sử dụng trong đơn hàng", HttpStatus.FORBIDDEN),
     USER_HAS_ACTIVE_PROMOTION_USAGE(1065, "Không thể xóa người dùng vì đã từng sử dụng khuyến mãi", HttpStatus.FORBIDDEN),
     USER_HAS_ACTIVE_ORDER(1066, "Người dùng có đơn hàng đang ở trạng thái Processing, Shipped hoặc Delivered", HttpStatus.FORBIDDEN),
-    PRODUCT_VARIANT_USED_IN_ORDER(1067, "Không thể xóa mềm Product (Product Variant) vì đã được sử dụng trong đơn hàng.", HttpStatus.FORBIDDEN)
+    PRODUCT_VARIANT_USED_IN_ORDER(1067, "Không thể xóa mềm Product (Product Variant) vì đã được sử dụng trong đơn hàng.", HttpStatus.FORBIDDEN),
+    COLOR_HAS_USED_VARIANT(1068, "Không thể xóa màu vì có product variant đã sử dụng color này.", HttpStatus.FORBIDDEN),
+    DEFAULT_ADDRESS_CANNOT_BE_DELETED(1069, "Không thể xóa địa chỉ mặc định", HttpStatus.BAD_REQUEST),
+    ADDRESS_USED_IN_ORDER(1070, "Địa chỉ đã được sử dụng trong đơn hàng", HttpStatus.BAD_REQUEST)
     ;
 
 

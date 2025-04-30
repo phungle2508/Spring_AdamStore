@@ -29,7 +29,7 @@ public class OrderResponse {
     OrderStatus orderStatus;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    UserBasic user;
+    String customerName;
 
     AddressResponse address;
 

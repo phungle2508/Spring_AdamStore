@@ -1,5 +1,7 @@
 package Spring_AdamStore.service.Impl;
 
+import Spring_AdamStore.constants.EntityStatus;
+import Spring_AdamStore.constants.OrderStatus;
 import Spring_AdamStore.dto.request.AddressRequest;
 import Spring_AdamStore.dto.response.AddressResponse;
 import Spring_AdamStore.dto.response.BranchResponse;
@@ -83,12 +85,12 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public PageResponse<AddressResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
+    public PageResponse<AddressResponse> fetchAllForAdmin(int pageNo, int pageSize, String sortBy) {
         pageNo = pageNo - 1;
 
         Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Address.class);
 
-        Page<Address> addressPage = addressRepository.findAll(pageable);
+        Page<Address> addressPage = addressRepository.findAllAddresses(pageable);
 
         return PageResponse.<AddressResponse>builder()
                 .page(addressPage.getNumber() + 1)
@@ -139,13 +141,41 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     @Transactional
+    public void hideAddress(Long id) {
+        Address address = findAddressById(id);
+        address.setIsVisible(false);
+
+        addressRepository.save(address);
+    }
+
+    @Override
+    @Transactional
     public void delete(Long id) {
         Address address = findAddressById(id);
-        address.getOrders().forEach(order -> order.setAddress(null));
-        orderRepository.saveAll(address.getOrders());
+
+        if (Boolean.TRUE.equals(address.getIsDefault())) {
+            throw new AppException(ErrorCode.DEFAULT_ADDRESS_CANNOT_BE_DELETED);
+        }
+
+        if(orderRepository.existsByAddressIdAndStatusIn(address.getId(),
+                List.of(OrderStatus.PENDING, OrderStatus.PROCESSING, OrderStatus.SHIPPED,
+                        OrderStatus.DELIVERED, OrderStatus.CANCELLED))){
+            throw new AppException(ErrorCode.ADDRESS_USED_IN_ORDER);
+        }
 
         addressRepository.delete(address);
     }
+
+    @Override
+    @Transactional
+    public AddressResponse restore(long id) {
+        Address address = addressRepository.findAddressById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.ADDRESS_NOT_EXISTED));
+
+        address.setStatus(EntityStatus.ACTIVE);
+        return addressMapper.toAddressResponse(addressRepository.save(address));
+    }
+
 
     private Address findAddressById(Long id) {
         return addressRepository.findById(id)
