@@ -3,8 +3,10 @@ package Spring_AdamStore.controller;
 import Spring_AdamStore.dto.request.AddressRequest;
 import Spring_AdamStore.dto.response.AddressResponse;
 import Spring_AdamStore.dto.response.ApiResponse;
+import Spring_AdamStore.dto.response.BranchResponse;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.service.AddressService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -42,15 +44,17 @@ public class AddressController {
                 .build();
     }
 
+    @Operation(summary = "Fetch All Addresses For Admin",
+    description = "API này để lấy tất cả address bên trong hệ thống")
     @GetMapping("/addresses")
-    public ApiResponse<PageResponse<AddressResponse>> fetchAll(@Min(value = 1, message = "pageNo phải lớn hơn 0")
+    public ApiResponse<PageResponse<AddressResponse>> fetchAllForAdmin(@Min(value = 1, message = "pageNo phải lớn hơn 0")
                                                               @RequestParam(defaultValue = "1") int pageNo,
                                                               @RequestParam(defaultValue = "10") int pageSize,
                                                               @RequestParam(required = false) String sortBy){
         return ApiResponse.<PageResponse<AddressResponse>>builder()
                 .code(HttpStatus.OK.value())
-                .result(addressService.fetchAll(pageNo, pageSize, sortBy))
-                .message("Fetch All Addresses With Pagination")
+                .result(addressService.fetchAllForAdmin(pageNo, pageSize, sortBy))
+                .message("Fetch All Addresses For Admin")
                 .build();
     }
 
@@ -64,7 +68,21 @@ public class AddressController {
                 .build();
     }
 
+    @Operation(summary = "Hide User Address",
+    description = "Api này cho phép user xóa địa chỉ của hộ trong giao diện người dùng")
+    @PatchMapping("/addresses/{id}/hide")
+    public ApiResponse<Void> hideAddress(@Min(value = 1, message = "ID phải lớn hơn 0")
+                                               @PathVariable Long id){
+        addressService.hideAddress(id);
+        return ApiResponse.<Void>builder()
+                .code(HttpStatus.OK.value())
+                .message("Address has been successfully hidden")
+                .result(null)
+                .build();
+    }
 
+    @Operation(summary = "Soft Delete Address",
+    description = "API để Admin xóa mềm address")
     @DeleteMapping("/addresses/{id}")
     public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
                                     @PathVariable Long id){
@@ -76,4 +94,15 @@ public class AddressController {
                 .build();
     }
 
+    @Operation(summary = "Restore Address",
+            description = "Api này để khôi phục Address")
+    @PatchMapping("/addresses/{id}/restore")
+    public ApiResponse<AddressResponse> restore(@Min(value = 1, message = "Id phải lớn hơn 0")
+                                               @PathVariable long id) {
+        return ApiResponse.<AddressResponse>builder()
+                .code(HttpStatus.OK.value())
+                .message("Restore Address By Id")
+                .result(addressService.restore(id))
+                .build();
+    }
 }

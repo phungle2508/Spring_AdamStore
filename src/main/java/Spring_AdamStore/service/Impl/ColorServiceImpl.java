@@ -14,6 +14,7 @@ import Spring_AdamStore.repository.ColorRepository;
 import Spring_AdamStore.repository.ProductVariantRepository;
 import Spring_AdamStore.service.ColorService;
 import Spring_AdamStore.service.PageableService;
+import Spring_AdamStore.service.ProductVariantService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -86,7 +87,11 @@ public class ColorServiceImpl implements ColorService {
     public void delete(Long id) {
         Color color = findColorById(id);
 
-        productVariantRepository.deleteAll(color.getProductVariants());
+        long count = productVariantRepository.countByColorId(color.getId());
+
+        if (count > 0) {
+            throw new AppException(ErrorCode.COLOR_HAS_USED_VARIANT);
+        }
 
         colorRepository.delete(color);
     }
