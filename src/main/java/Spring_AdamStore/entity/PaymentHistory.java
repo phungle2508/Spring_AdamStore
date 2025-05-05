@@ -41,4 +41,11 @@ public class PaymentHistory {
     @ManyToOne
     @JoinColumn(name = "order_id")
      Order order;
+
+    @PrePersist
+    public void handleBeforeCreate() {
+        if(isPrimary == null){
+            this.isPrimary = false;
+        }
+    }
 }

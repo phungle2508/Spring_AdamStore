@@ -68,7 +68,7 @@ public class Product {
     Set<Review> reviews = new HashSet<>();
 
     @OneToMany(mappedBy = "product")
-    Set<ProductImage> productImages = new HashSet<>();
+    Set<FileEntity> images = new HashSet<>();
 
     @OneToMany(mappedBy = "product")
     @JsonIgnore

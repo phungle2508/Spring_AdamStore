@@ -80,8 +80,10 @@ public class PaymentServiceImpl implements PaymentService {
         Order order = findOrderById(request.getOrderId());
         order.setOrderStatus(OrderStatus.PROCESSING);
 
-        PaymentHistory paymentHistory = paymentHistoryRepository.findByOrderIdAndPaymentStatus(order.getId(), PaymentStatus.PENDING)
+        PaymentHistory paymentHistory = paymentHistoryRepository
+                .findByOrderIdAndPaymentStatusAndPaymentMethod(order.getId(), PaymentStatus.PENDING, PaymentMethod.VNPAY)
                 .orElseThrow(() -> new AppException(ErrorCode.PAYMENT_HISTORY_NOT_EXISTED));
+
         paymentHistory.setIsPrimary(true);
         paymentHistory.setPaymentStatus(PaymentStatus.PAID);
         paymentHistory.setPaymentTime(LocalDateTime.now());
@@ -93,7 +95,8 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public void handleFailedPayment(PaymentCallbackRequest request){
         Order order = findOrderById(request.getOrderId());
-        PaymentHistory  paymentHistory = paymentHistoryRepository.findByOrderIdAndPaymentStatus(order.getId(), PaymentStatus.PENDING)
+        PaymentHistory  paymentHistory = paymentHistoryRepository
+                .findByOrderIdAndPaymentStatusAndPaymentMethod(order.getId(), PaymentStatus.PENDING, PaymentMethod.VNPAY)
                 .orElseThrow(() -> new AppException(ErrorCode.PAYMENT_HISTORY_NOT_EXISTED));
 
         paymentHistory.setPaymentStatus(PaymentStatus.FAILED);

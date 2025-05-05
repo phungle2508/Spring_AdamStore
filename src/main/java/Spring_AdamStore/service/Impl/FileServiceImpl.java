@@ -1,15 +1,13 @@
 package Spring_AdamStore.service.Impl;
 
+import Spring_AdamStore.dto.response.FileResponse;
 import Spring_AdamStore.dto.response.PageResponse;
-import Spring_AdamStore.dto.response.ProductImageResponse;
-import Spring_AdamStore.dto.response.PromotionResponse;
-import Spring_AdamStore.entity.ProductImage;
-import Spring_AdamStore.entity.Promotion;
+import Spring_AdamStore.entity.FileEntity;
 import Spring_AdamStore.exception.FileException;
-import Spring_AdamStore.mapper.ProductImageMapper;
-import Spring_AdamStore.repository.ProductImageRepository;
+import Spring_AdamStore.mapper.FileMapper;
+import Spring_AdamStore.repository.FileRepository;
 import Spring_AdamStore.service.PageableService;
-import Spring_AdamStore.service.ProductImageService;
+import Spring_AdamStore.service.FileService;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import jakarta.transaction.Transactional;
@@ -27,14 +25,14 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@Slf4j(topic = "PRODUCT-IMAGE-SERVICE")
+@Slf4j(topic = "FILE-SERVICE")
 @RequiredArgsConstructor
-public class ProductImageServiceImpl implements ProductImageService {
+public class FileServiceImpl implements FileService {
 
     private final Cloudinary cloudinary;
-    private final ProductImageRepository productImageRepository;
+    private final FileRepository fileRepository;
     private final PageableService pageableService;
-    private final ProductImageMapper productImageMapper;
+    private final FileMapper fileMapper;
 
     @Value("${cloud.folder-image}")
     private String folderImage;
@@ -46,7 +44,7 @@ public class ProductImageServiceImpl implements ProductImageService {
 
     @Override
     @Transactional
-    public ProductImageResponse uploadFile(MultipartFile file) throws FileException, IOException {
+    public FileResponse uploadFile(MultipartFile file) throws FileException, IOException {
         if (file == null || file.isEmpty()) {
             throw new FileException("File trống. Không thể lưu trữ file");
         }
@@ -56,38 +54,38 @@ public class ProductImageServiceImpl implements ProductImageService {
         Map<String, Object> options = ObjectUtils.asMap("folder", folderImage);
         Map uploadResult = cloudinary.uploader().upload(file.getBytes(), options);
 
-        ProductImage productImage = ProductImage.builder()
+        FileEntity fileEntity = FileEntity.builder()
                 .publicId(uploadResult.get("public_id").toString())
                 .fileName(file.getOriginalFilename())
                 .imageUrl(uploadResult.get("url").toString())
                 .build();
 
-        return productImageMapper.toProductImageResponse(productImageRepository.save(productImage));
+        return fileMapper.toFileResponse(fileRepository.save(fileEntity));
     }
 
     @Transactional
     public void deleteFile(Long id) throws FileException, IOException {
-        ProductImage productImage = productImageRepository.findById(id)
+        FileEntity fileEntity = fileRepository.findById(id)
                 .orElseThrow(()-> new FileException("File không tồn tại trong hệ thống"));
 
-        cloudinary.uploader().destroy(productImage.getPublicId(), ObjectUtils.emptyMap());
-        productImageRepository.delete(productImage);
+        cloudinary.uploader().destroy(fileEntity.getPublicId(), ObjectUtils.emptyMap());
+        fileRepository.delete(fileEntity);
     }
 
     @Override
-    public PageResponse<ProductImageResponse> getAllFiles(int pageNo, int pageSize, String sortBy) {
+    public PageResponse<FileResponse> getAllFiles(int pageNo, int pageSize, String sortBy) {
         pageNo = pageNo - 1;
 
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, ProductImage.class);
+        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, FileEntity.class);
 
-        Page<ProductImage> productImagePage = productImageRepository.findAll(pageable);
+        Page<FileEntity> productImagePage = fileRepository.findAll(pageable);
 
-        return PageResponse.<ProductImageResponse>builder()
+        return PageResponse.<FileResponse>builder()
                 .page(productImagePage.getNumber() + 1)
                 .size(productImagePage.getSize())
                 .totalPages(productImagePage.getTotalPages())
                 .totalItems(productImagePage.getTotalElements())
-                .items(productImageMapper.toProductImageResponseList(productImagePage.getContent()))
+                .items(fileMapper.toFileResponseList(productImagePage.getContent()))
                 .build();
 
     }

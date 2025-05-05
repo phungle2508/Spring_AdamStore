@@ -1,5 +1,6 @@
 package Spring_AdamStore.repository;
 
+import Spring_AdamStore.constants.PaymentMethod;
 import Spring_AdamStore.constants.PaymentStatus;
 import Spring_AdamStore.dto.response.OrderRevenueDTO;
 import Spring_AdamStore.dto.response.RevenueByMonthDTO;
@@ -20,7 +21,7 @@ import java.util.Optional;
 @Repository
 public interface PaymentHistoryRepository extends JpaRepository<PaymentHistory, Long> {
 
-    Optional<PaymentHistory> findByOrderIdAndPaymentStatus(Long orderId, PaymentStatus paymentStatus);
+    Optional<PaymentHistory> findByOrderIdAndPaymentStatusAndPaymentMethod(Long orderId, PaymentStatus paymentStatus, PaymentMethod paymentMethod);
 
 
     @Query("SELECT p FROM PaymentHistory p " +

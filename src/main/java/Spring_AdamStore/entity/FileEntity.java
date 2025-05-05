@@ -1,6 +1,5 @@
 package Spring_AdamStore.entity;
 
-import Spring_AdamStore.constants.EntityStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,12 +8,12 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
-@Table(name = "tbl_product_image")
+@Table(name = "tbl_file")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class ProductImage {
+public class FileEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

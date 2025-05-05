@@ -5,7 +5,6 @@ import Spring_AdamStore.dto.request.ProductRequest;
 import Spring_AdamStore.dto.request.ProductUpdateRequest;
 import Spring_AdamStore.dto.response.*;
 import Spring_AdamStore.entity.*;
-import Spring_AdamStore.entity.Order;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.ProductMapper;
@@ -37,7 +36,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static Spring_AdamStore.constants.EntityStatus.ACTIVE;
-import static Spring_AdamStore.constants.EntityStatus.INACTIVE;
 
 @Service
 @Slf4j(topic = "PRODUCT-SERVICE")
@@ -50,7 +48,7 @@ public class ProductServiceImpl implements ProductService {
     private final ReviewRepository reviewRepository;
     private final CategoryRepository categoryRepository;
     private final ColorRepository colorRepository;
-    private final ProductImageRepository productImageRepository;
+    private final FileRepository fileRepository;
     private final SizeRepository sizeRepository;
     private final ReviewMapper reviewMapper;
     private final ProductVariantService productVariantService;
@@ -73,8 +71,8 @@ public class ProductServiceImpl implements ProductService {
         product.setCategory(category);
 
         if(!CollectionUtils.isEmpty(request.getImageIds())){
-            Set<ProductImage> productImageSet = setProductImages(request.getImageIds(), product);
-            product.setProductImages(productImageSet);
+            Set<FileEntity> fileEntitySet = setProductImages(request.getImageIds(), product);
+            product.setImages(fileEntitySet);
         }
 
         productRepository.save(product);
@@ -153,8 +151,8 @@ public class ProductServiceImpl implements ProductService {
         }
 
         if(!CollectionUtils.isEmpty(request.getImageIds())){
-            Set<ProductImage> productImageSet = setProductImages(request.getImageIds(), product);
-            product.setProductImages(productImageSet);
+            Set<FileEntity> fileEntitySet = setProductImages(request.getImageIds(), product);
+            product.setImages(fileEntitySet);
         }
 
         if (!CollectionUtils.isEmpty(request.getSizeIds()) || !CollectionUtils.isEmpty(request.getColorIds())) {
@@ -401,14 +399,14 @@ public class ProductServiceImpl implements ProductService {
         return sizeSet;
     }
 
-    private Set<ProductImage> setProductImages(Set<Long> imageIdSet, Product product) {
-        Set<ProductImage> productImageSet = productImageRepository.findAllByIdIn(imageIdSet);
-        if (productImageSet.size() != imageIdSet.size()) {
-            throw new AppException(ErrorCode.INVALID_PRODUCT_IMAGE_LIST);
+    private Set<FileEntity> setProductImages(Set<Long> imageIdSet, Product product) {
+        Set<FileEntity> fileEntitySet = fileRepository.findAllByIdIn(imageIdSet);
+        if (fileEntitySet.size() != imageIdSet.size()) {
+            throw new AppException(ErrorCode.INVALID_IMAGE_LIST);
         }
-        productImageSet.forEach(image -> image.setProduct(product));
+        fileEntitySet.forEach(image -> image.setProduct(product));
 
-        return new HashSet<>(productImageRepository.saveAll(productImageSet));
+        return new HashSet<>(fileRepository.saveAll(fileEntitySet));
     }
 
     private Pageable createPageableWithPriceSupport(int pageNo, int pageSize, String sortBy) {

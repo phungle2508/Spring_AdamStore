@@ -2,11 +2,7 @@ package Spring_AdamStore.mapper;
 
 import Spring_AdamStore.dto.basic.EntityBasic;
 import Spring_AdamStore.dto.basic.ProductVariantBasic;
-import Spring_AdamStore.dto.request.ColorRequest;
-import Spring_AdamStore.dto.response.ColorResponse;
 import Spring_AdamStore.dto.response.ProductVariantResponse;
-import Spring_AdamStore.entity.Color;
-import Spring_AdamStore.entity.ProductImage;
 import Spring_AdamStore.entity.ProductVariant;
 import org.mapstruct.*;
 

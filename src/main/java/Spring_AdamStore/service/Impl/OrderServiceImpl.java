@@ -337,12 +337,31 @@ public class OrderServiceImpl implements OrderService {
         LocalDate currentDate = LocalDate.now();
 
         List<Order> orderList = orderRepository.findByOrderStatusAndOrderDateBefore(OrderStatus.SHIPPED,
-                currentDate.minusDays(5));
+                currentDate.minusDays(3));
 
-        orderList.forEach(order ->  order.setOrderStatus(OrderStatus.DELIVERED));
+        orderList.forEach(order -> {
+            order.setOrderStatus(OrderStatus.DELIVERED);
+
+            updatePendingCashPaymentsToPaid(order);
+        });
+
         orderRepository.saveAll(orderList);
-
     }
+
+    private void updatePendingCashPaymentsToPaid(Order order) {
+        List<PaymentHistory> updatedPayments = new ArrayList<>();
+
+        order.getPayments().stream()
+                .filter(payment -> payment.getPaymentMethod() == PaymentMethod.CASH
+                        && payment.getPaymentStatus() == PaymentStatus.PENDING)
+                .forEach(payment -> {
+                    payment.setPaymentStatus(PaymentStatus.PAID);
+                    updatedPayments.add(payment);
+                });
+
+        paymentHistoryRepository.saveAll(updatedPayments);
+    }
+
 
     @Scheduled(cron = "0 0 0 * * ?")
     @Transactional

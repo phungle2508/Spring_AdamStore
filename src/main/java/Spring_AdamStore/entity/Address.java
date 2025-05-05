@@ -77,7 +77,7 @@ public class Address {
 
 
     @PrePersist
-    public void prePersist() {
+    public void handleBeforeCreate() {
         if (isDefault == null) {
             this.isDefault = false;
         }

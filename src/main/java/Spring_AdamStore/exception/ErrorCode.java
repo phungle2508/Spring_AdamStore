@@ -58,7 +58,7 @@ public enum ErrorCode {
     PRODUCT_VARIANT_EXISTED(1046, "ProductVariant đã tồn tại trong hệ thống", HttpStatus.BAD_REQUEST),
     PRODUCT_VARIANT_NOT_EXISTED(1047, "ProductVariant không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
     OUT_OF_STOCK(1048, "Không đủ hàng trong kho", HttpStatus.BAD_REQUEST),
-    INVALID_PRODUCT_IMAGE_LIST(1049, "Danh sách ProductImage không hợp lệ", HttpStatus.BAD_REQUEST),
+    INVALID_IMAGE_LIST(1049, "Danh sách Image không hợp lệ", HttpStatus.BAD_REQUEST),
     INVALID_PRODUCT_COLOR_LIST(1050, "Danh sách Color không hợp lệ", HttpStatus.BAD_REQUEST),
     INVALID_PRODUCT_SIZE_LIST(1051, "Danh sách Size không hợp lệ", HttpStatus.BAD_REQUEST),
     CODE_TYPE_INVALID(1052, "Loại verificationCode không hợp lệ", HttpStatus.UNAUTHORIZED),
