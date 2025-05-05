@@ -34,7 +34,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(nullable = false)
+    @JoinColumn(nullable = false, unique = true)
     String name;
     @Column(columnDefinition = "MEDIUMTEXT")
     String description;

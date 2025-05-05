@@ -17,7 +17,8 @@ import java.util.Optional;
 @Repository
 public interface PromotionRepository extends JpaRepository<Promotion, Long> {
 
-    boolean existsByCode(String code);
+    @Query(value = "SELECT COUNT(*) FROM tbl_promotion WHERE name = :name", nativeQuery = true)
+    Long countByName(@Param("name") String name);
 
     @Query(value = "SELECT * FROM tbl_promotion p WHERE p.id = :id", nativeQuery = true)
     Optional<Promotion> findPromotionById(@Param("id") Long id);

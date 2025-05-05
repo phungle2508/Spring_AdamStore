@@ -35,7 +35,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public CategoryResponse create(CategoryRequest request) {
-        if(categoryRepository.existsByName(request.getName())){
+        if(categoryRepository.countByName(request.getName()) > 0){
             throw new AppException(ErrorCode.CATEGORY_EXISTED);
         }
 
@@ -90,7 +90,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public CategoryResponse update(Long id, CategoryRequest request) {
-        if(categoryRepository.existsByName(request.getName())){
+        if(categoryRepository.countByName(request.getName()) > 0){
             throw new AppException(ErrorCode.CATEGORY_EXISTED);
         }
         Category category = findActiveCategoryById(id);

@@ -210,8 +210,6 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
-
-
     private void checkPhoneAndEmailExist(String email, String phone) {
         if (userRepository.countByEmailAndStatus(email, ACTIVE.name()) > 0) {
             throw new AppException(ErrorCode.EMAIL_EXISTED);
@@ -226,7 +224,6 @@ public class UserServiceImpl implements UserService {
             throw new AppException(ErrorCode.PHONE_DISABLED);
         }
     }
-
 
 
     private User findActiveUserById(Long id) {

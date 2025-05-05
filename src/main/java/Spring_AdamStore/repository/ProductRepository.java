@@ -15,7 +15,8 @@ import java.util.Optional;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    boolean existsByName(String name);
+    @Query(value = "SELECT COUNT(*) FROM tbl_product WHERE name = :name", nativeQuery = true)
+    Long countByName(@Param("name") String name);
 
     @Query(value = "SELECT * FROM tbl_product p WHERE p.id = :id", nativeQuery = true)
     Optional<Product> findProductById(@Param("id") Long id);

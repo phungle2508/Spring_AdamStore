@@ -61,7 +61,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     @Override
     public ProductResponse create(ProductRequest request) {
-        if(productRepository.existsByName(request.getName())){
+        if(productRepository.countByName(request.getName()) > 0){
             throw new AppException(ErrorCode.PRODUCT_EXISTED);
         }
         Product product = productMapper.toProduct(request);
@@ -136,7 +136,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = findProductById(id);
 
         if (request.getName() != null && !request.getName().equals(product.getName())) {
-            if (productRepository.existsByName(request.getName())) {
+            if (productRepository.countByName(request.getName()) > 0) {
                 throw new AppException(ErrorCode.PRODUCT_EXISTED);
             }
             product.setName(request.getName());

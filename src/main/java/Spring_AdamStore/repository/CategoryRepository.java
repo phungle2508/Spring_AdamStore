@@ -14,7 +14,8 @@ import java.util.Optional;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-    boolean existsByName(String name);
+    @Query(value = "SELECT COUNT(*) FROM tbl_category WHERE name = :name", nativeQuery = true)
+    Long countByName(@Param("name") String name);
 
     @Query(value = "SELECT * FROM tbl_category c WHERE c.id = :id", nativeQuery = true)
     Optional<Category> findCategoryById(@Param("id") Long id);
