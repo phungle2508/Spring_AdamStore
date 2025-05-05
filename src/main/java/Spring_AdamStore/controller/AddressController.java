@@ -58,6 +58,7 @@ public class AddressController {
                 .build();
     }
 
+    @Operation(description = "API để update địa chỉ")
     @PutMapping("/addresses/{id}")
     public ApiResponse<AddressResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
                                               @PathVariable Long id, @Valid @RequestBody AddressRequest request){
@@ -69,7 +70,7 @@ public class AddressController {
     }
 
     @Operation(summary = "Hide User Address",
-    description = "Api này cho phép user xóa địa chỉ của hộ trong giao diện người dùng")
+    description = "Api này cho phép user xóa địa chỉ của chính user đó trong giao diện người dùng")
     @PatchMapping("/addresses/{id}/hide")
     public ApiResponse<Void> hideAddress(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                @PathVariable Long id){

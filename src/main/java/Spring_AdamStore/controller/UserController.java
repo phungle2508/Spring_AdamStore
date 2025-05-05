@@ -59,7 +59,7 @@ public class UserController {
     }
 
     @Operation(summary = "Update User (No update Password)",
-            description = "API này được sử dụng để update user (Gán company nếu người dùng là HR)")
+            description = "API này được sử dụng để update user")
     @PutMapping("/users/{id}")
     public ApiResponse<UserResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
                                             @PathVariable long id,@Valid @RequestBody UserUpdateRequest request){

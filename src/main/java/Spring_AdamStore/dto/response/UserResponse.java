@@ -32,8 +32,6 @@ public class UserResponse {
     LocalDate dob;
     @Enumerated(EnumType.STRING)
     Gender gender;
-    String address;
-
 
     String createdBy;
     String updatedBy;
