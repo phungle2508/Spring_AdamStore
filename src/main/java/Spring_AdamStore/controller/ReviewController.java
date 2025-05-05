@@ -26,6 +26,8 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
+    @Operation(summary = "Product Review",
+    description = "API này dùng để đánh giá sản phẩm")
     @PostMapping("/reviews")
     public ApiResponse<ReviewResponse> create(@Valid @RequestBody ReviewRequest request){
         return ApiResponse.<ReviewResponse>builder()

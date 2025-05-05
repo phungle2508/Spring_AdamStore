@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 public class AdminProperties {
+
     private String email;
     private String password;
+
 }

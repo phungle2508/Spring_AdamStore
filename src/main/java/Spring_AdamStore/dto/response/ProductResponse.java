@@ -33,6 +33,7 @@ public class ProductResponse {
     Integer totalReviews;
     Integer quantity;
     Double price;
+
     @Enumerated(EnumType.STRING)
     EntityStatus status;
 

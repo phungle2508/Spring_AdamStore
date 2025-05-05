@@ -39,8 +39,7 @@ public class Order {
     @Column(nullable = false)
     OrderStatus orderStatus;
 
-    @CreationTimestamp
-    LocalDate createdAt;
+
     @UpdateTimestamp
     LocalDate updatedAt;
 

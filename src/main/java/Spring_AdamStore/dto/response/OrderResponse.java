@@ -35,6 +35,5 @@ public class OrderResponse {
 
     List<OrderItemResponse> orderItems;
 
-    LocalDate createdAt;
     LocalDate updatedAt;
 }

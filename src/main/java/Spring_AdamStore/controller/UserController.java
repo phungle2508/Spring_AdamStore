@@ -94,7 +94,8 @@ public class UserController {
                 .build();
     }
 
-    @Operation(description = "Api lấy tất cả địa chỉ của user")
+    @Operation(summary = "Fetch All Addresses For User",
+            description = "Api lấy tất cả địa chỉ của user")
     @GetMapping("/users/addresses")
     public ApiResponse<PageResponse<AddressResponse>> getAddressesByUser(@Min(value = 1, message = "pageNo phải lớn hơn 0")
                                                                                @RequestParam(defaultValue = "1") int pageNo,

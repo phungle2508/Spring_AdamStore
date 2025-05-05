@@ -24,6 +24,8 @@ public class AddressController {
 
     private final AddressService addressService;
 
+    @Operation(summary = "Create New Address",
+            description = "Api dùng để tạo địa chỉ mới")
     @PostMapping("/addresses")
     public ApiResponse<AddressResponse> create(@Valid @RequestBody AddressRequest request){
         return ApiResponse.<AddressResponse>builder()
