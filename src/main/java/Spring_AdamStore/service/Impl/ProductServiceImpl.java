@@ -135,6 +135,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse update(Long id, ProductUpdateRequest request) {
         Product product = findProductById(id);
 
+        // Name
         if (request.getName() != null && !request.getName().equals(product.getName())) {
             if (productRepository.countByName(request.getName()) > 0) {
                 throw new AppException(ErrorCode.PRODUCT_EXISTED);
@@ -144,17 +145,20 @@ public class ProductServiceImpl implements ProductService {
 
         productMapper.updateProduct(product, request);
 
+        // Category
         if (request.getCategoryId() != null) {
             Category category = categoryRepository.findById(request.getCategoryId())
                     .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_EXISTED));
             product.setCategory(category);
         }
 
+        // Image
         if(!CollectionUtils.isEmpty(request.getImageIds())){
             Set<FileEntity> fileEntitySet = setProductImages(request.getImageIds(), product);
             product.setImages(fileEntitySet);
         }
 
+        // Size and Color
         if (!CollectionUtils.isEmpty(request.getSizeIds()) || !CollectionUtils.isEmpty(request.getColorIds())) {
             Set<Color> colorSet = validateColors(request.getColorIds());
 
