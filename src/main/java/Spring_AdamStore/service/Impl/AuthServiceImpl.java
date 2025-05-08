@@ -32,6 +32,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import static Spring_AdamStore.constants.EntityStatus.ACTIVE;
 import static Spring_AdamStore.constants.VerificationType.REGISTER;
 
 @Service
@@ -68,7 +69,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     @Override
     public VerificationCodeResponse register(RegisterRequest request) {
-        checkPhoneAndEmailExist(request.getEmail(), request.getPhone());
+        checkEmailExist(request.getEmail());
 
         if (!request.getPassword().equals(request.getConfirmPassword())) {
             throw new AppException(ErrorCode.PASSWORD_MISMATCH);
@@ -192,18 +193,12 @@ public class AuthServiceImpl implements AuthService {
                 .build();
     }
 
-    private void checkPhoneAndEmailExist(String email, String phone) {
-        if (userRepository.countByEmailAndStatus(email, EntityStatus.ACTIVE.name()) > 0) {
+    private void checkEmailExist(String email) {
+        if (userRepository.countByEmailAndStatus(email, ACTIVE.name()) > 0) {
             throw new AppException(ErrorCode.EMAIL_EXISTED);
-        }
-        if (userRepository.countByPhoneAndStatus(phone, EntityStatus.ACTIVE.name()) > 0) {
-            throw new AppException(ErrorCode.PHONE_EXISTED);
         }
         if (userRepository.countByEmailAndStatus(email, EntityStatus.INACTIVE.name()) > 0) {
             throw new AppException(ErrorCode.EMAIL_DISABLED);
-        }
-        if (userRepository.countByPhoneAndStatus(phone, EntityStatus.INACTIVE.name()) > 0) {
-            throw new AppException(ErrorCode.PHONE_DISABLED);
         }
     }
 }

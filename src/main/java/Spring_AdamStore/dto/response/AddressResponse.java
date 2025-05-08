@@ -31,6 +31,8 @@ public class AddressResponse {
 
 
     Boolean isDefault;
+
+    String phone;
     String streetDetail;
 
     WardBasic ward;

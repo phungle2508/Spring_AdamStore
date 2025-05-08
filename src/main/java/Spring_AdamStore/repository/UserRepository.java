@@ -28,9 +28,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
     @Query(value = "SELECT COUNT(*) FROM tbl_user WHERE email = :email AND status = :status", nativeQuery = true)
     Integer countByEmailAndStatus(@Param("email") String email, @Param("status") String status);
 
-    @Query(value = "SELECT COUNT(*) FROM tbl_user WHERE phone = :phone AND status = :status", nativeQuery = true)
-    Integer countByPhoneAndStatus(@Param("phone") String phone, @Param("status") String status);
-
 
     @Query(value = "SELECT * FROM tbl_user",
             countQuery = "SELECT COUNT(*) FROM tbl_user",

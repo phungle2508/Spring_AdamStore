@@ -58,7 +58,6 @@ public class InitServiceImpl implements InitService {
         User admin = userRepository.save(User.builder()
                 .name("Admin")
                 .email(adminProperties.getEmail())
-                .phone("099999999")
                 .password(passwordEncoder.encode(adminProperties.getPassword()))
                 .dob(LocalDate.now())
                 .gender(Gender.MALE)

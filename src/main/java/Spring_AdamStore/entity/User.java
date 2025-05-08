@@ -39,8 +39,6 @@ public class User{
     String name;
     @Column(unique = true, nullable = false)
     String email;
-    @JoinColumn(nullable = false, unique = true)
-    String phone;
     String password;
     String avatarUrl;
 

@@ -45,6 +45,9 @@ public class Address {
     EntityStatus status;
 
     @JoinColumn(nullable = false)
+    String phone;
+
+    @JoinColumn(nullable = false)
     String streetDetail;
 
     @ManyToOne

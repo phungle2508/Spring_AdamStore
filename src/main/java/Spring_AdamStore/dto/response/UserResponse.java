@@ -25,7 +25,6 @@ public class UserResponse {
     Long id;
     String name;
     String email;
-    String phone;
     @Enumerated(EnumType.STRING)
     EntityStatus status;
     String avatarUrl;
