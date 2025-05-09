@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +29,7 @@ public class RevenueController {
 
     private final RevenueService revenueService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Fetched monthly revenue data",
     description = "API này dùng để ấy doanh thu theo tháng trong khoảng (startDate (yyyy-MM-dd) đến endDate (yyyy-MM-dd))")
     @GetMapping("/revenues/monthly")
@@ -42,6 +44,8 @@ public class RevenueController {
                 .build();
     }
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Fetched daily order revenue data",
     description = "API này dùng để lấy dữ liệu doanh thu của các đơn hàng (yyyy-MM-dd)")
     @GetMapping("/revenues/daily-orders")

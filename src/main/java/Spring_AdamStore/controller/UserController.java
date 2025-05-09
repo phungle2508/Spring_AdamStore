@@ -12,6 +12,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +22,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/v1")
 @RestController
 public class UserController {
+
     private final UserService userService;
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Create User with Role",
             description = "API này được sử dụng để tạo user và gán role vào user đó")
     @PostMapping("/users")
@@ -71,6 +75,7 @@ public class UserController {
     }
 
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Soft Delete User")
     @DeleteMapping("/users/{id}")
     public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
@@ -83,6 +88,7 @@ public class UserController {
                 .build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Restore User")
     @PatchMapping("/users/{id}/restore")
     public ApiResponse<UserResponse> restore(@Min(value = 1, message = "ID phải lớn hơn 0")

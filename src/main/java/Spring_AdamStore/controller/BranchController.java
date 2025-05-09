@@ -14,6 +14,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,7 @@ public class BranchController {
 
     private final BranchService branchService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/branches")
     public ApiResponse<BranchResponse> create(@Valid @RequestBody BranchRequest request){
         return ApiResponse.<BranchResponse>builder()
@@ -36,6 +38,7 @@ public class BranchController {
     }
 
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/branches/{id}")
     public ApiResponse<BranchResponse> fetchById(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                    @PathVariable Long id){
@@ -46,6 +49,7 @@ public class BranchController {
                 .build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Fetch All Branches For User",
     description = "API để lấy tất cả Branch (ACTIVE) cho user")
     @GetMapping("/branches")
@@ -60,6 +64,7 @@ public class BranchController {
                 .build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Fetch All Branches For Admin",
     description = "API này để lấy tất cả Branch (cả ACTIVE và INACTIVE) cho admin quản lý")
     @GetMapping("/branches/admin")
@@ -75,6 +80,7 @@ public class BranchController {
     }
 
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/branches/{id}")
     public ApiResponse<BranchResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                 @PathVariable Long id, @Valid @RequestBody BranchUpdateRequest request){
@@ -86,6 +92,7 @@ public class BranchController {
     }
 
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Soft Delete Branch",
     description = "Api này để soft delete branch")
     @DeleteMapping("/branches/{id}")
@@ -99,6 +106,7 @@ public class BranchController {
                 .build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Restore Branch",
     description = "Api này để khôi phục Branch")
     @PatchMapping("/branches/{id}/restore")

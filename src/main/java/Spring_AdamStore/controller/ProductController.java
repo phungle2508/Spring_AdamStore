@@ -12,6 +12,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,7 @@ public class ProductController {
 
     private final ProductService productService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/products")
     public ApiResponse<ProductResponse> create(@Valid @RequestBody ProductRequest request){
         return ApiResponse.<ProductResponse>builder()
@@ -60,6 +62,7 @@ public class ProductController {
                 .build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Fetch All Products For Admin",
             description = "Api này để lấy các Products (cả ACTIVE và INACTIVE) cho admin")
     @GetMapping("/products/admin")
@@ -75,6 +78,7 @@ public class ProductController {
     }
 
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/products/{id}")
     public ApiResponse<ProductResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
                                             @PathVariable Long id, @Valid @RequestBody ProductUpdateRequest request){
@@ -86,6 +90,7 @@ public class ProductController {
     }
 
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Soft Delete Product")
     @DeleteMapping("/products/{id}")
     public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
@@ -98,6 +103,7 @@ public class ProductController {
                 .build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Restore Product")
     @PatchMapping("/products/{id}/restore")
     public ApiResponse<ProductResponse> restore(@Min(value = 1, message = "Id phải lớn hơn 0")
@@ -153,6 +159,7 @@ public class ProductController {
                 .build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Fetch All product-variants by product for Admin",
             description = "Api này dùng để lấy tất ca Product-Variants (cả ACTIVE và INACTIVE) theo Product cho admin")
     @GetMapping("/products/{productId}/product-variants/admin")

@@ -12,6 +12,7 @@ import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,6 +47,7 @@ public class AddressController {
                 .build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Fetch All Addresses For Admin",
     description = "API này để lấy tất cả address bên trong hệ thống")
     @GetMapping("/addresses")
@@ -84,6 +86,7 @@ public class AddressController {
                 .build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Soft Delete Address",
     description = "API để Admin xóa mềm address")
     @DeleteMapping("/addresses/{id}")
@@ -97,6 +100,7 @@ public class AddressController {
                 .build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Restore Address",
             description = "Api này để khôi phục Address")
     @PatchMapping("/addresses/{id}/restore")

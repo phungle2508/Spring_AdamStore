@@ -13,6 +13,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,7 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/categories")
     public ApiResponse<CategoryResponse> create(@Valid @RequestBody CategoryRequest request){
         return ApiResponse.<CategoryResponse>builder()
@@ -59,6 +61,7 @@ public class CategoryController {
                 .build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Fetch All Categories For Admin",
             description = "Api này để lấy tất cả Categories (cả ACTIVE và INACTIVE) cho Admin")
     @GetMapping("/categories/admin")
@@ -73,6 +76,7 @@ public class CategoryController {
                 .build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/categories/{id}")
     public ApiResponse<CategoryResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                @PathVariable Long id, @Valid @RequestBody CategoryRequest request){
@@ -84,6 +88,7 @@ public class CategoryController {
     }
 
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Soft Delete Category")
     @DeleteMapping("/categories/{id}")
     public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
@@ -96,6 +101,7 @@ public class CategoryController {
                 .build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Restore Category")
     @PatchMapping("/categories/{id}/restore")
     public ApiResponse<CategoryResponse> restore(@Min(value = 1, message = "Id phải lớn hơn 0")
@@ -122,6 +128,8 @@ public class CategoryController {
                 .build();
     }
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Fetch All Products By Category For Admin",
             description = "API dùng để lấy danh sách products của category cho admin")
     @GetMapping("/categories/{categoryId}/products/admin")

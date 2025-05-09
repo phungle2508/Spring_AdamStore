@@ -11,6 +11,7 @@ import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,6 +41,7 @@ public class ProductVariantController {
     }
 
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Update price and quantity for a product variant",
             description = "API để cập nhật giá và số lượng cho ProductVariant")
     @PutMapping("/product-variants/{id}")
@@ -53,6 +55,8 @@ public class ProductVariantController {
                 .build();
     }
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete product variant",
             description = "API để xóa ProductVariant")
     @DeleteMapping("/product-variants/{id}")
@@ -64,6 +68,9 @@ public class ProductVariantController {
                 .result(null)
                 .build();
     }
+
+
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Restore product variant",
             description = "API để khôi phục ProductVariant")
     @PatchMapping("/product-variants/{id}/restore")

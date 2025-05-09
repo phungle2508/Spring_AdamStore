@@ -14,6 +14,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,7 @@ public class ColorController {
 
     private final ColorService colorService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/colors")
     public ApiResponse<ColorResponse> create(@Valid @RequestBody ColorRequest request){
         return ApiResponse.<ColorResponse>builder()
@@ -58,6 +60,7 @@ public class ColorController {
                 .build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/colors/{id}")
     public ApiResponse<ColorResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                 @PathVariable Long id, @Valid @RequestBody ColorRequest request){
@@ -68,7 +71,7 @@ public class ColorController {
                 .build();
     }
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/colors/{id}")
     public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
                                     @PathVariable Long id){
