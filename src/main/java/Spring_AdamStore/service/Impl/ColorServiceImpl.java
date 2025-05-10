@@ -71,11 +71,11 @@ public class ColorServiceImpl implements ColorService {
     @Override
     @Transactional
     public ColorResponse update(Long id, ColorRequest request) {
-        if(colorRepository.existsByName(request.getName())){
+        Color color = findColorById(id);
+
+        if(!request.getName().equals(color.getName()) && colorRepository.existsByName(request.getName())){
             throw new AppException(ErrorCode.COLOR_EXISTED);
         }
-
-        Color color = findColorById(id);
 
         colorMapper.update(color, request);
 

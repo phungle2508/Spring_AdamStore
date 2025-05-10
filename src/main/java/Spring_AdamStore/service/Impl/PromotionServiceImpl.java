@@ -74,11 +74,11 @@ public class PromotionServiceImpl implements PromotionService {
     @Override
     @Transactional
     public PromotionResponse update(Long id, PromotionUpdateRequest request) {
-        if(promotionRepository.countByCode(request.getCode()) > 0){
+        Promotion promotion = findPromotionById(id);
+
+        if(!request.getCode().equals(promotion.getCode()) && promotionRepository.countByCode(request.getCode()) > 0){
             throw new AppException(ErrorCode.PROMOTION_EXISTED);
         }
-
-        Promotion promotion = findPromotionById(id);
 
         promotionMapper.update(promotion, request);
 
@@ -93,8 +93,8 @@ public class PromotionServiceImpl implements PromotionService {
         if(promotionUsageRepository.existsByPromotionId(promotion.getId())){
             throw new AppException(ErrorCode.PROMOTION_USAGE_CONFLICT);
         }
-        promotionRepository.delete(promotion);
 
+        promotionRepository.delete(promotion);
     }
 
     @Override

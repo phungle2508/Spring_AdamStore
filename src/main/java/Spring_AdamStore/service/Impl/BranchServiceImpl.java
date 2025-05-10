@@ -90,15 +90,15 @@ public class BranchServiceImpl implements BranchService {
     @Override
     @Transactional
     public BranchResponse update(Long id, BranchUpdateRequest request) {
-        if(branchRepository.countByName(request.getName()) > 0){
+        Branch branch = findActiveBranchById(id);
+
+        if(!request.getName().equals(branch.getName()) && branchRepository.countByName(request.getName()) > 0){
             throw new AppException(ErrorCode.BRANCH_EXISTED);
         }
 
-        if(branchRepository.countByPhone(request.getPhone()) > 0){
+        if(!request.getPhone().equals(branch.getPhone()) && branchRepository.countByPhone(request.getPhone()) > 0){
             throw new AppException(ErrorCode.PHONE_EXISTED);
         }
-
-        Branch branch = findActiveBranchById(id);
 
         branchMapper.update(branch, request);
 

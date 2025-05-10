@@ -34,7 +34,6 @@ public class CartItemServiceImpl implements CartItemService {
     private final CartItemRepository cartItemRepository;
     private final ProductVariantRepository productVariantRepository;
     private final CartRepository cartRepository;
-    private final UserRepository userRepository;
     private final PageableService pageableService;
     private final CartItemMapper cartItemMapper;
     private final CurrentUserService currentUserService;

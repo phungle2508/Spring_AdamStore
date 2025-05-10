@@ -90,10 +90,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public CategoryResponse update(Long id, CategoryRequest request) {
-        if(categoryRepository.countByName(request.getName()) > 0){
+        Category category = findActiveCategoryById(id);
+
+        if(!request.getName().equals(category.getName()) && categoryRepository.countByName(request.getName()) > 0){
             throw new AppException(ErrorCode.CATEGORY_EXISTED);
         }
-        Category category = findActiveCategoryById(id);
 
         categoryMapper.update(category, request);
 
