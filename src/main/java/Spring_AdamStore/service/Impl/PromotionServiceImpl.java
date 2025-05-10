@@ -38,7 +38,7 @@ public class PromotionServiceImpl implements PromotionService {
     @Override
     @Transactional
     public PromotionResponse create(PromotionRequest request) {
-        if(promotionRepository.countByName(request.getCode()) > 0){
+        if(promotionRepository.countByCode(request.getCode()) > 0){
             throw new AppException(ErrorCode.PROMOTION_EXISTED);
         }
 
@@ -74,7 +74,7 @@ public class PromotionServiceImpl implements PromotionService {
     @Override
     @Transactional
     public PromotionResponse update(Long id, PromotionUpdateRequest request) {
-        if(promotionRepository.countByName(request.getCode()) > 0){
+        if(promotionRepository.countByCode(request.getCode()) > 0){
             throw new AppException(ErrorCode.PROMOTION_EXISTED);
         }
 
