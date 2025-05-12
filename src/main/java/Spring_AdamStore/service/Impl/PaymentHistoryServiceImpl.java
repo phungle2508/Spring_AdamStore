@@ -1,5 +1,6 @@
 package Spring_AdamStore.service.Impl;
 
+import Spring_AdamStore.constants.PaymentMethod;
 import Spring_AdamStore.constants.PaymentStatus;
 import Spring_AdamStore.constants.RoleEnum;
 import Spring_AdamStore.dto.response.OrderResponse;
@@ -48,6 +49,18 @@ public class PaymentHistoryServiceImpl implements PaymentHistoryService {
     private final PaymentHistoryMapper paymentHistoryMapper;
 
 
+    public void savePaymentHistory(Order order, PaymentMethod method) {
+        PaymentHistory payment = PaymentHistory.builder()
+                .isPrimary(false)
+                .paymentMethod(method)
+                .totalAmount(order.getTotalPrice())
+                .paymentStatus(PaymentStatus.PENDING)
+                .paymentTime(LocalDateTime.now())
+                .order(order)
+                .build();
+
+        paymentHistoryRepository.save(payment);
+    }
 
     @Override
     public PageResponse<PaymentHistoryResponse> searchPaymentHistories(int pageNo, int pageSize, String sortBy, LocalDateTime startDate, LocalDateTime endDate, PaymentStatus paymentStatus) {

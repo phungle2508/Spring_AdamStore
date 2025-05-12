@@ -70,7 +70,7 @@ public class OrderController {
     }
 
     @GetMapping("/orders/search")
-    public ApiResponse<PageResponse<OrderResponse>> searchCompany(@Min(value = 1, message = "pageNo phải lớn hơn 0")
+    public ApiResponse<PageResponse<OrderResponse>> searchOrder(@Min(value = 1, message = "pageNo phải lớn hơn 0")
                                                                     @RequestParam(defaultValue = "1") int pageNo,
                                                                     @RequestParam(defaultValue = "10") int pageSize,
                                                                     @RequestParam(required = false) String sortBy,

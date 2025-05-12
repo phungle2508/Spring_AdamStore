@@ -19,6 +19,7 @@ import Spring_AdamStore.repository.relationship.PromotionUsageRepository;
 import Spring_AdamStore.service.CurrentUserService;
 import Spring_AdamStore.service.OrderService;
 import Spring_AdamStore.service.PageableService;
+import Spring_AdamStore.service.PaymentHistoryService;
 import Spring_AdamStore.service.relationship.PromotionUsageService;
 import Spring_AdamStore.service.relationship.UserHasRoleService;
 import Spring_AdamStore.util.VNPayUtil;
@@ -65,6 +66,7 @@ public class OrderServiceImpl implements OrderService {
     private final PageableService pageableService;
     private final PromotionUsageService promotionUsageService;
     private final PromotionUsageRepository promotionUsageRepository;
+    private final PaymentHistoryService paymentHistoryService;
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -79,11 +81,18 @@ public class OrderServiceImpl implements OrderService {
         Address address = addressRepository.findById(request.getAddressId())
                 .orElseThrow(() -> new AppException(ErrorCode.ADDRESS_NOT_EXISTED));
 
+        // ShippingFee
+        double totalPrice = request.getShippingFee();
+
+        OrderStatus orderStatus = request.getPaymentMethod() == PaymentMethod.CASH
+                ? OrderStatus.PROCESSING
+                : OrderStatus.PENDING;
+
         Order order = Order.builder()
                 .user(user)
                 .address(address)
-                .orderStatus(PENDING)
-                .totalPrice(0.0)
+                .orderStatus(orderStatus)
+                .totalPrice(totalPrice)
                 .orderDate(LocalDate.now())
                 .build();
 
@@ -91,7 +100,6 @@ public class OrderServiceImpl implements OrderService {
 
         // orderItem
         Set<OrderItem> orderItemSet = new HashSet<>();
-        double totalPrice = request.getShippingFee();
         for(OrderItemRequest orderItemRequest : request.getOrderItems()){
             ProductVariant productVariant = productVariantRepository.findById(orderItemRequest.getProductVariantId())
                     .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_VARIANT_NOT_EXISTED));
@@ -119,33 +127,18 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderItems(orderItemSet);
 
         // Promotion
-        if(request.getPromotionId() != null){
-            Promotion promotion =  promotionRepository.findById(request.getPromotionId())
-                    .orElseThrow(() -> new AppException(ErrorCode.PROMOTION_NOT_EXISTED));
-
-            PromotionUsage promotionUsage = promotionUsageService.applyPromotion(promotion, order, user);
-
-            totalPrice -= promotionUsage.getDiscountAmount();
-            order.setPromotionUsage(promotionUsage);
+        if (request.getPromotionId() != null) {
+            totalPrice = applyPromotion(request.getPromotionId(), order, user, totalPrice);
         }
 
         order.setTotalPrice(totalPrice);
 
-        paymentHistoryRepository.save(PaymentHistory.builder()
-                .isPrimary(false)
-                .paymentMethod(request.getPaymentMethod())
-                .totalAmount(order.getTotalPrice())
-                .paymentStatus(PaymentStatus.PENDING)
-                .paymentTime(LocalDateTime.now())
-                .order(order)
-                .build());
-
-        if (request.getPaymentMethod() == PaymentMethod.CASH) {
-            order.setOrderStatus(OrderStatus.PROCESSING);
-        }
+        // PaymentHistory
+        paymentHistoryService.savePaymentHistory(order, request.getPaymentMethod());
 
         return orderMapper.toOrderResponse(orderRepository.save(order));
     }
+
 
     @Override
     public OrderResponse fetchById(Long id) {
@@ -314,6 +307,15 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_EXISTED));
     }
 
+    private double applyPromotion(Long promotionId, Order order, User user, double currentTotal) {
+        Promotion promotion = promotionRepository.findById(promotionId)
+                .orElseThrow(() -> new AppException(ErrorCode.PROMOTION_NOT_EXISTED));
+
+        PromotionUsage usage = promotionUsageService.applyPromotion(promotion, order, user);
+
+        order.setPromotionUsage(usage);
+        return currentTotal - (currentTotal * usage.getDiscountAmount());
+    }
 
     @Scheduled(cron = "0 0 0 * * ?")
     @Transactional

@@ -32,7 +32,6 @@ public class Order {
     @Column(nullable = false)
      LocalDate orderDate;
     @Column(nullable = false)
-    @ColumnDefault(value = "0")
      Double totalPrice;
 
     @Enumerated(EnumType.STRING)
