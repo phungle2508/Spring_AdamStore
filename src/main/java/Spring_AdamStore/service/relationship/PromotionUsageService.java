@@ -21,11 +21,12 @@ public class PromotionUsageService {
 
     private final PromotionUsageRepository promotionUsageRepository;
 
-    public PromotionUsage applyPromotion(Promotion promotion, Order order, User user){
+    public PromotionUsage applyPromotion(Promotion promotion, Order order, User user, double currentTotal){
         if (promotion.getStartDate().isAfter(LocalDate.now()) || promotion.getEndDate().isBefore(LocalDate.now())) {
             throw new AppException(ErrorCode.PROMOTION_EXPIRED);
         }
 
+        // check user su dung chua
         boolean used = promotionUsageRepository.existsByUserAndPromotion(user, promotion);
 
         if(used){
@@ -33,7 +34,7 @@ public class PromotionUsageService {
         }
 
         return promotionUsageRepository.save(PromotionUsage.builder()
-                        .discountAmount(order.getTotalPrice() * (promotion.getDiscountPercent() / 100))
+                        .discountAmount(currentTotal * (promotion.getDiscountPercent() / 100.0))
                         .usedAt(LocalDateTime.now())
                         .promotion(promotion)
                         .user(user)

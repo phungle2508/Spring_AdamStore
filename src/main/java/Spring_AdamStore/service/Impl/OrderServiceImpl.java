@@ -318,10 +318,12 @@ public class OrderServiceImpl implements OrderService {
         Promotion promotion = promotionRepository.findById(promotionId)
                 .orElseThrow(() -> new AppException(ErrorCode.PROMOTION_NOT_EXISTED));
 
-        PromotionUsage usage = promotionUsageService.applyPromotion(promotion, order, user);
+        PromotionUsage usage = promotionUsageService.applyPromotion(promotion, order, user, currentTotal);
 
         order.setPromotionUsage(usage);
-        return currentTotal - (currentTotal * usage.getDiscountAmount());
+        log.info("Usage Discount Amount: {}", usage.getDiscountAmount());
+        log.info("Discount : {}", currentTotal * usage.getDiscountAmount());
+        return currentTotal - usage.getDiscountAmount();
     }
 
     @Scheduled(cron = "0 0 0 * * ?")
