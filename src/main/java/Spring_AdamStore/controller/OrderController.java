@@ -69,6 +69,8 @@ public class OrderController {
                 .build();
     }
 
+    @Operation(summary = "Search Order For Current User Or Admin",
+            description = "Search Order cho User hiện tại hoặc Admin dựa vào token")
     @GetMapping("/orders/search")
     public ApiResponse<PageResponse<OrderResponse>> searchOrder(@Min(value = 1, message = "pageNo phải lớn hơn 0")
                                                                     @RequestParam(defaultValue = "1") int pageNo,
@@ -78,7 +80,7 @@ public class OrderController {
         return ApiResponse.<PageResponse<OrderResponse>>builder()
                 .code(HttpStatus.OK.value())
                 .result(orderService.searchOrder(pageNo, pageSize, sortBy, search))
-                .message("Search Products based on attributes with pagination")
+                .message("Search Order For Current User Or Admin")
                 .build();
     }
 

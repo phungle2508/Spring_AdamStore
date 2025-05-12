@@ -8,6 +8,7 @@ import Spring_AdamStore.constants.RoleEnum;
 import Spring_AdamStore.dto.request.*;
 import Spring_AdamStore.dto.response.*;
 import Spring_AdamStore.entity.*;
+import Spring_AdamStore.entity.Order;
 import Spring_AdamStore.entity.relationship.PromotionUsage;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
@@ -25,10 +26,7 @@ import Spring_AdamStore.service.relationship.UserHasRoleService;
 import Spring_AdamStore.util.VNPayUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -205,8 +203,9 @@ public class OrderServiceImpl implements OrderService {
         // check user
         User currentUser = currentUserService.getCurrentUser();
         boolean isAdmin = userHasRoleService.checkRoleForUser(currentUser, RoleEnum.ADMIN);
-        if(!isAdmin){
-            predicate = builder.and(predicate, builder.equal(root.get("user").get("id"), currentUser.getId()));
+        if (!isAdmin) {
+            Join<Order, User> userJoin = root.join("user", JoinType.LEFT);
+            predicate = builder.and(predicate, builder.equal(userJoin.get("id"), currentUser.getId()));
         }
 
         // search
@@ -247,6 +246,14 @@ public class OrderServiceImpl implements OrderService {
 
         // Xu ly dieu kien tim kiem
         Predicate predicate = builder.conjunction();
+
+        // check user
+        User currentUser = currentUserService.getCurrentUser();
+        boolean isAdmin = userHasRoleService.checkRoleForUser(currentUser, RoleEnum.ADMIN);
+        if (!isAdmin) {
+            Join<Order, User> userJoin = root.join("user", JoinType.LEFT);
+            predicate = builder.and(predicate, builder.equal(userJoin.get("id"), currentUser.getId()));
+        }
 
         // search
         if(!CollectionUtils.isEmpty(criteriaList)){

@@ -28,15 +28,11 @@ public class UserHasRoleService {
         return userHasRoleRepository.save(new UserHasRole(user, role));
     }
 
-    public UserHasRole findUserHasRole(User user, RoleEnum roleEnum){
-        Role role = roleRepository.findByName(roleEnum.name())
-                .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_EXISTED));
-
-        return userHasRoleRepository.findUserHasRoleByUserAndRole(user, role);
-    }
-
     public boolean checkRoleForUser(User user, RoleEnum roleEnum){
-        return findUserHasRole(user, roleEnum) != null;
+       Role role = roleRepository.findByName(roleEnum.name())
+            .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_EXISTED));
+
+       return userHasRoleRepository.findUserHasRoleByUserAndRole(user, role) != null;
     }
 
 }
