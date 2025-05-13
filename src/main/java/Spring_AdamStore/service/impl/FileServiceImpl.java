@@ -1,4 +1,4 @@
-package Spring_AdamStore.service.Impl;
+package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.dto.response.FileResponse;
 import Spring_AdamStore.dto.response.PageResponse;

@@ -1,11 +1,7 @@
-package Spring_AdamStore.service.Impl;
+package Spring_AdamStore.service.impl;
 
-import Spring_AdamStore.dto.request.SizeRequest;
-import Spring_AdamStore.dto.response.CategoryResponse;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.dto.response.SizeResponse;
-import Spring_AdamStore.entity.Category;
-import Spring_AdamStore.entity.Color;
 import Spring_AdamStore.entity.Size;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;

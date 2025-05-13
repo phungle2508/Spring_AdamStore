@@ -1,8 +1,7 @@
-package Spring_AdamStore.service.Impl;
+package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.constants.TokenType;
 import Spring_AdamStore.entity.RefreshToken;
-import Spring_AdamStore.entity.Role;
 import Spring_AdamStore.entity.User;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
@@ -25,7 +24,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;

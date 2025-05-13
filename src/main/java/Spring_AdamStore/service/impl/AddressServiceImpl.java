@@ -1,10 +1,9 @@
-package Spring_AdamStore.service.Impl;
+package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.constants.EntityStatus;
 import Spring_AdamStore.constants.OrderStatus;
 import Spring_AdamStore.dto.request.AddressRequest;
 import Spring_AdamStore.dto.response.AddressResponse;
-import Spring_AdamStore.dto.response.BranchResponse;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.entity.*;
 import Spring_AdamStore.exception.AppException;
@@ -12,7 +11,6 @@ import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.AddressMapper;
 import Spring_AdamStore.repository.*;
 import Spring_AdamStore.service.AddressService;
-import Spring_AdamStore.service.AuthService;
 import Spring_AdamStore.service.CurrentUserService;
 import Spring_AdamStore.service.PageableService;
 import jakarta.transaction.Transactional;

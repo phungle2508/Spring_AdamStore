@@ -1,4 +1,4 @@
-package Spring_AdamStore.service.Impl;
+package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.dto.response.*;
 import Spring_AdamStore.entity.District;

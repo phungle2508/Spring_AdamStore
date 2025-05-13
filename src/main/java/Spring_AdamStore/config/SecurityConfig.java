@@ -21,9 +21,8 @@ import org.springframework.web.filter.CorsFilter;
 
 import java.util.List;
 
-@EnableAsync
+
 @Configuration
-@EnableScheduling
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {

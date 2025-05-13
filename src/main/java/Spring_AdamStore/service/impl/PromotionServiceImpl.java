@@ -1,11 +1,9 @@
-package Spring_AdamStore.service.Impl;
+package Spring_AdamStore.service.impl;
 
-import Spring_AdamStore.constants.EntityStatus;
 import Spring_AdamStore.dto.request.PromotionRequest;
 import Spring_AdamStore.dto.request.PromotionUpdateRequest;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.dto.response.PromotionResponse;
-import Spring_AdamStore.entity.Branch;
 import Spring_AdamStore.entity.Promotion;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;

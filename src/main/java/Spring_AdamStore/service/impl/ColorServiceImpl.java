@@ -1,12 +1,9 @@
-package Spring_AdamStore.service.Impl;
+package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.dto.request.ColorRequest;
 import Spring_AdamStore.dto.response.ColorResponse;
 import Spring_AdamStore.dto.response.PageResponse;
-import Spring_AdamStore.dto.response.SizeResponse;
-import Spring_AdamStore.entity.Category;
 import Spring_AdamStore.entity.Color;
-import Spring_AdamStore.entity.Size;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.ColorMapper;
@@ -14,7 +11,6 @@ import Spring_AdamStore.repository.ColorRepository;
 import Spring_AdamStore.repository.ProductVariantRepository;
 import Spring_AdamStore.service.ColorService;
 import Spring_AdamStore.service.PageableService;
-import Spring_AdamStore.service.ProductVariantService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

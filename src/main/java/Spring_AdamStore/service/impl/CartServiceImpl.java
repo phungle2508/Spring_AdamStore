@@ -1,4 +1,4 @@
-package Spring_AdamStore.service.Impl;
+package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.dto.response.CartItemResponse;
 import Spring_AdamStore.dto.response.PageResponse;
@@ -10,8 +10,6 @@ import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.CartItemMapper;
 import Spring_AdamStore.repository.CartItemRepository;
 import Spring_AdamStore.repository.CartRepository;
-import Spring_AdamStore.repository.UserRepository;
-import Spring_AdamStore.service.AuthService;
 import Spring_AdamStore.service.CartService;
 import Spring_AdamStore.service.CurrentUserService;
 import Spring_AdamStore.service.PageableService;
@@ -22,14 +20,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @Slf4j(topic = "CART-SERVICE")
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
 
-    private final UserRepository userRepository;
     private final CartRepository cartRepository;
     private final CurrentUserService currentUserService;
     private final CartItemRepository cartItemRepository;

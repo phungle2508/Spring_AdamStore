@@ -10,7 +10,7 @@ spring:
     active: dev
 
 
-  # Max Size Upload
+# Max Size Upload
   servlet:
     multipart:
       max-file-size: 100MB

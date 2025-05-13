@@ -1,9 +1,8 @@
-package Spring_AdamStore.service.Impl;
+package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.dto.request.CartItemRequest;
 import Spring_AdamStore.dto.request.CartItemUpdateRequest;
 import Spring_AdamStore.dto.response.CartItemResponse;
-import Spring_AdamStore.dto.response.ColorResponse;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.entity.*;
 import Spring_AdamStore.exception.AppException;
@@ -12,8 +11,6 @@ import Spring_AdamStore.mapper.CartItemMapper;
 import Spring_AdamStore.repository.CartItemRepository;
 import Spring_AdamStore.repository.CartRepository;
 import Spring_AdamStore.repository.ProductVariantRepository;
-import Spring_AdamStore.repository.UserRepository;
-import Spring_AdamStore.service.AuthService;
 import Spring_AdamStore.service.CartItemService;
 import Spring_AdamStore.service.CurrentUserService;
 import Spring_AdamStore.service.PageableService;

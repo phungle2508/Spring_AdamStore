@@ -1,6 +1,5 @@
-package Spring_AdamStore.service.Impl;
+package Spring_AdamStore.service.impl;
 
-import Spring_AdamStore.constants.EntityStatus;
 import Spring_AdamStore.dto.request.CategoryRequest;
 import Spring_AdamStore.dto.response.*;
 import Spring_AdamStore.entity.*;

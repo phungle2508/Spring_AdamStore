@@ -1,4 +1,4 @@
-package Spring_AdamStore.service.Impl;
+package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.constants.EntityStatus;
 import Spring_AdamStore.constants.OrderStatus;
@@ -40,7 +40,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static Spring_AdamStore.constants.EntityStatus.ACTIVE;
-import static redis.clients.jedis.resps.StreamConsumerInfo.INACTIVE;
 
 @Service
 @Slf4j(topic = "USER-SERVICE")

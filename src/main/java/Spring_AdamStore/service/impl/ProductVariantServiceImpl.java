@@ -1,4 +1,4 @@
-package Spring_AdamStore.service.Impl;
+package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.dto.request.ProductVariantUpdateRequest;
 import Spring_AdamStore.dto.response.ProductVariantResponse;
@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Set;
 
 import static Spring_AdamStore.constants.EntityStatus.ACTIVE;
-import static Spring_AdamStore.constants.EntityStatus.INACTIVE;
 
 @Service
 @Slf4j(topic = "PRODUCT-VARIANT-SERVICE")

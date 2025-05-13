@@ -1,43 +1,25 @@
-package Spring_AdamStore.service.Impl;
+package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.constants.PaymentMethod;
 import Spring_AdamStore.constants.PaymentStatus;
-import Spring_AdamStore.constants.RoleEnum;
-import Spring_AdamStore.dto.response.OrderResponse;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.dto.response.PaymentHistoryResponse;
 import Spring_AdamStore.entity.Order;
 import Spring_AdamStore.entity.PaymentHistory;
-import Spring_AdamStore.entity.User;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.PaymentHistoryMapper;
 import Spring_AdamStore.repository.PaymentHistoryRepository;
-import Spring_AdamStore.repository.criteria.SearchCriteria;
-import Spring_AdamStore.repository.criteria.SearchCriteriaQueryConsumer;
 import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.PaymentHistoryService;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 @Slf4j(topic = "PAYMENT-HISTORY-SERVICE")

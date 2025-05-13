@@ -1,4 +1,4 @@
-package Spring_AdamStore.service.Impl;
+package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.constants.EntityStatus;
 import Spring_AdamStore.constants.RoleEnum;
@@ -12,7 +12,6 @@ import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.RoleMapper;
 import Spring_AdamStore.mapper.UserMapper;
-import Spring_AdamStore.repository.CartRepository;
 import Spring_AdamStore.repository.RedisPendingUserRepository;
 import Spring_AdamStore.repository.UserRepository;
 import Spring_AdamStore.service.*;
@@ -22,7 +21,6 @@ import com.nimbusds.jwt.SignedJWT;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

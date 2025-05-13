@@ -1,6 +1,5 @@
-package Spring_AdamStore.service.Impl;
+package Spring_AdamStore.service.impl;
 
-import Spring_AdamStore.config.VNPAYConfig;
 import Spring_AdamStore.constants.OrderStatus;
 import Spring_AdamStore.constants.PaymentMethod;
 import Spring_AdamStore.constants.PaymentStatus;
@@ -23,11 +22,9 @@ import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.PaymentHistoryService;
 import Spring_AdamStore.service.relationship.PromotionUsageService;
 import Spring_AdamStore.service.relationship.UserHasRoleService;
-import Spring_AdamStore.util.VNPayUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.*;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +36,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

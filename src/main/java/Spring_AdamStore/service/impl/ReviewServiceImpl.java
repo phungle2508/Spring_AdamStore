@@ -1,9 +1,8 @@
-package Spring_AdamStore.service.Impl;
+package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.dto.request.ReviewRequest;
 import Spring_AdamStore.dto.request.ReviewUpdateRequest;
 import Spring_AdamStore.dto.response.PageResponse;
-import Spring_AdamStore.dto.response.ProductResponse;
 import Spring_AdamStore.dto.response.ReviewResponse;
 import Spring_AdamStore.entity.Product;
 import Spring_AdamStore.entity.Review;
@@ -13,8 +12,6 @@ import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.ReviewMapper;
 import Spring_AdamStore.repository.ProductRepository;
 import Spring_AdamStore.repository.ReviewRepository;
-import Spring_AdamStore.repository.UserRepository;
-import Spring_AdamStore.service.AuthService;
 import Spring_AdamStore.service.CurrentUserService;
 import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.ReviewService;

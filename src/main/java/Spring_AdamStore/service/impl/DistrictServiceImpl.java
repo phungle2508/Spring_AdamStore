@@ -1,8 +1,7 @@
-package Spring_AdamStore.service.Impl;
+package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.dto.response.*;
 import Spring_AdamStore.entity.District;
-import Spring_AdamStore.entity.Province;
 import Spring_AdamStore.entity.Ward;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;

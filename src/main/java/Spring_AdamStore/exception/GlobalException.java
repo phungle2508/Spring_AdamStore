@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -34,7 +35,7 @@ public class GlobalException {
 
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .code(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode())
-                .timestamp(new Date())
+                .timestamp(LocalDateTime.now())
                 .path(request.getDescription(false).replace("uri=", ""))
                 .error(ex.getClass().getSimpleName())
                 .message(ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage())
@@ -50,7 +51,7 @@ public class GlobalException {
 
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .code(errorCode.getCode())
-                .timestamp(new Date())
+                .timestamp(LocalDateTime.now())
                 .path(request.getDescription(false).replace("uri=", ""))
                 .error(exception.getClass().getSimpleName())
                 .message(errorCode.getMessage())
@@ -63,10 +64,11 @@ public class GlobalException {
     // Lỗi khi Validation thuộc tính
     @ExceptionHandler({MethodArgumentNotValidException.class, ConstraintViolationException.class, MissingServletRequestParameterException.class})
     public ResponseEntity<ErrorResponse> handleValidationException(Exception ex, WebRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setTimestamp(new Date());
-        errorResponse.setCode(HttpStatus.BAD_REQUEST.value());
-        errorResponse.setPath(request.getDescription(false).replace("uri=", ""));
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .code(HttpStatus.BAD_REQUEST.value())
+                .timestamp(LocalDateTime.now())
+                .path(request.getDescription(false).replace("uri=", ""))
+                .build();
 
         List<String> messages = new ArrayList<>();
 
@@ -107,7 +109,7 @@ public class GlobalException {
 
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .code(errorCode.getCode())
-                .timestamp(new Date())
+                .timestamp(LocalDateTime.now())
                 .path(request.getDescription(false).replace("uri=", ""))
                 .error("Forbidden")
                 .message(errorCode.getMessage())
@@ -121,7 +123,7 @@ public class GlobalException {
     public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException exception, WebRequest request) {
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .code(HttpStatus.BAD_REQUEST.value())
-                .timestamp(new Date())
+                .timestamp(LocalDateTime.now())
                 .path(request.getDescription(false).replace("uri=", ""))
                 .error("Invalid Argument")
                 .message(exception.getMessage())
@@ -136,7 +138,7 @@ public class GlobalException {
 
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .code(HttpStatus.BAD_REQUEST.value())
-                .timestamp(new Date())
+                .timestamp(LocalDateTime.now())
                 .path(request.getDescription(false).replace("uri=", ""))
                 .error(ex.getClass().getSimpleName())
                 .message(ex.getMessage())
@@ -165,7 +167,7 @@ public class GlobalException {
         }
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .code(HttpStatus.BAD_REQUEST.value())
-                .timestamp(new Date())
+                .timestamp(LocalDateTime.now())
                 .path(request.getDescription(false).replace("uri=", ""))
                 .error("JSON Parse Error")
                 .message(message)

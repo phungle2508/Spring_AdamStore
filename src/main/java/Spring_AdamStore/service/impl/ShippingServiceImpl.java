@@ -1,4 +1,4 @@
-package Spring_AdamStore.service.Impl;
+package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.dto.request.OrderItemRequest;
 import Spring_AdamStore.dto.request.ShippingFeeRequest;
@@ -6,7 +6,6 @@ import Spring_AdamStore.dto.request.ShippingRequest;
 import Spring_AdamStore.dto.response.GhnResponse;
 import Spring_AdamStore.dto.response.ShippingFeeResponse;
 import Spring_AdamStore.entity.Address;
-import Spring_AdamStore.entity.OrderItem;
 import Spring_AdamStore.entity.ProductVariant;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
