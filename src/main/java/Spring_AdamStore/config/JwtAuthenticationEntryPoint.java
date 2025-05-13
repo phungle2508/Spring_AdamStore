@@ -10,6 +10,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
@@ -26,7 +27,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .code(errorCode.getCode())
-                .timestamp(new Date())
+                .timestamp(LocalDateTime.now())
                 .path(request.getRequestURI())
                 .error(authException.getClass().getSimpleName())
                 .message(errorCode.getMessage())
