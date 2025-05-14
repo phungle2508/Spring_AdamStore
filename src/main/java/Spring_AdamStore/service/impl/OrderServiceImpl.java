@@ -362,6 +362,7 @@ public class OrderServiceImpl implements OrderService {
                 .filter(payment -> payment.getPaymentMethod() == PaymentMethod.CASH
                         && payment.getPaymentStatus() == PaymentStatus.PENDING)
                 .forEach(payment -> {
+                    payment.setIsPrimary(true);
                     payment.setPaymentStatus(PaymentStatus.PAID);
                     updatedPayments.add(payment);
                 });
