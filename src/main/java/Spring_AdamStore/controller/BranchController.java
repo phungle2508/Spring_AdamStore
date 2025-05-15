@@ -49,7 +49,7 @@ public class BranchController {
                 .build();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @Operation(summary = "Fetch All Branches For User",
     description = "API để lấy tất cả Branch (ACTIVE) cho user")
     @GetMapping("/branches")
