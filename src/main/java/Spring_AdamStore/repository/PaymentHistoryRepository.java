@@ -63,7 +63,8 @@ public interface PaymentHistoryRepository extends JpaRepository<PaymentHistory, 
           AND o.orderDate BETWEEN :startDate AND :endDate
         ORDER BY o.orderDate
     """)
-    List<OrderRevenueDTO> getRevenueOrdersByDate(@Param("startDate") LocalDate startDate,
-                                                 @Param("endDate") LocalDate endDate);
+    Page<OrderRevenueDTO> getRevenueOrdersByDate(@Param("startDate") LocalDate startDate,
+                                                 @Param("endDate") LocalDate endDate,
+                                                 Pageable pageable);
 
 }
