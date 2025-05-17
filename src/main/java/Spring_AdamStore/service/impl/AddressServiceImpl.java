@@ -132,6 +132,7 @@ public class AddressServiceImpl implements AddressService {
                         userAddress.setIsDefault(false);
                         addressRepository.save(userAddress);
                     });
+            address.setIsDefault(true);
         }
 
         return addressMapper.toAddressResponse(addressRepository.save(address));
