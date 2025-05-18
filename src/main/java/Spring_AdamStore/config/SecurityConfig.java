@@ -65,14 +65,12 @@ public class SecurityConfig {
     public CorsFilter corsFilter(){
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         // cho phép yêu cầu từ cac cong
-        corsConfiguration.setAllowedOriginPatterns(List.of("*"));
-//                "http://localhost:3000",
-//                "http://localhost:3001",
-//                "http://localhost:5173",
-//                "http://localhost:5174",
-//                "http://222.255.119.40:8080",
-//                "https://222.255.119.40"
-//        ));
+        corsConfiguration.setAllowedOrigins(List.of(
+                "http://localhost:3000",
+                "http://localhost:3001",
+                "http://localhost:5173",
+                "http://localhost:5174"
+        ));
 
         corsConfiguration.addAllowedMethod("*"); // cho phép tất cả method
         corsConfiguration.addAllowedHeader("*"); // cho phép tất cả header
