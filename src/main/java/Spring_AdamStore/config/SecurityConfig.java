@@ -69,7 +69,9 @@ public class SecurityConfig {
                 "http://localhost:3000",
                 "http://localhost:3001",
                 "http://localhost:5173",
-                "http://localhost:5174"
+                "http://localhost:5174",
+                "http://222.255.119.40:8080",
+                "https://222.255.119.40"
         ));
 
         corsConfiguration.addAllowedMethod("*"); // cho phép tất cả method
