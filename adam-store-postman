@@ -55,7 +55,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"forgotPasswordToken\": \"eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJsZWFuIiwic3ViIjoibGVhbjI3MDgwNEBnbWFpbC5jb20iLCJleHAiOjE3NDQ2MzQ4MDEsImlhdCI6MTc0NDYzMzkwMSwianRpIjoiMjYzYWQ1MTMtYzY1Ny00OTE0LWFlNjMtZWYxNDM2ZTliNzNiIn0.s3B4ExaJPgi9dcdI5_2_2aQwuAqrZdN966vVcr5Bwz44zZFsgmtGU4h3Vvn25V0IjVgZbhQYeN5tp0i2Wkqnzg\",\r\n  \"newPassword\": \"123456\",\r\n  \"confirmPassword\": \"123456\"\r\n}",
+									"raw": "{\r\n  \"forgotPasswordToken\": \"ssfvcdsvdvwdfvioqeasacnbebvnnbpvwassxxllslfegdaafvsdaavdd\",\r\n  \"newPassword\": \"123456\",\r\n  \"confirmPassword\": \"123456\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3776,7 +3776,7 @@
 		},
 		{
 			"key": "accessToken",
-			"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlcyI6WyJBRE1JTiJdLCJpc3MiOiJBZG1pbiIsImV4cCI6MTc0ODA2MDU2MywiaWF0IjoxNzQ3OTI4NTYzLCJqdGkiOiJiY2EwNGEzYy03NGM0LTRmNTctYTg1MS0yNjA5ZjQ0ZWFlNjEifQ.bzIF7R4Dd1XB_pZIaY7CHUPZTgLTNvp7A6s_FkXWf7sxBexJ-_1JDHh88VYYvy0XphUAAsOWcYmvcZ0M6xjPXw",
+			"value": "",
 			"type": "string"
 		}
 	]
