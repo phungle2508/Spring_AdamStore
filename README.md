@@ -25,7 +25,7 @@ docker-compose up -d
 **3. Swagger Documentation Guide (API Document):**
 - **After running the application, you can access Swagger UI at:**
 ```java
-http://localhost:8080/adamstore/swagger-ui/index.html
+http://localhost:8080/adamstore-postman/swagger-ui/index.html
 ```
 - The default URL to retrieve the API documentation in JSON format **(Explore section)**:
 ```java

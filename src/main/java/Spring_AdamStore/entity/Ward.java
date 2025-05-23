@@ -17,6 +17,7 @@ import lombok.experimental.FieldDefaults;
 public class Ward {
     @Id
     String code;
+
     String name;
 
     @ManyToOne

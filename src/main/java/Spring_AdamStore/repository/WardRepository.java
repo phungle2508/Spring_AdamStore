@@ -14,4 +14,6 @@ public interface WardRepository extends JpaRepository<Ward, String> {
 
     Page<Ward> findByDistrictId(Integer districtId, Pageable pageable);
 
+
+    Optional<Ward> findByCode(String code);
 }

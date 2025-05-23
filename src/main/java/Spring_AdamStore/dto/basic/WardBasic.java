@@ -8,6 +8,6 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class WardBasic {
-    Long code;
+    String code;
     String name;
 }

@@ -20,7 +20,6 @@ public class AddressRequest {
     String streetDetail;
 
     @NotBlank(message = "wardId không được để trống")
-    @Min(value = 1, message = "wardId phải lớn hơn 0")
     String wardCode;
 
     @NotNull(message = "districtId không được để trống")

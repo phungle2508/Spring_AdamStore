@@ -23,8 +23,7 @@ public class WardController {
     private final WardService wardService;
 
     @GetMapping("/wards/{code}")
-    public ApiResponse<WardResponse> fetchById(@Min(value = 1, message = "code phải lớn hơn 0")
-                                                   @PathVariable String code){
+    public ApiResponse<WardResponse> fetchById(@PathVariable String code){
         return ApiResponse.<WardResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Fetch Ward By Id")

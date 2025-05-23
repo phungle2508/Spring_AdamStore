@@ -41,7 +41,7 @@ public class AddressServiceImpl implements AddressService {
     public AddressResponse create(AddressRequest request) {
         Address address = addressMapper.toAddress(request);
 
-        Ward ward = findWardById(request.getWardCode());
+        Ward ward = findWardByCode(request.getWardCode());
 
         District district = findDistrictById(request.getDistrictId());
 
@@ -106,7 +106,7 @@ public class AddressServiceImpl implements AddressService {
 
         addressMapper.update(address, request);
 
-        Ward ward = findWardById(request.getWardCode());
+        Ward ward = findWardByCode(request.getWardCode());
 
         District district = findDistrictById(request.getDistrictId());
 
@@ -181,8 +181,8 @@ public class AddressServiceImpl implements AddressService {
                 .orElseThrow(() -> new AppException(ErrorCode.ADDRESS_NOT_EXISTED));
     }
 
-    private Ward findWardById(String id) {
-        return wardRepository.findById(id)
+    private Ward findWardByCode(String code) {
+        return wardRepository.findByCode(code)
                 .orElseThrow(() -> new AppException(ErrorCode.WARD_NOT_EXISTED));
     }
 
