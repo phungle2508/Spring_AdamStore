@@ -30,6 +30,7 @@ public class Review {
     @JoinColumn(nullable = false)
      String comment;
 
+    String imageUrl;
 
     @CreationTimestamp
     LocalDate createdAt;

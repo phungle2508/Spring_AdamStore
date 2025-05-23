@@ -11,5 +11,7 @@ public class ReviewUpdateRequest {
 
     Double rating;
     String comment;
+    String imageUrl;
+
 
 }

@@ -18,7 +18,7 @@ public class ReviewResponse {
     Long id;
     Double rating;
     String comment;
-
+    String imageUrl;
 
     LocalDate createdAt;
     LocalDate updatedAt;

@@ -16,6 +16,8 @@ public class ReviewRequest {
     @NotBlank(message = "comment không được để trống")
     String comment;
 
+    String imageUrl;
+
     @NotNull(message = "Product ID không được để trống")
     @Min(value = 1, message = "Product ID phải lớn hơn 0")
     Long productId;
