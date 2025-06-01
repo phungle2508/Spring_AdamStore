@@ -16,7 +16,7 @@ import java.util.Optional;
 @Repository
 public interface AddressRepository extends JpaRepository<Address, Long> {
 
-    List<Address> findAllByUser(User user);
+    List<Address> findAllByUserId(Long userId);
 
     Page<Address> findAllByUserIdAndIsVisible(Long userId, Boolean isVisible, Pageable pageable);
 

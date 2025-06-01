@@ -36,34 +36,26 @@ public class AddressServiceImpl implements AddressService {
     private final CurrentUserService currentUserService;
     private final OrderRepository orderRepository;
 
+
     @Override
     @Transactional
     public AddressResponse create(AddressRequest request) {
-        Address address = addressMapper.toAddress(request);
+        log.info("Creating address with data= {}", request);
 
         Ward ward = findWardByCode(request.getWardCode());
 
         District district = findDistrictById(request.getDistrictId());
 
-        if (!ward.getDistrict().getId().equals(district.getId())) {
-            throw new AppException(ErrorCode.INVALID_DISTRICT_FOR_WARD);
-        }
-
         Province province = findProvinceById(request.getProvinceId());
 
-        if (!district.getProvince().getId().equals(province.getId())) {
-            throw new AppException(ErrorCode.INVALID_PROVINCE_FOR_DISTRICT);
-        }
-
-        address.setWard(ward);
-        address.setProvince(province);
-        address.setDistrict(district);
+        Address address = addressMapper.toAddress(request);
 
         User user = currentUserService.getCurrentUser();
-        address.setUser(user);
+        address.setUserId(user.getId());
 
         if (Boolean.TRUE.equals(request.getIsDefault())) {
-            List<Address> addressList = addressRepository.findAllByUser(user);
+            List<Address> addressList = addressRepository.findAllByUserId(user.getId());
+
             addressList.stream()
                     .filter(Address::getIsDefault)
                     .forEach(userAddress -> {
@@ -102,36 +94,27 @@ public class AddressServiceImpl implements AddressService {
     @Override
     @Transactional
     public AddressResponse update(Long id, AddressRequest request) {
+        log.info("Updated address with data= {}", request);
+
         Address address = findAddressById(id);
+
+        findWardByCode(request.getWardCode());
+
+        findDistrictById(request.getDistrictId());
+
+        findProvinceById(request.getProvinceId());
 
         addressMapper.update(address, request);
 
-        Ward ward = findWardByCode(request.getWardCode());
-
-        District district = findDistrictById(request.getDistrictId());
-
-        if (!ward.getDistrict().getId().equals(district.getId())) {
-            throw new AppException(ErrorCode.INVALID_DISTRICT_FOR_WARD);
-        }
-
-        Province province = findProvinceById(request.getProvinceId());
-
-        if (!district.getProvince().getId().equals(province.getId())) {
-            throw new AppException(ErrorCode.INVALID_PROVINCE_FOR_DISTRICT);
-        }
-
-        address.setWard(ward);
-        address.setProvince(province);
-        address.setDistrict(district);
-
         if (Boolean.TRUE.equals(request.getIsDefault())) {
-            List<Address> addressList = addressRepository.findAllByUser(address.getUser());
+            List<Address> addressList = addressRepository.findAllByUserId(address.getUserId());
             addressList.stream()
                     .filter(Address::getIsDefault)
                     .forEach(userAddress -> {
                         userAddress.setIsDefault(false);
                         addressRepository.save(userAddress);
                     });
+
             address.setIsDefault(true);
         }
 
@@ -182,7 +165,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     private Ward findWardByCode(String code) {
-        return wardRepository.findByCode(code)
+         return wardRepository.findByCode(code)
                 .orElseThrow(() -> new AppException(ErrorCode.WARD_NOT_EXISTED));
     }
 
@@ -195,6 +178,8 @@ public class AddressServiceImpl implements AddressService {
         return provinceRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.PROVINCE_NOT_EXISTED));
     }
+
+    private AddressResponse convertToResponse
 }
 
 

@@ -29,6 +29,8 @@ public class AddressController {
             description = "Api dùng để tạo địa chỉ mới")
     @PostMapping("/addresses")
     public ApiResponse<AddressResponse> create(@Valid @RequestBody AddressRequest request){
+        log.info("Received request to create address: {}", request);
+
         return ApiResponse.<AddressResponse>builder()
                 .code(HttpStatus.CREATED.value())
                 .message("Create Address")
@@ -66,6 +68,8 @@ public class AddressController {
     @PutMapping("/addresses/{id}")
     public ApiResponse<AddressResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
                                               @PathVariable Long id, @Valid @RequestBody AddressRequest request){
+        log.info("Received request to update address: {}, with address id: {}", request, id);
+
         return ApiResponse.<AddressResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Update Address By Id")

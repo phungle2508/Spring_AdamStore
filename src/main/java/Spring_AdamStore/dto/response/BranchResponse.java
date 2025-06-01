@@ -22,7 +22,6 @@ public class BranchResponse {
     String name;
     String location;
     String phone;
-    @Enumerated(EnumType.STRING)
     EntityStatus status;
 
     String createdBy;
