@@ -9,6 +9,6 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Builder
 public class EntityBasic {
-    Long id;
-    String name;
+    private Long id;
+    private String name;
 }

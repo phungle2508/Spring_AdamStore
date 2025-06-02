@@ -10,9 +10,9 @@ import java.time.LocalDate;
 @Builder
 public class OrderBasic {
 
-    Long id;
-    LocalDate orderDate;
+    private Long id;
+    private LocalDate orderDate;
 
-    String username;
-    String email;
+    private String username;
+    private String email;
 }

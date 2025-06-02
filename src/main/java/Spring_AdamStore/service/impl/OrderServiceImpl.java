@@ -283,10 +283,6 @@ public class OrderServiceImpl implements OrderService {
         Address newAddress = addressRepository.findById(request.getAddressId())
                 .orElseThrow(() -> new AppException(ErrorCode.ADDRESS_NOT_EXISTED));
 
-        if (!newAddress.getUser().getEmail().equals(currentUserEmail)) {
-            throw new AppException(ErrorCode.ADDRESS_NOT_BELONG_TO_USER);
-        }
-
         order.setAddress(newAddress);
         return orderMapper.toOrderResponse(orderRepository.save(order));
     }
@@ -322,67 +318,6 @@ public class OrderServiceImpl implements OrderService {
         return currentTotal - usage.getDiscountAmount();
     }
 
-    @Scheduled(cron = "0 0 0 * * ?")
-    @Transactional
-    public void updateOrderStatusProcessingToShipped() {
-        log.info("Update Order From Processing To Shipped");
 
-        LocalDate currentDate = LocalDate.now();
-
-        List<Order> orderList = orderRepository.findByOrderStatusAndOrderDateBefore(OrderStatus.PROCESSING,
-                currentDate.minusDays(1));
-
-        orderList.forEach(order ->  order.setOrderStatus(OrderStatus.SHIPPED));
-        orderRepository.saveAll(orderList);
-    }
-
-    @Scheduled(cron = "0 0 0 * * ?")
-    @Transactional
-    public void updateOrderStatusShippedToDelivered() {
-        log.info("Update Order From Shipped To Delivered");
-
-        LocalDate currentDate = LocalDate.now();
-
-        List<Order> orderList = orderRepository.findByOrderStatusAndOrderDateBefore(OrderStatus.SHIPPED,
-                currentDate.minusDays(3));
-
-        orderList.forEach(order -> {
-            order.setOrderStatus(OrderStatus.DELIVERED);
-
-            updatePendingCashPaymentsToPaid(order);
-        });
-
-        orderRepository.saveAll(orderList);
-    }
-
-    private void updatePendingCashPaymentsToPaid(Order order) {
-        List<PaymentHistory> updatedPayments = new ArrayList<>();
-
-        order.getPayments().stream()
-                .filter(payment -> payment.getPaymentMethod() == PaymentMethod.CASH
-                        && payment.getPaymentStatus() == PaymentStatus.PENDING)
-                .forEach(payment -> {
-                    payment.setIsPrimary(true);
-                    payment.setPaymentStatus(PaymentStatus.PAID);
-                    updatedPayments.add(payment);
-                });
-
-        paymentHistoryRepository.saveAll(updatedPayments);
-    }
-
-
-    @Scheduled(cron = "0 0 0 * * ?")
-    @Transactional
-    public void cancelPendingOrdersOverOneDay() {
-        log.info("Cancel Pending Orders Over One Day");
-
-        LocalDate currentDate = LocalDate.now();
-
-        List<Order> orderList = orderRepository.findByOrderStatusAndOrderDateBefore(PENDING,
-                currentDate.minusDays(1));
-
-        orderList.forEach(order ->  order.setOrderStatus(OrderStatus.CANCELLED));
-        orderRepository.saveAll(orderList);
-    }
 
 }

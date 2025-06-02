@@ -18,7 +18,6 @@ public interface AddressMapper {
 
     Address toAddress(AddressRequest request);
 
-    @Mapping(target = "userName", source = "user.email")
     AddressResponse toAddressResponse(Address address);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

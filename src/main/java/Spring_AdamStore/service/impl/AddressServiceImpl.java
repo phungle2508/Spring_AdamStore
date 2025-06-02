@@ -69,16 +69,16 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressResponse fetchById(Long id) {
+        log.info("Fetching address with id= {}", id);
+
         Address address = findAddressById(id);
 
         return addressMapper.toAddressResponse(address);
     }
 
     @Override
-    public PageResponse<AddressResponse> fetchAllForAdmin(int pageNo, int pageSize, String sortBy) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Address.class);
+    public PageResponse<AddressResponse> fetchAllForAdmin(Pageable pageable) {
+        log.info("Fetching all addresses for admin");
 
         Page<Address> addressPage = addressRepository.findAllAddresses(pageable);
 
@@ -124,6 +124,8 @@ public class AddressServiceImpl implements AddressService {
     @Override
     @Transactional
     public void hideAddress(Long id) {
+        log.info("Hiding address with id= {}", id);
+
         Address address = findAddressById(id);
         address.setIsVisible(false);
 
@@ -133,6 +135,8 @@ public class AddressServiceImpl implements AddressService {
     @Override
     @Transactional
     public void delete(Long id) {
+        log.info("Deleting address with id= {}", id);
+
         Address address = findAddressById(id);
 
         if (Boolean.TRUE.equals(address.getIsDefault())) {
@@ -151,6 +155,8 @@ public class AddressServiceImpl implements AddressService {
     @Override
     @Transactional
     public AddressResponse restore(long id) {
+        log.info("Restoring address with id= {}", id);
+
         Address address = addressRepository.findAddressById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.ADDRESS_NOT_EXISTED));
 
@@ -179,7 +185,6 @@ public class AddressServiceImpl implements AddressService {
                 .orElseThrow(() -> new AppException(ErrorCode.PROVINCE_NOT_EXISTED));
     }
 
-    private AddressResponse convertToResponse
 }
 
 

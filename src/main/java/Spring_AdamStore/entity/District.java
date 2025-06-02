@@ -11,26 +11,19 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
-
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
-@Table(name = "tbl_district", indexes = {
-        @Index(name = "idx_province_id", columnList = "province_id")
-})
 @Builder
+@Entity
+@Table(name = "districts")
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 public class District {
+
     @Id
-    Integer id;
+    private Integer id;
 
-    @JoinColumn(nullable = false)
-     String name;
+     private String name;
 
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "province_id")
-     Province province;
+     private Integer provinceId;
 }

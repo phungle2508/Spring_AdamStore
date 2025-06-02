@@ -83,8 +83,8 @@ public class ShippingServiceImpl implements ShippingService {
 
         ShippingFeeRequest shippingFeeRequest = ShippingFeeRequest.builder()
                 .insuranceValue(insuranceValue)
-                .toWardCode(address.getWard().getCode())
-                .toDistrictId(address.getDistrict().getId())
+                .toWardCode(address.getWardCode())
+                .toDistrictId(address.getDistrictId())
                 .coupon(null)
                 .fromDistrictId(fromDistrictId)
                 .weight(weight)

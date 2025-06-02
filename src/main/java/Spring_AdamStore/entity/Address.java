@@ -16,12 +16,12 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Builder
+@Entity
+@Table(name = "addresses")
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLRestriction("status = 'ACTIVE'")
 @SQLDelete(sql = "UPDATE tbl_address SET status = 'INACTIVE' WHERE id = ?")
-@Table(name = "tbl_address")
-@Entity
 @EntityListeners(AuditingEntityListener.class)
 public class Address {
 
@@ -42,9 +42,9 @@ public class Address {
 
     private String wardCode;
 
-    private Long districtId;
+    private Integer districtId;
 
-    private Long provinceId;
+    private Integer provinceId;
 
     private Long userId;
 
