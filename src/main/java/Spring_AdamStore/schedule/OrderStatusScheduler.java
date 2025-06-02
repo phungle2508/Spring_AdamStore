@@ -19,13 +19,14 @@ import java.util.List;
 
 import static Spring_AdamStore.constants.OrderStatus.PENDING;
 
-@Component
 @Slf4j(topic = "ORDER-STATUS-SCHEDULER")
+@Component
 @RequiredArgsConstructor
 public class OrderStatusScheduler {
 
     private final OrderRepository orderRepository;
     private final PaymentHistoryRepository paymentHistoryRepository;
+
 
     @Scheduled(cron = "0 0 0 * * ?")
     @Transactional
@@ -89,4 +90,6 @@ public class OrderStatusScheduler {
         orderList.forEach(order ->  order.setOrderStatus(OrderStatus.CANCELLED));
         orderRepository.saveAll(orderList);
     }
+
+
 }

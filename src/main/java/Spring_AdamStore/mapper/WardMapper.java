@@ -1,8 +1,7 @@
 package Spring_AdamStore.mapper;
 
-import Spring_AdamStore.dto.basic.EntityBasic;
 import Spring_AdamStore.dto.basic.WardBasic;
-import Spring_AdamStore.dto.response.GhnWard;
+import Spring_AdamStore.dto.ghn.GhnWard;
 import Spring_AdamStore.dto.response.WardResponse;
 import Spring_AdamStore.entity.Ward;
 import org.mapstruct.Mapper;

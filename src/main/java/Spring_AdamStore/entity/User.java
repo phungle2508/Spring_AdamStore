@@ -67,8 +67,8 @@ public class User{
     @OneToMany(mappedBy = "user")
      Set<Order> orders = new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
-     Set<Address> addresses = new HashSet<>();
+//    @OneToMany(mappedBy = "user")
+//     Set<Address> addresses = new HashSet<>();
 
     @OneToMany(mappedBy = "user")
      Set<Review> reviews = new HashSet<>();

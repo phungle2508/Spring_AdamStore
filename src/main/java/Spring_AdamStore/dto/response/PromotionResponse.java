@@ -26,7 +26,6 @@ public class PromotionResponse {
     Integer discountPercent;
     LocalDate startDate;
     LocalDate endDate;
-    @Enumerated(EnumType.STRING)
     EntityStatus status;
 
     String createdBy;

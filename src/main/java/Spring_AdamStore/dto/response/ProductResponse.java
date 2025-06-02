@@ -30,7 +30,6 @@ public class ProductResponse {
     Integer quantity;
     Double price;
 
-    @Enumerated(EnumType.STRING)
     EntityStatus status;
 
     String createdBy;

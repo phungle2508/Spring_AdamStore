@@ -11,19 +11,21 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+
 @Getter
 @Setter
-@Builder
-@Entity
 @Table(name = "districts")
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class District {
 
     @Id
     private Integer id;
 
-     private String name;
+    private String name;
 
-     private Integer provinceId;
+    @Column(name = "province_id")
+    private Integer provinceId;
 }

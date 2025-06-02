@@ -5,10 +5,12 @@ import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@AllArgsConstructor
+ @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class EntityBasic {
     private Long id;
     private String name;
+
+
 }

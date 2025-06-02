@@ -21,9 +21,9 @@ public class AddressRequest {
 
     @NotNull(message = "districtId không được để trống")
     @Min(value = 1, message = "districtId phải lớn hơn 0")
-    private Long districtId;
+    private Integer districtId;
 
     @NotNull(message = "provinceId không được để trống")
     @Min(value = 1, message = "provinceId phải lớn hơn 0")
-    private Long provinceId;
+    private Integer provinceId;
 }

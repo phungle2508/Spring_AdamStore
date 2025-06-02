@@ -41,24 +41,24 @@ public class ApplicationInitConfig {
 
         return args -> {
 
-            if (roleRepository.count() == 0) {
-                log.info("Initializing roles...");
-
-                initService.initRoles();
-            }
-
-            if (userRepository.countByEmail(adminProperties.getEmail()) == 0) {
-                log.info("Creating default admin account...");
-
-                initService.initAdmin();
-            }
-
-            if(sizeRepository.count() == 0){
-                log.info("Initializing Sizes...");
-
-                initService.initSizes();
-            }
-
+//            if (roleRepository.count() == 0) {
+//                log.info("Initializing roles...");
+//
+//                initService.initRoles();
+//            }
+//
+//            if (userRepository.countByEmail(adminProperties.getEmail()) == 0) {
+//                log.info("Creating default admin account...");
+//
+//                initService.initAdmin();
+//            }
+//
+//            if(sizeRepository.count() == 0){
+//                log.info("Initializing Sizes...");
+//
+//                initService.initSizes();
+//            }
+//
             if(provinceRepository.count() == 0){
                 log.info("Initializing Provinces and Districts...");
 

@@ -18,6 +18,7 @@ public interface AddressMapper {
 
     Address toAddress(AddressRequest request);
 
+
     AddressResponse toAddressResponse(Address address);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

@@ -1,4 +1,4 @@
-package Spring_AdamStore.dto.response;
+package Spring_AdamStore.dto.ghn;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
@@ -10,11 +10,10 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GhnProvince {
+public class GhnWard {
 
-    @JsonProperty("ProvinceID")
-     int provinceId;
-
-    @JsonProperty("ProvinceName")
-     String provinceName;
+    @JsonProperty("WardCode")
+     String wardCode;
+    @JsonProperty("WardName")
+     String wardName;
 }

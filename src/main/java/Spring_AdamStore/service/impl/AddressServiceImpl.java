@@ -2,6 +2,8 @@ package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.constants.EntityStatus;
 import Spring_AdamStore.constants.OrderStatus;
+import Spring_AdamStore.dto.basic.EntityBasic;
+import Spring_AdamStore.dto.basic.WardBasic;
 import Spring_AdamStore.dto.request.AddressRequest;
 import Spring_AdamStore.dto.response.AddressResponse;
 import Spring_AdamStore.dto.response.PageResponse;
@@ -42,11 +44,11 @@ public class AddressServiceImpl implements AddressService {
     public AddressResponse create(AddressRequest request) {
         log.info("Creating address with data= {}", request);
 
-        Ward ward = findWardByCode(request.getWardCode());
+        findWardByCode(request.getWardCode());
 
-        District district = findDistrictById(request.getDistrictId());
+        findDistrictById(request.getDistrictId());
 
-        Province province = findProvinceById(request.getProvinceId());
+        findProvinceById(request.getProvinceId());
 
         Address address = addressMapper.toAddress(request);
 
@@ -64,22 +66,19 @@ public class AddressServiceImpl implements AddressService {
                     });
         }
 
-        return addressMapper.toAddressResponse(addressRepository.save(address));
+        return buildAddressResponse(addressRepository.save(address));
     }
 
     @Override
     public AddressResponse fetchById(Long id) {
-        log.info("Fetching address with id= {}", id);
-
+        log.info("Fetch Address By Id: {}", id);
         Address address = findAddressById(id);
 
-        return addressMapper.toAddressResponse(address);
+        return buildAddressResponse(address);
     }
 
     @Override
     public PageResponse<AddressResponse> fetchAllForAdmin(Pageable pageable) {
-        log.info("Fetching all addresses for admin");
-
         Page<Address> addressPage = addressRepository.findAllAddresses(pageable);
 
         return PageResponse.<AddressResponse>builder()
@@ -87,7 +86,7 @@ public class AddressServiceImpl implements AddressService {
                 .size(addressPage.getSize())
                 .totalPages(addressPage.getTotalPages())
                 .totalItems(addressPage.getTotalElements())
-                .items(addressMapper.toAddressResponseList(addressPage.getContent()))
+                .items(buildAddressResponseList(addressPage.getContent()))
                 .build();
     }
 
@@ -118,14 +117,12 @@ public class AddressServiceImpl implements AddressService {
             address.setIsDefault(true);
         }
 
-        return addressMapper.toAddressResponse(addressRepository.save(address));
+        return buildAddressResponse(addressRepository.save(address));
     }
 
     @Override
     @Transactional
     public void hideAddress(Long id) {
-        log.info("Hiding address with id= {}", id);
-
         Address address = findAddressById(id);
         address.setIsVisible(false);
 
@@ -135,8 +132,6 @@ public class AddressServiceImpl implements AddressService {
     @Override
     @Transactional
     public void delete(Long id) {
-        log.info("Deleting address with id= {}", id);
-
         Address address = findAddressById(id);
 
         if (Boolean.TRUE.equals(address.getIsDefault())) {
@@ -155,13 +150,11 @@ public class AddressServiceImpl implements AddressService {
     @Override
     @Transactional
     public AddressResponse restore(long id) {
-        log.info("Restoring address with id= {}", id);
-
         Address address = addressRepository.findAddressById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.ADDRESS_NOT_EXISTED));
 
         address.setStatus(EntityStatus.ACTIVE);
-        return addressMapper.toAddressResponse(addressRepository.save(address));
+        return buildAddressResponse(addressRepository.save(address));
     }
 
 
@@ -175,15 +168,36 @@ public class AddressServiceImpl implements AddressService {
                 .orElseThrow(() -> new AppException(ErrorCode.WARD_NOT_EXISTED));
     }
 
-    private District findDistrictById(Long id) {
+    private District findDistrictById(Integer id) {
         return districtRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.DISTRICT_NOT_EXISTED));
     }
 
-    private Province findProvinceById(Long id) {
+    private Province findProvinceById(Integer id) {
         return provinceRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.PROVINCE_NOT_EXISTED));
     }
+
+    private AddressResponse buildAddressResponse(Address address){
+        AddressResponse response = addressMapper.toAddressResponse(address);
+
+        Ward ward = findWardByCode(address.getWardCode());
+        District district = findDistrictById(address.getDistrictId());
+        Province province = findProvinceById(address.getProvinceId());
+
+        response.setWard(new WardBasic(ward.getCode(), ward.getName()));
+        response.setDistrict(new EntityBasic(district.getId().longValue(), district.getName()));
+        response.setProvince(new EntityBasic(province.getId().longValue(), province.getName()));
+
+        return response;
+    }
+
+    public List<AddressResponse> buildAddressResponseList(List<Address> addresses) {
+        return addresses.stream()
+                .map(this::buildAddressResponse)
+                .toList();
+    }
+
 
 }
 

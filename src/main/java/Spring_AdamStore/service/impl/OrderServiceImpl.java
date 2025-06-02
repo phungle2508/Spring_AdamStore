@@ -283,6 +283,7 @@ public class OrderServiceImpl implements OrderService {
         Address newAddress = addressRepository.findById(request.getAddressId())
                 .orElseThrow(() -> new AppException(ErrorCode.ADDRESS_NOT_EXISTED));
 
+
         order.setAddress(newAddress);
         return orderMapper.toOrderResponse(orderRepository.save(order));
     }

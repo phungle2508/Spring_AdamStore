@@ -1,4 +1,4 @@
-package Spring_AdamStore.dto.response;
+package Spring_AdamStore.dto.ghn.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -11,10 +11,10 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GhnDistrictResponse {
+public class GhnProvinceResponse {
 
      int code;
      String message;
-     List<GhnDistrict> data;
+     List<GhnProvince> data;
 
 }

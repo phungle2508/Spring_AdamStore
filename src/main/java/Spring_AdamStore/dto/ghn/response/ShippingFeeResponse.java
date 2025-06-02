@@ -1,4 +1,4 @@
-package Spring_AdamStore.dto.response;
+package Spring_AdamStore.dto.ghn.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
