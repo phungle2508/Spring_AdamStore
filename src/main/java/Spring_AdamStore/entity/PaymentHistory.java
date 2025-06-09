@@ -10,37 +10,34 @@ import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
-@Table(name = "tbl_payment_history")
+@Table(name = "payment_history")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 public class PaymentHistory {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-     Long id;
+    private Long id;
 
-    Boolean isPrimary;
-
-    @Enumerated(EnumType.STRING)
-    @JoinColumn(nullable = false)
-    PaymentMethod paymentMethod;
-
-     @JoinColumn(nullable = false)
-     Double totalAmount;
+    private Boolean isPrimary;
 
     @Enumerated(EnumType.STRING)
-    @JoinColumn(nullable = false)
-     PaymentStatus paymentStatus;
+    private PaymentMethod paymentMethod;
 
-     LocalDateTime paymentTime;
+    private Double totalAmount;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-     Order order;
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;
+
+    private LocalDateTime paymentTime;
+
+     private Long orderId;
+
+
 
     @PrePersist
     public void handleBeforeCreate() {

@@ -7,7 +7,6 @@ import jakarta.persistence.Enumerated;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
 @Builder
@@ -15,15 +14,15 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 public class ProductVariantResponse {
 
-    Long id;
+    private Long id;
 
-    Double price;
-    Integer quantity;
-    Boolean isAvailable;
-    @Enumerated(EnumType.STRING)
-    EntityStatus status;
+    private Double price;
+    private Integer quantity;
+    private Boolean isAvailable;
 
-    EntityBasic product;
-    EntityBasic size;
-    EntityBasic color;
+    private EntityStatus status;
+
+    private EntityBasic product;
+    private EntityBasic size;
+    private EntityBasic color;
 }

@@ -12,12 +12,14 @@ import java.util.List;
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface ReviewMapper {
 
-    Review toReview(ReviewRequest request);
+    @Mapping(target = "imageUrls", expression = "java(context.toJsonNode(request.getImageUrls()))")
+    Review toReview(ReviewRequest request, @Context ReviewMappingHelper context);
 
     ReviewResponse toReviewResponse(Review review);
 
+    @Mapping(target = "imageUrls", expression = "java(context.toJsonNode(request.getImageUrls()))")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void update(@MappingTarget Review review, ReviewUpdateRequest request);
+    void update(@MappingTarget Review review, ReviewUpdateRequest request, @Context ReviewMappingHelper context);
 
     List<ReviewResponse> toReviewResponseList(List<Review> reviewList);
 

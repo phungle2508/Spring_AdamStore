@@ -1,11 +1,10 @@
 package Spring_AdamStore.dto.ghn.response;
 
 import lombok.*;
-import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
+
 @Getter
 @Setter
 @Builder
@@ -13,8 +12,10 @@ import java.util.List;
 @AllArgsConstructor
 public class GhnDistrictResponse {
 
-     int code;
-     String message;
-     List<GhnDistrict> data;
+     private int code;
+
+     private String message;
+
+     private List<GhnDistrict> data;
 
 }

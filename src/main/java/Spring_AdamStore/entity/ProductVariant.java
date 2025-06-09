@@ -13,15 +13,10 @@ import java.util.Set;
 
 import static Spring_AdamStore.constants.EntityStatus.ACTIVE;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
-@Table(name = "tbl_product_variant", indexes = {
-        @Index(name = "idx_product_id", columnList = "product_id"),
-        @Index(name = "idx_color_id", columnList = "color_id"),
-        @Index(name = "idx_size_id", columnList = "size_id")
-})
-@SQLDelete(sql = "UPDATE tbl_product_variant SET status = 'INACTIVE' WHERE id = ?")
+@Table(name = "product_variants")
+@SQLDelete(sql = "UPDATE product_variants SET status = 'INACTIVE' WHERE id = ?")
 @SQLRestriction("status = 'ACTIVE'")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,33 +26,21 @@ public class ProductVariant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
-    Double price;
-    Integer quantity;
-    Boolean isAvailable;
+    private Boolean isAvailable;
+    private Double price;
+    private Integer quantity;
 
     @Enumerated(EnumType.STRING)
-    @JoinColumn(name = "status", nullable = false)
-    EntityStatus status;
+    private EntityStatus status;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    Product product;
+    private Long productId;
 
-    @ManyToOne
-    @JoinColumn(name = "color_id")
-    Color color;
+    private Long colorId;
 
-    @ManyToOne
-    @JoinColumn(name = "size_id")
-    Size size;
+    private Long sizeId;
 
-    @OneToMany(mappedBy = "productVariant")
-    Set<OrderItem> orderItems = new HashSet<>();
-
-    @OneToMany(mappedBy = "productVariant")
-     Set<CartItem> cartItems = new HashSet<>();
 
     @PrePersist
     public void handleBeforeCreate(){

@@ -7,7 +7,6 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Getter
 @Setter
@@ -18,13 +17,13 @@ import java.time.LocalDateTime;
 public class ForgotPasswordToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @Column(nullable = false)
-    String email;
+    private String email;
     @Column(nullable = false, length = 1024)
-    String forgotPasswordToken;
+    private String forgotPasswordToken;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    LocalDateTime expiryTime;
+    private LocalDateTime expiryTime;
 }

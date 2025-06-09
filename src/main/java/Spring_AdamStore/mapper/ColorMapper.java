@@ -8,6 +8,7 @@ import Spring_AdamStore.entity.Size;
 import org.mapstruct.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface ColorMapper {
@@ -21,7 +22,7 @@ public interface ColorMapper {
 
     List<ColorResponse> toColorResponseList(List<Color> colorList);
 
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "name", source = "name")
     EntityBasic toEntityBasic(Color color);
+
+    Set<EntityBasic> toEntityBasicSet(Set<Color> colorSet);
 }

@@ -10,21 +10,18 @@ import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-@Table(name = "tbl_refresh_token")
+@Table(name = "refresh_tokens")
 @Entity
 public class RefreshToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
-    @Column(name = "refresh_token",nullable = false, unique = true, columnDefinition = "TEXT")
-    String refreshToken;
+    private String refreshToken;
 
-    @Column(nullable = false)
-    LocalDateTime expiryDate;
+    private LocalDateTime expiryDate;
 }

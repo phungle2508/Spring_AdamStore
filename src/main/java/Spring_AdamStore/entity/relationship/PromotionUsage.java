@@ -12,10 +12,9 @@ import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
-@Table(name = "tbl_promotion_usage")
+@Table(name = "promotion_usages")
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
@@ -24,19 +23,16 @@ public class PromotionUsage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    Double discountAmount;
-    LocalDateTime usedAt;
+    private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    User user;
+    private Double discountAmount;
+    private LocalDateTime usedAt;
 
-    @ManyToOne
-    @JoinColumn(name = "promotion_id", nullable = false)
-    Promotion promotion;
+    private Long userId;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", nullable = false)
-    Order order;
+    private Long promotionId;
+
+    private Long orderId;
+
+
 }

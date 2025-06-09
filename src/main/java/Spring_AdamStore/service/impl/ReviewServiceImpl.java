@@ -10,11 +10,13 @@ import Spring_AdamStore.entity.User;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.ReviewMapper;
+import Spring_AdamStore.mapper.ReviewMappingHelper;
 import Spring_AdamStore.repository.ProductRepository;
 import Spring_AdamStore.repository.ReviewRepository;
 import Spring_AdamStore.service.CurrentUserService;
 import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.ReviewService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,18 +34,19 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewMapper reviewMapper;
     private final PageableService pageableService;
     private final ProductRepository productRepository;
+    private final ReviewMappingHelper reviewMappingHelper;
 
     @Override
     @Transactional
     public ReviewResponse create(ReviewRequest request) {
-        Review review = reviewMapper.toReview(request);
+        Review review = reviewMapper.toReview(request, reviewMappingHelper);
 
         User user = currentUserService.getCurrentUser();
-        review.setUser(user);
+        review.setUserId(user.getId());
 
         Product product = productRepository.findById(request.getProductId())
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
-        review.setProduct(product);
+        review.setProductId(product.getId());
 
         return reviewMapper.toReviewResponse(reviewRepository.save(review));
     }
@@ -56,11 +59,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public PageResponse<ReviewResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Review.class);
-
+    public PageResponse<ReviewResponse> fetchAll(Pageable pageable) {
         Page<Review> reviewPage = reviewRepository.findAll(pageable);
 
         return PageResponse.<ReviewResponse>builder()
@@ -77,7 +76,7 @@ public class ReviewServiceImpl implements ReviewService {
     public ReviewResponse update(Long id, ReviewUpdateRequest request) {
         Review review = findReviewById(id);
 
-        reviewMapper.update(review, request);
+        reviewMapper.update(review, request, reviewMappingHelper);
 
         return reviewMapper.toReviewResponse(reviewRepository.save(review));
     }

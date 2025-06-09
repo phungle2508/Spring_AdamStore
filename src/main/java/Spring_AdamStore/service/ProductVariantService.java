@@ -11,13 +11,14 @@ import com.fasterxml.jackson.core.TSFBuilder;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 
+import java.util.List;
 import java.util.Set;
 
 public interface ProductVariantService {
 
     ProductVariantResponse findByProductAndColorAndSize(Long productId, Long colorId, Long sizeId);
 
-    Set<ProductVariant> saveProductVariant(Product product, Set<Size> sizeSet, Set<Color> colorSet, Double price, Integer quantity);
+    Set<ProductVariant> saveProductVariant(Product product, Set<Long> sizeIds, Set<Long> colorIds, Double price, Integer quantity);
 
     Set<ProductVariant> updateProductVariants(Product product, Set<Size> sizeSet, Set<Color> colorSet, Double price, Integer quantity);
 
@@ -28,4 +29,6 @@ public interface ProductVariantService {
     void delete(Long id);
 
     ProductVariantResponse restore(long id);
+
+    List<ProductVariant> findAllProductVariantByProductId(Long id);
 }

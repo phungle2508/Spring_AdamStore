@@ -8,6 +8,7 @@ import Spring_AdamStore.entity.*;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.CartItemMapper;
+import Spring_AdamStore.mapper.CartItemMappingHelper;
 import Spring_AdamStore.repository.CartItemRepository;
 import Spring_AdamStore.repository.CartRepository;
 import Spring_AdamStore.repository.ProductVariantRepository;
@@ -31,17 +32,15 @@ public class CartItemServiceImpl implements CartItemService {
     private final CartItemRepository cartItemRepository;
     private final ProductVariantRepository productVariantRepository;
     private final CartRepository cartRepository;
-    private final PageableService pageableService;
     private final CartItemMapper cartItemMapper;
+    private final CartItemMappingHelper cartItemMappingHelper;
     private final CurrentUserService currentUserService;
 
     @Override
     @Transactional
     public CartItemResponse create(CartItemRequest request) {
-        User user = currentUserService.getCurrentUser();
 
-        Cart cart = cartRepository.findByUserId(user.getId())
-                .orElseThrow(()->new AppException(ErrorCode.CART_NOT_EXISTED));
+        Cart cart = findCartByUser();
 
         ProductVariant productVariant = productVariantRepository.findById(request.getProductVariantId())
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_VARIANT_NOT_EXISTED));
@@ -62,25 +61,21 @@ public class CartItemServiceImpl implements CartItemService {
             cartItem = CartItem.builder()
                     .quantity(request.getQuantity())
                     .price(productVariant.getPrice())
-                    .productVariant(productVariant)
-                    .cart(cart)
+                    .productVariantId(productVariant.getId())
+                    .cartId(cart.getId())
                     .build();
         }
-        return cartItemMapper.toCartItemResponse(cartItemRepository.save(cartItem));
+        return cartItemMapper.toCartItemResponse(cartItemRepository.save(cartItem), cartItemMappingHelper);
     }
 
     @Override
     public CartItemResponse fetchById(Long id) {
         CartItem cartItem = findCartItemById(id);
-        return cartItemMapper.toCartItemResponse(cartItem);
+        return cartItemMapper.toCartItemResponse(cartItem, cartItemMappingHelper);
     }
 
     @Override
-    public PageResponse<CartItemResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, CartItem.class);
-
+    public PageResponse<CartItemResponse> fetchAll(Pageable pageable) {
         Page<CartItem> cartItemPage = cartItemRepository.findAll(pageable);
 
         return PageResponse.<CartItemResponse>builder()
@@ -88,7 +83,7 @@ public class CartItemServiceImpl implements CartItemService {
                 .size(cartItemPage.getSize())
                 .totalPages(cartItemPage.getTotalPages())
                 .totalItems(cartItemPage.getTotalElements())
-                .items(cartItemMapper.toCartItemResponseList(cartItemPage.getContent()))
+                .items(cartItemMapper.toCartItemResponseList(cartItemPage.getContent(), cartItemMappingHelper))
                 .build();
     }
 
@@ -98,7 +93,7 @@ public class CartItemServiceImpl implements CartItemService {
         CartItem cartItem = findCartItemById(id);
 
         cartItem.setQuantity(request.getQuantity());
-        return cartItemMapper.toCartItemResponse(cartItemRepository.save(cartItem));
+        return cartItemMapper.toCartItemResponse(cartItemRepository.save(cartItem), cartItemMappingHelper);
     }
 
     @Override
@@ -114,4 +109,10 @@ public class CartItemServiceImpl implements CartItemService {
                 .orElseThrow(() -> new AppException(ErrorCode.CART_ITEM_NOT_EXISTED));
     }
 
+    private Cart findCartByUser(){
+        User user = currentUserService.getCurrentUser();
+
+        return cartRepository.findByUserId(user.getId())
+                .orElseThrow(()->new AppException(ErrorCode.CART_NOT_EXISTED));
+    }
 }

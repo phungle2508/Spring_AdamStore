@@ -13,15 +13,14 @@ import java.util.List;
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface ProvinceMapper {
 
-    ProvinceResponse toProvinceResponse(Province province);
-
     @Mapping(target = "id", source = "provinceId")
     @Mapping(target = "name", source = "provinceName")
     Province GhnProvinceToProvince(GhnProvince ghnProvince);
+
+    ProvinceResponse toProvinceResponse(Province province);
 
     List<Province> GhnProvinceListToProvinceList(List<GhnProvince> ghnProvinceList);
 
     List<ProvinceResponse> toProvinceResponseList(List<Province> provinceList);
 
-    EntityBasic toEntityBasic(Province province);
 }

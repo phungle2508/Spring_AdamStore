@@ -16,21 +16,21 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     Optional<User> findByEmail(String email);
 
-    @Query(value = "SELECT COUNT(*) FROM tbl_user u WHERE u.id = :id AND u.status = :status", nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM users u WHERE u.id = :id AND u.status = :status", nativeQuery = true)
     Integer countById(@Param("id") Long id, @Param("status") String status);
 
-    @Query(value = "SELECT * FROM tbl_user u WHERE u.id = :id", nativeQuery = true)
+    @Query(value = "SELECT * FROM users u WHERE u.id = :id", nativeQuery = true)
     Optional<User> findUserById(@Param("id") Long id);
 
-    @Query(value = "SELECT COUNT(*) FROM tbl_user WHERE email = :email", nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM users WHERE email = :email", nativeQuery = true)
     Integer countByEmail(@Param("email") String email);
 
-    @Query(value = "SELECT COUNT(*) FROM tbl_user WHERE email = :email AND status = :status", nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM users WHERE email = :email AND status = :status", nativeQuery = true)
     Integer countByEmailAndStatus(@Param("email") String email, @Param("status") String status);
 
 
-    @Query(value = "SELECT * FROM tbl_user",
-            countQuery = "SELECT COUNT(*) FROM tbl_user",
+    @Query(value = "SELECT * FROM users",
+            countQuery = "SELECT COUNT(*) FROM users",
             nativeQuery = true)
     Page<User> findAllUsers(Pageable pageable);
 }

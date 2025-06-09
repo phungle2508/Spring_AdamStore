@@ -5,7 +5,6 @@ import jakarta.persistence.JoinColumn;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
 @Builder
@@ -13,10 +12,10 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 public class CartItemResponse {
 
-    Long id;
+    private Long id;
 
-    Double price;
-    Integer quantity;
+    private Double price;
+    private Integer quantity;
 
-    ProductVariantBasic productVariantBasic;
+    private ProductVariantBasic productVariantBasic;
 }

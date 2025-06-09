@@ -2,8 +2,6 @@ package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.constants.EntityStatus;
 import Spring_AdamStore.constants.OrderStatus;
-import Spring_AdamStore.dto.basic.EntityBasic;
-import Spring_AdamStore.dto.basic.WardBasic;
 import Spring_AdamStore.dto.request.AddressRequest;
 import Spring_AdamStore.dto.response.AddressResponse;
 import Spring_AdamStore.dto.response.PageResponse;
@@ -11,10 +9,10 @@ import Spring_AdamStore.entity.*;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.AddressMapper;
+import Spring_AdamStore.mapper.AddressMappingHelper;
 import Spring_AdamStore.repository.*;
 import Spring_AdamStore.service.AddressService;
 import Spring_AdamStore.service.CurrentUserService;
-import Spring_AdamStore.service.PageableService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,12 +29,12 @@ public class AddressServiceImpl implements AddressService {
 
     private final AddressRepository addressRepository;
     private final AddressMapper addressMapper;
-    private final PageableService pageableService;
     private final DistrictRepository districtRepository;
     private final ProvinceRepository provinceRepository;
     private final WardRepository wardRepository;
     private final CurrentUserService currentUserService;
     private final OrderRepository orderRepository;
+    private final AddressMappingHelper addressMappingHelper;
 
 
     @Override
@@ -66,19 +64,22 @@ public class AddressServiceImpl implements AddressService {
                     });
         }
 
-        return buildAddressResponse(addressRepository.save(address));
+        return addressMapper.toAddressResponse(addressRepository.save(address), addressMappingHelper);
     }
 
     @Override
     public AddressResponse fetchById(Long id) {
         log.info("Fetch Address By Id: {}", id);
+
         Address address = findAddressById(id);
 
-        return buildAddressResponse(address);
+        return addressMapper.toAddressResponse(address, addressMappingHelper);
     }
 
     @Override
     public PageResponse<AddressResponse> fetchAllForAdmin(Pageable pageable) {
+        log.info("Fetch All Address For Admin");
+
         Page<Address> addressPage = addressRepository.findAllAddresses(pageable);
 
         return PageResponse.<AddressResponse>builder()
@@ -86,7 +87,7 @@ public class AddressServiceImpl implements AddressService {
                 .size(addressPage.getSize())
                 .totalPages(addressPage.getTotalPages())
                 .totalItems(addressPage.getTotalElements())
-                .items(buildAddressResponseList(addressPage.getContent()))
+                .items(addressMapper.toAddressResponseList(addressPage.getContent(), addressMappingHelper))
                 .build();
     }
 
@@ -117,12 +118,14 @@ public class AddressServiceImpl implements AddressService {
             address.setIsDefault(true);
         }
 
-        return buildAddressResponse(addressRepository.save(address));
+        return addressMapper.toAddressResponse(addressRepository.save(address), addressMappingHelper);
     }
 
     @Override
     @Transactional
     public void hideAddress(Long id) {
+        log.info("Hide Address By id: {}", id);
+
         Address address = findAddressById(id);
         address.setIsVisible(false);
 
@@ -132,6 +135,8 @@ public class AddressServiceImpl implements AddressService {
     @Override
     @Transactional
     public void delete(Long id) {
+        log.info("Delete Address By Id: {}", id);
+
         Address address = findAddressById(id);
 
         if (Boolean.TRUE.equals(address.getIsDefault())) {
@@ -150,11 +155,13 @@ public class AddressServiceImpl implements AddressService {
     @Override
     @Transactional
     public AddressResponse restore(long id) {
+        log.info("Restore Address By Id: {}", id);
+
         Address address = addressRepository.findAddressById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.ADDRESS_NOT_EXISTED));
 
         address.setStatus(EntityStatus.ACTIVE);
-        return buildAddressResponse(addressRepository.save(address));
+        return addressMapper.toAddressResponse(addressRepository.save(address), addressMappingHelper);
     }
 
 
@@ -163,39 +170,19 @@ public class AddressServiceImpl implements AddressService {
                 .orElseThrow(() -> new AppException(ErrorCode.ADDRESS_NOT_EXISTED));
     }
 
-    private Ward findWardByCode(String code) {
-         return wardRepository.findByCode(code)
+    private void findWardByCode(String code) {
+          wardRepository.findByCode(code)
                 .orElseThrow(() -> new AppException(ErrorCode.WARD_NOT_EXISTED));
     }
 
-    private District findDistrictById(Integer id) {
-        return districtRepository.findById(id)
+    private void findDistrictById(Integer id) {
+         districtRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.DISTRICT_NOT_EXISTED));
     }
 
-    private Province findProvinceById(Integer id) {
-        return provinceRepository.findById(id)
+    private void findProvinceById(Integer id) {
+         provinceRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.PROVINCE_NOT_EXISTED));
-    }
-
-    private AddressResponse buildAddressResponse(Address address){
-        AddressResponse response = addressMapper.toAddressResponse(address);
-
-        Ward ward = findWardByCode(address.getWardCode());
-        District district = findDistrictById(address.getDistrictId());
-        Province province = findProvinceById(address.getProvinceId());
-
-        response.setWard(new WardBasic(ward.getCode(), ward.getName()));
-        response.setDistrict(new EntityBasic(district.getId().longValue(), district.getName()));
-        response.setProvince(new EntityBasic(province.getId().longValue(), province.getName()));
-
-        return response;
-    }
-
-    public List<AddressResponse> buildAddressResponseList(List<Address> addresses) {
-        return addresses.stream()
-                .map(this::buildAddressResponse)
-                .toList();
     }
 
 

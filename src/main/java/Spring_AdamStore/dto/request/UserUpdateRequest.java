@@ -14,16 +14,16 @@ import java.util.Set;
 
 
 @Getter
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserUpdateRequest {
+
     @NotBlank(message = "Name không được để trống")
-    String name;
-    String avatarUrl;
+    private String name;
+    private String avatarUrl;
     @NotNull(message = "Ngày sinh không được để trống")
-    LocalDate dob;
+    private LocalDate dob;
     @NotNull(message = "gender không được để trống")
     @EnumPattern(name = "gender", regexp = "FEMALE|MALE|OTHER")
-    Gender gender;
+    private Gender gender;
 
-    Set<Long> roleIds;
+    private Set<Long> roleIds;
 }

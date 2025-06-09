@@ -26,6 +26,5 @@ public class District {
 
     private String name;
 
-    @Column(name = "province_id")
     private Integer provinceId;
 }

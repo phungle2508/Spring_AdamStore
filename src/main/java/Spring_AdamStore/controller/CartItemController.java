@@ -11,6 +11,9 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -46,13 +49,10 @@ public class CartItemController {
     }
 
     @GetMapping("/cart-items")
-    public ApiResponse<PageResponse<CartItemResponse>> fetchAll(@Min(value = 1, message = "pageNo phải lớn hơn 0")
-                                                                @RequestParam(defaultValue = "1") int pageNo,
-                                                                @RequestParam(defaultValue = "10") int pageSize,
-                                                                @RequestParam(required = false) String sortBy){
+    public ApiResponse<PageResponse<CartItemResponse>> fetchAll(@ParameterObject @PageableDefault Pageable pageable){
         return ApiResponse.<PageResponse<CartItemResponse>>builder()
                 .code(HttpStatus.OK.value())
-                .result(cartItemService.fetchAll(pageNo, pageSize, sortBy))
+                .result(cartItemService.fetchAll(pageable))
                 .message("Fetch All CartItems With Pagination")
                 .build();
     }

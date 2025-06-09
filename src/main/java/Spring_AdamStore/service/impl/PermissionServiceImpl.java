@@ -22,10 +22,11 @@ public class PermissionServiceImpl implements PermissionService {
 
     private final PermissionRepository permissionRepository;
     private final PermissionMapper permissionMapper;
-    private final PageableService pageableService;
 
     @Override
     public PermissionResponse fetchPermissionById(Long id) {
+        log.info("Fetch Permission By Id: {}", id);
+
         Permission permissionDB = permissionRepository.findById(id).
                 orElseThrow(() -> new AppException(ErrorCode.PERMISSION_NOT_EXISTED));
 
@@ -33,10 +34,8 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public PageResponse<PermissionResponse> fetchAllPermissions(int pageNo, int pageSize, String sortBy) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Permission.class);
+    public PageResponse<PermissionResponse> fetchAllPermissions(Pageable pageable) {
+        log.info("Fetch All Permission For Admin");
 
         Page<Permission> permissionPage = permissionRepository.findAll(pageable);
 

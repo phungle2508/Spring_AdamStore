@@ -38,7 +38,7 @@ public class PaymentHistoryServiceImpl implements PaymentHistoryService {
                 .totalAmount(order.getTotalPrice())
                 .paymentStatus(PaymentStatus.PENDING)
                 .paymentTime(LocalDateTime.now())
-                .order(order)
+                .orderId(order.getId())
                 .build();
 
         paymentHistoryRepository.save(payment);

@@ -13,6 +13,9 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -49,13 +52,10 @@ public class ReviewController {
     }
 
     @GetMapping("/reviews")
-    public ApiResponse<PageResponse<ReviewResponse>> fetchAll(@Min(value = 1, message = "pageNo phải lớn hơn 0")
-                                                                 @RequestParam(defaultValue = "1") int pageNo,
-                                                                 @RequestParam(defaultValue = "10") int pageSize,
-                                                                 @RequestParam(required = false) String sortBy){
+    public ApiResponse<PageResponse<ReviewResponse>> fetchAll(@ParameterObject @PageableDefault Pageable pageable){
         return ApiResponse.<PageResponse<ReviewResponse>>builder()
                 .code(HttpStatus.OK.value())
-                .result(reviewService.fetchAll(pageNo, pageSize, sortBy))
+                .result(reviewService.fetchAll(pageable))
                 .message("Fetch All Reviews With Pagination")
                 .build();
     }

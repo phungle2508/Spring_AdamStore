@@ -1,7 +1,7 @@
 package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.dto.request.OrderItemRequest;
-import Spring_AdamStore.dto.ghn.ShippingFeeRequest;
+import Spring_AdamStore.dto.ghn.request.ShippingFeeRequest;
 import Spring_AdamStore.dto.request.ShippingRequest;
 import Spring_AdamStore.dto.ghn.response.GhnResponse;
 import Spring_AdamStore.dto.ghn.response.ShippingFeeResponse;
@@ -18,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 @Service
 @Slf4j(topic = "SHIPPING-SERVICE")

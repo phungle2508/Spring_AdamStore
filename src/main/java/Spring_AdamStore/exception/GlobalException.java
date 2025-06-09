@@ -24,14 +24,18 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-@Slf4j
+@Slf4j(topic = "GLOBAL-EXCEPTION")
 @RestControllerAdvice
 public class GlobalException {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleAllException(Exception ex, WebRequest request) {
 
-        log.error("Đã xảy ra lỗi: {}", ex.getMessage(), ex);
+        // location
+        StackTraceElement element = ex.getStackTrace()[0];
+        String location = String.format("%s.%s()", element.getClassName(), element.getMethodName());
+
+        log.error("Tại: {} - Đã xảy ra lỗi: {}", location, ex.getMessage(), ex);
 
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .code(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode())

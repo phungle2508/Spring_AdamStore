@@ -25,13 +25,13 @@ public interface ProductVariantRepository extends JpaRepository<ProductVariant, 
     Page<ProductVariant> findAllByProductId(Long productId, Pageable pageable);
 
 
-    @Query(value = "SELECT COUNT(*) FROM tbl_product_variant WHERE color_id = :colorId", nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM product_variants WHERE color_id = :colorId", nativeQuery = true)
     long countByColorId(@Param("colorId") Long colorId);
 
-    @Query(value = "SELECT * FROM tbl_product_variant pv WHERE pv.id = :id", nativeQuery = true)
+    @Query(value = "SELECT * FROM product_variants pv WHERE pv.id = :id", nativeQuery = true)
     Optional<ProductVariant> findProductVariantById(@Param("id") Long id);
 
-    @Query(value = "SELECT pv.* FROM tbl_product_variant pv WHERE pv.product_id = :productId", nativeQuery = true)
+    @Query(value = "SELECT pv.* FROM product_variants pv WHERE pv.product_id = :productId", nativeQuery = true)
     Page<ProductVariant> findAllVariantsByProductId(Long productId, Pageable pageable);
 
 

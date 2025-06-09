@@ -21,6 +21,10 @@ import java.util.Optional;
 @Repository
 public interface PaymentHistoryRepository extends JpaRepository<PaymentHistory, Long> {
 
+    void deleteAllByOrderId(Long orderId);
+
+    List<PaymentHistory> findAllByOrderId(Long orderId);
+
     Optional<PaymentHistory> findByOrderIdAndPaymentStatusAndPaymentMethod(Long orderId, PaymentStatus paymentStatus, PaymentMethod paymentMethod);
 
 
@@ -56,8 +60,8 @@ public interface PaymentHistoryRepository extends JpaRepository<PaymentHistory, 
             o.totalPrice
         )
         FROM Order o
-        JOIN o.user u
-        JOIN o.payments ph
+        JOIN User u
+        JOIN PaymentHistory ph
         WHERE ph.isPrimary = true
           AND ph.paymentStatus = 'PAID'
           AND o.orderDate BETWEEN :startDate AND :endDate

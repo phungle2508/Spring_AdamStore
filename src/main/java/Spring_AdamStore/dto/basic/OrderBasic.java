@@ -3,6 +3,7 @@ package Spring_AdamStore.dto.basic;
 import lombok.*;
 
 import java.time.LocalDate;
+
 @Getter
 @Setter
 @AllArgsConstructor

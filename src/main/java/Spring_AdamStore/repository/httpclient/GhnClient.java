@@ -1,8 +1,8 @@
 package Spring_AdamStore.repository.httpclient;
 
-import Spring_AdamStore.dto.ghn.GhnDistrictRequest;
-import Spring_AdamStore.dto.ghn.GhnWardRequest;
-import Spring_AdamStore.dto.ghn.ShippingFeeRequest;
+import Spring_AdamStore.dto.ghn.request.GhnDistrictRequest;
+import Spring_AdamStore.dto.ghn.request.GhnWardRequest;
+import Spring_AdamStore.dto.ghn.request.ShippingFeeRequest;
 import Spring_AdamStore.dto.ghn.response.GhnDistrictResponse;
 import Spring_AdamStore.dto.ghn.response.GhnProvinceResponse;
 import Spring_AdamStore.dto.ghn.response.GhnResponse;

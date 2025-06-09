@@ -9,9 +9,7 @@ import Spring_AdamStore.entity.Size;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.ProductVariantMapper;
-import Spring_AdamStore.repository.CartItemRepository;
-import Spring_AdamStore.repository.OrderItemRepository;
-import Spring_AdamStore.repository.ProductVariantRepository;
+import Spring_AdamStore.repository.*;
 import Spring_AdamStore.service.ProductVariantService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +30,8 @@ public class ProductVariantServiceImpl implements ProductVariantService {
     private final ProductVariantRepository productVariantRepository;
     private final ProductVariantMapper productVariantMapper;
     private final CartItemRepository cartItemRepository;
+    private final SizeRepository sizeRepository;
+    private final ColorRepository colorRepository;
     private final OrderItemRepository orderItemRepository;
 
 
@@ -47,8 +47,12 @@ public class ProductVariantServiceImpl implements ProductVariantService {
 
     @Override
     @Transactional
-    public Set<ProductVariant> saveProductVariant(Product product, Set<Size> sizeSet, Set<Color> colorSet, Double price, Integer quantity) {
+    public Set<ProductVariant> saveProductVariant(Product product, Set<Long> sizeIds, Set<Long> colorIds, Double price, Integer quantity) {
         Set<ProductVariant> productVariantSet = new HashSet<>();
+
+        Set<Color> colorSet = getListColorById(colorIds);
+
+        Set<Size> sizeSet = getListSizeById(sizeIds);
 
         for (Color color : colorSet) {
             for (Size size : sizeSet) {
@@ -56,9 +60,9 @@ public class ProductVariantServiceImpl implements ProductVariantService {
                         .price(price)
                         .quantity(quantity)
                         .isAvailable(true)
-                        .product(product)
-                        .size(size)
-                        .color(color)
+                        .productId(product.getId())
+                        .sizeId(size.getId())
+                        .colorId(color.getId())
                         .build();
 
                 productVariantSet.add(variant);
@@ -78,9 +82,9 @@ public class ProductVariantServiceImpl implements ProductVariantService {
                 ProductVariant variant = ProductVariant.builder()
                         .price(price)
                         .quantity(quantity)
-                        .product(product)
-                        .size(size)
-                        .color(color)
+                        .productId(product.getId())
+                        .sizeId(size.getId())
+                        .colorId(color.getId())
                         .build();
 
                 productVariantSet.add(variant);
@@ -122,7 +126,7 @@ public class ProductVariantServiceImpl implements ProductVariantService {
             throw new AppException(ErrorCode.PRODUCT_VARIANT_USED_IN_ORDER);
         }
 
-        cartItemRepository.deleteAll(productVariant.getCartItems());
+//        cartItemRepository.deleteAll(productVariant.getCartItems());
 
         productVariantRepository.delete(productVariant);
     }
@@ -134,5 +138,26 @@ public class ProductVariantServiceImpl implements ProductVariantService {
 
         productVariant.setStatus(ACTIVE);
         return productVariantMapper.toProductVariantResponse(productVariantRepository.save(productVariant));
+    }
+
+    @Override
+    public List<ProductVariant> findAllProductVariantByProductId(Long id) {
+        return productVariantRepository.findAllByProductId(id);
+    }
+
+    private Set<Color> getListColorById(Set<Long> colorIdSet) {
+        Set<Color> colorSet = colorRepository.findAllByIdIn(colorIdSet);
+        if (colorSet.size() != colorIdSet.size()) {
+            throw new AppException(ErrorCode.INVALID_PRODUCT_COLOR_LIST);
+        }
+        return colorSet;
+    }
+
+    private Set<Size> getListSizeById(Set<Long> sizeIdSet) {
+        Set<Size> sizeSet = sizeRepository.findAllByIdIn(sizeIdSet);
+        if (sizeSet.size() != sizeIdSet.size()) {
+            throw new AppException(ErrorCode.INVALID_PRODUCT_SIZE_LIST);
+        }
+        return sizeSet;
     }
 }

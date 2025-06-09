@@ -13,6 +13,9 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -53,13 +56,10 @@ public class BranchController {
     @Operation(summary = "Fetch All Branches For User",
     description = "API để lấy tất cả Branch (ACTIVE) cho user")
     @GetMapping("/branches")
-    public ApiResponse<PageResponse<BranchResponse>> fetchAll(@Min(value = 1, message = "pageNo phải lớn hơn 0")
-                                                                @RequestParam(defaultValue = "1") int pageNo,
-                                                                @RequestParam(defaultValue = "10") int pageSize,
-                                                                @RequestParam(required = false) String sortBy){
+    public ApiResponse<PageResponse<BranchResponse>> fetchAll(@ParameterObject @PageableDefault Pageable pageable){
         return ApiResponse.<PageResponse<BranchResponse>>builder()
                 .code(HttpStatus.OK.value())
-                .result(branchService.fetchAll(pageNo, pageSize, sortBy))
+                .result(branchService.fetchAll(pageable))
                 .message("Fetch All Branches For User")
                 .build();
     }
@@ -68,13 +68,10 @@ public class BranchController {
     @Operation(summary = "Fetch All Branches For Admin",
     description = "API này để lấy tất cả Branch (cả ACTIVE và INACTIVE) cho admin quản lý")
     @GetMapping("/branches/admin")
-    public ApiResponse<PageResponse<BranchResponse>> fetchAllBranchesForAdmin(@Min(value = 1, message = "pageNo phải lớn hơn 0")
-                                                                                  @RequestParam(defaultValue = "1") int pageNo,
-                                                                              @RequestParam(defaultValue = "10") int pageSize,
-                                                                              @RequestParam(required = false) String sortBy){
+    public ApiResponse<PageResponse<BranchResponse>> fetchAllBranchesForAdmin(@ParameterObject @PageableDefault Pageable pageable){
         return ApiResponse.<PageResponse<BranchResponse>>builder()
                 .code(HttpStatus.OK.value())
-                .result(branchService.fetchAllBranchesForAdmin(pageNo, pageSize, sortBy))
+                .result(branchService.fetchAllBranchesForAdmin(pageable))
                 .message("Fetch All Branches For Admin")
                 .build();
     }

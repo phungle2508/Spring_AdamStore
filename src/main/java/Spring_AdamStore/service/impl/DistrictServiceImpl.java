@@ -1,6 +1,6 @@
 package Spring_AdamStore.service.impl;
 
-import Spring_AdamStore.dto.ghn.GhnDistrictRequest;
+import Spring_AdamStore.dto.ghn.request.GhnDistrictRequest;
 import Spring_AdamStore.dto.ghn.response.GhnDistrictResponse;
 import Spring_AdamStore.dto.response.*;
 import Spring_AdamStore.entity.District;

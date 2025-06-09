@@ -1,6 +1,6 @@
 package Spring_AdamStore.service.impl;
 
-import Spring_AdamStore.dto.ghn.GhnWardRequest;
+import Spring_AdamStore.dto.ghn.request.GhnWardRequest;
 import Spring_AdamStore.dto.ghn.response.GhnWardResponse;
 import Spring_AdamStore.dto.response.*;
 import Spring_AdamStore.entity.Ward;

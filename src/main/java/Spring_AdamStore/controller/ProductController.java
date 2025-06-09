@@ -11,6 +11,9 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -51,13 +54,10 @@ public class ProductController {
     @Operation(summary = "Fetch All Products For User",
     description = "Api này để lấy các Products (ACTIVE) cho user")
     @GetMapping("/products")
-    public ApiResponse<PageResponse<ProductResponse>> fetchAll(@Min(value = 1, message = "pageNo phải lớn hơn 0")
-                                                            @RequestParam(defaultValue = "1") int pageNo,
-                                                            @RequestParam(defaultValue = "10") int pageSize,
-                                                            @RequestParam(required = false) String sortBy){
+    public ApiResponse<PageResponse<ProductResponse>> fetchAll(@ParameterObject @PageableDefault Pageable pageable){
         return ApiResponse.<PageResponse<ProductResponse>>builder()
                 .code(HttpStatus.OK.value())
-                .result(productService.fetchAll(pageNo, pageSize, sortBy))
+                .result(productService.fetchAll(pageable))
                 .message("Fetch All Products For User")
                 .build();
     }
@@ -66,13 +66,10 @@ public class ProductController {
     @Operation(summary = "Fetch All Products For Admin",
             description = "Api này để lấy các Products (cả ACTIVE và INACTIVE) cho admin")
     @GetMapping("/products/admin")
-    public ApiResponse<PageResponse<ProductResponse>> fetchAllProductsForAdmin(@Min(value = 1, message = "pageNo phải lớn hơn 0")
-                                                               @RequestParam(defaultValue = "1") int pageNo,
-                                                               @RequestParam(defaultValue = "10") int pageSize,
-                                                               @RequestParam(required = false) String sortBy){
+    public ApiResponse<PageResponse<ProductResponse>> fetchAllProductsForAdmin(@ParameterObject @PageableDefault Pageable pageable){
         return ApiResponse.<PageResponse<ProductResponse>>builder()
                 .code(HttpStatus.OK.value())
-                .result(productService.fetchAllProductsForAdmin(pageNo, pageSize, sortBy))
+                .result(productService.fetchAllProductsForAdmin(pageable))
                 .message("Fetch All Products For Admin")
                 .build();
     }
@@ -130,32 +127,26 @@ public class ProductController {
     }
 
     @GetMapping("/products/{productId}/reviews")
-    public ApiResponse<PageResponse<ReviewResponse>> fetchReviewsByProductId(@Min(value = 1, message = "pageNo phải lớn hơn 0")
-                                                                                 @RequestParam(defaultValue = "1") int pageNo,
-                                                                             @RequestParam(defaultValue = "10") int pageSize,
-                                                                             @RequestParam(required = false) String sortBy,
+    public ApiResponse<PageResponse<ReviewResponse>> fetchReviewsByProductId(@ParameterObject @PageableDefault Pageable pageable,
                                                                              @Min(value = 1, message = "ID phải lớn hơn 0")
                                                                          @PathVariable Long productId) {
         return ApiResponse.<PageResponse<ReviewResponse>>builder()
                 .code(HttpStatus.OK.value())
                 .message("Fetch Reviews By Product Id")
-                .result(productService.fetchReviewsByProductId(pageNo, pageSize, sortBy, productId))
+                .result(productService.fetchReviewsByProductId(pageable, productId))
                 .build();
     }
 
     @Operation(summary = "Fetch All product-variants by product For User",
             description = "Api này dùng để lấy tất ca Product-Variants (ACTIVE) theo Product cho user")
     @GetMapping("/products/{productId}/product-variants")
-    public ApiResponse<PageResponse<ProductVariantResponse>> getVariantsByProductId(@Min(value = 1, message = "pageNo phải lớn hơn 0")
-                                                                          @RequestParam(defaultValue = "1") int pageNo,
-                                                                      @RequestParam(defaultValue = "10") int pageSize,
-                                                                      @RequestParam(required = false) String sortBy,
+    public ApiResponse<PageResponse<ProductVariantResponse>> getAllProductVariantByProduct(@ParameterObject @PageableDefault Pageable pageable,
                                                                       @Min(value = 1, message = "ID phải lớn hơn 0")
                                                                           @PathVariable Long productId){
         return ApiResponse.<PageResponse<ProductVariantResponse>>builder()
                 .code(HttpStatus.OK.value())
                 .message("Fetch All product-variants by product For User")
-                .result(productService.getVariantsByProductId(pageNo, pageSize, sortBy, productId))
+                .result(productService.getVariantsByProductId(pageable, productId))
                 .build();
     }
 
@@ -163,16 +154,13 @@ public class ProductController {
     @Operation(summary = "Fetch All product-variants by product for Admin",
             description = "Api này dùng để lấy tất ca Product-Variants (cả ACTIVE và INACTIVE) theo Product cho admin")
     @GetMapping("/products/{productId}/product-variants/admin")
-    public ApiResponse<PageResponse<ProductVariantResponse>> getVariantsByProductIdForAdmin(@Min(value = 1, message = "pageNo phải lớn hơn 0")
-                                                                                    @RequestParam(defaultValue = "1") int pageNo,
-                                                                                    @RequestParam(defaultValue = "10") int pageSize,
-                                                                                    @RequestParam(required = false) String sortBy,
+    public ApiResponse<PageResponse<ProductVariantResponse>> getVariantsByProductIdForAdmin(@ParameterObject @PageableDefault Pageable pageable,
                                                                                     @Min(value = 1, message = "ID phải lớn hơn 0")
                                                                                     @PathVariable Long productId){
         return ApiResponse.<PageResponse<ProductVariantResponse>>builder()
                 .code(HttpStatus.OK.value())
                 .message("Fetch All product-variants by product for Admin")
-                .result(productService.getVariantsByProductIdForAdmin(pageNo, pageSize, sortBy, productId))
+                .result(productService.getVariantsByProductIdForAdmin(pageable, productId))
                 .build();
     }
 }

@@ -14,17 +14,17 @@ import java.util.Optional;
 @Repository
 public interface BranchRepository extends JpaRepository<Branch, Long> {
 
-    @Query(value = "SELECT COUNT(*) FROM tbl_branch b WHERE b.name = :name", nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM branches b WHERE b.name = :name", nativeQuery = true)
     Long countByName(@Param("name") String name);
 
-    @Query(value = "SELECT COUNT(*) FROM tbl_branch b WHERE b.phone = :phone", nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM branches b WHERE b.phone = :phone", nativeQuery = true)
     Long countByPhone(@Param("phone") String phone);
 
-    @Query(value = "SELECT * FROM tbl_branch b WHERE b.id = :id", nativeQuery = true)
+    @Query(value = "SELECT * FROM branches b WHERE b.id = :id", nativeQuery = true)
     Optional<Branch> findBranchById(@Param("id") Long id);
 
-    @Query(value = "SELECT * FROM tbl_branch",
-            countQuery = "SELECT COUNT(*) FROM tbl_branch",
+    @Query(value = "SELECT * FROM branches",
+            countQuery = "SELECT COUNT(*) FROM branches",
             nativeQuery = true)
     Page<Branch> findAllBranches(Pageable pageable);
 

@@ -62,9 +62,11 @@ public class OrderStatusScheduler {
     }
 
     private void updatePendingCashPaymentsToPaid(Order order) {
+        List<PaymentHistory> paymentHistoryList = paymentHistoryRepository.findAllByOrderId(order.getId());
+
         List<PaymentHistory> updatedPayments = new ArrayList<>();
 
-        order.getPayments().stream()
+        paymentHistoryList.stream()
                 .filter(payment -> payment.getPaymentMethod() == PaymentMethod.CASH
                         && payment.getPaymentStatus() == PaymentStatus.PENDING)
                 .forEach(payment -> {

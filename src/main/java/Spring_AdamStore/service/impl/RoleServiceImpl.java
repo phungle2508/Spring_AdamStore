@@ -1,11 +1,15 @@
 package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.dto.response.PageResponse;
+import Spring_AdamStore.dto.response.PermissionResponse;
 import Spring_AdamStore.dto.response.RoleResponse;
+import Spring_AdamStore.entity.Permission;
 import Spring_AdamStore.entity.Role;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
+import Spring_AdamStore.mapper.PermissionMapper;
 import Spring_AdamStore.mapper.RoleMapper;
+import Spring_AdamStore.repository.PermissionRepository;
 import Spring_AdamStore.repository.RoleRepository;
 import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.RoleService;
@@ -18,25 +22,24 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j(topic = "ROLE-SERVICE")
 @RequiredArgsConstructor
-public class RoleServiceimpl implements RoleService {
+public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
     private final RoleMapper roleMapper;
-    private final PageableService pageableService;
+    private final PermissionRepository permissionRepository;
+    private final PermissionMapper permissionMapper;
 
     @Override
     public RoleResponse fetchRoleById(long id) {
+        log.info("Fetch Role By Id: {}", id);
+
         Role roleDB = findRoleById(id);
 
         return roleMapper.toRoleResponse(roleDB);
     }
 
     @Override
-    public PageResponse<RoleResponse> fetchAllRoles(int pageNo, int pageSize, String sortBy) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Role.class);
-
+    public PageResponse<RoleResponse> fetchAllRoles(Pageable pageable) {
         Page<Role> rolePage = roleRepository.findAll(pageable);
 
         return PageResponse.<RoleResponse>builder()
@@ -45,6 +48,19 @@ public class RoleServiceimpl implements RoleService {
                 .totalPages(rolePage.getTotalPages())
                 .totalItems(rolePage.getTotalElements())
                 .items(roleMapper.toRoleResponseList(rolePage.getContent()))
+                .build();
+    }
+
+    @Override
+    public PageResponse<PermissionResponse> getPermissionsByRoleId(Pageable pageable, long roleId) {
+        Page<Permission> permissionPage = permissionRepository.findAllByRoleId(roleId, pageable);
+
+        return PageResponse.<PermissionResponse>builder()
+                .page(permissionPage.getNumber() + 1)
+                .size(permissionPage.getSize())
+                .totalPages(permissionPage.getTotalPages())
+                .totalItems(permissionPage.getTotalElements())
+                .items(permissionMapper.toPermissionResponseList(permissionPage.getContent()))
                 .build();
     }
 

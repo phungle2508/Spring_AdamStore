@@ -9,7 +9,6 @@ import Spring_AdamStore.entity.RedisPendingUser;
 import Spring_AdamStore.entity.User;
 import org.mapstruct.*;
 
-import javax.naming.Name;
 import java.util.List;
 
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS, uses = {RoleMapper.class})
@@ -24,10 +23,10 @@ public interface UserMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateUser(@MappingTarget User user, UserUpdateRequest request);
 
-    @Mapping(target = "roles", source = "roles", qualifiedByName = "userHasRoleToEntityBasic")
-    UserResponse toUserResponse(User user);
+    @Mapping(target = "roles", expression = "java(context.getRoles(user.getId()))")
+    UserResponse toUserResponse(User user, @Context UserMappingHelper context);
 
-    List<UserResponse> toUserResponseList(List<User> users);
+    List<UserResponse> toUserResponseList(List<User> userList, @Context UserMappingHelper context);
 
     UserBasic toUserBasic(User user);
 }

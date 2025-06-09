@@ -48,15 +48,16 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(PUBLIC_URLS).permitAll()
                         .requestMatchers(HttpMethod.GET, GET_URLS).permitAll()
-                        .anyRequest().authenticated())
-                .oauth2ResourceServer(oauth2 ->
-                        oauth2.jwt(
-                                        jwtConfigurer -> jwtConfigurer
-                                                .decoder(customJwtDecoder)
-                                                .jwtAuthenticationConverter(customJwtAuthenticationConverter)
-                                )
-                                .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
-                );
+                        .anyRequest().permitAll())
+//                .oauth2ResourceServer(oauth2 ->
+//                        oauth2.jwt(
+//                                        jwtConfigurer -> jwtConfigurer
+//                                                .decoder(customJwtDecoder)
+//                                                .jwtAuthenticationConverter(customJwtAuthenticationConverter)
+//                                )
+//                                .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
+//                )
+        ;
 
         return http.build();
     }

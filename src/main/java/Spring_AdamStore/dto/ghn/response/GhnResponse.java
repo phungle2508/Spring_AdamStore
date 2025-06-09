@@ -1,9 +1,7 @@
 package Spring_AdamStore.dto.ghn.response;
 
 import lombok.*;
-import lombok.experimental.FieldDefaults;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
 @Builder
@@ -11,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 public class GhnResponse {
 
-     Integer code;
-     String message;
-     ShippingFeeResponse data;
+     private Integer code;
+     private String message;
+     private ShippingFeeResponse data;
 }

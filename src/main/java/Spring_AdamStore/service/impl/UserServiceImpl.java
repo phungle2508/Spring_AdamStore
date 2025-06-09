@@ -11,11 +11,10 @@ import Spring_AdamStore.dto.response.PromotionResponse;
 import Spring_AdamStore.dto.response.UserResponse;
 import Spring_AdamStore.entity.*;
 import Spring_AdamStore.entity.relationship.UserHasRole;
+import Spring_AdamStore.entity.relationship.UserHasRoleId;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
-import Spring_AdamStore.mapper.AddressMapper;
-import Spring_AdamStore.mapper.PromotionMapper;
-import Spring_AdamStore.mapper.UserMapper;
+import Spring_AdamStore.mapper.*;
 import Spring_AdamStore.repository.*;
 import Spring_AdamStore.repository.relationship.PromotionUsageRepository;
 import Spring_AdamStore.repository.relationship.UserHasRoleRepository;
@@ -34,7 +33,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -61,6 +59,8 @@ public class UserServiceImpl implements UserService {
     private final CurrentUserService currentUserService;
     private final PromotionUsageRepository promotionUsageRepository;
     private final PromotionMapper promotionMapper;
+    private final UserMappingHelper userMappingHelper;
+    private final AddressMappingHelper addressMappingHelper;
 
 
     @Override
@@ -74,38 +74,32 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         // role user mac dinh
-        Set<UserHasRole> roles = new HashSet<>();
-        roles.add(userHasRoleService.saveUserHasRole(user, RoleEnum.USER));
+        userHasRoleService.saveUserHasRole(user, RoleEnum.USER);
         if(!CollectionUtils.isEmpty(request.getRoleIds())){
             Set<Role> roleSet = roleRepository.findAllByIdIn(request.getRoleIds());
 
-            Set<UserHasRole> userRoles = roleSet.stream()
-                    .filter(role -> !role.getName().equals(RoleEnum.USER.toString()))
-                    .map(role -> new UserHasRole(user, role))
-                    .collect(Collectors.toSet());
+            List<UserHasRole> userRoles = roleSet.stream().map(role -> UserHasRole.builder()
+                    .id(new UserHasRoleId(user.getId(), role.getId()))
+                    .build())
+                    .collect(Collectors.toList());
 
-            roles.addAll(userHasRoleRepository.saveAll(userRoles));
+            userHasRoleRepository.saveAll(userRoles);
         }
-        user.setRoles(roles);
 
         cartService.createCartForUser(user);
 
-        return userMapper.toUserResponse(user);
+        return userMapper.toUserResponse(user, userMappingHelper);
     }
 
     @Override
     public UserResponse fetchUserById(Long id) {
-        User userDB = findActiveUserById(id);
+        User user = findActiveUserById(id);
 
-        return userMapper.toUserResponse(userDB);
+        return userMapper.toUserResponse(user, userMappingHelper);
     }
 
     @Override
-    public PageResponse<UserResponse> fetchAllUsers(int pageNo, int pageSize, String sortBy) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, User.class);
-
+    public PageResponse<UserResponse> fetchAllUsers(Pageable pageable) {
         Page<User> userPage = userRepository.findAllUsers(pageable);
 
         return PageResponse.<UserResponse>builder()
@@ -113,37 +107,34 @@ public class UserServiceImpl implements UserService {
                 .size(userPage.getSize())
                 .totalPages(userPage.getTotalPages())
                 .totalItems(userPage.getTotalElements())
-                .items(userMapper.toUserResponseList(userPage.getContent()))
+                .items(userMapper.toUserResponseList(userPage.getContent(), userMappingHelper))
                 .build();
     }
 
     @Override
     @Transactional
     public UserResponse update(Long id, UserUpdateRequest request) {
-        User userDB = findActiveUserById(id);
+        User user = findActiveUserById(id);
 
-        userMapper.updateUser(userDB, request);
+        userMapper.updateUser(user, request);
 
         if(!CollectionUtils.isEmpty(request.getRoleIds())){
-            userHasRoleRepository.deleteByUser(userDB);
+            userHasRoleRepository.deleteAllByIdUserId(user.getId());
 
-            Set<UserHasRole> roles = new HashSet<>();
             // role user mac dinh
-            roles.add(userHasRoleService.saveUserHasRole(userDB, RoleEnum.USER));
+            userHasRoleService.saveUserHasRole(user, RoleEnum.USER);
 
             Set<Role> roleSet = roleRepository.findAllByIdIn(request.getRoleIds());
 
-            Set<UserHasRole> userRoles = roleSet.stream()
-                    .filter(role -> !role.getName().equals(RoleEnum.USER.toString()))
-                    .map(role -> new UserHasRole(userDB, role))
+            Set<UserHasRole> userRoles = roleSet.stream().map(role -> UserHasRole.builder()
+                            .id(new UserHasRoleId(user.getId(), role.getId()))
+                            .build())
                     .collect(Collectors.toSet());
 
-            roles.addAll(userHasRoleRepository.saveAll(userRoles));
-
-            userDB.setRoles(roles);
+            userHasRoleRepository.saveAll(userRoles);
         }
 
-        return userMapper.toUserResponse(userRepository.save(userDB));
+        return userMapper.toUserResponse(userRepository.save(user), userMappingHelper);
     }
 
     @Override
@@ -164,19 +155,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse restore(long id) {
-        User userDB = userRepository.findUserById(id)
+        User user = userRepository.findUserById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
-        userDB.setStatus(ACTIVE);
-        return userMapper.toUserResponse(userRepository.save(userDB));
+        user.setStatus(ACTIVE);
+        return userMapper.toUserResponse(user, userMappingHelper);
     }
 
     @Override
-    public PageResponse<AddressResponse> getAllAddressesByUser(int pageNo, int pageSize, String sortBy) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Address.class);
-
+    public PageResponse<AddressResponse> getAllAddressesByUser(Pageable pageable) {
         User user = currentUserService.getCurrentUser();
 
         Page<Address> addressPage = addressRepository.findAllByUserIdAndIsVisible(user.getId(), true, pageable);
@@ -186,16 +173,12 @@ public class UserServiceImpl implements UserService {
                 .size(addressPage.getSize())
                 .totalPages(addressPage.getTotalPages())
                 .totalItems(addressPage.getTotalElements())
-                .items(addressMapper.toAddressResponseList(addressPage.getContent()))
+                .items(addressMapper.toAddressResponseList(addressPage.getContent(), addressMappingHelper))
                 .build();
     }
 
     @Override
-    public PageResponse<PromotionResponse> getPromotionsByUser(int pageNo, int pageSize, String sortBy) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Promotion.class);
-
+    public PageResponse<PromotionResponse> getPromotionsByUser(Pageable pageable) {
         User user = currentUserService.getCurrentUser();
 
         Page<Promotion> promotionPage = promotionRepository.findAllAvailableForCustomer(user.getId(), LocalDate.now(), pageable);
@@ -226,4 +209,5 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
     }
+
 }

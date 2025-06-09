@@ -15,6 +15,9 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -56,13 +59,10 @@ public class OrderController {
     }
 
     @GetMapping("/orders")
-    public ApiResponse<PageResponse<OrderResponse>> fetchAll(@Min(value = 1, message = "pageNo phải lớn hơn 0")
-                                                                 @RequestParam(defaultValue = "1") int pageNo,
-                                                                 @RequestParam(defaultValue = "10") int pageSize,
-                                                                 @RequestParam(required = false) String sortBy){
+    public ApiResponse<PageResponse<OrderResponse>> fetchAll(@ParameterObject @PageableDefault Pageable pageable){
         return ApiResponse.<PageResponse<OrderResponse>>builder()
                 .code(HttpStatus.OK.value())
-                .result(orderService.fetchAll(pageNo, pageSize, sortBy))
+                .result(orderService.fetchAll(pageable))
                 .message("Fetch All Orders With Pagination")
                 .build();
     }

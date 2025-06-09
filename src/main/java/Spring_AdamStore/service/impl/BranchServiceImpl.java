@@ -53,11 +53,7 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
-    public PageResponse<BranchResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Branch.class);
-
+    public PageResponse<BranchResponse> fetchAll(Pageable pageable) {
         Page<Branch> branchPage = branchRepository.findAll(pageable);
 
         return PageResponse.<BranchResponse>builder()
@@ -70,11 +66,7 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
-    public PageResponse<BranchResponse> fetchAllBranchesForAdmin(int pageNo, int pageSize, String sortBy) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Branch.class);
-
+    public PageResponse<BranchResponse> fetchAllBranchesForAdmin(Pageable pageable) {
         Page<Branch> branchPage = branchRepository.findAllBranches(pageable);
 
         return PageResponse.<BranchResponse>builder()

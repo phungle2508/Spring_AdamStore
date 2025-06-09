@@ -65,7 +65,7 @@ public class InitServiceImpl implements InitService {
 
         userHasRoleService.saveUserHasRole(admin, RoleEnum.ADMIN);
 
-        cartService.createCartForUser(admin);
+//        cartService.createCartForUser(admin);
     }
 
     @Transactional

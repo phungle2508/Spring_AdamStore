@@ -2,9 +2,7 @@ package Spring_AdamStore.dto.ghn.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import lombok.experimental.FieldDefaults;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
 @Builder
@@ -13,7 +11,8 @@ import lombok.experimental.FieldDefaults;
 public class GhnDistrict {
 
      @JsonProperty("DistrictID")
-     int districtId;
+     private int districtId;
+
      @JsonProperty("DistrictName")
-     String districtName;
+     private String districtName;
 }

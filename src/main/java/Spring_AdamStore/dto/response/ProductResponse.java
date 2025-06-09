@@ -11,7 +11,6 @@ import lombok.experimental.FieldDefaults;
 import java.time.LocalDate;
 import java.util.Set;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
 @Builder
@@ -19,30 +18,29 @@ import java.util.Set;
 @AllArgsConstructor
 public class ProductResponse {
 
-    Long id;
-    String name;
-    String description;
+    private Long id;
 
-    Boolean isAvailable;
-    Double averageRating;
-    Integer soldQuantity;
-    Integer totalReviews;
-    Integer quantity;
-    Double price;
+    private Boolean isAvailable;
+    private String name;
+    private String description;
 
-    EntityStatus status;
+    private Double averageRating;
+    private Integer soldQuantity;
+    private Integer totalReviews;
+    private Integer quantity;
+    private Double price;
 
-    String createdBy;
-    String updatedBy;
-    LocalDate createdAt;
-    LocalDate updatedAt;
+    private EntityStatus status;
 
-    EntityBasic category;
+    private String createdBy;
+    private String updatedBy;
+    private LocalDate createdAt;
+    private LocalDate updatedAt;
 
-    Set<EntityBasic> colors;
-    Set<EntityBasic> sizes;
+    private Set<EntityBasic> colors;
+    private Set<EntityBasic> sizes;
 
-    Set<FileResponse> images;
+    private Set<FileResponse> images;
 
 
 }

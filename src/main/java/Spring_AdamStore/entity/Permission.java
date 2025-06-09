@@ -13,28 +13,23 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "tbl_permission")
+@Table(name = "permissions")
 @Entity
 public class Permission {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
-    @Column(nullable = false, unique = true)
-    String name;
+    private String name;
 
-    String module;
-    String apiPath;
-    String method;
+    private String module;
+    private String apiPath;
+    private String method;
 
-    @OneToMany(mappedBy = "permission")
-    @JsonIgnore
-    Set<RoleHasPermission> roles = new HashSet<>();
 }

@@ -1,4 +1,4 @@
-package Spring_AdamStore.dto.ghn;
+package Spring_AdamStore.dto.ghn.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;

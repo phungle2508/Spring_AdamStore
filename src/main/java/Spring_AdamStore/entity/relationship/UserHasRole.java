@@ -12,10 +12,7 @@ import org.hibernate.annotations.SQLRestriction;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
-@Table(name = "tbl_user_has_role", indexes = {
-        @Index(name = "idx_user_id", columnList = "user_id"),
-        @Index(name = "idx_role_id", columnList = "role_id")
-})
+@Table(name = "user_has_role")
 @SQLRestriction("state = 'ACTIVE'")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,21 +20,13 @@ import org.hibernate.annotations.SQLRestriction;
 @Entity
 public class UserHasRole {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    User user;
-
-    @ManyToOne
-    @JoinColumn(name = "role_id", nullable = false)
-    Role role;
+    @EmbeddedId
+    private UserHasRoleId id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "state", nullable = false)
     EntityStatus state;
+
+
 
     @PrePersist
     public void prePersist() {
@@ -46,9 +35,5 @@ public class UserHasRole {
         }
     }
 
-    public UserHasRole(User user, Role role) {
-        this.user = user;
-        this.role = role;
-    }
 
 }

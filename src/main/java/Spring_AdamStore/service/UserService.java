@@ -7,6 +7,7 @@ import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.dto.response.PromotionResponse;
 import Spring_AdamStore.dto.response.UserResponse;
 import jakarta.validation.constraints.Min;
+import org.springframework.data.domain.Pageable;
 
 public interface UserService {
 
@@ -14,15 +15,15 @@ public interface UserService {
 
     UserResponse fetchUserById(Long id);
 
-    PageResponse<UserResponse> fetchAllUsers(int pageNo, int pageSize, String sortBy);
+    PageResponse<UserResponse> fetchAllUsers(Pageable pageable);
 
     UserResponse update(Long id, UserUpdateRequest request);
 
     void delete(Long id);
 
-    PageResponse<AddressResponse> getAllAddressesByUser(int pageNo, int pageSize, String sortBy);
+    PageResponse<AddressResponse> getAllAddressesByUser(Pageable pageable);
 
-    PageResponse<PromotionResponse> getPromotionsByUser(int pageNo, int pageSize, String sortBy);
+    PageResponse<PromotionResponse> getPromotionsByUser(Pageable pageable);
 
     UserResponse restore(long id);
 

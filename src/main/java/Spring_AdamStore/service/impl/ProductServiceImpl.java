@@ -1,6 +1,5 @@
 package Spring_AdamStore.service.impl;
 
-import Spring_AdamStore.constants.EntityStatus;
 import Spring_AdamStore.dto.request.ProductRequest;
 import Spring_AdamStore.dto.request.ProductUpdateRequest;
 import Spring_AdamStore.dto.response.*;
@@ -26,7 +25,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -47,7 +45,6 @@ public class ProductServiceImpl implements ProductService {
     private final PageableService pageableService;
     private final ReviewRepository reviewRepository;
     private final CategoryRepository categoryRepository;
-    private final ColorRepository colorRepository;
     private final FileRepository fileRepository;
     private final SizeRepository sizeRepository;
     private final ReviewMapper reviewMapper;
@@ -64,25 +61,19 @@ public class ProductServiceImpl implements ProductService {
         if(productRepository.countByName(request.getName()) > 0){
             throw new AppException(ErrorCode.PRODUCT_EXISTED);
         }
+
+        findCategoryById(request.getCategoryId());
+
         Product product = productMapper.toProduct(request);
-
-        Category category = categoryRepository.findById(request.getCategoryId())
-                .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_EXISTED));
-        product.setCategory(category);
-
-        if(!CollectionUtils.isEmpty(request.getImageIds())){
-            Set<FileEntity> fileEntitySet = setProductImages(request.getImageIds(), product);
-            product.setImages(fileEntitySet);
-        }
 
         productRepository.save(product);
 
-        Set<Color> colorSet = validateColors(request.getColorIds());
+        if(!CollectionUtils.isEmpty(request.getImageIds())){
+            saveProductImages(request.getImageIds(), product);
+        }
 
-        Set<Size> sizeSet = validateSizes(request.getSizeIds());
-
-        product.setProductVariants(productVariantService.saveProductVariant(product, sizeSet,
-                colorSet, request.getPrice(), request.getQuantity()));
+        productVariantService.saveProductVariant(product, request.getSizeIds(),
+                request.getColorIds(), request.getPrice(), request.getQuantity());
 
         return productMapper.toProductResponse(product);
     }
@@ -95,11 +86,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public PageResponse<ProductResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = createPageableWithPriceSupport(pageNo, pageSize, sortBy);
-
+    public PageResponse<ProductResponse> fetchAll(Pageable pageable) {
         Page<Product> productPage = productRepository.findAll(pageable);
 
         return PageResponse.<ProductResponse>builder()
@@ -112,11 +99,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public PageResponse<ProductResponse> fetchAllProductsForAdmin(int pageNo, int pageSize, String sortBy) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = createPageableWithPriceSupport(pageNo, pageSize, sortBy);
-
+    public PageResponse<ProductResponse> fetchAllProductsForAdmin(Pageable pageable) {
         Page<Product> productPage = productRepository.findAllProducts(pageable);
 
         return PageResponse.<ProductResponse>builder()
@@ -142,34 +125,25 @@ public class ProductServiceImpl implements ProductService {
             }
             product.setName(request.getName());
         }
+        // Category
+        if (request.getCategoryId() != null) {
+            findCategoryById(request.getCategoryId());
+        }
 
         productMapper.updateProduct(product, request);
 
-        // Category
-        if (request.getCategoryId() != null) {
-            Category category = categoryRepository.findById(request.getCategoryId())
-                    .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_EXISTED));
-            product.setCategory(category);
-        }
 
         // Image
         if(!CollectionUtils.isEmpty(request.getImageIds())){
-            Set<FileEntity> fileEntitySet = setProductImages(request.getImageIds(), product);
-            product.setImages(fileEntitySet);
+            saveProductImages(request.getImageIds(), product);
         }
 
         // Size and Color
         if (!CollectionUtils.isEmpty(request.getSizeIds()) || !CollectionUtils.isEmpty(request.getColorIds())) {
-            Set<Color> colorSet = validateColors(request.getColorIds());
-
-            Set<Size> sizeSet = validateSizes(request.getSizeIds());
-
-            product.setProductVariants(productVariantService
-                    .updateProductVariants(product, sizeSet, colorSet, request.getPrice(), request.getQuantity()));
-        }
-        else{
-            product.setProductVariants(productVariantService
-                    .updatePriceAndQuantity(product, request.getPrice(), request.getQuantity()));
+            productVariantService.saveProductVariant(product, request.getSizeIds(),
+                    request.getColorIds(), request.getPrice(), request.getQuantity());
+        } else{
+            productVariantService.updatePriceAndQuantity(product, request.getPrice(), request.getQuantity());
         }
 
         return productMapper.toProductResponse(productRepository.save(product));
@@ -180,7 +154,8 @@ public class ProductServiceImpl implements ProductService {
     public void delete(Long id) {
         Product product = findProductById(id);
 
-        product.getProductVariants().forEach(productVariant ->
+        List<ProductVariant> productVariantList = productVariantService.findAllProductVariantByProductId(id);
+        productVariantList.forEach(productVariant ->
                 productVariantService.delete(productVariant.getId()));
 
         productRepository.delete(product);
@@ -229,11 +204,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public PageResponse<ProductVariantResponse> getVariantsByProductId(int pageNo, int pageSize, String sortBy, Long productId) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, ProductVariant.class);
-
+    public PageResponse<ProductVariantResponse> getVariantsByProductId(Pageable pageable, Long productId) {
         Page<ProductVariant> productVariantPage = productVariantRepository.findAllByProductId(productId, pageable);
 
         return PageResponse.<ProductVariantResponse>builder()
@@ -246,11 +217,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public PageResponse<ProductVariantResponse> getVariantsByProductIdForAdmin(int pageNo, int pageSize, String sortBy, Long productId) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, ProductVariant.class);
-
+    public PageResponse<ProductVariantResponse> getVariantsByProductIdForAdmin(Pageable pageable, Long productId) {
         Page<ProductVariant> productVariantPage = productVariantRepository.findAllVariantsByProductId(productId, pageable);
 
         return PageResponse.<ProductVariantResponse>builder()
@@ -364,11 +331,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public PageResponse<ReviewResponse> fetchReviewsByProductId(int pageNo, int pageSize, String sortBy, Long productId) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Review.class);
-
+    public PageResponse<ReviewResponse> fetchReviewsByProductId(Pageable pageable, Long productId) {
         Product product = findProductById(productId);
 
         Page<Review> reviewPage = reviewRepository.findAllByProductId(product.getId(), pageable);
@@ -382,36 +345,26 @@ public class ProductServiceImpl implements ProductService {
                 .build();
     }
 
+    private void findCategoryById(Long id){
+        categoryRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_EXISTED));
+    }
+
     private Product findProductById(Long id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
     }
 
-    private Set<Color> validateColors(Set<Long> colorIdSet) {
-        Set<Color> colorSet = colorRepository.findAllByIdIn(colorIdSet);
-        if (colorSet.size() != colorIdSet.size()) {
-            throw new AppException(ErrorCode.INVALID_PRODUCT_COLOR_LIST);
-        }
-        return colorSet;
-    }
-
-    private Set<Size> validateSizes(Set<Long> sizeIdSet) {
-        Set<Size> sizeSet = sizeRepository.findAllByIdIn(sizeIdSet);
-        if (sizeSet.size() != sizeIdSet.size()) {
-            throw new AppException(ErrorCode.INVALID_PRODUCT_SIZE_LIST);
-        }
-        return sizeSet;
-    }
-
-    private Set<FileEntity> setProductImages(Set<Long> imageIdSet, Product product) {
+    private void saveProductImages(Set<Long> imageIdSet, Product product) {
         Set<FileEntity> fileEntitySet = fileRepository.findAllByIdIn(imageIdSet);
         if (fileEntitySet.size() != imageIdSet.size()) {
             throw new AppException(ErrorCode.INVALID_IMAGE_LIST);
         }
-        fileEntitySet.forEach(image -> image.setProduct(product));
+        fileEntitySet.forEach(image -> image.setProductId(product.getId()));
 
-        return new HashSet<>(fileRepository.saveAll(fileEntitySet));
+        fileRepository.saveAll(fileEntitySet);
     }
+
 
     private Pageable createPageableWithPriceSupport(int pageNo, int pageSize, String sortBy) {
         if (StringUtils.hasLength(sortBy)) {
@@ -424,44 +377,7 @@ public class ProductServiceImpl implements ProductService {
         return pageableService.createPageable(pageNo, pageSize, sortBy, Product.class);
     }
 
-    @Scheduled(cron = "0 0 0 */7 * ?")
-    public void updateProductRatings() {
-        log.info("Update Products Ratings");
 
-        List<Product> productList = productRepository.findAll();
-        for (Product product : productList) {
-            double avgRating = reviewRepository.getAverageRatingByProductId(product.getId());
-            int totalReviews = reviewRepository.getTotalReviewsByProductId(product.getId());
-            product.setAverageRating(avgRating);
-            product.setTotalReviews(totalReviews);
-            productRepository.save(product);
-        }
-    }
 
-    @Scheduled(cron = "0 0 * * * ?")
-    @Transactional
-    public void checkProductsAvailability() {
-        log.info("The product availability check...");
 
-        Iterable<ProductVariant> productVariants = productVariantRepository.findAll();
-        for (ProductVariant variant : productVariants) {
-            if (variant.getQuantity() == 0) {
-                variant.setIsAvailable(false);
-                productVariantRepository.save(variant);
-            }
-        }
-
-        List<Product> products = productRepository.findAll();
-        for (Product product : products) {
-            boolean allVariantsUnavailable = product.getProductVariants().stream()
-                    .filter(variant -> variant.getStatus() == EntityStatus.ACTIVE)
-                    .noneMatch(ProductVariant::getIsAvailable);
-
-            if (allVariantsUnavailable) {
-                product.setIsAvailable(false);
-                productRepository.save(product);
-            }
-
-        }
-    }
 }

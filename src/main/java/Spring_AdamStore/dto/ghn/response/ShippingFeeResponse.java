@@ -11,15 +11,15 @@ import lombok.*;
 public class ShippingFeeResponse {
 
      @JsonProperty("total")
-     Integer total;
+     private Integer total;
      @JsonProperty("service_fee")
-     Integer serviceFee;
+     private Integer serviceFee;
      @JsonProperty("insurance_fee")
-     Integer insuranceFee;
+     private Integer insuranceFee;
      @JsonProperty("r2s_fee")
-     Integer pickStationFee;
+     private Integer pickStationFee;
      @JsonProperty("coupon_value")
-     Integer couponValue;
+     private Integer couponValue;
      @JsonProperty("pick_station_fee")
-     Integer r2sFee;
+     private Integer r2sFee;
 }

@@ -13,6 +13,9 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -51,13 +54,10 @@ public class PromotionController {
 
     @Operation(summary = "Fetch All Promotions For Admin")
     @GetMapping("/promotions")
-    public ApiResponse<PageResponse<PromotionResponse>> fetchAll(@Min(value = 1, message = "pageNo phải lớn hơn 0")
-                                                               @RequestParam(defaultValue = "1") int pageNo,
-                                                               @RequestParam(defaultValue = "10") int pageSize,
-                                                               @RequestParam(required = false) String sortBy){
+    public ApiResponse<PageResponse<PromotionResponse>> fetchAll(@ParameterObject @PageableDefault Pageable pageable){
         return ApiResponse.<PageResponse<PromotionResponse>>builder()
                 .code(HttpStatus.OK.value())
-                .result(promotionService.fetchAll(pageNo, pageSize, sortBy))
+                .result(promotionService.fetchAll(pageable))
                 .message("Fetch All Promotions For Admin")
                 .build();
     }

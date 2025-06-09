@@ -11,7 +11,6 @@ import org.springframework.data.redis.core.TimeToLive;
 
 import java.time.LocalDateTime;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
 @Builder
@@ -21,20 +20,20 @@ import java.time.LocalDateTime;
 public class RedisVerificationCode {
 
     @Id
-    String redisKey;
+    private String redisKey;
 
     @Column(nullable = false)
-    String email;
+    private String email;
     @Column(nullable = false)
-    String verificationCode;
+    private String verificationCode;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    VerificationType verificationType;
+    private VerificationType verificationType;
 
     @Column(nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    LocalDateTime expirationTime;
+    private LocalDateTime expirationTime;
 
     @TimeToLive
      long ttl;

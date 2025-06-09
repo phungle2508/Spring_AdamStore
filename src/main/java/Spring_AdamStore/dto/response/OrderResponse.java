@@ -15,7 +15,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDate;
 import java.util.List;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
 @Builder
@@ -23,17 +22,16 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderResponse {
 
-    Long id;
-    LocalDate orderDate;
-    Double totalPrice;
-    OrderStatus orderStatus;
+    private Long id;
+    private LocalDate orderDate;
+    private Double totalPrice;
+    private OrderStatus orderStatus;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    String customerName;
+    private String customerName;
 
-    AddressResponse address;
+    private AddressResponse address;
 
-    List<OrderItemResponse> orderItems;
+    private List<OrderItemResponse> orderItems;
 
-    LocalDate updatedAt;
+    private LocalDate updatedAt;
 }

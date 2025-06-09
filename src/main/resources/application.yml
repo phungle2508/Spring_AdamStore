@@ -30,3 +30,4 @@ auth:
   forgot-password:
     verification-code:
       expiration-minutes: 10
+

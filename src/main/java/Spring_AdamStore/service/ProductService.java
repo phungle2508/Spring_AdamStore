@@ -7,6 +7,7 @@ import Spring_AdamStore.dto.response.ProductResponse;
 import Spring_AdamStore.dto.response.ProductVariantResponse;
 import Spring_AdamStore.dto.response.ReviewResponse;
 import jakarta.validation.constraints.Min;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -16,21 +17,21 @@ public interface ProductService {
 
     ProductResponse fetchById(Long id);
 
-    PageResponse<ProductResponse> fetchAll(int pageNo, int pageSize, String sortBy);
+    PageResponse<ProductResponse> fetchAll(Pageable pageable);
 
     ProductResponse update(Long id, ProductUpdateRequest request);
 
     void delete(Long id);
 
-    PageResponse<ReviewResponse> fetchReviewsByProductId(int pageNo, int pageSize, String sortBy,Long productId);
+    PageResponse<ReviewResponse> fetchReviewsByProductId(Pageable pageable,Long productId);
 
     PageResponse<ProductResponse> searchProduct(int pageNo, int pageSize, String sortBy, List<String> search);
 
-    PageResponse<ProductVariantResponse> getVariantsByProductId(int pageNo, int pageSize, String sortBy, Long productId);
+    PageResponse<ProductVariantResponse> getVariantsByProductId(Pageable pageable, Long productId);
 
-    PageResponse<ProductResponse> fetchAllProductsForAdmin(int pageNo, int pageSize, String sortBy);
+    PageResponse<ProductResponse> fetchAllProductsForAdmin(Pageable pageable);
 
     ProductResponse restore(long id);
 
-    PageResponse<ProductVariantResponse> getVariantsByProductIdForAdmin(int pageNo, int pageSize, String sortBy, Long productId);
+    PageResponse<ProductVariantResponse> getVariantsByProductIdForAdmin(Pageable pageable, Long productId);
 }

@@ -3,6 +3,7 @@ package Spring_AdamStore.service.impl;
 import Spring_AdamStore.constants.EntityStatus;
 import Spring_AdamStore.constants.RoleEnum;
 import Spring_AdamStore.constants.TokenType;
+import Spring_AdamStore.dto.basic.EntityBasic;
 import Spring_AdamStore.dto.request.*;
 import Spring_AdamStore.dto.response.TokenResponse;
 import Spring_AdamStore.dto.response.UserResponse;
@@ -10,9 +11,11 @@ import Spring_AdamStore.dto.response.VerificationCodeResponse;
 import Spring_AdamStore.entity.*;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
-import Spring_AdamStore.mapper.RoleMapper;
+import Spring_AdamStore.mapper.AddressMappingHelper;
 import Spring_AdamStore.mapper.UserMapper;
+import Spring_AdamStore.mapper.UserMappingHelper;
 import Spring_AdamStore.repository.RedisPendingUserRepository;
+import Spring_AdamStore.repository.RoleRepository;
 import Spring_AdamStore.repository.UserRepository;
 import Spring_AdamStore.service.*;
 import Spring_AdamStore.service.relationship.UserHasRoleService;
@@ -27,8 +30,8 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static Spring_AdamStore.constants.EntityStatus.ACTIVE;
 import static Spring_AdamStore.constants.VerificationType.REGISTER;
@@ -49,7 +52,8 @@ public class AuthServiceImpl implements AuthService {
     private final RedisPendingUserRepository redisPendingUserRepository;
     private final CurrentUserService currentUserService;
     private final EmailService emailService;
-    private final RoleMapper roleMapper;
+    private final RoleRepository roleRepository;
+    private final UserMappingHelper userMappingHelper;
 
     @Override
     public TokenResponse login(LoginRequest request) throws JOSEException {
@@ -108,9 +112,9 @@ public class AuthServiceImpl implements AuthService {
 
         userRepository.save(user);
 
-        user.setRoles(new HashSet<>(Set.of(userHasRoleService.saveUserHasRole(user, RoleEnum.USER))));
+        userHasRoleService.saveUserHasRole(user, RoleEnum.USER);
 
-        cartService.createCartForUser(user);
+//        cartService.createCartForUser(user);
 
         return generateAndSaveTokenResponse(user);
     }
@@ -119,7 +123,7 @@ public class AuthServiceImpl implements AuthService {
     public UserResponse getMyInfo() {
         User user = currentUserService.getCurrentUser();
 
-        return userMapper.toUserResponse(user);
+        return userMapper.toUserResponse(user, userMappingHelper);
     }
 
     @Override
@@ -131,6 +135,12 @@ public class AuthServiceImpl implements AuthService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
+        Set<Role> roleSet = roleRepository.findRolesByUserId(user.getId());
+
+        Set<EntityBasic> roleBasic = roleSet.stream()
+                .map(role -> new EntityBasic(role.getId(), role.getName()))
+                .collect(Collectors.toSet());
+
         // new access token
         String accessToken = tokenService.generateToken(user, TokenType.ACCESS_TOKEN);
 
@@ -138,7 +148,7 @@ public class AuthServiceImpl implements AuthService {
                 .accessToken(accessToken)
                 .refreshToken(request.getRefreshToken())
                 .email(email)
-                .roles(roleMapper.userHasRoleToEntityBasicSet(user.getRoles()))
+                .roles(roleBasic)
                 .build();
     }
 
@@ -182,12 +192,18 @@ public class AuthServiceImpl implements AuthService {
 
         tokenService.saveRefreshToken(refreshToken);
 
+        Set<Role> roleSet = roleRepository.findRolesByUserId(user.getId());
+
+        Set<EntityBasic> roleBasic = roleSet.stream()
+                .map(role -> new EntityBasic(role.getId(), role.getName()))
+                .collect(Collectors.toSet());
+
         return TokenResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .authenticated(true)
                 .email(user.getEmail())
-                .roles(roleMapper.userHasRoleToEntityBasicSet(user.getRoles()))
+                .roles(roleBasic)
                 .build();
     }
 

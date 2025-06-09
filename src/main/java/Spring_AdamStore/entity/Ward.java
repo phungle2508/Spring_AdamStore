@@ -18,6 +18,5 @@ public class Ward {
 
     private String name;
 
-    @Column(name = "district_id")
     private Integer districtId;
 }

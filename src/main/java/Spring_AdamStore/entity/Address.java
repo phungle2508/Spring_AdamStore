@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLRestriction("status = 'ACTIVE'")
-@SQLDelete(sql = "UPDATE tbl_address SET status = 'INACTIVE' WHERE id = ?")
+@SQLDelete(sql = "UPDATE addresses SET status = 'INACTIVE' WHERE id = ?")
 @Table(name = "addresses")
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -40,13 +40,10 @@ public class Address {
 
     private String streetDetail;
 
-    @Column(name = "ward_code")
     private String wardCode;
 
-    @Column(name = "district_id")
     private Integer districtId;
 
-    @Column(name = "province_id")
     private Integer provinceId;
 
     private Long userId;

@@ -3,7 +3,6 @@ package Spring_AdamStore.controller;
 import Spring_AdamStore.dto.request.AddressRequest;
 import Spring_AdamStore.dto.response.AddressResponse;
 import Spring_AdamStore.dto.response.ApiResponse;
-import Spring_AdamStore.dto.response.BranchResponse;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.service.AddressService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,6 +10,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -57,7 +57,7 @@ public class AddressController {
     @Operation(summary = "Fetch All Addresses For Admin",
     description = "API này để lấy tất cả address bên trong hệ thống (page bắt đầu từ 0)")
     @GetMapping("/addresses")
-    public ApiResponse<PageResponse<AddressResponse>> fetchAllForAdmin(@PageableDefault Pageable pageable){
+    public ApiResponse<PageResponse<AddressResponse>> fetchAllForAdmin(@ParameterObject @PageableDefault Pageable pageable){
         log.info("Received request to fetch all addresses for admin");
 
         return ApiResponse.<PageResponse<AddressResponse>>builder()

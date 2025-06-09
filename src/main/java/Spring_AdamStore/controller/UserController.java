@@ -11,6 +11,9 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -51,13 +54,10 @@ public class UserController {
 
     @Operation(summary = "Fetch All Users For Admin")
     @GetMapping("/users")
-    public ApiResponse<PageResponse<UserResponse>> fetchAll(@Min(value = 1, message = "pageNo phải lớn hơn 0")
-                                                            @RequestParam(defaultValue = "1") int pageNo,
-                                                            @RequestParam(defaultValue = "10") int pageSize,
-                                                            @RequestParam(required = false) String sortBy){
+    public ApiResponse<PageResponse<UserResponse>> fetchAll(@ParameterObject @PageableDefault Pageable pageable){
         return ApiResponse.<PageResponse<UserResponse>>builder()
                 .code(HttpStatus.OK.value())
-                .result(userService.fetchAllUsers(pageNo, pageSize, sortBy))
+                .result(userService.fetchAllUsers(pageable))
                 .message("Fetch All Users For Admin")
                 .build();
     }
@@ -103,27 +103,21 @@ public class UserController {
     @Operation(summary = "Fetch All Addresses For User",
             description = "Api lấy tất cả địa chỉ của user")
     @GetMapping("/users/addresses")
-    public ApiResponse<PageResponse<AddressResponse>> getAddressesByUser(@Min(value = 1, message = "pageNo phải lớn hơn 0")
-                                                                               @RequestParam(defaultValue = "1") int pageNo,
-                                                                           @RequestParam(defaultValue = "10") int pageSize,
-                                                                           @RequestParam(required = false) String sortBy) {
+    public ApiResponse<PageResponse<AddressResponse>> getAddressesByUser(@ParameterObject @PageableDefault Pageable pageable) {
         return ApiResponse.<PageResponse<AddressResponse>>builder()
                 .code(HttpStatus.OK.value())
                 .message("Fetch Addresses By User Id With Pagination")
-                .result(userService.getAllAddressesByUser(pageNo, pageSize, sortBy))
+                .result(userService.getAllAddressesByUser(pageable))
                 .build();
     }
 
     @Operation(summary = "Fetch Promotions By User",
             description = "Api lấy tất cả mã giảm giá mà user có thể sử dụng")
     @GetMapping("/users/promotions/available")
-    public ApiResponse<PageResponse<PromotionResponse>> getPromotionsByUser(@Min(value = 1, message = "pageNo phải lớn hơn 0")
-                                                                                  @RequestParam(defaultValue = "1") int pageNo,
-                                                                              @RequestParam(defaultValue = "10") int pageSize,
-                                                                              @RequestParam(required = false) String sortBy){
+    public ApiResponse<PageResponse<PromotionResponse>> getPromotionsByUser(@ParameterObject @PageableDefault Pageable pageable){
         return ApiResponse.<PageResponse<PromotionResponse>>builder()
                 .code(HttpStatus.OK.value())
-                .result(userService.getPromotionsByUser(pageNo, pageSize, sortBy))
+                .result(userService.getPromotionsByUser(pageable))
                 .message("Fetch Promotions By User With Pagination")
                 .build();
     }

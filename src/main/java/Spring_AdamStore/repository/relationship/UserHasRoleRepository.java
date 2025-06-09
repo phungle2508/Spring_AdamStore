@@ -1,20 +1,15 @@
 package Spring_AdamStore.repository.relationship;
 
-import Spring_AdamStore.entity.Role;
-import Spring_AdamStore.entity.User;
 import Spring_AdamStore.entity.relationship.UserHasRole;
+import Spring_AdamStore.entity.relationship.UserHasRoleId;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public interface UserHasRoleRepository extends JpaRepository<UserHasRole,Long> {
+public interface UserHasRoleRepository extends JpaRepository<UserHasRole, UserHasRoleId> {
 
-    void deleteByUser(User user);
+    void deleteAllByIdUserId(Long userId);
 
-    UserHasRole findUserHasRoleByUserAndRole (User user, Role role);
+
 
 }

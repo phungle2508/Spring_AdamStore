@@ -18,9 +18,5 @@ public interface PermissionMapper {
 
     List<PermissionResponse> toPermissionResponseList(List<Permission> permissions);
 
-    @Mapping(target = "id", source = "roleHasPermission.permission.id")
-    @Mapping(target = "name", source = "roleHasPermission.permission.name")
-    @Named("roleHasPermissionToEntityBasic")
-    EntityBasic roleHasPermissionToEntityBasic(RoleHasPermission roleHasPermission);
 
 }

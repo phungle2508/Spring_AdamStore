@@ -1,19 +1,18 @@
 package Spring_AdamStore.entity;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.*;
+import jakarta.persistence.Table;
 import lombok.*;
-import lombok.experimental.FieldDefaults;
-import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
-@Table(name = "tbl_review")
+@Table(name = "reviews")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,28 +21,23 @@ public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-     Long id;
+    private Long id;
 
-    @JoinColumn(nullable = false)
-    @ColumnDefault(value = "5.0")
-     Double rating;
-    @JoinColumn(nullable = false)
-     String comment;
+    private Double rating;
+    private String comment;
 
-    String imageUrl;
+    @Type(JsonBinaryType.class)
+    @Column(columnDefinition = "jsonb")
+    private JsonNode imageUrls;
 
     @CreationTimestamp
-    LocalDate createdAt;
+    private LocalDate createdAt;
     @UpdateTimestamp
-    LocalDate updatedAt;
+    private LocalDate updatedAt;
 
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-     User user;
+    private Long userId;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-     Product product;
+    private Long productId;
 
 }

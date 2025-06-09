@@ -10,10 +10,7 @@ import lombok.experimental.SuperBuilder;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
-@Table(name = "tbl_role_has_permission", indexes = {
-        @Index(name = "idx_role_id", columnList = "role_id"),
-        @Index(name = "idx_permission_id", columnList = "permission_id")
-})
+@Table(name = "role_has_permission")
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
@@ -21,19 +18,8 @@ import lombok.experimental.SuperBuilder;
 public class RoleHasPermission {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    @EmbeddedId
+    private RoleHasPermissionId id;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id", nullable = false)
-    Role role;
 
-    @ManyToOne
-    @JoinColumn(name = "permission_id", nullable = false)
-    Permission permission;
-
-    public RoleHasPermission(Role role, Permission permission) {
-        this.role = role;
-        this.permission = permission;
-    }
 }

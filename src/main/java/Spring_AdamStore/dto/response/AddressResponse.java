@@ -21,11 +21,11 @@ public class AddressResponse {
 
     private Long id;
 
-    private EntityStatus status;
+    private Boolean isDefault;
 
     private Boolean isVisible;
 
-    private Boolean isDefault;
+    private EntityStatus status;
 
     private String phone;
     private String streetDetail;

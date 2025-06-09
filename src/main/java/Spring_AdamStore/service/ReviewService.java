@@ -6,6 +6,7 @@ import Spring_AdamStore.dto.request.ReviewUpdateRequest;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.dto.response.PromotionResponse;
 import Spring_AdamStore.dto.response.ReviewResponse;
+import org.springframework.data.domain.Pageable;
 
 public interface ReviewService {
 
@@ -13,7 +14,7 @@ public interface ReviewService {
 
     ReviewResponse fetchById(Long id);
 
-    PageResponse<ReviewResponse> fetchAll(int pageNo, int pageSize, String sortBy);
+    PageResponse<ReviewResponse> fetchAll(Pageable pageable);
 
     ReviewResponse update(Long id, ReviewUpdateRequest request);
 

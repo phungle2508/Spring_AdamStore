@@ -70,6 +70,7 @@ public class EmailServiceImpl implements EmailService {
                 log.error("Failed to send email to {}. StatusCode: {}, Body: {}", toEmail, response.getStatusCode(), response.getBody());
             }
         } catch (IOException e) {
+            log.error("Error occurred while sending email to {}: {} - {}", toEmail, e.getClass().getSimpleName(), e.getMessage(), e);
             throw new RuntimeException(e);
         }
     }

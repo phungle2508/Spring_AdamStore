@@ -18,10 +18,7 @@ public interface ProductVariantMapper {
 
     List<ProductVariantResponse> toProductVariantResponseList(List<ProductVariant> productVariantList);
 
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "product", source = "product")
-    @Mapping(target = "color", source = "color")
-    @Mapping(target = "size", source = "size")
+
     ProductVariantBasic toProductVariantBasic(ProductVariant productVariant);
 
     @Named("getPriceFromVariant")
@@ -41,25 +38,5 @@ public interface ProductVariantMapper {
     }
 
 
-    @Named("toSizeSet")
-    default Set<EntityBasic> toSizeSet(Set<ProductVariant> productVariants) {
-        return new HashSet<>(productVariants.stream()
-                .map(pv -> new EntityBasic(pv.getSize().getId(), pv.getSize().getName()))
-                .collect(Collectors.toMap(
-                        EntityBasic::getId,
-                        size -> size,
-                        (existing, replacement) -> existing))
-                .values());
-    }
 
-    @Named("toColorSet")
-    default Set<EntityBasic> toColorSet(Set<ProductVariant> productVariants) {
-        return new HashSet<>(productVariants.stream()
-                .map(pv -> new EntityBasic(pv.getColor().getId(), pv.getColor().getName()))
-                .collect(Collectors.toMap(
-                        EntityBasic::getId,
-                        color -> color,
-                        (existing, replacement) -> existing))
-                .values());
-    }
 }

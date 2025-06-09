@@ -8,6 +8,7 @@ import Spring_AdamStore.entity.User;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.CartItemMapper;
+import Spring_AdamStore.mapper.CartItemMappingHelper;
 import Spring_AdamStore.repository.CartItemRepository;
 import Spring_AdamStore.repository.CartRepository;
 import Spring_AdamStore.service.CartService;
@@ -29,23 +30,19 @@ public class CartServiceImpl implements CartService {
     private final CurrentUserService currentUserService;
     private final CartItemRepository cartItemRepository;
     private final CartItemMapper cartItemMapper;
-    private final PageableService pageableService;
+    private final CartItemMappingHelper cartItemMappingHelper;
 
 
     @Transactional
     public void createCartForUser(User user){
         Cart cart = Cart.builder()
-                .user(user)
+                .userId(user.getId())
                 .build();
 
         cartRepository.save(cart);
     }
 
-    public PageResponse<CartItemResponse> getCartItemsOfCurrentUser(int pageNo, int pageSize, String sortBy) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, CartItem.class);
-
+    public PageResponse<CartItemResponse> getCartItemsOfCurrentUser(Pageable pageable) {
         User user = currentUserService.getCurrentUser();
 
         Cart cart = cartRepository.findByUserId(user.getId())
@@ -58,7 +55,7 @@ public class CartServiceImpl implements CartService {
                 .size(cartItemPage.getSize())
                 .totalPages(cartItemPage.getTotalPages())
                 .totalItems(cartItemPage.getTotalElements())
-                .items(cartItemMapper.toCartItemResponseList(cartItemPage.getContent()))
+                .items(cartItemMapper.toCartItemResponseList(cartItemPage.getContent(), cartItemMappingHelper))
                 .build();
     }
 }
