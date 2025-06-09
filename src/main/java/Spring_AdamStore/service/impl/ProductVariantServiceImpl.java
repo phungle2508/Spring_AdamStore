@@ -1,14 +1,13 @@
 package Spring_AdamStore.service.impl;
 
-import Spring_AdamStore.dto.request.ProductVariantUpdateRequest;
+import Spring_AdamStore.dto.request.VariantRequest;
+import Spring_AdamStore.dto.request.VariantUpdateRequest;
 import Spring_AdamStore.dto.response.ProductVariantResponse;
-import Spring_AdamStore.entity.Color;
-import Spring_AdamStore.entity.Product;
-import Spring_AdamStore.entity.ProductVariant;
-import Spring_AdamStore.entity.Size;
+import Spring_AdamStore.entity.*;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.ProductVariantMapper;
+import Spring_AdamStore.mapper.VariantMappingHelper;
 import Spring_AdamStore.repository.*;
 import Spring_AdamStore.service.ProductVariantService;
 import jakarta.transaction.Transactional;
@@ -30,6 +29,8 @@ public class ProductVariantServiceImpl implements ProductVariantService {
     private final ProductVariantRepository productVariantRepository;
     private final ProductVariantMapper productVariantMapper;
     private final CartItemRepository cartItemRepository;
+    private final VariantMappingHelper variantMappingHelper;
+    private final FileRepository fileRepository;
     private final SizeRepository sizeRepository;
     private final ColorRepository colorRepository;
     private final OrderItemRepository orderItemRepository;
@@ -41,79 +42,56 @@ public class ProductVariantServiceImpl implements ProductVariantService {
                 .findByProductIdAndColorIdAndSizeId(productId, colorId, sizeId)
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_VARIANT_NOT_EXISTED));
 
-        return productVariantMapper.toProductVariantResponse(variant);
+        return productVariantMapper.toProductVariantResponse(variant, variantMappingHelper);
     }
 
 
     @Override
     @Transactional
-    public Set<ProductVariant> saveProductVariant(Product product, Set<Long> sizeIds, Set<Long> colorIds, Double price, Integer quantity) {
-        Set<ProductVariant> productVariantSet = new HashSet<>();
+    public Set<ProductVariant> saveVariantByProduct(Long productId, List<VariantRequest> variantRequests) {
+        Set<ProductVariant> variantSet = new HashSet<>();
 
-        Set<Color> colorSet = getListColorById(colorIds);
+        for (VariantRequest request : variantRequests) {
+            Color color = findColorById(request.getColorId());
+            Size size = findSizeById(request.getSizeId());
+            FileEntity image = findFileById(request.getImageId());
 
-        Set<Size> sizeSet = getListSizeById(sizeIds);
+            ProductVariant variant = ProductVariant.builder()
+                    .productId(productId)
+                    .colorId(color.getId())
+                    .sizeId(size.getId())
+                    .imageId(image.getId())
+                    .price(request.getPrice())
+                    .quantity(request.getQuantity())
+                    .isAvailable(true)
+                    .build();
 
-        for (Color color : colorSet) {
-            for (Size size : sizeSet) {
-                ProductVariant variant = ProductVariant.builder()
-                        .price(price)
-                        .quantity(quantity)
-                        .isAvailable(true)
-                        .productId(product.getId())
-                        .sizeId(size.getId())
-                        .colorId(color.getId())
-                        .build();
-
-                productVariantSet.add(variant);
-            }
+            variantSet.add(variant);
         }
-        return new HashSet<>(productVariantRepository.saveAll(productVariantSet));
+
+        return new HashSet<>(productVariantRepository.saveAll(variantSet));
     }
 
     @Override
-    public Set<ProductVariant> updateProductVariants(Product product, Set<Size> sizeSet, Set<Color> colorSet, Double price, Integer quantity) {
-        List<ProductVariant> oldVariants = productVariantRepository.findAllByProductId(product.getId());
+    @Transactional
+    public Set<ProductVariant> updateVariantByProduct(Long productId, List<VariantRequest> variantRequests) {
+        List<ProductVariant> oldVariants = productVariantRepository.findAllByProductId(productId);
         productVariantRepository.deleteAll(oldVariants);
-        Set<ProductVariant> productVariantSet = new HashSet<>();
 
-        for (Color color : colorSet) {
-            for (Size size : sizeSet) {
-                ProductVariant variant = ProductVariant.builder()
-                        .price(price)
-                        .quantity(quantity)
-                        .productId(product.getId())
-                        .sizeId(size.getId())
-                        .colorId(color.getId())
-                        .build();
-
-                productVariantSet.add(variant);
-            }
-        }
-        return new HashSet<>(productVariantRepository.saveAll(productVariantSet));
+        return saveVariantByProduct(productId, variantRequests);
     }
 
-    public Set<ProductVariant> updatePriceAndQuantity(Product product, Double price, Integer quantity) {
-        List<ProductVariant> oldVariants = productVariantRepository.findAllByProductId(product.getId());
-
-        for (ProductVariant variant : oldVariants) {
-            variant.setPrice(price);
-            variant.setQuantity(quantity);
-        }
-
-        return new HashSet<>(productVariantRepository.saveAll(oldVariants));
-    }
 
     @Override
     @Transactional
-    public ProductVariantResponse updatePriceAndQuantity(Long id, ProductVariantUpdateRequest request) {
+    public ProductVariantResponse updatePriceAndQuantity(Long id, VariantUpdateRequest request) {
         ProductVariant productVariant = productVariantRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_VARIANT_NOT_EXISTED));
 
         productVariant.setPrice(request.getPrice());
         productVariant.setQuantity(request.getQuantity());
 
-        return productVariantMapper.toProductVariantResponse(productVariantRepository.save(productVariant));
+        return productVariantMapper.toProductVariantResponse(productVariantRepository.save(productVariant), variantMappingHelper);
     }
 
     @Override
@@ -137,7 +115,7 @@ public class ProductVariantServiceImpl implements ProductVariantService {
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_VARIANT_NOT_EXISTED));
 
         productVariant.setStatus(ACTIVE);
-        return productVariantMapper.toProductVariantResponse(productVariantRepository.save(productVariant));
+        return productVariantMapper.toProductVariantResponse(productVariantRepository.save(productVariant), variantMappingHelper);
     }
 
     @Override
@@ -145,19 +123,20 @@ public class ProductVariantServiceImpl implements ProductVariantService {
         return productVariantRepository.findAllByProductId(id);
     }
 
-    private Set<Color> getListColorById(Set<Long> colorIdSet) {
-        Set<Color> colorSet = colorRepository.findAllByIdIn(colorIdSet);
-        if (colorSet.size() != colorIdSet.size()) {
-            throw new AppException(ErrorCode.INVALID_PRODUCT_COLOR_LIST);
-        }
-        return colorSet;
+
+    private Color findColorById(Long id) {
+        return colorRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.COLOR_NOT_EXISTED));
     }
 
-    private Set<Size> getListSizeById(Set<Long> sizeIdSet) {
-        Set<Size> sizeSet = sizeRepository.findAllByIdIn(sizeIdSet);
-        if (sizeSet.size() != sizeIdSet.size()) {
-            throw new AppException(ErrorCode.INVALID_PRODUCT_SIZE_LIST);
-        }
-        return sizeSet;
+    private Size findSizeById(Long id) {
+        return sizeRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.SIZE_NOT_EXISTED));
     }
+
+    private FileEntity findFileById(Long id) {
+        return fileRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.FILE_NOT_EXISTED));
+    }
+
 }

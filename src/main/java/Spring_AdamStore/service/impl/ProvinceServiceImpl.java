@@ -38,6 +38,8 @@ public class ProvinceServiceImpl implements ProvinceService {
 
     @Override
     public ProvinceResponse fetchById(Integer id) {
+        log.info("Fetch Province By Id: {}", id);
+
         Province province = findProvinceById(id);
 
         return provinceMapper.toProvinceResponse(province);
@@ -45,6 +47,8 @@ public class ProvinceServiceImpl implements ProvinceService {
 
     @Override
     public PageResponse<ProvinceResponse> fetchAll(Pageable pageable) {
+        log.info("Fetch All Province");
+
         Page<Province> provincePage = provinceRepository.findAll(pageable);
 
         return PageResponse.<ProvinceResponse>builder()
@@ -58,6 +62,8 @@ public class ProvinceServiceImpl implements ProvinceService {
 
     @Override
     public PageResponse<DistrictResponse> fetchDistrictsByProvinceId(Pageable pageable, Integer provinceId) {
+        log.info("Fetch All District By Province");
+
         Page<District> districtPage = districtRepository.findByProvinceId(provinceId, pageable);
 
         return PageResponse.<DistrictResponse>builder()
@@ -77,7 +83,6 @@ public class ProvinceServiceImpl implements ProvinceService {
 
     public List<Province> loadProvincesFromGhn(){
         log.info("Starting API call to GHN to fetch list of provinces");
-
         try {
             GhnProvinceResponse response = ghnClient.getProvinces(ghnToken);
 

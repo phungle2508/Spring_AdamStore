@@ -30,6 +30,7 @@ public class RoleController {
     public ApiResponse<RoleResponse> fetchRoleById(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                    @PathVariable long id){
         log.info("Received request to fetch role by id: {}", id);
+
         return ApiResponse.<RoleResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Fetch Role By Id")

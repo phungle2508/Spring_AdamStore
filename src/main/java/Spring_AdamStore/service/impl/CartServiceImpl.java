@@ -35,6 +35,8 @@ public class CartServiceImpl implements CartService {
 
     @Transactional
     public void createCartForUser(User user){
+        log.info("Create Cart For Current User");
+
         Cart cart = Cart.builder()
                 .userId(user.getId())
                 .build();
@@ -43,6 +45,8 @@ public class CartServiceImpl implements CartService {
     }
 
     public PageResponse<CartItemResponse> getCartItemsOfCurrentUser(Pageable pageable) {
+        log.info("Get Cart Item For Current User");
+
         User user = currentUserService.getCurrentUser();
 
         Cart cart = cartRepository.findByUserId(user.getId())

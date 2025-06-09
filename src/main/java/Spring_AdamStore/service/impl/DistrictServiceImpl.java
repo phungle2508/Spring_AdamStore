@@ -38,6 +38,8 @@ public class DistrictServiceImpl implements DistrictService {
 
     @Override
     public DistrictResponse fetchById(Integer id) {
+        log.info("Fetch District By Id: {}", id);
+
         District district = findDistrictById(id);
 
         return districtMapper.toDistrictResponse(district);
@@ -45,6 +47,8 @@ public class DistrictServiceImpl implements DistrictService {
 
     @Override
     public PageResponse<DistrictResponse> fetchAll(Pageable pageable) {
+        log.info("Fetch All District");
+
         Page<District> districtPage = districtRepository.findAll(pageable);
 
         return PageResponse.<DistrictResponse>builder()
@@ -79,6 +83,8 @@ public class DistrictServiceImpl implements DistrictService {
 
     @Override
     public PageResponse<WardResponse> fetchWardsByDistrictId(Pageable pageable, Integer districtId) {
+        log.info("Fetch All Ward By District");
+
         Page<Ward> wardPage = wardRepository.findByDistrictId(districtId, pageable);
 
         return PageResponse.<WardResponse>builder()

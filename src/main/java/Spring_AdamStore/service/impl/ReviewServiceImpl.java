@@ -32,13 +32,14 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
     private final CurrentUserService currentUserService;
     private final ReviewMapper reviewMapper;
-    private final PageableService pageableService;
     private final ProductRepository productRepository;
     private final ReviewMappingHelper reviewMappingHelper;
 
     @Override
     @Transactional
     public ReviewResponse create(ReviewRequest request) {
+        log.info("Creating review with data= {}", request);
+
         Review review = reviewMapper.toReview(request, reviewMappingHelper);
 
         User user = currentUserService.getCurrentUser();
@@ -52,28 +53,10 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public ReviewResponse fetchById(Long id) {
-        Review review = findReviewById(id);
-
-        return reviewMapper.toReviewResponse(review);
-    }
-
-    @Override
-    public PageResponse<ReviewResponse> fetchAll(Pageable pageable) {
-        Page<Review> reviewPage = reviewRepository.findAll(pageable);
-
-        return PageResponse.<ReviewResponse>builder()
-                .page(reviewPage.getNumber() + 1)
-                .size(reviewPage.getSize())
-                .totalPages(reviewPage.getTotalPages())
-                .totalItems(reviewPage.getTotalElements())
-                .items(reviewMapper.toReviewResponseList(reviewPage.getContent()))
-                .build();
-    }
-
-    @Override
     @Transactional
     public ReviewResponse update(Long id, ReviewUpdateRequest request) {
+        log.info("Updated review with data= {}", request);
+
         Review review = findReviewById(id);
 
         reviewMapper.update(review, request, reviewMappingHelper);
@@ -83,6 +66,8 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public void delete(Long id) {
+        log.info("Delete Review By Id: {}", id);
+
         Review review = findReviewById(id);
         reviewRepository.delete(review);
     }

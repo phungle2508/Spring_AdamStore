@@ -33,6 +33,8 @@ public class ProductController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/products")
     public ApiResponse<ProductResponse> create(@Valid @RequestBody ProductRequest request){
+        log.info("Received request to create product: {}", request);
+
         return ApiResponse.<ProductResponse>builder()
                 .code(HttpStatus.CREATED.value())
                 .message("Create Product")
@@ -40,10 +42,11 @@ public class ProductController {
                 .build();
     }
 
-
     @GetMapping("/products/{id}")
     public ApiResponse<ProductResponse> fetchById(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                @PathVariable Long id){
+        log.info("Received request to fetch product by id: {}", id);
+
         return ApiResponse.<ProductResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Fetch Product By Id")
@@ -55,6 +58,8 @@ public class ProductController {
     description = "Api này để lấy các Products (ACTIVE) cho user")
     @GetMapping("/products")
     public ApiResponse<PageResponse<ProductResponse>> fetchAll(@ParameterObject @PageableDefault Pageable pageable){
+        log.info("Received request to fetch all products for User");
+
         return ApiResponse.<PageResponse<ProductResponse>>builder()
                 .code(HttpStatus.OK.value())
                 .result(productService.fetchAll(pageable))
@@ -67,6 +72,8 @@ public class ProductController {
             description = "Api này để lấy các Products (cả ACTIVE và INACTIVE) cho admin")
     @GetMapping("/products/admin")
     public ApiResponse<PageResponse<ProductResponse>> fetchAllProductsForAdmin(@ParameterObject @PageableDefault Pageable pageable){
+        log.info("Received request to fetch all products for Admin");
+
         return ApiResponse.<PageResponse<ProductResponse>>builder()
                 .code(HttpStatus.OK.value())
                 .result(productService.fetchAllProductsForAdmin(pageable))
@@ -114,7 +121,7 @@ public class ProductController {
 
     @Operation(description = "Api này dùng để search product, giá trị của search: field~value hoặc field>value hoặc field<value")
     @GetMapping("/products/search")
-    public ApiResponse<PageResponse<ProductResponse>> searchCompany(@Min(value = 1, message = "pageNo phải lớn hơn 0")
+    public ApiResponse<PageResponse<ProductResponse>> searchProduct(@Min(value = 1, message = "pageNo phải lớn hơn 0")
                                                                     @RequestParam(defaultValue = "1") int pageNo,
                                                                     @RequestParam(defaultValue = "10") int pageSize,
                                                                     @RequestParam(required = false) String sortBy,
@@ -137,18 +144,6 @@ public class ProductController {
                 .build();
     }
 
-    @Operation(summary = "Fetch All product-variants by product For User",
-            description = "Api này dùng để lấy tất ca Product-Variants (ACTIVE) theo Product cho user")
-    @GetMapping("/products/{productId}/product-variants")
-    public ApiResponse<PageResponse<ProductVariantResponse>> getAllProductVariantByProduct(@ParameterObject @PageableDefault Pageable pageable,
-                                                                      @Min(value = 1, message = "ID phải lớn hơn 0")
-                                                                          @PathVariable Long productId){
-        return ApiResponse.<PageResponse<ProductVariantResponse>>builder()
-                .code(HttpStatus.OK.value())
-                .message("Fetch All product-variants by product For User")
-                .result(productService.getVariantsByProductId(pageable, productId))
-                .build();
-    }
 
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Fetch All product-variants by product for Admin",

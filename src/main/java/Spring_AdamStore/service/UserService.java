@@ -6,8 +6,12 @@ import Spring_AdamStore.dto.response.AddressResponse;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.dto.response.PromotionResponse;
 import Spring_AdamStore.dto.response.UserResponse;
+import Spring_AdamStore.exception.FileException;
 import jakarta.validation.constraints.Min;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 public interface UserService {
 
@@ -27,4 +31,5 @@ public interface UserService {
 
     UserResponse restore(long id);
 
+    UserResponse updateAvatar(MultipartFile file) throws FileException, IOException;
 }

@@ -31,6 +31,8 @@ public class CartController {
     description = "API để lấy tất cả sản phẩm đã thêm vào giỏ hàng")
     @GetMapping("/carts/cart-items")
     public ApiResponse<PageResponse<CartItemResponse>> getCartItemsOfCurrentUser(@ParameterObject @PageableDefault Pageable pageable) {
+        log.info("Received request to fetch all cart items for current user");
+
         return ApiResponse.<PageResponse<CartItemResponse>>builder()
                 .code(HttpStatus.OK.value())
                 .message("Fetched paginated cart items for current user")

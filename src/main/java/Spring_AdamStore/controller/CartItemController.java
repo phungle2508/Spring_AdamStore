@@ -48,15 +48,6 @@ public class CartItemController {
                 .build();
     }
 
-    @GetMapping("/cart-items")
-    public ApiResponse<PageResponse<CartItemResponse>> fetchAll(@ParameterObject @PageableDefault Pageable pageable){
-        return ApiResponse.<PageResponse<CartItemResponse>>builder()
-                .code(HttpStatus.OK.value())
-                .result(cartItemService.fetchAll(pageable))
-                .message("Fetch All CartItems With Pagination")
-                .build();
-    }
-
     @PutMapping("/cart-items/{id}")
     public ApiResponse<CartItemResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                 @PathVariable Long id, @Valid @RequestBody CartItemUpdateRequest request){

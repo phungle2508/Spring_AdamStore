@@ -22,20 +22,11 @@ public class SizeServiceImpl implements SizeService {
 
     private final SizeRepository sizeRepository;
     private final SizeMapper sizeMapper;
-    private final PageableService pageableService;
+
 
     @Override
-    public SizeResponse fetchById(Long id) {
-        Size size = findSizeById(id);
-
-        return sizeMapper.toSizeResponse(size);
-    }
-
-    @Override
-    public PageResponse<SizeResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Size.class);
+    public PageResponse<SizeResponse> fetchAll(Pageable pageable) {
+        log.info("Fetch All Size");
 
         Page<Size> sizePage = sizeRepository.findAll(pageable);
 
@@ -48,9 +39,4 @@ public class SizeServiceImpl implements SizeService {
                 .build();
     }
 
-
-    private Size findSizeById(Long id) {
-        return sizeRepository.findById(id)
-                .orElseThrow(() -> new AppException(ErrorCode.SIZE_NOT_EXISTED));
-    }
 }

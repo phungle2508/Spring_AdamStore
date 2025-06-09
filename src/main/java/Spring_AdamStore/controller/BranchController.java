@@ -33,6 +33,8 @@ public class BranchController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/branches")
     public ApiResponse<BranchResponse> create(@Valid @RequestBody BranchRequest request){
+        log.info("Received request to create branch: {}", request);
+
         return ApiResponse.<BranchResponse>builder()
                 .code(HttpStatus.CREATED.value())
                 .message("Create Branch")
@@ -45,6 +47,8 @@ public class BranchController {
     @GetMapping("/branches/{id}")
     public ApiResponse<BranchResponse> fetchById(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                    @PathVariable Long id){
+        log.info("Received request to fetch branch by id: {}", id);
+
         return ApiResponse.<BranchResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Fetch Branch By Id")
@@ -57,6 +61,8 @@ public class BranchController {
     description = "API để lấy tất cả Branch (ACTIVE) cho user")
     @GetMapping("/branches")
     public ApiResponse<PageResponse<BranchResponse>> fetchAll(@ParameterObject @PageableDefault Pageable pageable){
+        log.info("Received request to fetch all branch for user");
+
         return ApiResponse.<PageResponse<BranchResponse>>builder()
                 .code(HttpStatus.OK.value())
                 .result(branchService.fetchAll(pageable))
@@ -69,6 +75,8 @@ public class BranchController {
     description = "API này để lấy tất cả Branch (cả ACTIVE và INACTIVE) cho admin quản lý")
     @GetMapping("/branches/admin")
     public ApiResponse<PageResponse<BranchResponse>> fetchAllBranchesForAdmin(@ParameterObject @PageableDefault Pageable pageable){
+        log.info("Received request to fetch all branch for admin");
+
         return ApiResponse.<PageResponse<BranchResponse>>builder()
                 .code(HttpStatus.OK.value())
                 .result(branchService.fetchAllBranchesForAdmin(pageable))
@@ -81,6 +89,8 @@ public class BranchController {
     @PutMapping("/branches/{id}")
     public ApiResponse<BranchResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                 @PathVariable Long id, @Valid @RequestBody BranchUpdateRequest request){
+        log.info("Received request to update branch: {}, with branch id: {}", request, id);
+
         return ApiResponse.<BranchResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Update Branch By Id")
@@ -95,6 +105,8 @@ public class BranchController {
     @DeleteMapping("/branches/{id}")
     public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
                                     @PathVariable Long id){
+        log.info("Received request to delete branch by id: {}", id);
+
         branchService.delete(id);
         return ApiResponse.<Void>builder()
                 .code(HttpStatus.NO_CONTENT.value())
@@ -109,6 +121,8 @@ public class BranchController {
     @PatchMapping("/branches/{id}/restore")
     public ApiResponse<BranchResponse> restore(@Min(value = 1, message = "Id phải lớn hơn 0")
                                              @PathVariable long id) {
+        log.info("Received request to restore branch by id: {}", id);
+
         return ApiResponse.<BranchResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Restore Branch By Id")

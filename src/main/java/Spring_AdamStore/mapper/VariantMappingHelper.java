@@ -2,11 +2,9 @@ package Spring_AdamStore.mapper;
 
 import Spring_AdamStore.dto.basic.EntityBasic;
 import Spring_AdamStore.dto.basic.ProductVariantBasic;
+import Spring_AdamStore.entity.FileEntity;
 import Spring_AdamStore.entity.ProductVariant;
-import Spring_AdamStore.repository.ColorRepository;
-import Spring_AdamStore.repository.ProductRepository;
-import Spring_AdamStore.repository.ProductVariantRepository;
-import Spring_AdamStore.repository.SizeRepository;
+import Spring_AdamStore.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +16,7 @@ public class VariantMappingHelper {
     private final ColorRepository colorRepository;
     private final ProductVariantRepository productVariantRepository;
     private final ProductRepository productRepository;
+    private final FileRepository fileRepository;
 
     public ProductVariantBasic getProductVariantBasic(Long variantId){
         return productVariantRepository.findById(variantId)
@@ -27,6 +26,12 @@ public class VariantMappingHelper {
                         .size(getSize(variant.getSizeId()))
                         .product(getProduct(variant.getProductId()))
                         .build())
+                .orElse(null);
+    }
+
+    public String getImageUrl(Long imageId){
+        return fileRepository.findById(imageId)
+                .map(FileEntity::getImageUrl)
                 .orElse(null);
     }
 
@@ -47,4 +52,6 @@ public class VariantMappingHelper {
                 .map(product -> new EntityBasic(product.getId(), product.getName()))
                 .orElse(null);
     }
+
+
 }

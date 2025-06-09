@@ -15,8 +15,6 @@ public interface CartItemService {
 
     CartItemResponse fetchById(Long id);
 
-    PageResponse<CartItemResponse> fetchAll(Pageable pageable);
-
     CartItemResponse update(Long id, CartItemUpdateRequest request);
 
     void delete(Long id);

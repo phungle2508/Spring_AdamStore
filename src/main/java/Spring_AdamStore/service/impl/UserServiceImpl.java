@@ -1,27 +1,23 @@
 package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.constants.EntityStatus;
+import Spring_AdamStore.constants.FileType;
 import Spring_AdamStore.constants.OrderStatus;
 import Spring_AdamStore.constants.RoleEnum;
 import Spring_AdamStore.dto.request.UserCreationRequest;
 import Spring_AdamStore.dto.request.UserUpdateRequest;
-import Spring_AdamStore.dto.response.AddressResponse;
-import Spring_AdamStore.dto.response.PageResponse;
-import Spring_AdamStore.dto.response.PromotionResponse;
-import Spring_AdamStore.dto.response.UserResponse;
+import Spring_AdamStore.dto.response.*;
 import Spring_AdamStore.entity.*;
 import Spring_AdamStore.entity.relationship.UserHasRole;
 import Spring_AdamStore.entity.relationship.UserHasRoleId;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
+import Spring_AdamStore.exception.FileException;
 import Spring_AdamStore.mapper.*;
 import Spring_AdamStore.repository.*;
 import Spring_AdamStore.repository.relationship.PromotionUsageRepository;
 import Spring_AdamStore.repository.relationship.UserHasRoleRepository;
-import Spring_AdamStore.service.CartService;
-import Spring_AdamStore.service.CurrentUserService;
-import Spring_AdamStore.service.PageableService;
-import Spring_AdamStore.service.UserService;
+import Spring_AdamStore.service.*;
 import Spring_AdamStore.service.relationship.UserHasRoleService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -31,13 +27,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import static Spring_AdamStore.constants.EntityStatus.ACTIVE;
+import static Spring_AdamStore.constants.FileType.AVATAR;
 
 @Service
 @Slf4j(topic = "USER-SERVICE")
@@ -47,7 +46,6 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final PageableService pageableService;
     private final UserHasRoleService userHasRoleService;
     private final RoleRepository roleRepository;
     private final UserHasRoleRepository userHasRoleRepository;
@@ -61,11 +59,14 @@ public class UserServiceImpl implements UserService {
     private final PromotionMapper promotionMapper;
     private final UserMappingHelper userMappingHelper;
     private final AddressMappingHelper addressMappingHelper;
+    private final FileService fileService;
 
 
     @Override
     @Transactional
     public UserResponse create(UserCreationRequest request) {
+        log.info("Creating user with data= {}", request);
+
         checkEmailExist(request.getEmail());
         User user = userMapper.userCreationToUser(request);
 
@@ -93,6 +94,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse fetchUserById(Long id) {
+        log.info("Fetch user By Id: {}", id);
+
         User user = findActiveUserById(id);
 
         return userMapper.toUserResponse(user, userMappingHelper);
@@ -100,6 +103,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public PageResponse<UserResponse> fetchAllUsers(Pageable pageable) {
+        log.info("Fetch All User For Admin");
+
         Page<User> userPage = userRepository.findAllUsers(pageable);
 
         return PageResponse.<UserResponse>builder()
@@ -114,6 +119,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponse update(Long id, UserUpdateRequest request) {
+        log.info("Updated User with data= {}", request);
+
         User user = findActiveUserById(id);
 
         userMapper.updateUser(user, request);
@@ -139,6 +146,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Long id) {
+        log.info("Delete User By Id: {}", id);
+
         User userDB = findActiveUserById(id);
 
         List<OrderStatus> activeStatuses = List.of(OrderStatus.PROCESSING, OrderStatus.SHIPPED, OrderStatus.DELIVERED);
@@ -155,6 +164,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse restore(long id) {
+        log.info("Restore User By Id: {}", id);
+
         User user = userRepository.findUserById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
@@ -163,7 +174,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserResponse updateAvatar(MultipartFile file) throws FileException, IOException {
+        log.info("Updated Avatar For User");
+
+        User user = currentUserService.getCurrentUser();
+
+        FileResponse fileResponse = fileService.uploadFile(file, AVATAR);
+
+        user.setAvatarUrl(fileResponse.getImageUrl());
+
+        return userMapper.toUserResponse(userRepository.save(user), userMappingHelper);
+    }
+
+    @Override
     public PageResponse<AddressResponse> getAllAddressesByUser(Pageable pageable) {
+        log.info("Fetch All Address For User");
+
         User user = currentUserService.getCurrentUser();
 
         Page<Address> addressPage = addressRepository.findAllByUserIdAndIsVisible(user.getId(), true, pageable);
@@ -179,6 +205,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public PageResponse<PromotionResponse> getPromotionsByUser(Pageable pageable) {
+        log.info("Fetch All Promotion For User");
+
         User user = currentUserService.getCurrentUser();
 
         Page<Promotion> promotionPage = promotionRepository.findAllAvailableForCustomer(user.getId(), LocalDate.now(), pageable);

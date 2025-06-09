@@ -14,28 +14,14 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface ProductVariantMapper {
 
-    ProductVariantResponse toProductVariantResponse(ProductVariant productVariant);
+    @Mapping(target = "color", expression = "java(context.getColor(variant.getColorId()))")
+    @Mapping(target = "size", expression = "java(context.getSize(variant.getSizeId()))")
+    @Mapping(target = "imageUrl", expression = "java(context.getImageUrl(variant.getImageId()))")
+    ProductVariantResponse toProductVariantResponse(ProductVariant variant, @Context VariantMappingHelper context);
 
-    List<ProductVariantResponse> toProductVariantResponseList(List<ProductVariant> productVariantList);
-
+    List<ProductVariantResponse> toProductVariantResponseList(List<ProductVariant> productVariantList, @Context VariantMappingHelper context);
 
     ProductVariantBasic toProductVariantBasic(ProductVariant productVariant);
-
-    @Named("getPriceFromVariant")
-    default Double getPriceFromFirstVariant(Set<ProductVariant> variants) {
-        return variants.stream()
-                .findFirst()
-                .map(ProductVariant::getPrice)
-                .orElse(0.0);
-    }
-
-    @Named("getQuantityFromVariant")
-    default Integer getQuantityFromFirstVariant(Set<ProductVariant> variants) {
-        return variants.stream()
-                .findFirst()
-                .map(ProductVariant::getQuantity)
-                .orElse(0);
-    }
 
 
 

@@ -1,5 +1,6 @@
 package Spring_AdamStore.entity;
 
+import Spring_AdamStore.constants.FileType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,7 +24,8 @@ public class FileEntity {
     private String fileName;
     private String imageUrl;
 
-    private Long productId;
+    @Enumerated(EnumType.STRING)
+    private FileType fileType;
 
 
 }

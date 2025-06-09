@@ -25,6 +25,8 @@ public class DistrictController {
     @GetMapping("/districts/{id}")
     public ApiResponse<DistrictResponse> fetchById(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                    @PathVariable Integer id){
+        log.info("Received request to fetch District by id: {}", id);
+
         return ApiResponse.<DistrictResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Fetch District By Id")
@@ -34,6 +36,8 @@ public class DistrictController {
 
     @GetMapping("/districts")
     public ApiResponse<PageResponse<DistrictResponse>> fetchAll(@ParameterObject @PageableDefault Pageable pageable){
+        log.info("Received request to fetch all District");
+
         return ApiResponse.<PageResponse<DistrictResponse>>builder()
                 .code(HttpStatus.OK.value())
                 .result(districtService.fetchAll(pageable))
@@ -46,6 +50,8 @@ public class DistrictController {
     public ApiResponse<PageResponse<WardResponse>> fetchWardsByDistrict(@ParameterObject @PageableDefault Pageable pageable,
                                                                         @Min(value = 1, message = "provinceId phải lớn hơn 0")
                                                                             @PathVariable Integer districtId) {
+        log.info("Received request to fetch all Ward By District");
+
         return ApiResponse.<PageResponse<WardResponse>>builder()
                 .code(HttpStatus.OK.value())
                 .message("Fetch All Wards for District")

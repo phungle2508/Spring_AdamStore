@@ -57,6 +57,8 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public TokenResponse login(LoginRequest request) throws JOSEException {
+        log.info("Handling login for email: {}", request.getEmail());
+
         User userDB = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(()-> new AppException(ErrorCode.USER_NOT_EXISTED));
 
@@ -71,6 +73,8 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     @Override
     public VerificationCodeResponse register(RegisterRequest request) {
+        log.info("Handling register for email: {}", request.getEmail());
+
         checkEmailExist(request.getEmail());
 
         if (!request.getPassword().equals(request.getConfirmPassword())) {
@@ -101,6 +105,8 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     @Override
     public TokenResponse verifyCodeAndRegister(VerifyCodeRequest request) throws JOSEException {
+        log.info("Verifying register code for email: {}", request.getEmail());
+
         RedisVerificationCode code = redisVerificationCodeService
                 .getVerificationCode(request.getEmail(), REGISTER, request.getVerificationCode());
 
@@ -114,7 +120,7 @@ public class AuthServiceImpl implements AuthService {
 
         userHasRoleService.saveUserHasRole(user, RoleEnum.USER);
 
-//        cartService.createCartForUser(user);
+        cartService.createCartForUser(user);
 
         return generateAndSaveTokenResponse(user);
     }
@@ -155,6 +161,8 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     @Override
     public void changePassword(ChangePasswordRequest request) {
+        log.info("Changing password for current user");
+
         User user = currentUserService.getCurrentUser();
 
         if (!request.getNewPassword().equals(request.getConfirmPassword())) {
@@ -170,6 +178,8 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void logout(TokenRequest request) throws ParseException, JOSEException {
+        log.info("Logging out");
+
         SignedJWT signToken = tokenService.verifyToken(request.getAccessToken(), TokenType.ACCESS_TOKEN);
 
         String email = signToken.getJWTClaimsSet().getJWTID();

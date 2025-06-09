@@ -27,6 +27,8 @@ public class ProvinceController {
     @GetMapping("/provinces/{id}")
     public ApiResponse<ProvinceResponse> fetchById(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                     @PathVariable Integer id){
+        log.info("Received request to fetch province by id: {}", id);
+
         return ApiResponse.<ProvinceResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Fetch Province By Id")
@@ -36,6 +38,8 @@ public class ProvinceController {
 
     @GetMapping("/provinces")
     public ApiResponse<PageResponse<ProvinceResponse>> fetchAll(@ParameterObject @PageableDefault Pageable pageable){
+        log.info("Received request to fetch all province");
+
         return ApiResponse.<PageResponse<ProvinceResponse>>builder()
                 .code(HttpStatus.OK.value())
                 .result(provinceService.fetchAll(pageable))
@@ -45,9 +49,11 @@ public class ProvinceController {
 
     @Operation(description = "API dùng để lấy danh sách districts theo province")
     @GetMapping("/provinces/{provinceId}/districts")
-    public ApiResponse<PageResponse<DistrictResponse>> fetchByProvinceId(@ParameterObject @PageableDefault Pageable pageable,
+    public ApiResponse<PageResponse<DistrictResponse>> fetchDistrictsByProvince(@ParameterObject @PageableDefault Pageable pageable,
                                                                          @Min(value = 1, message = "provinceId phải lớn hơn 0")
                                                                          @PathVariable Integer provinceId){
+        log.info("Received request to fetch all District By Province");
+
         return ApiResponse.<PageResponse<DistrictResponse>>builder()
                 .code(HttpStatus.OK.value())
                 .message("Fetch Districts By Province ID With Pagination")

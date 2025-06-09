@@ -49,49 +49,4 @@ public class AddressMappingHelper {
     }
 
 
-
-    public Set<EntityBasic> getColorsByProduct(Product product){
-        List<ProductVariant> productVariantList = productVariantRepository.findAllByProductId(product.getId());
-
-        Set<Long> idSet = productVariantList.stream()
-                .map(ProductVariant::getColorId)
-                .collect(Collectors.toSet());
-
-        Set<Color> colorSet = colorRepository.findAllByIdIn(idSet);
-
-        return colorMapper.toEntityBasicSet(colorSet);
-    }
-
-    public Set<EntityBasic> getSizesByProduct(Long productId){
-        List<ProductVariant> productVariantList = productVariantRepository.findAllByProductId(productId);
-
-        Set<Long> idSet = productVariantList.stream()
-                .map(ProductVariant::getSizeId)
-                .collect(Collectors.toSet());
-
-        Set<Size> sizeSet = sizeRepository.findAllByIdIn(idSet);
-
-        return sizeMapper.toEntityBasicSet(sizeSet);
-    }
-
-
-    public Set<EntityBasic> getImagesByProduct(Long productId){
-        List<ProductVariant> productVariantList = productVariantRepository.findAllByProductId(productId);
-
-        Set<Long> idSet = productVariantList.stream()
-                .map(ProductVariant::getSizeId)
-                .collect(Collectors.toSet());
-
-        Set<Size> sizeSet = sizeRepository.findAllByIdIn(idSet);
-
-        return sizeMapper.toEntityBasicSet(sizeSet);
-    }
-
-    public Set<FileResponse> getFileByProduct(Long productId){
-        List<FileEntity> fileList = fileRepository.findAllByProductId(productId);
-
-        return new HashSet<>(fileMapper.toFileResponseList(fileList));
-    }
-
-
 }

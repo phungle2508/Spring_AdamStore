@@ -32,6 +32,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public ApiResponse<TokenResponse> login(@Valid @RequestBody LoginRequest request) throws JOSEException {
+        log.info("Login attempt for email: {}", request.getEmail());
+
         return ApiResponse.<TokenResponse>builder()
                 .code(HttpStatus.OK.value())
                 .result(authService.login(request))
@@ -41,7 +43,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ApiResponse<VerificationCodeResponse> register(@Valid @RequestBody RegisterRequest request) throws JOSEException {
-
+        log.info("Register attempt for email: {}", request.getEmail());
 
         return ApiResponse.<VerificationCodeResponse>builder()
                 .code(HttpStatus.CREATED.value())
@@ -52,6 +54,8 @@ public class AuthController {
 
     @PostMapping("/register/verify")
     public ApiResponse<TokenResponse> verifyCodeAndRegister(@Valid @RequestBody VerifyCodeRequest request) throws JOSEException {
+        log.info("Verify registration code for email: {}", request.getEmail());
+
         return ApiResponse.<TokenResponse>builder()
                 .code(HttpStatus.CREATED.value())
                 .result(authService.verifyCodeAndRegister(request))
@@ -61,6 +65,8 @@ public class AuthController {
 
     @GetMapping("/myInfo")
     public ApiResponse<UserResponse> getMyInfo(){
+        log.info("Fetching current user info");
+
         return ApiResponse.<UserResponse>builder()
                 .code(HttpStatus.OK.value())
                 .result(authService.getMyInfo())
@@ -70,6 +76,8 @@ public class AuthController {
 
     @PostMapping("/refresh-token")
     public ApiResponse<TokenResponse> refreshToken(@Valid @RequestBody RefreshRequest request) throws ParseException, JOSEException {log.info("Received refresh token: {}", request.getRefreshToken());
+        log.info("Refreshing token for refreshToken");
+
         return ApiResponse.<TokenResponse>builder()
                 .code(HttpStatus.OK.value())
                 .result(authService.refreshToken(request))
@@ -81,6 +89,8 @@ public class AuthController {
             description = "API này được sử dụng để thay đổi password khi user đã đăng nhập")
     @PostMapping("/change-password")
     public ApiResponse<UserResponse> changePassword(@Valid @RequestBody ChangePasswordRequest request){
+        log.info("Changing password for current user");
+
         authService.changePassword(request);
         return ApiResponse.<UserResponse>builder()
                 .code(HttpStatus.OK.value())
@@ -92,6 +102,8 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ApiResponse<Void> logout(@Valid @RequestBody TokenRequest request) throws JOSEException, ParseException {
+        log.info("Logout");
+
         authService.logout(request);
         return ApiResponse.<Void>builder()
                 .code(HttpStatus.OK.value())
@@ -103,6 +115,8 @@ public class AuthController {
             description = "API này được sử dụng để quên mật khẩu")
     @PostMapping("/forgot-password")
     public ApiResponse<VerificationCodeResponse> forgotPassword(@Valid @RequestBody EmailRequest request) {
+        log.info("Forgot password requested for email: {}", request.getEmail());
+
         return ApiResponse.<VerificationCodeResponse>builder()
                 .code(HttpStatus.OK.value())
                 .result(accountRecoveryService.forgotPassword(request))
@@ -112,6 +126,8 @@ public class AuthController {
 
     @PostMapping("/forgot-password/verify-code")
     public ApiResponse<ForgotPasswordToken> verifyCode(@Valid @RequestBody VerifyCodeRequest request) throws JOSEException {
+        log.info("Verifying forgot password code for email: {}", request.getEmail());
+
         return ApiResponse.<ForgotPasswordToken>builder()
                 .code(HttpStatus.OK.value())
                 .result(accountRecoveryService.verifyForgotPasswordCode(request.getEmail(), request.getVerificationCode()))
@@ -121,6 +137,8 @@ public class AuthController {
 
     @PostMapping("/forgot-password/reset-password")
     public ApiResponse<Void> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        log.info("Resetting password");
+
         accountRecoveryService.resetPassword(request);
         return ApiResponse.<Void>builder()
                 .code(HttpStatus.OK.value())

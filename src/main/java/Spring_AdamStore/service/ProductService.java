@@ -19,6 +19,8 @@ public interface ProductService {
 
     PageResponse<ProductResponse> fetchAll(Pageable pageable);
 
+    PageResponse<ProductResponse> fetchAllProductsForAdmin(Pageable pageable);
+
     ProductResponse update(Long id, ProductUpdateRequest request);
 
     void delete(Long id);
@@ -26,10 +28,6 @@ public interface ProductService {
     PageResponse<ReviewResponse> fetchReviewsByProductId(Pageable pageable,Long productId);
 
     PageResponse<ProductResponse> searchProduct(int pageNo, int pageSize, String sortBy, List<String> search);
-
-    PageResponse<ProductVariantResponse> getVariantsByProductId(Pageable pageable, Long productId);
-
-    PageResponse<ProductResponse> fetchAllProductsForAdmin(Pageable pageable);
 
     ProductResponse restore(long id);
 

@@ -9,6 +9,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -27,8 +28,6 @@ public class ProductResponse {
     private Double averageRating;
     private Integer soldQuantity;
     private Integer totalReviews;
-    private Integer quantity;
-    private Double price;
 
     private EntityStatus status;
 
@@ -37,10 +36,7 @@ public class ProductResponse {
     private LocalDate createdAt;
     private LocalDate updatedAt;
 
-    private Set<EntityBasic> colors;
-    private Set<EntityBasic> sizes;
-
-    private Set<FileResponse> images;
+    private List<ProductVariantResponse> variants;
 
 
 }

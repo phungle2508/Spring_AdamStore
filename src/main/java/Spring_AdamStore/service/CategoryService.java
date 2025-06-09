@@ -6,6 +6,7 @@ import Spring_AdamStore.dto.response.CategoryResponse;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.dto.response.ProductResponse;
 import jakarta.validation.constraints.Min;
+import org.springframework.data.domain.Pageable;
 
 public interface CategoryService {
 
@@ -13,17 +14,16 @@ public interface CategoryService {
 
     CategoryResponse fetchById(Long id);
 
-    PageResponse<CategoryResponse> fetchAll(int pageNo, int pageSize, String sortBy);
+    PageResponse<CategoryResponse> fetchAll(Pageable pageable);
 
     CategoryResponse update(Long id, CategoryRequest request);
 
     void delete(Long id);
 
-    PageResponse<ProductResponse> fetchByCategoryId(int pageNo, int pageSize, String sortBy, Long categoryId);
+    PageResponse<ProductResponse> fetchProductByCategory(Pageable pageable, Long categoryId);
 
-    PageResponse<CategoryResponse> fetchAllCategoriesForAdmin(int pageNo, int pageSize, String sortBy);
+    PageResponse<CategoryResponse> fetchAllCategoriesForAdmin(Pageable pageable);
 
     CategoryResponse restore(long id);
 
-    PageResponse<ProductResponse> fetchByCategoryIdForAdmin(int pageNo, int pageSize, String sortBy, Long categoryId);
 }

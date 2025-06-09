@@ -18,7 +18,6 @@ public class UserUpdateRequest {
 
     @NotBlank(message = "Name không được để trống")
     private String name;
-    private String avatarUrl;
     @NotNull(message = "Ngày sinh không được để trống")
     private LocalDate dob;
     @NotNull(message = "gender không được để trống")

@@ -12,10 +12,6 @@ public interface ReviewService {
 
     ReviewResponse create(ReviewRequest request);
 
-    ReviewResponse fetchById(Long id);
-
-    PageResponse<ReviewResponse> fetchAll(Pageable pageable);
-
     ReviewResponse update(Long id, ReviewUpdateRequest request);
 
     void delete(Long id);

@@ -1,4 +1,4 @@
-# Promotion
+-- Promotion
 CREATE TABLE promotions (
            id BIGSERIAL PRIMARY KEY,
 
@@ -18,7 +18,7 @@ CREATE TABLE promotions (
 );
 
 
-# Promotion Usages
+-- Promotion Usages
 CREATE TABLE promotion_usages (
              id BIGSERIAL PRIMARY KEY,
              discount_amount DOUBLE PRECISION,

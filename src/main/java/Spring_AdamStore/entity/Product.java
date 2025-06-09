@@ -39,9 +39,7 @@ public class Product {
     private String description;
 
     private Integer soldQuantity;
-
     private Double averageRating;
-
     private Integer totalReviews;
 
     @Enumerated(EnumType.STRING)

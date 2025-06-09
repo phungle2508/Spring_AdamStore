@@ -1,8 +1,7 @@
 package Spring_AdamStore.controller;
 
-import Spring_AdamStore.dto.request.ProductVariantUpdateRequest;
+import Spring_AdamStore.dto.request.VariantUpdateRequest;
 import Spring_AdamStore.dto.response.ApiResponse;
-import Spring_AdamStore.dto.response.ProductResponse;
 import Spring_AdamStore.dto.response.ProductVariantResponse;
 import Spring_AdamStore.service.ProductVariantService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,7 +46,7 @@ public class ProductVariantController {
     @PutMapping("/product-variants/{id}")
     public ApiResponse<ProductVariantResponse> updatePriceAndQuantity(@Min(value = 1, message = "productVariantId phải lớn hơn 0")
                                                                           @PathVariable Long id,
-                                                                      @RequestBody @Valid ProductVariantUpdateRequest request) {
+                                                                      @RequestBody @Valid VariantUpdateRequest request) {
         return ApiResponse.<ProductVariantResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Update price quantity of Product-variant")

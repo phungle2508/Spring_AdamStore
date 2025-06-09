@@ -40,19 +40,9 @@ public class ColorServiceImpl implements ColorService {
         return colorMapper.toColorResponse(colorRepository.save(color));
     }
 
-    @Override
-    public ColorResponse fetchById(Long id) {
-       Color color = findColorById(id);
-
-        return colorMapper.toColorResponse(color);
-    }
 
     @Override
-    public PageResponse<ColorResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Color.class);
-
+    public PageResponse<ColorResponse> fetchAll(Pageable pageable) {
         Page<Color> colorPage = colorRepository.findAll(pageable);
 
         return PageResponse.<ColorResponse>builder()

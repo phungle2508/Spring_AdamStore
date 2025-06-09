@@ -27,6 +27,8 @@ public class WardController {
 
     @GetMapping("/wards/{code}")
     public ApiResponse<WardResponse> fetchById(@PathVariable String code){
+        log.info("Received request to fetch ward by code: {}", code);
+
         return ApiResponse.<WardResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Fetch Ward By Id")
@@ -36,6 +38,8 @@ public class WardController {
 
     @GetMapping("/wards")
     public ApiResponse<PageResponse<WardResponse>> fetchAll(@ParameterObject @PageableDefault Pageable pageable){
+        log.info("Received request to fetch all ward");
+
         return ApiResponse.<PageResponse<WardResponse>>builder()
                 .code(HttpStatus.OK.value())
                 .result(wardService.fetchAll(pageable))

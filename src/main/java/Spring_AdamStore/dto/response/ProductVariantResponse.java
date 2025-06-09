@@ -19,10 +19,10 @@ public class ProductVariantResponse {
     private Double price;
     private Integer quantity;
     private Boolean isAvailable;
+    private String imageUrl;
 
     private EntityStatus status;
 
-    private EntityBasic product;
     private EntityBasic size;
     private EntityBasic color;
 }

@@ -34,6 +34,8 @@ public class WardServiceImpl implements WardService {
 
     @Override
     public WardResponse fetchById(String code) {
+        log.info("Fetch ward By code: {}", code);
+
         Ward ward = findWardById(code);
 
         return wardMapper.toWardResponse(ward);
@@ -41,6 +43,8 @@ public class WardServiceImpl implements WardService {
 
     @Override
     public PageResponse<WardResponse> fetchAll(Pageable pageable) {
+        log.info("Fetch All Ward");
+
         Page<Ward> wardPage = wardRepository.findAll(pageable);
 
         return PageResponse.<WardResponse>builder()

@@ -19,6 +19,7 @@ CREATE TABLE orders (
 CREATE INDEX idx_order_user_id ON orders (user_id);
 
 
+-- Order Item
 CREATE TABLE order_items (
             id BIGSERIAL PRIMARY KEY,
 

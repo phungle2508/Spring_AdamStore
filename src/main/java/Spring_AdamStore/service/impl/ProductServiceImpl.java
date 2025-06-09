@@ -6,9 +6,7 @@ import Spring_AdamStore.dto.response.*;
 import Spring_AdamStore.entity.*;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
-import Spring_AdamStore.mapper.ProductMapper;
-import Spring_AdamStore.mapper.ProductVariantMapper;
-import Spring_AdamStore.mapper.ReviewMapper;
+import Spring_AdamStore.mapper.*;
 import Spring_AdamStore.repository.*;
 import Spring_AdamStore.repository.criteria.SearchCriteriaQueryConsumer;
 import Spring_AdamStore.repository.criteria.SearchCriteria;
@@ -42,11 +40,10 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
-    private final PageableService pageableService;
     private final ReviewRepository reviewRepository;
+    private final ProductMappingHelper productMappingHelper;
+    private final VariantMappingHelper variantMappingHelper;
     private final CategoryRepository categoryRepository;
-    private final FileRepository fileRepository;
-    private final SizeRepository sizeRepository;
     private final ReviewMapper reviewMapper;
     private final ProductVariantService productVariantService;
     private final ProductVariantRepository productVariantRepository;
@@ -58,6 +55,8 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     @Override
     public ProductResponse create(ProductRequest request) {
+        log.info("Creating product with data= {}", request);
+
         if(productRepository.countByName(request.getName()) > 0){
             throw new AppException(ErrorCode.PRODUCT_EXISTED);
         }
@@ -68,25 +67,24 @@ public class ProductServiceImpl implements ProductService {
 
         productRepository.save(product);
 
-        if(!CollectionUtils.isEmpty(request.getImageIds())){
-            saveProductImages(request.getImageIds(), product);
-        }
+        productVariantService.saveVariantByProduct(product.getId(), request.getVariants());
 
-        productVariantService.saveProductVariant(product, request.getSizeIds(),
-                request.getColorIds(), request.getPrice(), request.getQuantity());
-
-        return productMapper.toProductResponse(product);
+        return productMapper.toProductResponse(product, productMappingHelper);
     }
 
     @Override
     public ProductResponse fetchById(Long id) {
+        log.info("Fetch product By Id: {}", id);
+
         Product product = findProductById(id);
 
-        return productMapper.toProductResponse(product);
+        return productMapper.toProductResponse(product, productMappingHelper);
     }
 
     @Override
     public PageResponse<ProductResponse> fetchAll(Pageable pageable) {
+        log.info("Fetch All Products For User");
+
         Page<Product> productPage = productRepository.findAll(pageable);
 
         return PageResponse.<ProductResponse>builder()
@@ -94,12 +92,14 @@ public class ProductServiceImpl implements ProductService {
                 .size(productPage.getSize())
                 .totalPages(productPage.getTotalPages())
                 .totalItems(productPage.getTotalElements())
-                .items(productMapper.toProductResponseList(productPage.getContent()))
+                .items(productMapper.toProductResponseList(productPage.getContent(), productMappingHelper))
                 .build();
     }
 
     @Override
     public PageResponse<ProductResponse> fetchAllProductsForAdmin(Pageable pageable) {
+        log.info("Fetch All Products For Admin");
+
         Page<Product> productPage = productRepository.findAllProducts(pageable);
 
         return PageResponse.<ProductResponse>builder()
@@ -107,23 +107,20 @@ public class ProductServiceImpl implements ProductService {
                 .size(productPage.getSize())
                 .totalPages(productPage.getTotalPages())
                 .totalItems(productPage.getTotalElements())
-                .items(productMapper.toProductResponseList(productPage.getContent()))
+                .items(productMapper.toProductResponseList(productPage.getContent(), productMappingHelper))
                 .build();
     }
-
-
 
     @Transactional
     @Override
     public ProductResponse update(Long id, ProductUpdateRequest request) {
+        log.info("Updated address with data= {}", request);
+
         Product product = findProductById(id);
 
-        // Name
-        if (request.getName() != null && !request.getName().equals(product.getName())) {
-            if (productRepository.countByName(request.getName()) > 0) {
+        if (request.getName() != null && !request.getName().equals(product.getName())
+                && productRepository.countByName(request.getName()) > 0) {
                 throw new AppException(ErrorCode.PRODUCT_EXISTED);
-            }
-            product.setName(request.getName());
         }
         // Category
         if (request.getCategoryId() != null) {
@@ -132,21 +129,9 @@ public class ProductServiceImpl implements ProductService {
 
         productMapper.updateProduct(product, request);
 
+        productVariantService.updateVariantByProduct(product.getId(), request.getVariants());
 
-        // Image
-        if(!CollectionUtils.isEmpty(request.getImageIds())){
-            saveProductImages(request.getImageIds(), product);
-        }
-
-        // Size and Color
-        if (!CollectionUtils.isEmpty(request.getSizeIds()) || !CollectionUtils.isEmpty(request.getColorIds())) {
-            productVariantService.saveProductVariant(product, request.getSizeIds(),
-                    request.getColorIds(), request.getPrice(), request.getQuantity());
-        } else{
-            productVariantService.updatePriceAndQuantity(product, request.getPrice(), request.getQuantity());
-        }
-
-        return productMapper.toProductResponse(productRepository.save(product));
+        return productMapper.toProductResponse(productRepository.save(product), productMappingHelper);
     }
 
     @Transactional
@@ -167,7 +152,7 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
 
         product.setStatus(ACTIVE);
-        return productMapper.toProductResponse(productRepository.save(product));
+        return productMapper.toProductResponse(productRepository.save(product), productMappingHelper);
     }
 
 
@@ -199,22 +184,12 @@ public class ProductServiceImpl implements ProductService {
                 .size(pageSize)
                 .totalPages(totalPages)
                 .totalItems(totalElements)
-                .items(productMapper.toProductResponseList(productList))
+                .items(productMapper.toProductResponseList(productList, productMappingHelper))
                 .build();
     }
 
-    @Override
-    public PageResponse<ProductVariantResponse> getVariantsByProductId(Pageable pageable, Long productId) {
-        Page<ProductVariant> productVariantPage = productVariantRepository.findAllByProductId(productId, pageable);
 
-        return PageResponse.<ProductVariantResponse>builder()
-                .page(productVariantPage.getNumber() + 1)
-                .size(productVariantPage.getSize())
-                .totalPages(productVariantPage.getTotalPages())
-                .totalItems(productVariantPage.getTotalElements())
-                .items(productVariantMapper.toProductVariantResponseList(productVariantPage.getContent()))
-                .build();
-    }
+
 
     @Override
     public PageResponse<ProductVariantResponse> getVariantsByProductIdForAdmin(Pageable pageable, Long productId) {
@@ -225,7 +200,7 @@ public class ProductServiceImpl implements ProductService {
                 .size(productVariantPage.getSize())
                 .totalPages(productVariantPage.getTotalPages())
                 .totalItems(productVariantPage.getTotalElements())
-                .items(productVariantMapper.toProductVariantResponseList(productVariantPage.getContent()))
+                .items(productVariantMapper.toProductVariantResponseList(productVariantPage.getContent(), variantMappingHelper))
                 .build();
     }
 
@@ -355,27 +330,7 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
     }
 
-    private void saveProductImages(Set<Long> imageIdSet, Product product) {
-        Set<FileEntity> fileEntitySet = fileRepository.findAllByIdIn(imageIdSet);
-        if (fileEntitySet.size() != imageIdSet.size()) {
-            throw new AppException(ErrorCode.INVALID_IMAGE_LIST);
-        }
-        fileEntitySet.forEach(image -> image.setProductId(product.getId()));
 
-        fileRepository.saveAll(fileEntitySet);
-    }
-
-
-    private Pageable createPageableWithPriceSupport(int pageNo, int pageSize, String sortBy) {
-        if (StringUtils.hasLength(sortBy)) {
-            if (sortBy.equalsIgnoreCase("price-asc") || sortBy.equalsIgnoreCase("price-desc")) {
-                String direction = sortBy.split("-")[1].toUpperCase();
-                Sort sort = Sort.by(new Sort.Order(Sort.Direction.valueOf(direction), "productVariants.price"));
-                return PageRequest.of(pageNo, pageSize, sort);
-            }
-        }
-        return pageableService.createPageable(pageNo, pageSize, sortBy, Product.class);
-    }
 
 
 

@@ -13,6 +13,9 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -37,25 +40,11 @@ public class ColorController {
                 .build();
     }
 
-
-    @GetMapping("/colors/{id}")
-    public ApiResponse<ColorResponse> fetchById(@Min(value = 1, message = "ID phải lớn hơn 0")
-                                                   @PathVariable Long id){
-        return ApiResponse.<ColorResponse>builder()
-                .code(HttpStatus.OK.value())
-                .message("Fetch Color By Id")
-                .result(colorService.fetchById(id))
-                .build();
-    }
-
     @GetMapping("/colors")
-    public ApiResponse<PageResponse<ColorResponse>> fetchAll(@Min(value = 1, message = "pageNo phải lớn hơn 0")
-                                                                @RequestParam(defaultValue = "1") int pageNo,
-                                                                @RequestParam(defaultValue = "10") int pageSize,
-                                                                @RequestParam(required = false) String sortBy){
+    public ApiResponse<PageResponse<ColorResponse>> fetchAll(@ParameterObject @PageableDefault Pageable pageable){
         return ApiResponse.<PageResponse<ColorResponse>>builder()
                 .code(HttpStatus.OK.value())
-                .result(colorService.fetchAll(pageNo, pageSize, sortBy))
+                .result(colorService.fetchAll(pageable))
                 .message("Fetch All Colors With Pagination")
                 .build();
     }

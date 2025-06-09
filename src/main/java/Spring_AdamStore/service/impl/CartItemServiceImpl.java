@@ -74,18 +74,6 @@ public class CartItemServiceImpl implements CartItemService {
         return cartItemMapper.toCartItemResponse(cartItem, cartItemMappingHelper);
     }
 
-    @Override
-    public PageResponse<CartItemResponse> fetchAll(Pageable pageable) {
-        Page<CartItem> cartItemPage = cartItemRepository.findAll(pageable);
-
-        return PageResponse.<CartItemResponse>builder()
-                .page(cartItemPage.getNumber() + 1)
-                .size(cartItemPage.getSize())
-                .totalPages(cartItemPage.getTotalPages())
-                .totalItems(cartItemPage.getTotalElements())
-                .items(cartItemMapper.toCartItemResponseList(cartItemPage.getContent(), cartItemMappingHelper))
-                .build();
-    }
 
     @Override
     @Transactional

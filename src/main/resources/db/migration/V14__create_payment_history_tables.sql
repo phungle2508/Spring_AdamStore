@@ -1,4 +1,4 @@
-# Payment History
+-- Payment History
 CREATE TABLE payment_history (
              id BIGSERIAL PRIMARY KEY,
 
@@ -14,4 +14,5 @@ CREATE TABLE payment_history (
              CONSTRAINT fk_payment_order FOREIGN KEY (order_id) REFERENCES orders(id)
 );
 
+-- Index
 CREATE INDEX idx_payment_history_order_id ON payment_history (order_id);
