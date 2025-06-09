@@ -1,3 +1,4 @@
+# Promotion
 CREATE TABLE promotions (
            id BIGSERIAL PRIMARY KEY,
 
@@ -17,6 +18,7 @@ CREATE TABLE promotions (
 );
 
 
+# Promotion Usages
 CREATE TABLE promotion_usages (
              id BIGSERIAL PRIMARY KEY,
              discount_amount DOUBLE PRECISION,
@@ -30,3 +32,8 @@ CREATE TABLE promotion_usages (
              CONSTRAINT fk_promotion_usage_promotion FOREIGN KEY (promotion_id) REFERENCES promotions(id),
              CONSTRAINT fk_promotion_usage_order FOREIGN KEY (order_id) REFERENCES orders(id)
 );
+
+-- Index
+CREATE INDEX idx_promotion_usages_user_id ON promotion_usages(user_id);
+CREATE INDEX idx_promotion_usages_promotion_id ON promotion_usages(promotion_id);
+CREATE INDEX idx_promotion_usages_order_id ON promotion_usages(order_id);

@@ -1,6 +1,6 @@
 -- Branch
 CREATE TABLE branches (
-            id BIGINT PRIMARY KEY,
+            id BIGSERIAL PRIMARY KEY,
             name VARCHAR(255) NOT NULL UNIQUE,
             location VARCHAR(255) NOT NULL,
             phone VARCHAR(255) NOT NULL UNIQUE,

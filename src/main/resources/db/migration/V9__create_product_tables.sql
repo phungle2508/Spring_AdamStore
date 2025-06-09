@@ -1,3 +1,4 @@
+# Product
 CREATE TABLE products (
          id BIGSERIAL PRIMARY KEY,
 
@@ -19,6 +20,9 @@ CREATE TABLE products (
          CONSTRAINT fk_product_category FOREIGN KEY (category_id) REFERENCES categories(id)
 );
 
+-- Index
+CREATE INDEX idx_product_category_id ON products (category_id);
+
 
 -- Product Variant
 CREATE TABLE product_variants (
@@ -39,6 +43,6 @@ CREATE TABLE product_variants (
 );
 
 -- Index
-CREATE INDEX idx_product_id ON product_variants (product_id);
-CREATE INDEX idx_color_id ON product_variants (color_id);
-CREATE INDEX idx_size_id ON product_variants (size_id);
+CREATE INDEX idx_variant_product_id ON product_variants (product_id);
+CREATE INDEX idx_variant_color_id ON product_variants (color_id);
+CREATE INDEX idx_variant_size_id ON product_variants (size_id);

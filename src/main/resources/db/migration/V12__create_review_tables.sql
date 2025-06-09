@@ -1,3 +1,4 @@
+-- Review
 CREATE TABLE reviews (
         id BIGSERIAL PRIMARY KEY,
         rating DOUBLE PRECISION,
@@ -14,3 +15,6 @@ CREATE TABLE reviews (
         CONSTRAINT fk_review_product FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
+-- Index
+CREATE INDEX idx_review_user_id ON reviews (user_id);
+CREATE INDEX idx_review_product_id ON reviews (product_id);

@@ -1,3 +1,4 @@
+-- Order
 CREATE TABLE orders (
             id BIGSERIAL PRIMARY KEY,
 
@@ -14,6 +15,9 @@ CREATE TABLE orders (
             CONSTRAINT fk_order_address FOREIGN KEY (address_id) REFERENCES addresses(id)
 );
 
+-- Index
+CREATE INDEX idx_order_user_id ON orders (user_id);
+
 
 CREATE TABLE order_items (
             id BIGSERIAL PRIMARY KEY,
@@ -27,3 +31,6 @@ CREATE TABLE order_items (
             CONSTRAINT fk_order_item_variant FOREIGN KEY (product_variant_id) REFERENCES product_variants(id),
             CONSTRAINT fk_order_item_order FOREIGN KEY (order_id) REFERENCES orders(id)
 );
+
+-- Index
+CREATE INDEX idx_order_item_order_id ON order_items (order_id);

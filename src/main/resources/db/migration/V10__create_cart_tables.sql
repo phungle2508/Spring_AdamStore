@@ -1,6 +1,6 @@
--- Tạo bảng tbl_cart
+-- Cart
 CREATE TABLE carts (
-          id BIGINT PRIMARY KEY,
+          id BIGSERIAL PRIMARY KEY,
           created_at DATE,
           updated_at DATE,
 
@@ -8,9 +8,9 @@ CREATE TABLE carts (
           CONSTRAINT fk_cart_user FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
--- Tạo bảng cart_item
+-- cart_item
 CREATE TABLE cart_items (
-           id BIGINT PRIMARY KEY,
+           id BIGSERIAL PRIMARY KEY,
            price DOUBLE PRECISION,
            quantity INT,
 
@@ -19,3 +19,7 @@ CREATE TABLE cart_items (
            CONSTRAINT fk_cart_item_product_variant FOREIGN KEY (product_variant_id) REFERENCES product_variants(id),
            CONSTRAINT fk_cart_item_cart FOREIGN KEY (cart_id) REFERENCES carts(id)
 );
+
+-- Index
+CREATE INDEX idx_cart_item_cart_id ON cart_items (cart_id);
+CREATE INDEX idx_cart_item_variant_id ON cart_items (product_variant_id);
