@@ -10,7 +10,6 @@ import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.PaymentHistoryMapper;
 import Spring_AdamStore.repository.PaymentHistoryRepository;
-import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.PaymentHistoryService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +26,6 @@ import java.time.LocalDateTime;
 public class PaymentHistoryServiceImpl implements PaymentHistoryService {
 
     private final PaymentHistoryRepository paymentHistoryRepository;
-    private final PageableService pageableService;
     private final PaymentHistoryMapper paymentHistoryMapper;
 
 
@@ -38,22 +36,20 @@ public class PaymentHistoryServiceImpl implements PaymentHistoryService {
                 .totalAmount(order.getTotalPrice())
                 .paymentStatus(PaymentStatus.PENDING)
                 .paymentTime(LocalDateTime.now())
-                .order(order)
+                .orderId(order.getId())
                 .build();
 
         paymentHistoryRepository.save(payment);
     }
 
     @Override
-    public PageResponse<PaymentHistoryResponse> searchPaymentHistories(int pageNo, int pageSize, String sortBy, LocalDateTime startDate, LocalDateTime endDate, PaymentStatus paymentStatus) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, PaymentHistory.class);
+    public PageResponse<PaymentHistoryResponse> searchPaymentHistories(Pageable pageable, LocalDateTime startDate, LocalDateTime endDate, PaymentStatus paymentStatus) {
+        log.info("Searching PaymentHistories with startDate={}, endDate={}, paymentStatus={}", startDate, endDate, paymentStatus);
 
         Page<PaymentHistory> paymentHistoryPage = paymentHistoryRepository.searchPaymentHistories(startDate, endDate, paymentStatus, pageable);
 
         return PageResponse.<PaymentHistoryResponse>builder()
-                .page(paymentHistoryPage.getNumber() + 1)
+                .page(paymentHistoryPage.getNumber())
                 .size(paymentHistoryPage.getSize())
                 .totalPages(paymentHistoryPage.getTotalPages())
                 .totalItems(paymentHistoryPage.getTotalElements())
@@ -64,6 +60,8 @@ public class PaymentHistoryServiceImpl implements PaymentHistoryService {
     @Override
     @Transactional
     public void delete(Long id) {
+        log.info("Attempting to delete PaymentHistory with id: {}", id);
+
         PaymentHistory paymentHistory = paymentHistoryRepository.findById(id)
                 .orElseThrow(()-> new AppException(ErrorCode.PAYMENT_HISTORY_NOT_EXISTED));
 

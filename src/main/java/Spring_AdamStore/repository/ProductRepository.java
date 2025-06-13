@@ -15,23 +15,23 @@ import java.util.Optional;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    @Query(value = "SELECT COUNT(*) FROM tbl_product WHERE name = :name", nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM products WHERE name = :name", nativeQuery = true)
     Long countByName(@Param("name") String name);
 
-    @Query(value = "SELECT * FROM tbl_product p WHERE p.id = :id", nativeQuery = true)
+    @Query(value = "SELECT * FROM products p WHERE p.id = :id", nativeQuery = true)
     Optional<Product> findProductById(@Param("id") Long id);
 
     Page<Product> findByCategoryId(Long categoryId, Pageable pageable);
 
-    @Query(value = "SELECT * FROM tbl_product p WHERE p.category_id = :categoryId", nativeQuery = true)
+    @Query(value = "SELECT * FROM products p WHERE p.category_id = :categoryId", nativeQuery = true)
     Page<Product> findAllByCategoryId(Long categoryId, Pageable pageable);
 
 
-    @Query(value = "SELECT COUNT(*) FROM tbl_product p WHERE p.category_id = :categoryId AND p.status = :status", nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM products p WHERE p.category_id = :categoryId AND p.status = :status", nativeQuery = true)
     Long countActiveProductsByCategoryId(@Param("categoryId") Long categoryId, @Param("status") String status);
 
-    @Query(value = "SELECT * FROM tbl_product",
-            countQuery = "SELECT COUNT(*) FROM tbl_product",
+    @Query(value = "SELECT * FROM products",
+            countQuery = "SELECT COUNT(*) FROM products",
             nativeQuery = true)
     Page<Product> findAllProducts(Pageable pageable);
 }

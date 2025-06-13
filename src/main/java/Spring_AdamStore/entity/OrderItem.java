@@ -5,10 +5,9 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.ColumnDefault;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
-@Table(name = "tbl_order_item")
+@Table(name = "order_items")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,21 +15,13 @@ import org.hibernate.annotations.ColumnDefault;
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-     Long id;
+    private Long id;
 
-    @JoinColumn(nullable = false)
-    @ColumnDefault(value = "0")
-     Integer quantity;
-    @JoinColumn(nullable = false)
-    @ColumnDefault(value = "0")
-     Double unitPrice;
+    private Integer quantity;
+    private Double unitPrice;
 
+    private Long productVariantId;
 
-    @ManyToOne
-    @JoinColumn(name = "product_variant_id", nullable = false)
-    ProductVariant productVariant;
+    private Long orderId;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-     Order order;
 }

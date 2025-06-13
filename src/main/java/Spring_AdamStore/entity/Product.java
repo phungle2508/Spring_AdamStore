@@ -17,11 +17,11 @@ import java.util.Set;
 
 import static Spring_AdamStore.constants.EntityStatus.ACTIVE;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
+
 @Getter
 @Setter
-@Table(name = "tbl_product")
-@SQLDelete(sql = "UPDATE tbl_product SET status = 'INACTIVE' WHERE id = ?")
+@Table(name = "products")
+@SQLDelete(sql = "UPDATE products SET status = 'INACTIVE' WHERE id = ?")
 @SQLRestriction("status = 'ACTIVE'")
 @Builder
 @NoArgsConstructor
@@ -32,47 +32,30 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
+    private Boolean isAvailable;
 
-    @JoinColumn(nullable = false, unique = true)
-    String name;
-    @Column(columnDefinition = "MEDIUMTEXT")
-    String description;
-    Boolean isAvailable;
-    @ColumnDefault(value = "0")
-    Integer soldQuantity;
-    @ColumnDefault(value = "5.0")
-    Double averageRating;
-    @ColumnDefault("0")
-    Integer totalReviews;
+    private String name;
+    private String description;
+
+    private Integer soldQuantity;
+    private Double averageRating;
+    private Integer totalReviews;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    EntityStatus status;
+    private EntityStatus status;
 
     @CreatedBy
-    String createdBy;
+    private String createdBy;
     @LastModifiedBy
-    String updatedBy;
+    private String updatedBy;
     @CreationTimestamp
-    LocalDate createdAt;
+    private LocalDate createdAt;
     @UpdateTimestamp
-    LocalDate updatedAt;
+    private LocalDate updatedAt;
 
+    private Long categoryId;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-     Category category;
-
-    @OneToMany(mappedBy = "product")
-    Set<Review> reviews = new HashSet<>();
-
-    @OneToMany(mappedBy = "product")
-    Set<FileEntity> images = new HashSet<>();
-
-    @OneToMany(mappedBy = "product")
-    @JsonIgnore
-    Set<ProductVariant> productVariants = new HashSet<>();
 
     @PrePersist
     public void handleBeforeCreate() {

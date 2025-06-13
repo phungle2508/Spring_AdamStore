@@ -273,7 +273,7 @@ CREATE TABLE `tbl_forgot_password_token` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `email` varchar(255) NOT NULL,
   `expiryTime` datetime(6) DEFAULT NULL,
-  `forgotPasswordToken` varchar(1024) NOT NULL,
+  `redisForgotPasswordToken` varchar(1024) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;

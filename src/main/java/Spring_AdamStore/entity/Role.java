@@ -14,10 +14,9 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
-@Table(name = "tbl_role")
+@Table(name = "roles")
 @Entity
 @Builder
 @AllArgsConstructor
@@ -26,16 +25,10 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
-    @Column(nullable = false, unique = true)
-    String name;
-    String description;
+    private String name;
+    private String description;
 
-    @OneToMany(mappedBy = "role")
-    @JsonIgnore
-    Set<UserHasRole> users = new HashSet<>();
 
-    @OneToMany(mappedBy = "role")
-    Set<RoleHasPermission> permissions = new HashSet<>();
 }

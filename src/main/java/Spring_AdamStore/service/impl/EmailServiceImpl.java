@@ -70,6 +70,7 @@ public class EmailServiceImpl implements EmailService {
                 log.error("Failed to send email to {}. StatusCode: {}, Body: {}", toEmail, response.getStatusCode(), response.getBody());
             }
         } catch (IOException e) {
+            log.error("Error occurred while sending email to {}: {} - {}", toEmail, e.getClass().getSimpleName(), e.getMessage(), e);
             throw new RuntimeException(e);
         }
     }
@@ -77,6 +78,8 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendOtpRegisterEmail(String toEmail, String name, String otp) {
+        log.info("Sending OTP email for registration to '{}', name='{}'", toEmail, name);
+
         Map<String, String> dynamicData = new HashMap<>();
         dynamicData.put("name", name);
         dynamicData.put("otp", otp);
@@ -90,6 +93,8 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendPasswordResetCode(String toEmail, String name, String verificationCode) {
+        log.info("Sending password reset email to '{}', name='{}'", toEmail, name);
+
         Map<String, String> dynamicData = new HashMap<>();
         dynamicData.put("name", name);
         dynamicData.put("verificationCode", verificationCode);

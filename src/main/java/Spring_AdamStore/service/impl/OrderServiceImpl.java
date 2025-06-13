@@ -2,7 +2,6 @@ package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.constants.OrderStatus;
 import Spring_AdamStore.constants.PaymentMethod;
-import Spring_AdamStore.constants.PaymentStatus;
 import Spring_AdamStore.constants.RoleEnum;
 import Spring_AdamStore.dto.request.*;
 import Spring_AdamStore.dto.response.*;
@@ -12,13 +11,13 @@ import Spring_AdamStore.entity.relationship.PromotionUsage;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.OrderMapper;
+import Spring_AdamStore.mapper.OrderMappingHelper;
 import Spring_AdamStore.repository.*;
 import Spring_AdamStore.repository.criteria.SearchCriteriaQueryConsumer;
 import Spring_AdamStore.repository.criteria.SearchCriteria;
 import Spring_AdamStore.repository.relationship.PromotionUsageRepository;
 import Spring_AdamStore.service.CurrentUserService;
 import Spring_AdamStore.service.OrderService;
-import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.PaymentHistoryService;
 import Spring_AdamStore.service.relationship.PromotionUsageService;
 import Spring_AdamStore.service.relationship.UserHasRoleService;
@@ -30,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -39,8 +38,6 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static Spring_AdamStore.constants.OrderStatus.PENDING;
 
 @Service
 @Slf4j(topic = "ORDER-SERVICE")
@@ -57,10 +54,10 @@ public class OrderServiceImpl implements OrderService {
     private final PromotionRepository promotionRepository;
     private final PaymentHistoryRepository paymentHistoryRepository;
     private final UserHasRoleService userHasRoleService;
-    private final PageableService pageableService;
     private final PromotionUsageService promotionUsageService;
     private final PromotionUsageRepository promotionUsageRepository;
     private final PaymentHistoryService paymentHistoryService;
+    private final OrderMappingHelper orderMappingHelper;
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -68,12 +65,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public OrderResponse create(OrderRequest request) {
-        // user
-        User user = currentUserService.getCurrentUser();
-
-        // address
-        Address address = addressRepository.findById(request.getAddressId())
-                .orElseThrow(() -> new AppException(ErrorCode.ADDRESS_NOT_EXISTED));
+        log.info("Creating order with data= {}", request);
 
         // ShippingFee
         double totalPrice = request.getShippingFee();
@@ -83,8 +75,8 @@ public class OrderServiceImpl implements OrderService {
                 : OrderStatus.PENDING;
 
         Order order = Order.builder()
-                .user(user)
-                .address(address)
+                .userId(currentUserService.getCurrentUser().getId())
+                .addressId(findAddressById(request.getAddressId()).getId())
                 .orderStatus(orderStatus)
                 .totalPrice(totalPrice)
                 .orderDate(LocalDate.now())
@@ -106,8 +98,8 @@ public class OrderServiceImpl implements OrderService {
             OrderItem orderItem = OrderItem.builder()
                     .quantity(orderItemRequest.getQuantity())
                     .unitPrice(productVariant.getPrice())
-                    .order(order)
-                    .productVariant(productVariant)
+                    .orderId(order.getId())
+                    .productVariantId(productVariant.getId())
                     .build();
 
             // tru so luong hang trong kho
@@ -118,11 +110,10 @@ public class OrderServiceImpl implements OrderService {
             totalPrice += orderItem.getQuantity() * orderItem.getUnitPrice();
         }
         orderItemRepository.saveAll(orderItemSet);
-        order.setOrderItems(orderItemSet);
 
         // Promotion
         if (request.getPromotionId() != null) {
-            totalPrice = applyPromotion(request.getPromotionId(), order, user, totalPrice);
+            totalPrice = applyPromotion(request.getPromotionId(), order, totalPrice);
         }
 
         order.setTotalPrice(totalPrice);
@@ -130,39 +121,37 @@ public class OrderServiceImpl implements OrderService {
         // PaymentHistory
         paymentHistoryService.savePaymentHistory(order, request.getPaymentMethod());
 
-        return orderMapper.toOrderResponse(orderRepository.save(order));
+        return orderMapper.toOrderResponse(orderRepository.save(order), orderMappingHelper);
     }
 
 
     @Override
-    public OrderResponse fetchById(Long id) {
+    public OrderResponse fetchDetailById(Long id) {
+        log.info("Fetch Order By Id: {}", id);
+
         Order order = findOrderById(id);
 
-        return orderMapper.toOrderResponse(order);
+        return orderMapper.toOrderResponse(order, orderMappingHelper);
     }
 
     @Override
-    public PageResponse<OrderResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Order.class);
+    public PageResponse<OrderResponse> fetchAll(Pageable pageable) {
+        log.info("Fetch All Order For Admin");
 
         Page<Order> orderPage = orderRepository.findAll(pageable);
 
         return PageResponse.<OrderResponse>builder()
-                .page(orderPage.getNumber() + 1)
+                .page(orderPage.getNumber())
                 .size(orderPage.getSize())
                 .totalPages(orderPage.getTotalPages())
                 .totalItems(orderPage.getTotalElements())
-                .items(orderMapper.toOrderResponseList(orderPage.getContent()))
+                .items(orderMapper.toOrderResponseList(orderPage.getContent(), orderMappingHelper))
                 .build();
     }
 
     @Override
-    public PageResponse<OrderResponse> searchOrder(int pageNo, int pageSize, String sortBy, List<String> search) {
-        pageNo = pageNo - 1;
-
-        List<SearchCriteria> criteriaList = new ArrayList<>();
+    public PageResponse<OrderResponse> searchOrder(Pageable pageable, List<String> search) {
+       List<SearchCriteria> criteriaList = new ArrayList<>();
 
         // Lay danh sach dieu kien
         if(search != null){
@@ -174,21 +163,21 @@ public class OrderServiceImpl implements OrderService {
                 }
             }
         }
-        List<Order> orderList = getOrderList(pageNo, pageSize, sortBy, criteriaList);
+        List<Order> orderList = getOrderList(pageable, criteriaList);
 
         Long totalElements = getTotalElements(criteriaList);
-        int totalPages = (int) Math.ceil((double) totalElements / pageSize);
+        int totalPages = (int) Math.ceil((double) totalElements / pageable.getPageSize());
 
         return PageResponse.<OrderResponse>builder()
-                .page(pageNo + 1)
-                .size(pageSize)
+                .page(pageable.getPageNumber())
+                .size(pageable.getPageSize())
                 .totalPages(totalPages)
                 .totalItems(totalElements)
-                .items(orderMapper.toOrderResponseList(orderList))
+                .items(orderMapper.toOrderResponseList(orderList, orderMappingHelper))
                 .build();
     }
 
-    private List<Order> getOrderList(int pageNo, int pageSize, String sortBy, List<SearchCriteria> criteriaList) {
+    private List<Order> getOrderList(Pageable pageable, List<SearchCriteria> criteriaList) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Order> query = builder.createQuery(Order.class);
         Root<Order> root = query.from(Order.class);
@@ -215,23 +204,19 @@ public class OrderServiceImpl implements OrderService {
         query.where(predicate);
 
         // Sort
-        if(StringUtils.hasLength(sortBy)){
-            Pattern pattern = Pattern.compile("(\\w+?)(-)(asc|desc)");
-            Matcher matcher = pattern.matcher(sortBy);
-            if(matcher.find()){
-                String columnName = matcher.group(1);
+        List<jakarta.persistence.criteria.Order> orders = new ArrayList<>();
+        for (Sort.Order order : pageable.getSort()) {
+            String property = order.getProperty();
 
-                if(matcher.group(3).equalsIgnoreCase("desc")){
-                    query.orderBy(builder.desc(root.get(columnName)));
-                }else{
-                    query.orderBy(builder.asc(root.get(columnName)));
-                }
-            }
+            Path<?> path = root.get(property);
+            orders.add(order.isAscending() ? builder.asc(path) : builder.desc(path));
         }
 
+        query.orderBy(orders);
+
         return entityManager.createQuery(query)
-                .setFirstResult(pageNo * pageSize)
-                .setMaxResults(pageSize)
+                .setFirstResult((int) pageable.getOffset())
+                .setMaxResults(pageable.getPageSize())
                 .getResultList();
     }
 
@@ -267,40 +252,34 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderResponse updateAddress(Long id, UpdateOrderAddressRequest request) {
+    public OrderResponse updateAddress(Long id, OrderAddressRequest request) {
+        log.info("Updated update address for orderId= {}" , id);
+
         Order order = findOrderById(id);
-
-        String currentUserEmail = currentUserService.getCurrentUsername();
-
-        if (!order.getUser().getEmail().equals(currentUserEmail)) {
-            throw new AppException(ErrorCode.ORDER_NOT_BELONG_TO_USER);
-        }
 
         if (!(order.getOrderStatus() == OrderStatus.PENDING || order.getOrderStatus() == OrderStatus.PROCESSING)) {
             throw new AppException(ErrorCode.ORDER_CANNOT_UPDATE_ADDRESS);
         }
 
-        Address newAddress = addressRepository.findById(request.getAddressId())
-                .orElseThrow(() -> new AppException(ErrorCode.ADDRESS_NOT_EXISTED));
+        Address newAddress = findAddressById(request.getAddressId());
 
-        if (!newAddress.getUser().getEmail().equals(currentUserEmail)) {
-            throw new AppException(ErrorCode.ADDRESS_NOT_BELONG_TO_USER);
-        }
 
-        order.setAddress(newAddress);
-        return orderMapper.toOrderResponse(orderRepository.save(order));
+        order.setAddressId(newAddress.getId());
+        return orderMapper.toOrderResponse(orderRepository.save(order), orderMappingHelper);
     }
 
     @Transactional
     @Override
     public void delete(Long id) {
+        log.info("Delete Order By Id: {}", id);
+
         Order order = findOrderById(id);
 
-        orderItemRepository.deleteAll(order.getOrderItems());
+        orderItemRepository.deleteAllByOrderId(order.getId());
 
-        paymentHistoryRepository.deleteAll(order.getPayments());
+        paymentHistoryRepository.deleteAllByOrderId(order.getId());
 
-        promotionUsageRepository.delete(order.getPromotionUsage());
+        promotionUsageRepository.deleteAllByOrderId(order.getId());
 
         orderRepository.delete(order);
     }
@@ -310,79 +289,24 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_EXISTED));
     }
 
-    private double applyPromotion(Long promotionId, Order order, User user, double currentTotal) {
+    private Address findAddressById(Long addressId){
+        return addressRepository.findById(addressId)
+                .orElseThrow(() -> new AppException(ErrorCode.ADDRESS_NOT_EXISTED));
+    }
+
+    private double applyPromotion(Long promotionId, Order order, double currentTotal) {
         Promotion promotion = promotionRepository.findById(promotionId)
                 .orElseThrow(() -> new AppException(ErrorCode.PROMOTION_NOT_EXISTED));
 
-        PromotionUsage usage = promotionUsageService.applyPromotion(promotion, order, user, currentTotal);
+        PromotionUsage usage = promotionUsageService.applyPromotion(promotion, order, currentUserService.getCurrentUser(), currentTotal);
 
-        order.setPromotionUsage(usage);
         log.info("Usage Discount Amount: {}", usage.getDiscountAmount());
         log.info("Discount : {}", currentTotal * usage.getDiscountAmount());
         return currentTotal - usage.getDiscountAmount();
     }
 
-    @Scheduled(cron = "0 0 0 * * ?")
-    @Transactional
-    public void updateOrderStatusProcessingToShipped() {
-        log.info("Update Order From Processing To Shipped");
-
-        LocalDate currentDate = LocalDate.now();
-
-        List<Order> orderList = orderRepository.findByOrderStatusAndOrderDateBefore(OrderStatus.PROCESSING,
-                currentDate.minusDays(1));
-
-        orderList.forEach(order ->  order.setOrderStatus(OrderStatus.SHIPPED));
-        orderRepository.saveAll(orderList);
-    }
-
-    @Scheduled(cron = "0 0 0 * * ?")
-    @Transactional
-    public void updateOrderStatusShippedToDelivered() {
-        log.info("Update Order From Shipped To Delivered");
-
-        LocalDate currentDate = LocalDate.now();
-
-        List<Order> orderList = orderRepository.findByOrderStatusAndOrderDateBefore(OrderStatus.SHIPPED,
-                currentDate.minusDays(3));
-
-        orderList.forEach(order -> {
-            order.setOrderStatus(OrderStatus.DELIVERED);
-
-            updatePendingCashPaymentsToPaid(order);
-        });
-
-        orderRepository.saveAll(orderList);
-    }
-
-    private void updatePendingCashPaymentsToPaid(Order order) {
-        List<PaymentHistory> updatedPayments = new ArrayList<>();
-
-        order.getPayments().stream()
-                .filter(payment -> payment.getPaymentMethod() == PaymentMethod.CASH
-                        && payment.getPaymentStatus() == PaymentStatus.PENDING)
-                .forEach(payment -> {
-                    payment.setIsPrimary(true);
-                    payment.setPaymentStatus(PaymentStatus.PAID);
-                    updatedPayments.add(payment);
-                });
-
-        paymentHistoryRepository.saveAll(updatedPayments);
-    }
 
 
-    @Scheduled(cron = "0 0 0 * * ?")
-    @Transactional
-    public void cancelPendingOrdersOverOneDay() {
-        log.info("Cancel Pending Orders Over One Day");
 
-        LocalDate currentDate = LocalDate.now();
-
-        List<Order> orderList = orderRepository.findByOrderStatusAndOrderDateBefore(PENDING,
-                currentDate.minusDays(1));
-
-        orderList.forEach(order ->  order.setOrderStatus(OrderStatus.CANCELLED));
-        orderRepository.saveAll(orderList);
-    }
 
 }

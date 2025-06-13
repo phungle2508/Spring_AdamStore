@@ -11,21 +11,18 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
-@Table(name = "tbl_province")
+@Table(name = "provinces")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 public class Province {
-    @Id
-    Integer id;
-    String name;
 
-    @OneToMany(mappedBy = "province", fetch = FetchType.LAZY)
-    Set<District> districts = new HashSet<>();
+    @Id
+    private Integer id;
+    private String name;
 
 
 }

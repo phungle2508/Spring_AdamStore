@@ -16,14 +16,14 @@ import java.util.Optional;
 @Repository
 public interface AddressRepository extends JpaRepository<Address, Long> {
 
-    List<Address> findAllByUser(User user);
+    List<Address> findAllByUserId(Long userId);
 
     Page<Address> findAllByUserIdAndIsVisible(Long userId, Boolean isVisible, Pageable pageable);
 
-    @Query(value = "SELECT * FROM tbl_address a WHERE a.id = :id", nativeQuery = true)
+    @Query(value = "SELECT * FROM addresses a WHERE a.id = :id", nativeQuery = true)
     Optional<Address> findAddressById(@Param("id") Long id);
 
-    @Query(value = "SELECT * FROM tbl_address",
+    @Query(value = "SELECT * FROM addresses",
             countQuery = "SELECT COUNT(*) FROM tbl_address",
             nativeQuery = true)
     Page<Address> findAllAddresses(Pageable pageable);

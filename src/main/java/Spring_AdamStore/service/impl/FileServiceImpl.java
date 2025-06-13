@@ -1,12 +1,12 @@
 package Spring_AdamStore.service.impl;
 
+import Spring_AdamStore.constants.FileType;
 import Spring_AdamStore.dto.response.FileResponse;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.entity.FileEntity;
 import Spring_AdamStore.exception.FileException;
 import Spring_AdamStore.mapper.FileMapper;
 import Spring_AdamStore.repository.FileRepository;
-import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.FileService;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,6 @@ public class FileServiceImpl implements FileService {
 
     private final Cloudinary cloudinary;
     private final FileRepository fileRepository;
-    private final PageableService pageableService;
     private final FileMapper fileMapper;
 
     @Value("${cloud.folder-image}")
@@ -42,9 +42,23 @@ public class FileServiceImpl implements FileService {
 
     private static final List<String> IMAGE_TYPES = Arrays.asList("image/jpeg", "image/png", "image/gif", "image/webp");
 
+    public List<FileResponse> uploadListFile(List<MultipartFile> files, FileType fileType) throws FileException, IOException {
+        if (files == null || files.isEmpty()) {
+            throw new FileException("File trống. Không thể lưu trữ file");
+        }
+
+        List<FileResponse> responses = new ArrayList<>();
+        for (MultipartFile file : files) {
+            FileResponse saved = uploadFile(file, fileType);
+            responses.add(saved);
+        }
+
+        return responses;
+    }
+
     @Override
     @Transactional
-    public FileResponse uploadFile(MultipartFile file) throws FileException, IOException {
+    public FileResponse uploadFile(MultipartFile file, FileType fileType) throws FileException, IOException {
         if (file == null || file.isEmpty()) {
             throw new FileException("File trống. Không thể lưu trữ file");
         }
@@ -57,6 +71,7 @@ public class FileServiceImpl implements FileService {
         FileEntity fileEntity = FileEntity.builder()
                 .publicId(uploadResult.get("public_id").toString())
                 .fileName(file.getOriginalFilename())
+                .fileType(fileType)
                 .imageUrl(uploadResult.get("url").toString())
                 .build();
 
@@ -73,15 +88,11 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public PageResponse<FileResponse> getAllFiles(int pageNo, int pageSize, String sortBy) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, FileEntity.class);
-
-        Page<FileEntity> productImagePage = fileRepository.findAll(pageable);
+    public PageResponse<FileResponse> getAllFiles(Pageable pageable, FileType fileType) {
+        Page<FileEntity> productImagePage = fileRepository.findAllByFileType(pageable, fileType);
 
         return PageResponse.<FileResponse>builder()
-                .page(productImagePage.getNumber() + 1)
+                .page(productImagePage.getNumber())
                 .size(productImagePage.getSize())
                 .totalPages(productImagePage.getTotalPages())
                 .totalItems(productImagePage.getTotalElements())

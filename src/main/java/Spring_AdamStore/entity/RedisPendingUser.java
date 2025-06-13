@@ -1,13 +1,10 @@
 package Spring_AdamStore.entity;
 
-import jakarta.persistence.Entity;
 import lombok.*;
-import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
 @Builder
@@ -17,12 +14,12 @@ import org.springframework.data.redis.core.TimeToLive;
 public class RedisPendingUser {
 
     @Id
-    String email;
+    private String email;
 
-    String name;
-    String phone;
-    String password;
+    private String name;
+    private String phone;
+    private String password;
 
     @TimeToLive
-     long ttl;
+    private long ttl;
 }

@@ -12,6 +12,7 @@ import Spring_AdamStore.entity.PaymentHistory;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.OrderMapper;
+import Spring_AdamStore.mapper.OrderMappingHelper;
 import Spring_AdamStore.repository.OrderRepository;
 import Spring_AdamStore.repository.PaymentHistoryRepository;
 import Spring_AdamStore.service.PaymentService;
@@ -34,6 +35,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final VNPAYConfig vnPayConfig;
     private final PaymentHistoryRepository paymentHistoryRepository;
     private final OrderMapper orderMapper;
+    private final OrderMappingHelper orderMappingHelper;
 
 
     @Override
@@ -89,7 +91,7 @@ public class PaymentServiceImpl implements PaymentService {
         paymentHistory.setPaymentTime(LocalDateTime.now());
         paymentHistoryRepository.save(paymentHistory);
 
-        return orderMapper.toOrderResponse(orderRepository.save(order));
+        return orderMapper.toOrderResponse(orderRepository.save(order), orderMappingHelper);
     }
 
     @Override
@@ -120,7 +122,7 @@ public class PaymentServiceImpl implements PaymentService {
                 .totalAmount(order.getTotalPrice())
                 .paymentStatus(PaymentStatus.PENDING)
                 .paymentTime(LocalDateTime.now())
-                .order(order)
+                .orderId(order.getId())
                 .build());
 
         return VNPayResponse.builder()

@@ -22,7 +22,7 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
-@Table(name = "tbl_promotion")
+@Table(name = "promotions")
 @SQLRestriction("status = 'ACTIVE'")
 @SQLDelete(sql = "UPDATE tbl_promotion SET status = 'INACTIVE' WHERE id = ?")
 @Builder
@@ -33,34 +33,27 @@ import java.util.Set;
 public class Promotion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-     Long id;
+    private Long id;
 
-    @JoinColumn(nullable = false)
-    String code;
-     String description;
-     Integer discountPercent;
-    @JoinColumn(nullable = false)
-     LocalDate startDate;
-    @JoinColumn(nullable = false)
-     LocalDate endDate;
+    private String code;
+    private String description;
+    private Integer discountPercent;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     @Enumerated(EnumType.STRING)
-    @JoinColumn(name = "status", nullable = false)
-    EntityStatus status;
+    private EntityStatus status;
 
 
     @CreatedBy
-    String createdBy;
+    private String createdBy;
     @LastModifiedBy
-    String updatedBy;
+    private String updatedBy;
     @CreationTimestamp
-    LocalDate createdAt;
+    private LocalDate createdAt;
     @UpdateTimestamp
-    LocalDate updatedAt;
+    private LocalDate updatedAt;
 
-
-    @OneToMany(mappedBy = "promotion")
-    Set<PromotionUsage> promotionUsages = new HashSet<>();
 
 
     @PrePersist

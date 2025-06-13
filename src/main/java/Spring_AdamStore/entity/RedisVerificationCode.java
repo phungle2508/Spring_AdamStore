@@ -1,17 +1,13 @@
 package Spring_AdamStore.entity;
 
 import Spring_AdamStore.constants.VerificationType;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
 
-import java.time.LocalDateTime;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
 @Builder
@@ -21,20 +17,13 @@ import java.time.LocalDateTime;
 public class RedisVerificationCode {
 
     @Id
-    String redisKey;
+    private String redisKey;
 
-    @Column(nullable = false)
-    String email;
-    @Column(nullable = false)
-    String verificationCode;
+    private String email;
+    private String verificationCode;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    VerificationType verificationType;
-
-    @Column(nullable = false)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    LocalDateTime expirationTime;
+    private VerificationType verificationType;
 
     @TimeToLive
      long ttl;

@@ -55,7 +55,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"forgotPasswordToken\": \"ssfvcdsvdvwdfvioqeasacnbebvnnbpvwassxxllslfegdaafvsdaavdd\",\r\n  \"newPassword\": \"123456\",\r\n  \"confirmPassword\": \"123456\"\r\n}",
+									"raw": "{\r\n  \"redisForgotPasswordToken\": \"ssfvcdsvdvwdfvioqeasacnbebvnnbpvwassxxllslfegdaafvsdaavdd\",\r\n  \"newPassword\": \"123456\",\r\n  \"confirmPassword\": \"123456\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"

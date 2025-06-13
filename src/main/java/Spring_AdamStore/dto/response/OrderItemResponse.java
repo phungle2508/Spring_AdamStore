@@ -5,7 +5,6 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
 @Builder
@@ -13,10 +12,10 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 public class OrderItemResponse {
 
-    Long id;
+    private Long id;
 
-    Double unitPrice;
-    Integer quantity;
+    private Double unitPrice;
+    private Integer quantity;
 
-    ProductVariantBasic productVariant;
+    private ProductVariantBasic productVariant;
 }

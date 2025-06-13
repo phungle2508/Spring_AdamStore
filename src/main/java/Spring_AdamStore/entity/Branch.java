@@ -15,42 +15,37 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLRestriction("status = 'ACTIVE'")
-@SQLDelete(sql = "UPDATE tbl_branch SET status = 'INACTIVE' WHERE id = ?")
-@Table(name = "tbl_branch")
+@SQLDelete(sql = "UPDATE branches SET status = 'INACTIVE' WHERE id = ?")
+@Table(name = "branches")
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class Branch {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-     Long id;
+     private Long id;
 
-    @JoinColumn(nullable = false, unique = true)
-     String name;
-    @JoinColumn(nullable = false)
-     String location;
-    @JoinColumn(nullable = false, unique = true)
-     String phone;
+     private String name;
+     private String location;
+     private String phone;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    EntityStatus status;
+    private EntityStatus status;
 
     @CreatedBy
-    String createdBy;
+    private String createdBy;
     @LastModifiedBy
-    String updatedBy;
+    private String updatedBy;
     @CreationTimestamp
-    LocalDate createdAt;
+    private LocalDate createdAt;
     @UpdateTimestamp
-    LocalDate updatedAt;
+    private LocalDate updatedAt;
 
 
     @PrePersist

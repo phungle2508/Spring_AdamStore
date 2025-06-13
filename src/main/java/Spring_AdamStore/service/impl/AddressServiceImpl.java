@@ -9,10 +9,10 @@ import Spring_AdamStore.entity.*;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.AddressMapper;
+import Spring_AdamStore.mapper.AddressMappingHelper;
 import Spring_AdamStore.repository.*;
 import Spring_AdamStore.service.AddressService;
 import Spring_AdamStore.service.CurrentUserService;
-import Spring_AdamStore.service.PageableService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,41 +29,33 @@ public class AddressServiceImpl implements AddressService {
 
     private final AddressRepository addressRepository;
     private final AddressMapper addressMapper;
-    private final PageableService pageableService;
     private final DistrictRepository districtRepository;
     private final ProvinceRepository provinceRepository;
     private final WardRepository wardRepository;
     private final CurrentUserService currentUserService;
     private final OrderRepository orderRepository;
+    private final AddressMappingHelper addressMappingHelper;
+
 
     @Override
     @Transactional
     public AddressResponse create(AddressRequest request) {
+        log.info("Creating address with data= {}", request);
+
+        findWardByCode(request.getWardCode());
+
+        findDistrictById(request.getDistrictId());
+
+        findProvinceById(request.getProvinceId());
+
         Address address = addressMapper.toAddress(request);
 
-        Ward ward = findWardByCode(request.getWardCode());
-
-        District district = findDistrictById(request.getDistrictId());
-
-        if (!ward.getDistrict().getId().equals(district.getId())) {
-            throw new AppException(ErrorCode.INVALID_DISTRICT_FOR_WARD);
-        }
-
-        Province province = findProvinceById(request.getProvinceId());
-
-        if (!district.getProvince().getId().equals(province.getId())) {
-            throw new AppException(ErrorCode.INVALID_PROVINCE_FOR_DISTRICT);
-        }
-
-        address.setWard(ward);
-        address.setProvince(province);
-        address.setDistrict(district);
-
         User user = currentUserService.getCurrentUser();
-        address.setUser(user);
+        address.setUserId(user.getId());
 
         if (Boolean.TRUE.equals(request.getIsDefault())) {
-            List<Address> addressList = addressRepository.findAllByUser(user);
+            List<Address> addressList = addressRepository.findAllByUserId(user.getId());
+
             addressList.stream()
                     .filter(Address::getIsDefault)
                     .forEach(userAddress -> {
@@ -72,60 +64,50 @@ public class AddressServiceImpl implements AddressService {
                     });
         }
 
-        return addressMapper.toAddressResponse(addressRepository.save(address));
+        return addressMapper.toAddressResponse(addressRepository.save(address), addressMappingHelper);
     }
 
     @Override
     public AddressResponse fetchById(Long id) {
+        log.info("Fetch Address By Id: {}", id);
+
         Address address = findAddressById(id);
 
-        return addressMapper.toAddressResponse(address);
+        return addressMapper.toAddressResponse(address, addressMappingHelper);
     }
 
     @Override
-    public PageResponse<AddressResponse> fetchAllForAdmin(int pageNo, int pageSize, String sortBy) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Address.class);
+    public PageResponse<AddressResponse> fetchAllForAdmin(Pageable pageable) {
+        log.info("Fetch All Address For Admin");
 
         Page<Address> addressPage = addressRepository.findAllAddresses(pageable);
 
         return PageResponse.<AddressResponse>builder()
-                .page(addressPage.getNumber() + 1)
+                .page(addressPage.getNumber())
                 .size(addressPage.getSize())
                 .totalPages(addressPage.getTotalPages())
                 .totalItems(addressPage.getTotalElements())
-                .items(addressMapper.toAddressResponseList(addressPage.getContent()))
+                .items(addressMapper.toAddressResponseList(addressPage.getContent(), addressMappingHelper))
                 .build();
     }
 
     @Override
     @Transactional
     public AddressResponse update(Long id, AddressRequest request) {
+        log.info("Updated address with data= {}", request);
+
         Address address = findAddressById(id);
+
+        findWardByCode(request.getWardCode());
+
+        findDistrictById(request.getDistrictId());
+
+        findProvinceById(request.getProvinceId());
 
         addressMapper.update(address, request);
 
-        Ward ward = findWardByCode(request.getWardCode());
-
-        District district = findDistrictById(request.getDistrictId());
-
-        if (!ward.getDistrict().getId().equals(district.getId())) {
-            throw new AppException(ErrorCode.INVALID_DISTRICT_FOR_WARD);
-        }
-
-        Province province = findProvinceById(request.getProvinceId());
-
-        if (!district.getProvince().getId().equals(province.getId())) {
-            throw new AppException(ErrorCode.INVALID_PROVINCE_FOR_DISTRICT);
-        }
-
-        address.setWard(ward);
-        address.setProvince(province);
-        address.setDistrict(district);
-
         if (Boolean.TRUE.equals(request.getIsDefault())) {
-            List<Address> addressList = addressRepository.findAllByUser(address.getUser());
+            List<Address> addressList = addressRepository.findAllByUserId(address.getUserId());
             addressList.stream()
                     .filter(Address::getIsDefault)
                     .forEach(userAddress -> {
@@ -135,12 +117,14 @@ public class AddressServiceImpl implements AddressService {
             address.setIsDefault(true);
         }
 
-        return addressMapper.toAddressResponse(addressRepository.save(address));
+        return addressMapper.toAddressResponse(addressRepository.save(address), addressMappingHelper);
     }
 
     @Override
     @Transactional
     public void hideAddress(Long id) {
+        log.info("Hide Address By id: {}", id);
+
         Address address = findAddressById(id);
         address.setIsVisible(false);
 
@@ -150,6 +134,8 @@ public class AddressServiceImpl implements AddressService {
     @Override
     @Transactional
     public void delete(Long id) {
+        log.info("Delete Address By Id: {}", id);
+
         Address address = findAddressById(id);
 
         if (Boolean.TRUE.equals(address.getIsDefault())) {
@@ -168,11 +154,13 @@ public class AddressServiceImpl implements AddressService {
     @Override
     @Transactional
     public AddressResponse restore(long id) {
+        log.info("Restore Address By Id: {}", id);
+
         Address address = addressRepository.findAddressById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.ADDRESS_NOT_EXISTED));
 
         address.setStatus(EntityStatus.ACTIVE);
-        return addressMapper.toAddressResponse(addressRepository.save(address));
+        return addressMapper.toAddressResponse(addressRepository.save(address), addressMappingHelper);
     }
 
 
@@ -181,20 +169,22 @@ public class AddressServiceImpl implements AddressService {
                 .orElseThrow(() -> new AppException(ErrorCode.ADDRESS_NOT_EXISTED));
     }
 
-    private Ward findWardByCode(String code) {
-        return wardRepository.findByCode(code)
+    private void findWardByCode(String code) {
+          wardRepository.findByCode(code)
                 .orElseThrow(() -> new AppException(ErrorCode.WARD_NOT_EXISTED));
     }
 
-    private District findDistrictById(Long id) {
-        return districtRepository.findById(id)
+    private void findDistrictById(Integer id) {
+         districtRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.DISTRICT_NOT_EXISTED));
     }
 
-    private Province findProvinceById(Long id) {
-        return provinceRepository.findById(id)
+    private void findProvinceById(Integer id) {
+         provinceRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.PROVINCE_NOT_EXISTED));
     }
+
+
 }
 
 

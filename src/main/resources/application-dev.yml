@@ -1,25 +1,39 @@
 server:
   port: 8080
 
+
 # Profile
 spring:
   config:
     activate:
       on-profile: dev
 
+
   # Database
   datasource:
-    url: ${DATABASE_URL:jdbc:mysql://localhost:3306/adamstore}
-    username: ${DATABASE_USERNAME:root}
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/adam-store}
+    username: ${DATABASE_USERNAME:postgres}
     password: ${DATABASE_PASSWORD:123456}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.postgresql.Driver
 
   jpa:
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: update
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: validate
+    properties:
+      hibernate:
+        physical_naming_strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+        implicit_naming_strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
+
+
+
+# Flyway
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    out-of-order: true
+
 
   # Redis
   data:
@@ -67,6 +81,7 @@ jwt:
   reset:
     expiry-in-minutes: ${JWT_RESET_TOKEN_IN_MINUTES:15}
 
+
 # Cloudinary
 cloud:
   name: ${CLOUDINARY_NAME}
@@ -79,10 +94,7 @@ cloud:
 # GHN
 ghn:
   token: ${GHN_TOKEN}
-  province-url: ${GHN_PROVINCE_URL}
-  district-url: ${GHN_DISTRICT_URL}
-  ward-url: ${GHN_WARD_URL}
-  fee-url: ${GHN_FEE_URL}
+  base-url: ${GHN_BASE_URL}
   shop-id: ${SHOP_ID}
 
 shipping:
@@ -91,7 +103,7 @@ shipping:
   weight: 20
   length: 20
   width: 20
-  height: 1000
+  height: 500
 
 # VNPAY
 payment:

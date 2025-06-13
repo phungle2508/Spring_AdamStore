@@ -14,7 +14,6 @@ import org.springframework.data.annotation.LastModifiedBy;
 import java.time.LocalDate;
 import java.util.Set;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
 @Builder
@@ -22,20 +21,18 @@ import java.util.Set;
 @AllArgsConstructor
 public class UserResponse {
 
-    Long id;
-    String name;
-    String email;
-    @Enumerated(EnumType.STRING)
-    EntityStatus status;
-    String avatarUrl;
-    LocalDate dob;
-    @Enumerated(EnumType.STRING)
-    Gender gender;
+    private Long id;
+    private String name;
+    private String email;
+    private EntityStatus status;
+    private String avatarUrl;
+    private LocalDate dob;
+    private Gender gender;
 
-    String createdBy;
-    String updatedBy;
-    LocalDate createdAt;
-    LocalDate updatedAt;
+    private String createdBy;
+    private String updatedBy;
+    private LocalDate createdAt;
+    private LocalDate updatedAt;
 
-    Set<EntityBasic> roles;
+    private Set<EntityBasic> roles;
 }

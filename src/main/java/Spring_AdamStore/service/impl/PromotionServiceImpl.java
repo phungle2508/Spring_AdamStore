@@ -10,7 +10,6 @@ import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.PromotionMapper;
 import Spring_AdamStore.repository.PromotionRepository;
 import Spring_AdamStore.repository.relationship.PromotionUsageRepository;
-import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.PromotionService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -29,13 +28,14 @@ public class PromotionServiceImpl implements PromotionService {
 
     private final PromotionRepository promotionRepository;
     private final PromotionMapper promotionMapper;
-    private final PageableService pageableService;
     private final PromotionUsageRepository promotionUsageRepository;
 
 
     @Override
     @Transactional
     public PromotionResponse create(PromotionRequest request) {
+        log.info("Creating Promotion with data= {}", request);
+
         if(promotionRepository.countByCode(request.getCode()) > 0){
             throw new AppException(ErrorCode.PROMOTION_EXISTED);
         }
@@ -47,21 +47,21 @@ public class PromotionServiceImpl implements PromotionService {
 
     @Override
     public PromotionResponse fetchById(Long id) {
+        log.info("Fetch Promotion By Id: {}", id);
+
         Promotion promotion = findPromotionById(id);
 
         return promotionMapper.toPromotionResponse(promotion);
     }
 
     @Override
-    public PageResponse<PromotionResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Promotion.class);
+    public PageResponse<PromotionResponse> fetchAll(Pageable pageable) {
+        log.info("Fetch All Promotion For Admin");
 
         Page<Promotion> promotionPage = promotionRepository.findAllPromotions(pageable);
 
         return PageResponse.<PromotionResponse>builder()
-                .page(promotionPage.getNumber() + 1)
+                .page(promotionPage.getNumber())
                 .size(promotionPage.getSize())
                 .totalPages(promotionPage.getTotalPages())
                 .totalItems(promotionPage.getTotalElements())
@@ -72,6 +72,8 @@ public class PromotionServiceImpl implements PromotionService {
     @Override
     @Transactional
     public PromotionResponse update(Long id, PromotionUpdateRequest request) {
+        log.info("Updated Promotion with data= {}", request);
+
         Promotion promotion = findPromotionById(id);
 
         if(!request.getCode().equals(promotion.getCode()) && promotionRepository.countByCode(request.getCode()) > 0){
@@ -86,6 +88,8 @@ public class PromotionServiceImpl implements PromotionService {
     @Transactional
     @Override
     public void delete(Long id) {
+        log.info("Delete Promotion By Id: {}", id);
+
         Promotion promotion = findPromotionById(id);
 
         if(promotionUsageRepository.existsByPromotionId(promotion.getId())){
@@ -97,6 +101,8 @@ public class PromotionServiceImpl implements PromotionService {
 
     @Override
     public PromotionResponse restore(long id) {
+        log.info("Restore Promotion By Id: {}", id);
+
         Promotion promotion = promotionRepository.findPromotionById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.BRANCH_NOT_EXISTED));
 

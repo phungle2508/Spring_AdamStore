@@ -1,10 +1,9 @@
-package Spring_AdamStore.dto.response;
+package Spring_AdamStore.dto.ghn.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import lombok.experimental.FieldDefaults;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
+
 @Getter
 @Setter
 @Builder
@@ -13,8 +12,8 @@ import lombok.experimental.FieldDefaults;
 public class GhnProvince {
 
     @JsonProperty("ProvinceID")
-     int provinceId;
+     private int provinceId;
 
     @JsonProperty("ProvinceName")
-     String provinceName;
+     private String provinceName;
 }

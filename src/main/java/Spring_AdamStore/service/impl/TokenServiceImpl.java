@@ -2,11 +2,13 @@ package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.constants.TokenType;
 import Spring_AdamStore.entity.RefreshToken;
+import Spring_AdamStore.entity.Role;
 import Spring_AdamStore.entity.User;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.repository.RefreshTokenRepository;
 import Spring_AdamStore.repository.RedisRevokedTokenRepository;
+import Spring_AdamStore.repository.RoleRepository;
 import Spring_AdamStore.service.TokenService;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
@@ -35,6 +37,7 @@ public class TokenServiceImpl implements TokenService {
 
     private final RedisRevokedTokenRepository revokedTokenRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final RoleRepository roleRepository;
 
     @Value("${jwt.signer-key}")
     private String SIGNER_KEY;
@@ -80,8 +83,10 @@ public class TokenServiceImpl implements TokenService {
     }
 
     private Set<String> getRolesFromUser(User user) {
-        return user.getRoles().stream()
-                .map(userHasRole -> userHasRole.getRole().getName())
+        Set<Role> roleSet = roleRepository.findRolesByUserId(user.getId());
+
+        return roleSet.stream()
+                .map(Role::getName)
                 .collect(Collectors.toSet());
     }
 
@@ -106,7 +111,7 @@ public class TokenServiceImpl implements TokenService {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         }
 
-        if(type == TokenType.REFRESH_TOKEN && !refreshTokenRepository.existsByRefreshToken(token)){
+        if(type == TokenType.REFRESH_TOKEN && !refreshTokenRepository.existsByToken(token)){
             throw new AppException(ErrorCode.INVALID_REFRESH_TOKEN);
         }
 
@@ -133,7 +138,7 @@ public class TokenServiceImpl implements TokenService {
 
     public void saveRefreshToken(String token) {
         RefreshToken refreshToken = RefreshToken.builder()
-                .refreshToken(token)
+                .token(token)
                 .expiryDate(LocalDateTime.now().plusDays(refreshTokenExpiration))
                 .build();
 

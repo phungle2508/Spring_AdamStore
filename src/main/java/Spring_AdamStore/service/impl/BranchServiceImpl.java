@@ -10,7 +10,6 @@ import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.BranchMapper;
 import Spring_AdamStore.repository.BranchRepository;
 import Spring_AdamStore.service.BranchService;
-import Spring_AdamStore.service.PageableService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,11 +26,12 @@ public class BranchServiceImpl implements BranchService {
 
     private final BranchMapper branchMapper;
     private final BranchRepository branchRepository;
-    private final PageableService pageableService;
 
     @Override
     @Transactional
     public BranchResponse create(BranchRequest request) {
+        log.info("Creating branch with data= {}", request);
+
         if(branchRepository.countByName(request.getName()) > 0){
             throw new AppException(ErrorCode.BRANCH_EXISTED);
         }
@@ -47,21 +47,21 @@ public class BranchServiceImpl implements BranchService {
 
     @Override
     public BranchResponse fetchById(Long id) {
+        log.info("Fetch branch By Id: {}", id);
+
         Branch branch = findActiveBranchById(id);
 
         return branchMapper.toBranchResponse(branch);
     }
 
     @Override
-    public PageResponse<BranchResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Branch.class);
+    public PageResponse<BranchResponse> fetchAll(Pageable pageable) {
+        log.info("Fetch All branch For User");
 
         Page<Branch> branchPage = branchRepository.findAll(pageable);
 
         return PageResponse.<BranchResponse>builder()
-                .page(branchPage.getNumber() + 1)
+                .page(branchPage.getNumber())
                 .size(branchPage.getSize())
                 .totalPages(branchPage.getTotalPages())
                 .totalItems(branchPage.getTotalElements())
@@ -70,15 +70,13 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
-    public PageResponse<BranchResponse> fetchAllBranchesForAdmin(int pageNo, int pageSize, String sortBy) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Branch.class);
+    public PageResponse<BranchResponse> fetchAllBranchesForAdmin(Pageable pageable) {
+        log.info("Fetch All branch For Admin");
 
         Page<Branch> branchPage = branchRepository.findAllBranches(pageable);
 
         return PageResponse.<BranchResponse>builder()
-                .page(branchPage.getNumber() + 1)
+                .page(branchPage.getNumber())
                 .size(branchPage.getSize())
                 .totalPages(branchPage.getTotalPages())
                 .totalItems(branchPage.getTotalElements())
@@ -89,6 +87,8 @@ public class BranchServiceImpl implements BranchService {
     @Override
     @Transactional
     public BranchResponse update(Long id, BranchUpdateRequest request) {
+        log.info("Updated branch with data= {}", request);
+
         Branch branch = findActiveBranchById(id);
 
         if(!request.getName().equals(branch.getName()) && branchRepository.countByName(request.getName()) > 0){
@@ -107,6 +107,8 @@ public class BranchServiceImpl implements BranchService {
     @Transactional
     @Override
     public void delete(Long id) {
+        log.info("Delete branch By Id: {}", id);
+
         Branch branch = findActiveBranchById(id);
 
         branchRepository.delete(branch);
@@ -114,6 +116,8 @@ public class BranchServiceImpl implements BranchService {
 
     @Override
     public BranchResponse restore(long id) {
+        log.info("Restore branch By Id: {}", id);
+
         Branch branch = branchRepository.findBranchById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.BRANCH_NOT_EXISTED));
 

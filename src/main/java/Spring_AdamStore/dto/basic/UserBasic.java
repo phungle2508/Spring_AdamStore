@@ -9,8 +9,8 @@ import lombok.*;
 @Builder
 public class UserBasic {
 
-    Long id;
-    String name;
-    String email;
-    String phone;
+    private Long id;
+    private String name;
+    private String email;
+    private String phone;
 }

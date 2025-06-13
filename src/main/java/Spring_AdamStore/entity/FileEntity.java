@@ -1,14 +1,15 @@
 package Spring_AdamStore.entity;
 
+import Spring_AdamStore.constants.FileType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
+
 @Getter
 @Setter
-@Table(name = "tbl_file")
+@Table(name = "files")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,15 +18,14 @@ public class FileEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-     Long id;
+    private Long id;
 
-     String publicId;
-     String fileName;
-     String imageUrl;
+    private String publicId;
+    private String fileName;
+    private String imageUrl;
 
-    @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "product_id")
-     Product product;
+    @Enumerated(EnumType.STRING)
+    private FileType fileType;
+
 
 }

@@ -14,13 +14,13 @@ import java.util.Optional;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-    @Query(value = "SELECT COUNT(*) FROM tbl_category WHERE name = :name", nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM categories WHERE name = :name", nativeQuery = true)
     Long countByName(@Param("name") String name);
 
-    @Query(value = "SELECT * FROM tbl_category c WHERE c.id = :id", nativeQuery = true)
+    @Query(value = "SELECT * FROM categories c WHERE c.id = :id", nativeQuery = true)
     Optional<Category> findCategoryById(@Param("id") Long id);
 
-    @Query(value = "SELECT * FROM tbl_category",
+    @Query(value = "SELECT * FROM categories",
             countQuery = "SELECT COUNT(*) FROM tbl_category",
             nativeQuery = true)
     Page<Category> findAllCategories(Pageable pageable);

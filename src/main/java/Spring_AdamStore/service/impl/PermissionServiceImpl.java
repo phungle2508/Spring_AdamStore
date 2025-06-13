@@ -7,7 +7,6 @@ import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.PermissionMapper;
 import Spring_AdamStore.repository.PermissionRepository;
-import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.PermissionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,10 +21,11 @@ public class PermissionServiceImpl implements PermissionService {
 
     private final PermissionRepository permissionRepository;
     private final PermissionMapper permissionMapper;
-    private final PageableService pageableService;
 
     @Override
     public PermissionResponse fetchPermissionById(Long id) {
+        log.info("Fetch Permission By Id: {}", id);
+
         Permission permissionDB = permissionRepository.findById(id).
                 orElseThrow(() -> new AppException(ErrorCode.PERMISSION_NOT_EXISTED));
 
@@ -33,15 +33,13 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public PageResponse<PermissionResponse> fetchAllPermissions(int pageNo, int pageSize, String sortBy) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Permission.class);
+    public PageResponse<PermissionResponse> fetchAllPermissions(Pageable pageable) {
+        log.info("Fetch All Permission For Admin");
 
         Page<Permission> permissionPage = permissionRepository.findAll(pageable);
 
         return PageResponse.<PermissionResponse>builder()
-                .page(permissionPage.getNumber() + 1)
+                .page(permissionPage.getNumber())
                 .size(permissionPage.getSize())
                 .totalPages(permissionPage.getTotalPages())
                 .totalItems(permissionPage.getTotalElements())

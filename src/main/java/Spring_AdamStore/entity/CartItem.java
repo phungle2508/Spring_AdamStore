@@ -5,10 +5,9 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
-@Table(name = "tbl_cart_item")
+@Table(name = "cart_items")
 @Entity
 @Builder
 @AllArgsConstructor
@@ -17,17 +16,14 @@ public class CartItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
-    Double price;
-    Integer quantity;
+    private Double price;
+    private Integer quantity;
 
 
-    @ManyToOne
-    @JoinColumn(name = "product_variant_id", nullable = false)
-    ProductVariant productVariant;
+    private Long cartId;
 
-    @ManyToOne
-    @JoinColumn(name = "cart_id")
-    Cart cart;
+    private Long productVariantId;
+
 }

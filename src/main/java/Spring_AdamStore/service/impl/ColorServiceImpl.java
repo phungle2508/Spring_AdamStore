@@ -10,7 +10,6 @@ import Spring_AdamStore.mapper.ColorMapper;
 import Spring_AdamStore.repository.ColorRepository;
 import Spring_AdamStore.repository.ProductVariantRepository;
 import Spring_AdamStore.service.ColorService;
-import Spring_AdamStore.service.PageableService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,11 +25,12 @@ public class ColorServiceImpl implements ColorService {
     private final ColorRepository colorRepository;
     private final ColorMapper colorMapper;
     private final ProductVariantRepository productVariantRepository;
-    private final PageableService pageableService;
 
     @Override
     @Transactional
     public ColorResponse create(ColorRequest request) {
+        log.info("Creating color with data: {}", request);
+
         if(colorRepository.existsByName(request.getName())){
             throw new AppException(ErrorCode.COLOR_EXISTED);
         }
@@ -40,23 +40,15 @@ public class ColorServiceImpl implements ColorService {
         return colorMapper.toColorResponse(colorRepository.save(color));
     }
 
-    @Override
-    public ColorResponse fetchById(Long id) {
-       Color color = findColorById(id);
-
-        return colorMapper.toColorResponse(color);
-    }
 
     @Override
-    public PageResponse<ColorResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Color.class);
+    public PageResponse<ColorResponse> fetchAll(Pageable pageable) {
+        log.info("Fetching all colors with pagination");
 
         Page<Color> colorPage = colorRepository.findAll(pageable);
 
         return PageResponse.<ColorResponse>builder()
-                .page(colorPage.getNumber() + 1)
+                .page(colorPage.getNumber())
                 .size(colorPage.getSize())
                 .totalPages(colorPage.getTotalPages())
                 .totalItems(colorPage.getTotalElements())
@@ -67,6 +59,8 @@ public class ColorServiceImpl implements ColorService {
     @Override
     @Transactional
     public ColorResponse update(Long id, ColorRequest request) {
+        log.info("Updating color with id: {}", id);
+
         Color color = findColorById(id);
 
         if(!request.getName().equals(color.getName()) && colorRepository.existsByName(request.getName())){
@@ -81,6 +75,8 @@ public class ColorServiceImpl implements ColorService {
     @Transactional
     @Override
     public void delete(Long id) {
+        log.info("Deleting color with id: {}", id);
+
         Color color = findColorById(id);
 
         long count = productVariantRepository.countByColorId(color.getId());

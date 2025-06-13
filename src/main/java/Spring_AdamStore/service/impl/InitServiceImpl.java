@@ -87,7 +87,7 @@ public class InitServiceImpl implements InitService {
 
     private void saveAllDistrictsByProvince(Province province){
         List<District> districtList = districtService.loadDistrictsFromGhn(province.getId());
-        districtList.forEach(district -> district.setProvince(province));
+        districtList.forEach(district -> district.setProvinceId(province.getId()));
 
         districtRepository.saveAllAndFlush(districtList);
 
@@ -96,7 +96,7 @@ public class InitServiceImpl implements InitService {
 
     private void saveAllWardsByDistrict(District district){
         List<Ward> wardList = wardService.loadWardsFromGhn(district.getId());
-        wardList.forEach(ward -> ward.setDistrict(district));
+        wardList.forEach(ward -> ward.setDistrictId(district.getId()));
 
         wardRepository.saveAllAndFlush(wardList);
     }

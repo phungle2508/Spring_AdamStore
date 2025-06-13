@@ -17,13 +17,13 @@ import java.util.Optional;
 @Repository
 public interface PromotionRepository extends JpaRepository<Promotion, Long> {
 
-    @Query(value = "SELECT COUNT(*) FROM tbl_promotion WHERE code = :code", nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM promotions WHERE code = :code", nativeQuery = true)
     Long countByCode(@Param("code") String code);
 
-    @Query(value = "SELECT * FROM tbl_promotion p WHERE p.id = :id", nativeQuery = true)
+    @Query(value = "SELECT * FROM promotions p WHERE p.id = :id", nativeQuery = true)
     Optional<Promotion> findPromotionById(@Param("id") Long id);
 
-    @Query(value = "SELECT * FROM tbl_promotion",
+    @Query(value = "SELECT * FROM promotions",
             countQuery = "SELECT COUNT(*) FROM tbl_promotion",
             nativeQuery = true)
     Page<Promotion> findAllPromotions(Pageable pageable);
@@ -35,8 +35,8 @@ public interface PromotionRepository extends JpaRepository<Promotion, Long> {
             "AND NOT EXISTS (" +
             "    SELECT 1 " +
             "    FROM PromotionUsage pu " +
-            "    WHERE pu.user.id = :userId " +
-            "    AND pu.promotion.id = p.id" +
+            "    WHERE pu.userId = :userId " +
+            "    AND pu.promotionId = p.id" +
             ")")
     Page<Promotion> findAllAvailableForCustomer(@Param("userId") Long userId, @Param("today") LocalDate today, Pageable pageable);
 

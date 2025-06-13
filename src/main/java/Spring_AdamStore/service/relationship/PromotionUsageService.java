@@ -27,7 +27,7 @@ public class PromotionUsageService {
         }
 
         // check user su dung chua
-        boolean used = promotionUsageRepository.existsByUserAndPromotion(user, promotion);
+        boolean used = promotionUsageRepository.existsByUserIdAndPromotionId(user.getId(), promotion.getId());
 
         if(used){
             throw new AppException(ErrorCode.PROMOTION_ALREADY_USED);
@@ -36,9 +36,9 @@ public class PromotionUsageService {
         return promotionUsageRepository.save(PromotionUsage.builder()
                         .discountAmount(currentTotal * (promotion.getDiscountPercent() / 100.0))
                         .usedAt(LocalDateTime.now())
-                        .promotion(promotion)
-                        .user(user)
-                        .order(order)
+                        .promotionId(promotion.getId())
+                        .userId(user.getId())
+                        .orderId(order.getId())
                 .build());
     }
 }

@@ -7,10 +7,10 @@ import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.CategoryMapper;
 import Spring_AdamStore.mapper.ProductMapper;
+import Spring_AdamStore.mapper.ProductMappingHelper;
 import Spring_AdamStore.repository.CategoryRepository;
 import Spring_AdamStore.repository.ProductRepository;
 import Spring_AdamStore.service.CategoryService;
-import Spring_AdamStore.service.PageableService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,13 +27,15 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
-    private final PageableService pageableService;
     private final ProductRepository productRepository;
+    private final ProductMappingHelper productMappingHelper;
     private final ProductMapper productMapper;
 
     @Override
     @Transactional
     public CategoryResponse create(CategoryRequest request) {
+        log.info("Creating Category with data= {}", request);
+
         if(categoryRepository.countByName(request.getName()) > 0){
             throw new AppException(ErrorCode.CATEGORY_EXISTED);
         }
@@ -44,22 +46,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryResponse fetchById(Long id) {
-        Category category = findActiveCategoryById(id);
-
-        return categoryMapper.toCategoryResponse(category);
-    }
-
-    @Override
-    public PageResponse<CategoryResponse> fetchAll(int pageNo, int pageSize, String sortBy) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Category.class);
+    public PageResponse<CategoryResponse> fetchAll(Pageable pageable) {
+        log.info("Fetch All Category For User");
 
         Page<Category> categoryPage = categoryRepository.findAll(pageable);
 
         return PageResponse.<CategoryResponse>builder()
-                .page(categoryPage.getNumber() + 1)
+                .page(categoryPage.getNumber())
                 .size(categoryPage.getSize())
                 .totalPages(categoryPage.getTotalPages())
                 .totalItems(categoryPage.getTotalElements())
@@ -68,15 +61,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public PageResponse<CategoryResponse> fetchAllCategoriesForAdmin(int pageNo, int pageSize, String sortBy) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Category.class);
+    public PageResponse<CategoryResponse> fetchAllCategoriesForAdmin(Pageable pageable) {
+        log.info("Fetch All Category For Admin");
 
         Page<Category> categoryPage = categoryRepository.findAllCategories(pageable);
 
         return PageResponse.<CategoryResponse>builder()
-                .page(categoryPage.getNumber() + 1)
+                .page(categoryPage.getNumber())
                 .size(categoryPage.getSize())
                 .totalPages(categoryPage.getTotalPages())
                 .totalItems(categoryPage.getTotalElements())
@@ -89,6 +80,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public CategoryResponse update(Long id, CategoryRequest request) {
+        log.info("Updated Category with data= {}", request);
+
         Category category = findActiveCategoryById(id);
 
         if(!request.getName().equals(category.getName()) && categoryRepository.countByName(request.getName()) > 0){
@@ -103,6 +96,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     @Override
     public void delete(Long id) {
+        log.info("Delete Category By Id: {}", id);
+
         Category category = findActiveCategoryById(id);
 
         if(productRepository.countActiveProductsByCategoryId(category.getId(), ACTIVE.name()) > 0){
@@ -115,6 +110,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public CategoryResponse restore(long id) {
+        log.info("Restore Category By Id: {}", id);
+
         Category category = categoryRepository.findCategoryById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_EXISTED));
 
@@ -123,38 +120,20 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public PageResponse<ProductResponse> fetchByCategoryId(int pageNo, int pageSize, String sortBy, Long categoryId) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Product.class);
+    public PageResponse<ProductResponse> fetchProductByCategory(Pageable pageable, Long categoryId) {
+        log.info("Fetch All Product by Category");
 
         Page<Product> productPage = productRepository.findByCategoryId(categoryId, pageable);
 
         return PageResponse.<ProductResponse>builder()
-                .page(productPage.getNumber() + 1)
+                .page(productPage.getNumber())
                 .size(productPage.getSize())
                 .totalPages(productPage.getTotalPages())
                 .totalItems(productPage.getTotalElements())
-                .items(productMapper.toProductResponseList(productPage.getContent()))
+                .items(productMapper.toProductResponseList(productPage.getContent(), productMappingHelper))
                 .build();
     }
 
-    @Override
-    public PageResponse<ProductResponse> fetchByCategoryIdForAdmin(int pageNo, int pageSize, String sortBy, Long categoryId) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Product.class);
-
-        Page<Product> productPage = productRepository.findAllByCategoryId(categoryId, pageable);
-
-        return PageResponse.<ProductResponse>builder()
-                .page(productPage.getNumber() + 1)
-                .size(productPage.getSize())
-                .totalPages(productPage.getTotalPages())
-                .totalItems(productPage.getTotalElements())
-                .items(productMapper.toProductResponseList(productPage.getContent()))
-                .build();
-    }
 
     private Category findActiveCategoryById(Long id) {
         return categoryRepository.findById(id)

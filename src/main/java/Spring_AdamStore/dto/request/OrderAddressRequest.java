@@ -2,16 +2,13 @@ package Spring_AdamStore.dto.request;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.experimental.FieldDefaults;
 
 @Getter
-@FieldDefaults(level = AccessLevel.PRIVATE)
-public class UpdateOrderAddressRequest {
+public class OrderAddressRequest {
 
     @Min(value = 0, message = "productVariantId phải lớn hơn hoặc bằng 0")
     @NotNull(message = "productVariantId không được null")
-    Long addressId;
+    private Long addressId;
 
 }

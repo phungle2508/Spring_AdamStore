@@ -12,7 +12,6 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
 @Builder
@@ -20,26 +19,22 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class AddressResponse {
 
-    Long id;
+    private Long id;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    String userName;
-    @Enumerated(EnumType.STRING)
-    EntityStatus status;
+    private Boolean isDefault;
 
-    Boolean isVisible;
+    private Boolean isVisible;
 
+    private EntityStatus status;
 
-    Boolean isDefault;
+    private String phone;
+    private String streetDetail;
 
-    String phone;
-    String streetDetail;
+    private WardBasic ward;
 
-    WardBasic ward;
+    private EntityBasic district;
 
-    EntityBasic district;
-
-    EntityBasic province;
+    private EntityBasic province;
 
 
 }

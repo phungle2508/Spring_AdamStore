@@ -6,16 +6,17 @@ import Spring_AdamStore.dto.response.ProvinceResponse;
 import Spring_AdamStore.dto.response.WardResponse;
 import Spring_AdamStore.entity.District;
 import jakarta.validation.constraints.Min;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface DistrictService {
 
-    DistrictResponse fetchById(Long id);
+    DistrictResponse fetchById(Integer id);
 
-    PageResponse<DistrictResponse> fetchAll(int pageNo, int pageSize, String sortBy);
+    PageResponse<DistrictResponse> fetchAll(Pageable pageable);
 
-    List<District> loadDistrictsFromGhn(int provinceId);
+    List<District> loadDistrictsFromGhn(Integer provinceId);
 
-    PageResponse<WardResponse> fetchWardsByDistrictId(int pageNo, int pageSize, String sortBy, Integer districtId);
+    PageResponse<WardResponse> fetchWardsByDistrictId(Pageable pageable, Integer districtId);
 }

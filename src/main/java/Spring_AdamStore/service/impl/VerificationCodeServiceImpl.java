@@ -32,10 +32,6 @@ public class VerificationCodeServiceImpl implements RedisVerificationCodeService
     public RedisVerificationCode saveVerificationCode(String email, VerificationType type){
         String verificationCode = generateVerificationCode();
 
-        LocalDateTime expirationTime = getExpirationTimeByType(type);
-
-        long ttl = java.time.Duration.between(LocalDateTime.now(), expirationTime).getSeconds();
-
         String redisKey = email + ":" + type;
 
         RedisVerificationCode code = RedisVerificationCode.builder()
@@ -43,20 +39,19 @@ public class VerificationCodeServiceImpl implements RedisVerificationCodeService
                 .email(email)
                 .verificationCode(verificationCode)
                 .verificationType(type)
-                .expirationTime(expirationTime)
-                .ttl(ttl)
+                .ttl(getExpirationTimeByType(type) * 60)
                 .build();
 
         return redisVerificationCodeRepository.save(code);
     }
 
-    private LocalDateTime getExpirationTimeByType(VerificationType type){
+    private Long getExpirationTimeByType(VerificationType type){
         switch (type){
             case REGISTER -> {
-                return LocalDateTime.now().plusMinutes(registerExpiration);
+                return registerExpiration;
             }
             case FORGOT_PASSWORD -> {
-                return LocalDateTime.now().plusMinutes(forgotPasswordExpiration);
+                return forgotPasswordExpiration;
             }
             default -> throw new AppException(ErrorCode.CODE_TYPE_INVALID);
         }
@@ -74,9 +69,6 @@ public class VerificationCodeServiceImpl implements RedisVerificationCodeService
             throw new AppException(ErrorCode.VERIFICATION_CODE_INVALID);
         }
 
-        if (redisVerificationCode.getExpirationTime().isBefore(LocalDateTime.now())) {
-            throw new AppException(ErrorCode.VERIFICATION_CODE_EXPIRED);
-        }
         return redisVerificationCode;
     }
 

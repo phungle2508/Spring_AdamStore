@@ -10,29 +10,25 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tbl_cart")
+@Table(name = "carts")
 @Entity
 public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @CreationTimestamp
-    LocalDate createdAt;
+    private LocalDate createdAt;
     @UpdateTimestamp
-    LocalDate updatedAt;
+    private LocalDate updatedAt;
 
-    @OneToMany(mappedBy = "cart")
-    Set<CartItem> cartItems = new HashSet<>();
+    private Long userId;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    User user;
+
 }

@@ -13,6 +13,9 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +33,8 @@ public class ReviewController {
     description = "API này dùng để đánh giá sản phẩm")
     @PostMapping("/reviews")
     public ApiResponse<ReviewResponse> create(@Valid @RequestBody ReviewRequest request){
+        log.info("Received request to create review: {}", request);
+
         return ApiResponse.<ReviewResponse>builder()
                 .code(HttpStatus.CREATED.value())
                 .message("Create Review")
@@ -38,32 +43,11 @@ public class ReviewController {
     }
 
 
-    @GetMapping("/reviews/{id}")
-    public ApiResponse<ReviewResponse> fetchById(@Min(value = 1, message = "ID phải lớn hơn 0")
-                                                    @PathVariable Long id){
-        return ApiResponse.<ReviewResponse>builder()
-                .code(HttpStatus.OK.value())
-                .message("Fetch Review By Id")
-                .result(reviewService.fetchById(id))
-                .build();
-    }
-
-    @GetMapping("/reviews")
-    public ApiResponse<PageResponse<ReviewResponse>> fetchAll(@Min(value = 1, message = "pageNo phải lớn hơn 0")
-                                                                 @RequestParam(defaultValue = "1") int pageNo,
-                                                                 @RequestParam(defaultValue = "10") int pageSize,
-                                                                 @RequestParam(required = false) String sortBy){
-        return ApiResponse.<PageResponse<ReviewResponse>>builder()
-                .code(HttpStatus.OK.value())
-                .result(reviewService.fetchAll(pageNo, pageSize, sortBy))
-                .message("Fetch All Reviews With Pagination")
-                .build();
-    }
-
-
     @PutMapping("/reviews/{id}")
     public ApiResponse<ReviewResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                  @PathVariable Long id, @Valid @RequestBody ReviewUpdateRequest request){
+        log.info("Received request to update review: {}, with review id: {}", request, id);
+
         return ApiResponse.<ReviewResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Update Review By Id")
@@ -75,6 +59,8 @@ public class ReviewController {
     @DeleteMapping("/reviews/{id}")
     public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
                                     @PathVariable Long id){
+        log.info("Received request to delete review by id: {}", id);
+
         reviewService.delete(id);
         return ApiResponse.<Void>builder()
                 .code(HttpStatus.NO_CONTENT.value())

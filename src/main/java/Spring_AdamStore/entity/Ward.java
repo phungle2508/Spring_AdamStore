@@ -4,23 +4,19 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
-@Table(name = "tbl_ward", indexes =
-    @Index(name = "idx_district_id", columnList = "district_id")
-)
+@Table(name = "wards")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 public class Ward {
+
     @Id
-    String code;
+    private String code;
 
-    String name;
+    private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "district_id")
-    District district;
+    private Integer districtId;
 }

@@ -1,31 +1,22 @@
 package Spring_AdamStore.dto.request;
 
 import jakarta.validation.constraints.*;
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.experimental.FieldDefaults;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductUpdateRequest {
 
-    String name;
-    String description;
-    @Min(value = 0, message = "Giá phải lớn hơn hoặc bằng 0")
-    @NotNull(message = "price không được null")
-    Double price;
-    @Min(value = 0, message = "Giá phải lớn hơn hoặc bằng 0")
-    @NotNull(message = "quantity không được null")
-    Integer quantity;
+    private String name;
 
-    Long categoryId;
+    private String description;
 
-    Set<Long> colorIds;
+    private Long categoryId;
 
-    Set<Long> sizeIds;
-
-    Set<Long> imageIds;
+    @NotEmpty(message = "Danh sách biến thể sản phẩm không được để trống")
+    @Size(min = 1, message = "Phải có ít nhất một biến thể sản phẩm")
+    private List<VariantRequest> variants;
 
 }

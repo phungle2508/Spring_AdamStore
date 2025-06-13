@@ -5,8 +5,7 @@ import Spring_AdamStore.dto.response.ApiResponse;
 import Spring_AdamStore.dto.response.TokenResponse;
 import Spring_AdamStore.dto.response.UserResponse;
 import Spring_AdamStore.dto.response.VerificationCodeResponse;
-import Spring_AdamStore.entity.ForgotPasswordToken;
-import Spring_AdamStore.entity.RedisVerificationCode;
+import Spring_AdamStore.entity.RedisForgotPasswordToken;
 import Spring_AdamStore.service.AccountRecoveryService;
 import Spring_AdamStore.service.AuthService;
 import com.nimbusds.jose.JOSEException;
@@ -32,6 +31,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public ApiResponse<TokenResponse> login(@Valid @RequestBody LoginRequest request) throws JOSEException {
+        log.info("Received login request for email: {}", request.getEmail());
+
         return ApiResponse.<TokenResponse>builder()
                 .code(HttpStatus.OK.value())
                 .result(authService.login(request))
@@ -41,7 +42,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ApiResponse<VerificationCodeResponse> register(@Valid @RequestBody RegisterRequest request) throws JOSEException {
-
+        log.info("Received registration request for email: {}", request.getEmail());
 
         return ApiResponse.<VerificationCodeResponse>builder()
                 .code(HttpStatus.CREATED.value())
@@ -52,6 +53,8 @@ public class AuthController {
 
     @PostMapping("/register/verify")
     public ApiResponse<TokenResponse> verifyCodeAndRegister(@Valid @RequestBody VerifyCodeRequest request) throws JOSEException {
+        log.info("Received registration code verification for email: {}", request.getEmail());
+
         return ApiResponse.<TokenResponse>builder()
                 .code(HttpStatus.CREATED.value())
                 .result(authService.verifyCodeAndRegister(request))
@@ -61,6 +64,8 @@ public class AuthController {
 
     @GetMapping("/myInfo")
     public ApiResponse<UserResponse> getMyInfo(){
+        log.info("Received request to fetch current user info");
+
         return ApiResponse.<UserResponse>builder()
                 .code(HttpStatus.OK.value())
                 .result(authService.getMyInfo())
@@ -70,6 +75,8 @@ public class AuthController {
 
     @PostMapping("/refresh-token")
     public ApiResponse<TokenResponse> refreshToken(@Valid @RequestBody RefreshRequest request) throws ParseException, JOSEException {log.info("Received refresh token: {}", request.getRefreshToken());
+        log.info("Refreshing token for refreshToken");
+
         return ApiResponse.<TokenResponse>builder()
                 .code(HttpStatus.OK.value())
                 .result(authService.refreshToken(request))
@@ -81,6 +88,8 @@ public class AuthController {
             description = "API này được sử dụng để thay đổi password khi user đã đăng nhập")
     @PostMapping("/change-password")
     public ApiResponse<UserResponse> changePassword(@Valid @RequestBody ChangePasswordRequest request){
+        log.info("Received change password request");
+
         authService.changePassword(request);
         return ApiResponse.<UserResponse>builder()
                 .code(HttpStatus.OK.value())
@@ -92,6 +101,8 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ApiResponse<Void> logout(@Valid @RequestBody TokenRequest request) throws JOSEException, ParseException {
+        log.info("Received logout request");
+
         authService.logout(request);
         return ApiResponse.<Void>builder()
                 .code(HttpStatus.OK.value())
@@ -103,6 +114,8 @@ public class AuthController {
             description = "API này được sử dụng để quên mật khẩu")
     @PostMapping("/forgot-password")
     public ApiResponse<VerificationCodeResponse> forgotPassword(@Valid @RequestBody EmailRequest request) {
+        log.info("Received forgot password request for email: {}", request.getEmail());
+
         return ApiResponse.<VerificationCodeResponse>builder()
                 .code(HttpStatus.OK.value())
                 .result(accountRecoveryService.forgotPassword(request))
@@ -111,8 +124,10 @@ public class AuthController {
     }
 
     @PostMapping("/forgot-password/verify-code")
-    public ApiResponse<ForgotPasswordToken> verifyCode(@Valid @RequestBody VerifyCodeRequest request) throws JOSEException {
-        return ApiResponse.<ForgotPasswordToken>builder()
+    public ApiResponse<RedisForgotPasswordToken> verifyCode(@Valid @RequestBody VerifyCodeRequest request) throws JOSEException {
+        log.info("Received verifying forgot password code for email: {}", request.getEmail());
+
+        return ApiResponse.<RedisForgotPasswordToken>builder()
                 .code(HttpStatus.OK.value())
                 .result(accountRecoveryService.verifyForgotPasswordCode(request.getEmail(), request.getVerificationCode()))
                 .message("Mã xác nhận hợp lệ")
@@ -121,6 +136,8 @@ public class AuthController {
 
     @PostMapping("/forgot-password/reset-password")
     public ApiResponse<Void> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        log.info("Received password reset request");
+
         accountRecoveryService.resetPassword(request);
         return ApiResponse.<Void>builder()
                 .code(HttpStatus.OK.value())

@@ -15,18 +15,13 @@ public interface ProductMapper {
 
     Product toProduct(ProductRequest request);
 
-    @Mapping(target = "sizes", source = "productVariants", qualifiedByName = "toSizeSet")
-    @Mapping(target = "colors", source = "productVariants", qualifiedByName = "toColorSet")
-    @Mapping(target = "price", source = "productVariants", qualifiedByName = "getPriceFromVariant")
-    @Mapping(target = "quantity", source = "productVariants", qualifiedByName = "getQuantityFromVariant")
-    ProductResponse toProductResponse(Product product);
+    @Mapping(target = "variants", expression = "java(context.getVariant(product.getId()))")
+    ProductResponse toProductResponse(Product product, @Context ProductMappingHelper context);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateProduct(@MappingTarget Product product, ProductUpdateRequest request);
 
-    List<ProductResponse> toProductResponseList(List<Product> products);
+    List<ProductResponse> toProductResponseList(List<Product> products, @Context ProductMappingHelper context);
 
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "name", source = "name")
     EntityBasic toEntityBasic(Product product);
 }

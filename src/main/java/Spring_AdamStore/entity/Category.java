@@ -17,44 +17,37 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tbl_category")
+@Table(name = "categories")
 @SQLRestriction("status = 'ACTIVE'")
-@SQLDelete(sql = "UPDATE tbl_category SET status = 'INACTIVE' WHERE id = ?")
+@SQLDelete(sql = "UPDATE categories SET status = 'INACTIVE' WHERE id = ?")
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
-    @Column(nullable = false, unique = true)
-    String name;
-    @Column(columnDefinition = "MEDIUMTEXT")
-    String description;
+    private String name;
+    private String description;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    EntityStatus status;
-
+    private EntityStatus status;
 
     @CreatedBy
-    String createdBy;
+    private String createdBy;
     @LastModifiedBy
-    String updatedBy;
+    private String updatedBy;
     @CreationTimestamp
-    LocalDate createdAt;
+    private LocalDate createdAt;
     @UpdateTimestamp
-    LocalDate updatedAt;
+    private LocalDate updatedAt;
 
-    @OneToMany(mappedBy = "category")
-    Set<Product> products = new HashSet<>();
 
     @PrePersist
     public void handleBeforeCreate() {

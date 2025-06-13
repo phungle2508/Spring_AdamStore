@@ -5,15 +5,14 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderRevenueDTO {
 
-     Long orderId;
-     String customerName;
-     LocalDate orderDate;
-     Double totalAmount;
+     private Long orderId;
+     private String customerName;
+     private LocalDate orderDate;
+     private Double totalAmount;
 }
