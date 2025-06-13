@@ -12,8 +12,6 @@ public interface CategoryService {
 
     CategoryResponse create(CategoryRequest request);
 
-    CategoryResponse fetchById(Long id);
-
     PageResponse<CategoryResponse> fetchAll(Pageable pageable);
 
     CategoryResponse update(Long id, CategoryRequest request);

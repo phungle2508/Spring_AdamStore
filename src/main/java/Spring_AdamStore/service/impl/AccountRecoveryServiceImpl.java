@@ -4,12 +4,12 @@ import Spring_AdamStore.constants.TokenType;
 import Spring_AdamStore.dto.request.EmailRequest;
 import Spring_AdamStore.dto.request.ResetPasswordRequest;
 import Spring_AdamStore.dto.response.VerificationCodeResponse;
-import Spring_AdamStore.entity.ForgotPasswordToken;
+import Spring_AdamStore.entity.RedisForgotPasswordToken;
 import Spring_AdamStore.entity.User;
 import Spring_AdamStore.entity.RedisVerificationCode;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
-import Spring_AdamStore.repository.ForgotPasswordTokenRepository;
+import Spring_AdamStore.repository.RedisForgotPwdTokenRepository;
 import Spring_AdamStore.repository.UserRepository;
 import Spring_AdamStore.repository.RedisVerificationCodeRepository;
 import Spring_AdamStore.service.AccountRecoveryService;
@@ -26,7 +26,6 @@ import org.springframework.security.oauth2.jwt.BadJwtException;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.time.LocalDateTime;
 
 import static Spring_AdamStore.constants.VerificationType.FORGOT_PASSWORD;
 
@@ -40,7 +39,7 @@ public class AccountRecoveryServiceImpl implements AccountRecoveryService {
     private final EmailService emailService;
     private final RedisVerificationCodeRepository redisVerificationCodeRepository;
     private final TokenService tokenService;
-    private final ForgotPasswordTokenRepository forgotPasswordTokenRepository;
+    private final RedisForgotPwdTokenRepository redisForgotPwdTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final RedisVerificationCodeService redisVerificationCodeService;
 
@@ -50,8 +49,11 @@ public class AccountRecoveryServiceImpl implements AccountRecoveryService {
 
     @Override
     public VerificationCodeResponse forgotPassword(EmailRequest request) {
+        log.info("Forgot password requested for email: {}", request.getEmail());
+
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
         RedisVerificationCode redisVerificationCode = redisVerificationCodeService
                     .saveVerificationCode(user.getEmail(), FORGOT_PASSWORD);
 
@@ -60,13 +62,15 @@ public class AccountRecoveryServiceImpl implements AccountRecoveryService {
         return VerificationCodeResponse.builder()
                 .email(redisVerificationCode.getEmail())
                 .verificationCode(redisVerificationCode.getVerificationCode())
-                .expirationTime(redisVerificationCode.getExpirationTime())
+                .ttl(redisVerificationCode.getTtl())
                 .build();
 
     }
 
     @Override
-    public ForgotPasswordToken verifyForgotPasswordCode(String email, String verificationCode) throws JOSEException {
+    public RedisForgotPasswordToken verifyForgotPasswordCode(String email, String verificationCode) throws JOSEException {
+        log.info("Verifying forgot password code for email: {}", email);
+
         RedisVerificationCode redisVerificationCode = redisVerificationCodeService
                 .getVerificationCode(email, FORGOT_PASSWORD, verificationCode);
 
@@ -74,20 +78,23 @@ public class AccountRecoveryServiceImpl implements AccountRecoveryService {
                 () -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         String forgotPasswordToken = tokenService.generateToken(user, TokenType.RESET_PASSWORD_TOKEN);
-        ForgotPasswordToken token = ForgotPasswordToken.builder()
-                .email(email)
+
+        RedisForgotPasswordToken token = RedisForgotPasswordToken.builder()
                 .forgotPasswordToken(forgotPasswordToken)
-                .expiryTime(LocalDateTime.now().plusMinutes(resetTokenExpiration))
+                .email(email)
+                .ttl(resetTokenExpiration * 60)
                 .build();
 
         redisVerificationCodeRepository.delete(redisVerificationCode);
 
-        return forgotPasswordTokenRepository.save(token);
+        return redisForgotPwdTokenRepository.save(token);
     }
 
     @Transactional
     @Override
     public void resetPassword(ResetPasswordRequest request) {
+        log.info("Resetting password");
+
         try {
             tokenService.verifyToken(request.getForgotPasswordToken(), TokenType.RESET_PASSWORD_TOKEN);
         } catch (JOSEException | ParseException e) {
@@ -95,11 +102,12 @@ public class AccountRecoveryServiceImpl implements AccountRecoveryService {
         } catch (AppException ex){
             throw new BadJwtException("Token không hợp lệ");
         }
-        ForgotPasswordToken forgotPasswordToken = forgotPasswordTokenRepository
-                .findByForgotPasswordToken(request.getForgotPasswordToken())
+
+        RedisForgotPasswordToken redisForgotPasswordToken = redisForgotPwdTokenRepository
+                .findById(request.getForgotPasswordToken())
                 .orElseThrow( () -> new AppException(ErrorCode.FORGOT_PASSWORD_TOKEN_NOT_FOUND));
 
-        User user = userRepository.findByEmail(forgotPasswordToken.getEmail()).orElseThrow(
+        User user = userRepository.findByEmail(redisForgotPasswordToken.getEmail()).orElseThrow(
                 () -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         if (!request.getNewPassword().equals(request.getConfirmPassword())) {
@@ -109,7 +117,7 @@ public class AccountRecoveryServiceImpl implements AccountRecoveryService {
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(user);
 
-        forgotPasswordTokenRepository.delete(forgotPasswordToken);
+        redisForgotPwdTokenRepository.delete(redisForgotPasswordToken);
     }
 
 

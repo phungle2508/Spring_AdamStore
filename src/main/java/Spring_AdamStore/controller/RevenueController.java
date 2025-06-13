@@ -9,6 +9,9 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -47,10 +50,7 @@ public class RevenueController {
     @Operation(summary = "Fetched daily order revenue data",
     description = "API này dùng để lấy dữ liệu doanh thu của các đơn hàng (yyyy-MM-dd)")
     @GetMapping("/revenues/daily-orders")
-    public ApiResponse<PageResponse<OrderRevenueDTO>> getOrderRevenueByDate(@Min(value = 1, message = "pageNo phải lớn hơn 0")
-                                                                        @RequestParam(defaultValue = "1") int pageNo,
-                                                                            @RequestParam(defaultValue = "10") int pageSize,
-                                                                            @RequestParam(required = false) String sortBy,
+    public ApiResponse<PageResponse<OrderRevenueDTO>> getOrderRevenueByDate(@ParameterObject @PageableDefault Pageable pageable,
                                                                             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                                                         @Parameter(example = "2025-02-20") LocalDate startDate,
                                                                             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -58,7 +58,7 @@ public class RevenueController {
         return ApiResponse.<PageResponse<OrderRevenueDTO>>builder()
                 .code(HttpStatus.OK.value())
                 .message("Fetched daily order revenue data")
-                .result(revenueService.getOrderRevenueByDate(pageNo, pageSize, sortBy, startDate, endDate))
+                .result(revenueService.getOrderRevenueByDate(pageable, startDate, endDate))
                 .build();
     }
 }

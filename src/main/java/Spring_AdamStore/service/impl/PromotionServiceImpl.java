@@ -10,7 +10,6 @@ import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.PromotionMapper;
 import Spring_AdamStore.repository.PromotionRepository;
 import Spring_AdamStore.repository.relationship.PromotionUsageRepository;
-import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.PromotionService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -62,7 +61,7 @@ public class PromotionServiceImpl implements PromotionService {
         Page<Promotion> promotionPage = promotionRepository.findAllPromotions(pageable);
 
         return PageResponse.<PromotionResponse>builder()
-                .page(promotionPage.getNumber() + 1)
+                .page(promotionPage.getNumber())
                 .size(promotionPage.getSize())
                 .totalPages(promotionPage.getTotalPages())
                 .totalItems(promotionPage.getTotalElements())

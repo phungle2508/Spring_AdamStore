@@ -17,8 +17,6 @@ public interface ProductVariantService {
 
     Set<ProductVariant> saveVariantByProduct(Long productId, List<VariantRequest> variantRequests);
 
-    Set<ProductVariant> updateVariantByProduct(Long productId, List<VariantRequest> variantRequests);
-
     ProductVariantResponse updatePriceAndQuantity(Long id, VariantUpdateRequest request);
 
     void delete(Long id);

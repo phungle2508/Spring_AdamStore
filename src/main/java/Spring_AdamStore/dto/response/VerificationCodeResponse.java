@@ -15,6 +15,5 @@ public class VerificationCodeResponse {
 
     private String email;
     private String verificationCode;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime expirationTime;
+    private Long ttl;
 }

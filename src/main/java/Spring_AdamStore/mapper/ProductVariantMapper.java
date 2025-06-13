@@ -2,7 +2,10 @@ package Spring_AdamStore.mapper;
 
 import Spring_AdamStore.dto.basic.EntityBasic;
 import Spring_AdamStore.dto.basic.ProductVariantBasic;
+import Spring_AdamStore.dto.request.ProductUpdateRequest;
+import Spring_AdamStore.dto.request.VariantUpdateRequest;
 import Spring_AdamStore.dto.response.ProductVariantResponse;
+import Spring_AdamStore.entity.Product;
 import Spring_AdamStore.entity.ProductVariant;
 import org.mapstruct.*;
 
@@ -22,7 +25,5 @@ public interface ProductVariantMapper {
     List<ProductVariantResponse> toProductVariantResponseList(List<ProductVariant> productVariantList, @Context VariantMappingHelper context);
 
     ProductVariantBasic toProductVariantBasic(ProductVariant productVariant);
-
-
 
 }

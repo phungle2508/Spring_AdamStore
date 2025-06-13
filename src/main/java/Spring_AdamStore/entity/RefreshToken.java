@@ -1,11 +1,9 @@
 package Spring_AdamStore.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
@@ -21,7 +19,8 @@ public class RefreshToken {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String refreshToken;
+    @Column(columnDefinition = "TEXT")
+    private String token;
 
     private LocalDateTime expiryDate;
 }

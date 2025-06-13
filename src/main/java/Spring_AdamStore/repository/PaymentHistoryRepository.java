@@ -29,11 +29,12 @@ public interface PaymentHistoryRepository extends JpaRepository<PaymentHistory, 
 
 
     @Query("SELECT p FROM PaymentHistory p " +
-            "WHERE (:paymentStatus IS NULL OR p.paymentStatus = :paymentStatus) " +
-            "AND (:startDate IS NULL OR p.paymentTime >= :startDate) " +
-            "AND (:endDate IS NULL OR p.paymentTime <= :endDate)")
+            "WHERE p.paymentStatus = :paymentStatus " +
+            "AND p.paymentTime >= :startDate " +
+            "AND p.paymentTime <= :endDate")
     Page<PaymentHistory> searchPaymentHistories(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate,
             @Param("paymentStatus") PaymentStatus paymentStatus, Pageable pageable);
+
 
 
     @Query("""

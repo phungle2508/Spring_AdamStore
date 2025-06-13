@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Repository
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
 
-    boolean existsByRefreshToken(String refreshToken);
+    boolean existsByToken(String token);
 
     @Modifying
     @Transactional

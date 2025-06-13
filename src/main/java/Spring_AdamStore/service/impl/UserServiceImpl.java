@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService {
         Page<User> userPage = userRepository.findAllUsers(pageable);
 
         return PageResponse.<UserResponse>builder()
-                .page(userPage.getNumber() + 1)
+                .page(userPage.getNumber())
                 .size(userPage.getSize())
                 .totalPages(userPage.getTotalPages())
                 .totalItems(userPage.getTotalElements())
@@ -170,7 +170,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         user.setStatus(ACTIVE);
-        return userMapper.toUserResponse(user, userMappingHelper);
+        return userMapper.toUserResponse(userRepository.save(user), userMappingHelper);
     }
 
     @Override
@@ -195,7 +195,7 @@ public class UserServiceImpl implements UserService {
         Page<Address> addressPage = addressRepository.findAllByUserIdAndIsVisible(user.getId(), true, pageable);
 
         return PageResponse.<AddressResponse>builder()
-                .page(addressPage.getNumber() + 1)
+                .page(addressPage.getNumber())
                 .size(addressPage.getSize())
                 .totalPages(addressPage.getTotalPages())
                 .totalItems(addressPage.getTotalElements())
@@ -212,7 +212,7 @@ public class UserServiceImpl implements UserService {
         Page<Promotion> promotionPage = promotionRepository.findAllAvailableForCustomer(user.getId(), LocalDate.now(), pageable);
 
         return PageResponse.<PromotionResponse>builder()
-                .page(promotionPage.getNumber() + 1)
+                .page(promotionPage.getNumber())
                 .size(promotionPage.getSize())
                 .totalPages(promotionPage.getTotalPages())
                 .totalItems(promotionPage.getTotalElements())
@@ -228,7 +228,6 @@ public class UserServiceImpl implements UserService {
             throw new AppException(ErrorCode.EMAIL_DISABLED);
         }
     }
-
 
     private User findActiveUserById(Long id) {
         if(userRepository.countById(id, EntityStatus.INACTIVE.name()) > 0){

@@ -7,7 +7,6 @@ import Spring_AdamStore.entity.FileEntity;
 import Spring_AdamStore.exception.FileException;
 import Spring_AdamStore.mapper.FileMapper;
 import Spring_AdamStore.repository.FileRepository;
-import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.FileService;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -93,7 +92,7 @@ public class FileServiceImpl implements FileService {
         Page<FileEntity> productImagePage = fileRepository.findAllByFileType(pageable, fileType);
 
         return PageResponse.<FileResponse>builder()
-                .page(productImagePage.getNumber() + 1)
+                .page(productImagePage.getNumber())
                 .size(productImagePage.getSize())
                 .totalPages(productImagePage.getTotalPages())
                 .totalItems(productImagePage.getTotalElements())

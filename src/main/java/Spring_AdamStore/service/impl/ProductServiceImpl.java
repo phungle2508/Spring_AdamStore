@@ -10,17 +10,16 @@ import Spring_AdamStore.mapper.*;
 import Spring_AdamStore.repository.*;
 import Spring_AdamStore.repository.criteria.SearchCriteriaQueryConsumer;
 import Spring_AdamStore.repository.criteria.SearchCriteria;
-import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.ProductService;
 import Spring_AdamStore.service.ProductVariantService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.*;
+import jakarta.persistence.criteria.Order;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -73,7 +72,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponse fetchById(Long id) {
+    public ProductResponse fetchDetailById(Long id) {
         log.info("Fetch product By Id: {}", id);
 
         Product product = findProductById(id);
@@ -88,7 +87,7 @@ public class ProductServiceImpl implements ProductService {
         Page<Product> productPage = productRepository.findAll(pageable);
 
         return PageResponse.<ProductResponse>builder()
-                .page(productPage.getNumber() + 1)
+                .page(productPage.getNumber())
                 .size(productPage.getSize())
                 .totalPages(productPage.getTotalPages())
                 .totalItems(productPage.getTotalElements())
@@ -103,7 +102,7 @@ public class ProductServiceImpl implements ProductService {
         Page<Product> productPage = productRepository.findAllProducts(pageable);
 
         return PageResponse.<ProductResponse>builder()
-                .page(productPage.getNumber() + 1)
+                .page(productPage.getNumber())
                 .size(productPage.getSize())
                 .totalPages(productPage.getTotalPages())
                 .totalItems(productPage.getTotalElements())
@@ -129,7 +128,7 @@ public class ProductServiceImpl implements ProductService {
 
         productMapper.updateProduct(product, request);
 
-        productVariantService.updateVariantByProduct(product.getId(), request.getVariants());
+        productVariantService.saveVariantByProduct(product.getId(), request.getVariants());
 
         return productMapper.toProductResponse(productRepository.save(product), productMappingHelper);
     }
@@ -152,15 +151,31 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
 
         product.setStatus(ACTIVE);
+
+        // Variant
+        List<ProductVariant> variantList = productVariantRepository.getAllByProductId(id);
+        variantList.forEach(variant -> productVariantService.restore(variant.getId()));
+
         return productMapper.toProductResponse(productRepository.save(product), productMappingHelper);
+    }
+
+    @Override
+    public PageResponse<ProductVariantResponse> getVariantsByProductIdForAdmin(Pageable pageable, Long productId) {
+        Page<ProductVariant> productVariantPage = productVariantRepository.findAllVariantsByProductId(productId, pageable);
+
+        return PageResponse.<ProductVariantResponse>builder()
+                .page(productVariantPage.getNumber())
+                .size(productVariantPage.getSize())
+                .totalPages(productVariantPage.getTotalPages())
+                .totalItems(productVariantPage.getTotalElements())
+                .items(productVariantMapper.toProductVariantResponseList(productVariantPage.getContent(), variantMappingHelper))
+                .build();
     }
 
 
     @Override
-    public PageResponse<ProductResponse> searchProduct(int pageNo, int pageSize, String sortBy, List<String> search) {
-        pageNo = pageNo - 1;
-
-        List<SearchCriteria> criteriaList = new ArrayList<>();
+    public PageResponse<ProductResponse> searchProduct(Pageable pageable, List<String> search) {
+       List<SearchCriteria> criteriaList = new ArrayList<>();
 
         // lay danh sach cac dieu kien search
         if(search != null){
@@ -173,15 +188,15 @@ public class ProductServiceImpl implements ProductService {
             }
         }
 
-        List<Product> productList = getProducList(pageNo, pageSize, sortBy, criteriaList);
+        List<Product> productList = getProducList(pageable, criteriaList);
 
         // tong so phan tu
         Long totalElements = getTotalElements(criteriaList);
-        int totalPages = (int) Math.ceil((double) totalElements / pageSize);
+        int totalPages = (int) Math.ceil((double) totalElements / pageable.getPageSize());
 
         return PageResponse.<ProductResponse>builder()
-                .page(pageNo + 1)
-                .size(pageSize)
+                .page(pageable.getPageNumber())
+                .size(pageable.getPageSize())
                 .totalPages(totalPages)
                 .totalItems(totalElements)
                 .items(productMapper.toProductResponseList(productList, productMappingHelper))
@@ -189,35 +204,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-
-
-    @Override
-    public PageResponse<ProductVariantResponse> getVariantsByProductIdForAdmin(Pageable pageable, Long productId) {
-        Page<ProductVariant> productVariantPage = productVariantRepository.findAllVariantsByProductId(productId, pageable);
-
-        return PageResponse.<ProductVariantResponse>builder()
-                .page(productVariantPage.getNumber() + 1)
-                .size(productVariantPage.getSize())
-                .totalPages(productVariantPage.getTotalPages())
-                .totalItems(productVariantPage.getTotalElements())
-                .items(productVariantMapper.toProductVariantResponseList(productVariantPage.getContent(), variantMappingHelper))
-                .build();
-    }
-
-
-    private List<Product> getProducList(int pageNo, int pageSize, String sortBy, List<SearchCriteria> criteriaList){
+    private List<Product> getProducList(Pageable pageable, List<SearchCriteria> criteriaList){
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Product> query = builder.createQuery(Product.class);
         Root<Product> root = query.from(Product.class);
 
         // Xu ly dieu kien tim kiem
         Predicate predicate = builder.conjunction();
-
-        Join<Product, ProductVariant> productVariantJoin = root.join("productVariants", JoinType.LEFT);
-
-        // Handle price
-        Iterator<SearchCriteria> iterator = criteriaList.iterator();
-        predicate = handlePriceSearch(builder, productVariantJoin, iterator, predicate);
 
         if(!CollectionUtils.isEmpty(criteriaList)){ // search job
             SearchCriteriaQueryConsumer queryConsumer = new SearchCriteriaQueryConsumer(builder, predicate, root);
@@ -226,72 +219,36 @@ public class ProductServiceImpl implements ProductService {
             predicate = builder.and(predicate, queryConsumer.getPredicate());
         }
 
-        query.where(predicate);
+        query.where(predicate).distinct(true); // Tranh trung product do nhieu variant
 
         // Sort
-        if(StringUtils.hasLength(sortBy)){
-            Pattern pattern = Pattern.compile("(\\w+?)(-)(asc|desc)");
-            Matcher matcher = pattern.matcher(sortBy);
-            if (matcher.find()) {
-                String columnName = matcher.group(1);
+        List<Order> orders = new ArrayList<>();
+        for (Sort.Order order : pageable.getSort()) {
+            String property = order.getProperty();
 
-                // Sort By Price
-                if (columnName.equalsIgnoreCase("price")) {
-                    if (matcher.group(3).equalsIgnoreCase("desc")) {
-                        query.orderBy(builder.desc(productVariantJoin.get("price")));
-                    } else {
-                        query.orderBy(builder.asc(productVariantJoin.get("price")));
-                    }
-                }
-                // Cac column cua product
-                else {
-                    if (matcher.group(3).equalsIgnoreCase("desc")) {
-                        query.orderBy(builder.desc(root.get(columnName)));
-                    } else {
-                        query.orderBy(builder.asc(root.get(columnName)));
-                    }
-                }
-            }
+            Path<?> path = root.get(property);
+            orders.add(order.isAscending() ? builder.asc(path) : builder.desc(path));
         }
 
+        query.orderBy(orders);
+
+
         return entityManager.createQuery(query)
-                .setFirstResult(pageNo * pageSize)
-                .setMaxResults(pageSize)
+                .setFirstResult((int) pageable.getOffset())
+                .setMaxResults(pageable.getPageSize())
                 .getResultList();
     }
 
-    private Predicate handlePriceSearch(CriteriaBuilder builder, Join<Product, ProductVariant> productVariantJoin, Iterator<SearchCriteria> iterator, Predicate predicate) {
-        while (iterator.hasNext()) {
-            SearchCriteria criteria = iterator.next();
-            if (criteria.getKey().equals("price")) {
-                Double priceValue = Double.valueOf(criteria.getValue().toString());
-
-                if (criteria.getOperation().equals(">")) {
-                    predicate = builder.and(predicate, builder.greaterThanOrEqualTo(productVariantJoin.get("price"), priceValue));
-                } else if (criteria.getOperation().equals("<")) {
-                    predicate = builder.and(predicate, builder.lessThanOrEqualTo(productVariantJoin.get("price"), priceValue));
-                }
-                iterator.remove();
-            }
-        }
-        return predicate;
-    }
 
 
     private Long getTotalElements(List<SearchCriteria> criteriaList){
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> countQuery = builder.createQuery(Long.class);
+
         Root<Product> root = countQuery.from(Product.class);
 
         // Xu ly dieu kien tim kiem
         Predicate predicate = builder.conjunction();
-
-        // Join ProductVariant
-        Join<Product, ProductVariant> productVariantJoin = root.join("productVariants", JoinType.LEFT);
-
-        // Handle price
-        Iterator<SearchCriteria> iterator = criteriaList.iterator();
-        predicate = handlePriceSearch(builder, productVariantJoin, iterator, predicate);
 
         if(!CollectionUtils.isEmpty(criteriaList)){ // search job
             SearchCriteriaQueryConsumer queryConsumer = new SearchCriteriaQueryConsumer(builder, predicate, root);
@@ -312,7 +269,7 @@ public class ProductServiceImpl implements ProductService {
         Page<Review> reviewPage = reviewRepository.findAllByProductId(product.getId(), pageable);
 
         return PageResponse.<ReviewResponse>builder()
-                .page(reviewPage.getNumber() + 1)
+                .page(reviewPage.getNumber())
                 .size(reviewPage.getSize())
                 .totalPages(reviewPage.getTotalPages())
                 .totalItems(reviewPage.getTotalElements())

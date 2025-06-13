@@ -5,20 +5,19 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
 
+
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@RedisHash("RedisPendingUser")
-public class RedisPendingUser {
+@RedisHash("RedisForgotPasswordToken")
+public class RedisForgotPasswordToken {
 
     @Id
-    private String email;
+    private String forgotPasswordToken;
 
-    private String name;
-    private String phone;
-    private String password;
+    private String email;
 
     @TimeToLive
     private long ttl;

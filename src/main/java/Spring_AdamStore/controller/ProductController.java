@@ -42,15 +42,17 @@ public class ProductController {
                 .build();
     }
 
-    @GetMapping("/products/{id}")
-    public ApiResponse<ProductResponse> fetchById(@Min(value = 1, message = "ID phải lớn hơn 0")
+    @Operation(summary = "Fetch Product Detail By Id",
+            description = "Api này để lấy chi tiết của sản phẩm theo Id")
+    @GetMapping("/products/{id}/details")
+    public ApiResponse<ProductResponse> fetchDetailById(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                @PathVariable Long id){
-        log.info("Received request to fetch product by id: {}", id);
+        log.info("Received request to Fetch Product Detail by id: {}", id);
 
         return ApiResponse.<ProductResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Fetch Product By Id")
-                .result(productService.fetchById(id))
+                .result(productService.fetchDetailById(id))
                 .build();
     }
 
@@ -121,14 +123,11 @@ public class ProductController {
 
     @Operation(description = "Api này dùng để search product, giá trị của search: field~value hoặc field>value hoặc field<value")
     @GetMapping("/products/search")
-    public ApiResponse<PageResponse<ProductResponse>> searchProduct(@Min(value = 1, message = "pageNo phải lớn hơn 0")
-                                                                    @RequestParam(defaultValue = "1") int pageNo,
-                                                                    @RequestParam(defaultValue = "10") int pageSize,
-                                                                    @RequestParam(required = false) String sortBy,
+    public ApiResponse<PageResponse<ProductResponse>> searchProduct(@ParameterObject @PageableDefault Pageable pageable,
                                                                     @RequestParam(required = false) List<String> search){
         return ApiResponse.<PageResponse<ProductResponse>>builder()
                 .code(HttpStatus.OK.value())
-                .result(productService.searchProduct(pageNo, pageSize, sortBy, search))
+                .result(productService.searchProduct(pageable, search))
                 .message("Search Products based on attributes with pagination")
                 .build();
     }

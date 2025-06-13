@@ -21,5 +21,4 @@ public class PaymentHistoryResponse {
     private PaymentStatus paymentStatus;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime paymentTime;
-    private String note;
 }

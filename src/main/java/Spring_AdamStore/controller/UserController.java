@@ -63,7 +63,7 @@ public class UserController {
 
     @Operation(summary = "Fetch All Users For Admin")
     @GetMapping("/users")
-    public ApiResponse<PageResponse<UserResponse>> fetchAll(@ParameterObject @PageableDefault Pageable pageable){
+    public ApiResponse<PageResponse<UserResponse>> fetchAllForAdmin(@ParameterObject @PageableDefault Pageable pageable){
         log.info("Received request to fetch all user for admin");
 
         return ApiResponse.<PageResponse<UserResponse>>builder()
@@ -120,7 +120,7 @@ public class UserController {
     @Operation(summary = "Upload Avatar",
     description = "API để update avatar")
     @PutMapping(value = "/users/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    ApiResponse<UserResponse> updateAvatar(@RequestParam("file") MultipartFile file) throws FileException, IOException {
+    ApiResponse<UserResponse> updateAvatar(@RequestPart("file") MultipartFile file) throws FileException, IOException {
         log.info("Received request to Update Avatar");
 
         return ApiResponse.<UserResponse>builder()

@@ -55,6 +55,7 @@ public class AuthServiceImpl implements AuthService {
     private final RoleRepository roleRepository;
     private final UserMappingHelper userMappingHelper;
 
+
     @Override
     public TokenResponse login(LoginRequest request) throws JOSEException {
         log.info("Handling login for email: {}", request.getEmail());
@@ -80,16 +81,14 @@ public class AuthServiceImpl implements AuthService {
         if (!request.getPassword().equals(request.getConfirmPassword())) {
             throw new AppException(ErrorCode.PASSWORD_MISMATCH);
         }
-        RedisPendingUser redisPendingUser = userMapper.registerToRedis(request);
 
+        RedisPendingUser redisPendingUser = userMapper.registerToRedis(request);
         redisPendingUser.setPassword(passwordEncoder.encode(request.getPassword()));
 
         RedisVerificationCode redisVerificationCode = redisVerificationCodeService
                 .saveVerificationCode(redisPendingUser.getEmail(), REGISTER);
 
-        long ttl = java.time.Duration.between(LocalDateTime.now(), redisVerificationCode.getExpirationTime()).getSeconds();
-        redisPendingUser.setTtl(ttl);
-
+        redisPendingUser.setTtl(redisVerificationCode.getTtl());
         redisPendingUserRepository.save(redisPendingUser);
 
         emailService.sendOtpRegisterEmail(redisPendingUser.getEmail(),
@@ -98,7 +97,7 @@ public class AuthServiceImpl implements AuthService {
         return VerificationCodeResponse.builder()
                 .email(redisVerificationCode.getEmail())
                 .verificationCode(redisVerificationCode.getVerificationCode())
-                .expirationTime(redisVerificationCode.getExpirationTime())
+                .ttl(redisVerificationCode.getTtl())
                 .build();
     }
 
@@ -127,6 +126,8 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public UserResponse getMyInfo() {
+        log.info("Fetching current user info");
+
         User user = currentUserService.getCurrentUser();
 
         return userMapper.toUserResponse(user, userMappingHelper);
@@ -134,6 +135,8 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public TokenResponse refreshToken(RefreshRequest request) throws ParseException, JOSEException {
+        log.info("Refreshing token");
+
         // verify refresh token (db, expirationTime ...)
         SignedJWT signedJWT = tokenService.verifyToken(request.getRefreshToken(), TokenType.REFRESH_TOKEN);
 

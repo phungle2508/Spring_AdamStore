@@ -3,11 +3,7 @@ package Spring_AdamStore.service.impl;
 import Spring_AdamStore.dto.response.OrderRevenueDTO;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.dto.response.RevenueByMonthDTO;
-import Spring_AdamStore.dto.response.UserResponse;
-import Spring_AdamStore.entity.Order;
-import Spring_AdamStore.entity.User;
 import Spring_AdamStore.repository.PaymentHistoryRepository;
-import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.RevenueService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +21,6 @@ import java.util.List;
 public class RevenueServiceImpl implements RevenueService {
 
     private final PaymentHistoryRepository paymentHistoryRepository;
-    private final PageableService pageableService;
 
     @Override
     public List<RevenueByMonthDTO> getRevenueByMonth(LocalDate startDate, LocalDate endDate) {
@@ -36,16 +31,12 @@ public class RevenueServiceImpl implements RevenueService {
     }
 
     @Override
-    public PageResponse<OrderRevenueDTO> getOrderRevenueByDate(int pageNo, int pageSize, String sortBy, LocalDate startDate, LocalDate endDate) {
-        pageNo = pageNo - 1;
-
-        Pageable pageable = pageableService.createPageable(pageNo, pageSize, sortBy, Order.class);
-
+    public PageResponse<OrderRevenueDTO> getOrderRevenueByDate(Pageable pageable, LocalDate startDate, LocalDate endDate) {
         Page<OrderRevenueDTO> orderRevenueDTOPage = paymentHistoryRepository
                 .getRevenueOrdersByDate(startDate, endDate, pageable);
 
         return PageResponse.<OrderRevenueDTO>builder()
-                .page(orderRevenueDTOPage.getNumber() + 1)
+                .page(orderRevenueDTOPage.getNumber())
                 .size(orderRevenueDTOPage.getSize())
                 .totalPages(orderRevenueDTOPage.getTotalPages())
                 .totalItems(orderRevenueDTOPage.getTotalElements())

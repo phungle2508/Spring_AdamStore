@@ -111,7 +111,7 @@ public class TokenServiceImpl implements TokenService {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         }
 
-        if(type == TokenType.REFRESH_TOKEN && !refreshTokenRepository.existsByRefreshToken(token)){
+        if(type == TokenType.REFRESH_TOKEN && !refreshTokenRepository.existsByToken(token)){
             throw new AppException(ErrorCode.INVALID_REFRESH_TOKEN);
         }
 
@@ -138,7 +138,7 @@ public class TokenServiceImpl implements TokenService {
 
     public void saveRefreshToken(String token) {
         RefreshToken refreshToken = RefreshToken.builder()
-                .refreshToken(token)
+                .token(token)
                 .expiryDate(LocalDateTime.now().plusDays(refreshTokenExpiration))
                 .build();
 

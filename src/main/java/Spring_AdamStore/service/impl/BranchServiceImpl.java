@@ -10,7 +10,6 @@ import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.BranchMapper;
 import Spring_AdamStore.repository.BranchRepository;
 import Spring_AdamStore.service.BranchService;
-import Spring_AdamStore.service.PageableService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +26,6 @@ public class BranchServiceImpl implements BranchService {
 
     private final BranchMapper branchMapper;
     private final BranchRepository branchRepository;
-    private final PageableService pageableService;
 
     @Override
     @Transactional
@@ -63,7 +61,7 @@ public class BranchServiceImpl implements BranchService {
         Page<Branch> branchPage = branchRepository.findAll(pageable);
 
         return PageResponse.<BranchResponse>builder()
-                .page(branchPage.getNumber() + 1)
+                .page(branchPage.getNumber())
                 .size(branchPage.getSize())
                 .totalPages(branchPage.getTotalPages())
                 .totalItems(branchPage.getTotalElements())
@@ -78,7 +76,7 @@ public class BranchServiceImpl implements BranchService {
         Page<Branch> branchPage = branchRepository.findAllBranches(pageable);
 
         return PageResponse.<BranchResponse>builder()
-                .page(branchPage.getNumber() + 1)
+                .page(branchPage.getNumber())
                 .size(branchPage.getSize())
                 .totalPages(branchPage.getTotalPages())
                 .totalItems(branchPage.getTotalElements())

@@ -3,7 +3,6 @@ package Spring_AdamStore.service.impl;
 import Spring_AdamStore.dto.request.CartItemRequest;
 import Spring_AdamStore.dto.request.CartItemUpdateRequest;
 import Spring_AdamStore.dto.response.CartItemResponse;
-import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.entity.*;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
@@ -14,12 +13,9 @@ import Spring_AdamStore.repository.CartRepository;
 import Spring_AdamStore.repository.ProductVariantRepository;
 import Spring_AdamStore.service.CartItemService;
 import Spring_AdamStore.service.CurrentUserService;
-import Spring_AdamStore.service.PageableService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -39,6 +35,7 @@ public class CartItemServiceImpl implements CartItemService {
     @Override
     @Transactional
     public CartItemResponse create(CartItemRequest request) {
+        log.info("Creating CartItem with data= {}", request);
 
         Cart cart = findCartByUser();
 
@@ -70,6 +67,8 @@ public class CartItemServiceImpl implements CartItemService {
 
     @Override
     public CartItemResponse fetchById(Long id) {
+        log.info("Fetching cart item by id: {}", id);
+
         CartItem cartItem = findCartItemById(id);
         return cartItemMapper.toCartItemResponse(cartItem, cartItemMappingHelper);
     }
@@ -78,6 +77,8 @@ public class CartItemServiceImpl implements CartItemService {
     @Override
     @Transactional
     public CartItemResponse update(Long id, CartItemUpdateRequest request) {
+        log.info("Updating cart item id: {} with data: {}", id, request);
+
         CartItem cartItem = findCartItemById(id);
 
         cartItem.setQuantity(request.getQuantity());
@@ -87,6 +88,8 @@ public class CartItemServiceImpl implements CartItemService {
     @Override
     @Transactional
     public void delete(Long id) {
+        log.info("Deleting cart item with id: {}", id);
+
         CartItem cartItem = findCartItemById(id);
 
         cartItemRepository.delete(cartItem);

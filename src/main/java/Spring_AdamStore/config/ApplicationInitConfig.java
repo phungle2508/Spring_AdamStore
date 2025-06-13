@@ -53,17 +53,17 @@ public class ApplicationInitConfig {
                 initService.initAdmin();
             }
 
-//            if(sizeRepository.count() == 0){
-//                log.info("Initializing Sizes...");
-//
-//                initService.initSizes();
-//            }
+            if(sizeRepository.count() == 0){
+                log.info("Initializing Sizes...");
 
-//            if(provinceRepository.count() == 0){
-//                log.info("Initializing Provinces and Districts...");
-//
-//                initService.initProvinces();
-//            }
+                initService.initSizes();
+            }
+
+            if(provinceRepository.count() == 0){
+                log.info("Initializing Provinces and Districts...");
+
+                initService.initProvinces();
+            }
 
         };
     }

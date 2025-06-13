@@ -52,7 +52,7 @@ public class ProvinceServiceImpl implements ProvinceService {
         Page<Province> provincePage = provinceRepository.findAll(pageable);
 
         return PageResponse.<ProvinceResponse>builder()
-                .page(provincePage.getNumber() + 1)
+                .page(provincePage.getNumber())
                 .size(provincePage.getSize())
                 .totalPages(provincePage.getTotalPages())
                 .totalItems(provincePage.getTotalElements())
@@ -67,7 +67,7 @@ public class ProvinceServiceImpl implements ProvinceService {
         Page<District> districtPage = districtRepository.findByProvinceId(provinceId, pageable);
 
         return PageResponse.<DistrictResponse>builder()
-                .page(districtPage.getNumber() + 1)
+                .page(districtPage.getNumber())
                 .size(districtPage.getSize())
                 .totalPages(districtPage.getTotalPages())
                 .totalItems(districtPage.getTotalElements())
@@ -94,7 +94,6 @@ public class ProvinceServiceImpl implements ProvinceService {
             log.error("Lỗi khi gọi API GHN để lấy Tỉnh (Feign): {}", e.getMessage(), e);
             throw new RuntimeException("Lỗi khi gọi API GHN (Tỉnh) : " + e.getMessage(), e);
         }
-
         return List.of();
     }
 }

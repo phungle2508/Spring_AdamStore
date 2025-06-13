@@ -11,7 +11,6 @@ import Spring_AdamStore.mapper.ProductMappingHelper;
 import Spring_AdamStore.repository.CategoryRepository;
 import Spring_AdamStore.repository.ProductRepository;
 import Spring_AdamStore.service.CategoryService;
-import Spring_AdamStore.service.PageableService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,22 +46,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryResponse fetchById(Long id) {
-        log.info("Fetch Category By Id: {}", id);
-
-        Category category = findActiveCategoryById(id);
-
-        return categoryMapper.toCategoryResponse(category);
-    }
-
-    @Override
     public PageResponse<CategoryResponse> fetchAll(Pageable pageable) {
         log.info("Fetch All Category For User");
 
         Page<Category> categoryPage = categoryRepository.findAll(pageable);
 
         return PageResponse.<CategoryResponse>builder()
-                .page(categoryPage.getNumber() + 1)
+                .page(categoryPage.getNumber())
                 .size(categoryPage.getSize())
                 .totalPages(categoryPage.getTotalPages())
                 .totalItems(categoryPage.getTotalElements())
@@ -77,7 +67,7 @@ public class CategoryServiceImpl implements CategoryService {
         Page<Category> categoryPage = categoryRepository.findAllCategories(pageable);
 
         return PageResponse.<CategoryResponse>builder()
-                .page(categoryPage.getNumber() + 1)
+                .page(categoryPage.getNumber())
                 .size(categoryPage.getSize())
                 .totalPages(categoryPage.getTotalPages())
                 .totalItems(categoryPage.getTotalElements())
@@ -136,7 +126,7 @@ public class CategoryServiceImpl implements CategoryService {
         Page<Product> productPage = productRepository.findByCategoryId(categoryId, pageable);
 
         return PageResponse.<ProductResponse>builder()
-                .page(productPage.getNumber() + 1)
+                .page(productPage.getNumber())
                 .size(productPage.getSize())
                 .totalPages(productPage.getTotalPages())
                 .totalItems(productPage.getTotalElements())

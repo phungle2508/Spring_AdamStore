@@ -11,7 +11,6 @@ import Spring_AdamStore.mapper.PermissionMapper;
 import Spring_AdamStore.mapper.RoleMapper;
 import Spring_AdamStore.repository.PermissionRepository;
 import Spring_AdamStore.repository.RoleRepository;
-import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +42,7 @@ public class RoleServiceImpl implements RoleService {
         Page<Role> rolePage = roleRepository.findAll(pageable);
 
         return PageResponse.<RoleResponse>builder()
-                .page(rolePage.getNumber() + 1)
+                .page(rolePage.getNumber())
                 .size(rolePage.getSize())
                 .totalPages(rolePage.getTotalPages())
                 .totalItems(rolePage.getTotalElements())
@@ -56,7 +55,7 @@ public class RoleServiceImpl implements RoleService {
         Page<Permission> permissionPage = permissionRepository.findAllByRoleId(roleId, pageable);
 
         return PageResponse.<PermissionResponse>builder()
-                .page(permissionPage.getNumber() + 1)
+                .page(permissionPage.getNumber())
                 .size(permissionPage.getSize())
                 .totalPages(permissionPage.getTotalPages())
                 .totalItems(permissionPage.getTotalElements())

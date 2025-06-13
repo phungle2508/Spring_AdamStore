@@ -48,7 +48,7 @@ public class WardServiceImpl implements WardService {
         Page<Ward> wardPage = wardRepository.findAll(pageable);
 
         return PageResponse.<WardResponse>builder()
-                .page(wardPage.getNumber() + 1)
+                .page(wardPage.getNumber())
                 .size(wardPage.getSize())
                 .totalPages(wardPage.getTotalPages())
                 .totalItems(wardPage.getTotalElements())

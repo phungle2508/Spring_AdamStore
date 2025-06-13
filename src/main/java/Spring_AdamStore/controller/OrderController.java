@@ -4,7 +4,7 @@ import Spring_AdamStore.dto.ghn.response.ShippingFeeResponse;
 import Spring_AdamStore.dto.request.OrderRequest;
 import Spring_AdamStore.dto.request.PaymentCallbackRequest;
 import Spring_AdamStore.dto.request.ShippingRequest;
-import Spring_AdamStore.dto.request.UpdateOrderAddressRequest;
+import Spring_AdamStore.dto.request.OrderAddressRequest;
 import Spring_AdamStore.dto.response.*;
 import Spring_AdamStore.service.OrderService;
 import Spring_AdamStore.service.PaymentService;
@@ -40,6 +40,8 @@ public class OrderController {
             description = "Api này dùng để tạo đơn hàng")
     @PostMapping("/orders")
     public ApiResponse<OrderResponse> create(@Valid @RequestBody OrderRequest request){
+        log.info("Received request to create order: {}", request);
+
         return ApiResponse.<OrderResponse>builder()
                 .code(HttpStatus.CREATED.value())
                 .message("Create Order")
@@ -48,36 +50,41 @@ public class OrderController {
     }
 
 
-    @GetMapping("/orders/{id}")
-    public ApiResponse<OrderResponse> fetchById(@Min(value = 1, message = "ID phải lớn hơn 0")
+    @Operation(summary = "Fetch Order Detail By Id",
+            description = "Api này dùng để lấy chi tiết đơn hàng")
+    @GetMapping("/orders/{id}/details")
+    public ApiResponse<OrderResponse> fetchDetailById(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                     @PathVariable Long id){
+        log.info("Received request to fetch Order Detail by id: {}", id);
+
         return ApiResponse.<OrderResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Fetch Order By Id")
-                .result(orderService.fetchById(id))
+                .result(orderService.fetchDetailById(id))
                 .build();
     }
 
+    @Operation(summary = "Fetch Order For Admin",
+            description = "Api này dùng để lấy tất cả đơn hàng")
     @GetMapping("/orders")
     public ApiResponse<PageResponse<OrderResponse>> fetchAll(@ParameterObject @PageableDefault Pageable pageable){
+        log.info("Received request to fetch all Order For Admin");
+
         return ApiResponse.<PageResponse<OrderResponse>>builder()
                 .code(HttpStatus.OK.value())
                 .result(orderService.fetchAll(pageable))
-                .message("Fetch All Orders With Pagination")
+                .message("Fetch All Orders For Admin")
                 .build();
     }
 
     @Operation(summary = "Search Order For Current User Or Admin",
             description = "Search Order cho User hiện tại hoặc Admin dựa vào token")
     @GetMapping("/orders/search")
-    public ApiResponse<PageResponse<OrderResponse>> searchOrder(@Min(value = 1, message = "pageNo phải lớn hơn 0")
-                                                                    @RequestParam(defaultValue = "1") int pageNo,
-                                                                    @RequestParam(defaultValue = "10") int pageSize,
-                                                                    @RequestParam(required = false) String sortBy,
+    public ApiResponse<PageResponse<OrderResponse>> searchOrder(@ParameterObject @PageableDefault Pageable pageable,
                                                                     @RequestParam(required = false) List<String> search){
         return ApiResponse.<PageResponse<OrderResponse>>builder()
                 .code(HttpStatus.OK.value())
-                .result(orderService.searchOrder(pageNo, pageSize, sortBy, search))
+                .result(orderService.searchOrder(pageable, search))
                 .message("Search Order For Current User Or Admin")
                 .build();
     }
@@ -86,7 +93,9 @@ public class OrderController {
     description = "Cập nhập đia chỉ cho đơn hàng ở trạng thái PENDING hoặc PROCESSING")
     @PutMapping("/orders/{orderId}/address")
     public ApiResponse<OrderResponse> updateAddress(@Min(value = 1, message = "orderId phải lớn hơn 0")
-                                                 @PathVariable Long orderId, @Valid @RequestBody UpdateOrderAddressRequest request){
+                                                 @PathVariable Long orderId, @Valid @RequestBody OrderAddressRequest request){
+        log.info("Received request to update address for order");
+
         return ApiResponse.<OrderResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Update Order By Id")
@@ -98,6 +107,8 @@ public class OrderController {
     @DeleteMapping("/orders/{id}")
     public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
                                     @PathVariable Long id){
+        log.info("Received request to delete Order by id: {}", id);
+
         orderService.delete(id);
         return ApiResponse.<Void>builder()
                 .code(HttpStatus.NO_CONTENT.value())
@@ -110,6 +121,8 @@ public class OrderController {
     description = "Api này dùng để tính phí ship của đơn hàng")
     @PostMapping("/shipping/calculate-fee")
     public ApiResponse<ShippingFeeResponse> calculateShippingFee(@RequestBody ShippingRequest request){
+        log.info("Received request to calculate shipping fee: {}", request);
+
         return ApiResponse.<ShippingFeeResponse>builder()
                 .code(HttpStatus.NO_CONTENT.value())
                 .message("Calculate Shipping Fee")
@@ -122,6 +135,8 @@ public class OrderController {
     @GetMapping("/orders/{orderId}/vn-pay")
     public ApiResponse<VNPayResponse> pay(@Min(value = 1, message = "ID phải lớn hơn 0")
                                               @PathVariable Long orderId, HttpServletRequest request) {
+        log.info("Received request to create VNPay payment URL for orderId: {}", orderId);
+
         return ApiResponse.<VNPayResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Tạo thành công URL thanh toán VNPay")
@@ -133,6 +148,8 @@ public class OrderController {
             description = "Api này dùng để xử lý sau khi thanh toán đơn hàng")
     @PostMapping("/orders/vn-pay-callback")
     public ApiResponse<OrderResponse> payCallbackHandler(@Valid @RequestBody PaymentCallbackRequest request) {
+        log.info("Received VNPay callback with response: {}", request);
+
         String status = request.getResponseCode();
         if (status.equals("00")) {
             return ApiResponse.<OrderResponse>builder()
@@ -152,6 +169,8 @@ public class OrderController {
     @GetMapping("/orders/{orderId}/retry-payment")
     public ApiResponse<VNPayResponse> retryPayment(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                        @PathVariable Long orderId, HttpServletRequest request) {
+        log.info("Received request to retry VNPay payment for orderId: {}", orderId);
+
         return ApiResponse.<VNPayResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Tạo thành công URL thanh toán VNPay")

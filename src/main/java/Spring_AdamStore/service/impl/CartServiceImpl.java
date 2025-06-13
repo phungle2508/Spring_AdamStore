@@ -13,7 +13,6 @@ import Spring_AdamStore.repository.CartItemRepository;
 import Spring_AdamStore.repository.CartRepository;
 import Spring_AdamStore.service.CartService;
 import Spring_AdamStore.service.CurrentUserService;
-import Spring_AdamStore.service.PageableService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -55,7 +54,7 @@ public class CartServiceImpl implements CartService {
         Page<CartItem> cartItemPage = cartItemRepository.findByCartId(cart.getId(), pageable);
 
         return PageResponse.<CartItemResponse>builder()
-                .page(cartItemPage.getNumber() + 1)
+                .page(cartItemPage.getNumber())
                 .size(cartItemPage.getSize())
                 .totalPages(cartItemPage.getTotalPages())
                 .totalItems(cartItemPage.getTotalElements())

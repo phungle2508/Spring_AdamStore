@@ -32,6 +32,9 @@ public class ProductVariantController {
                                                                             @PathVariable Long colorId,
                                                                             @Min(value = 1, message = "sizeId phải lớn hơn 0")
                                                                                 @PathVariable Long sizeId) {
+        log.info("Received request to fetch Variant with productId={}, colorId={}, sizeId={}",
+                productId, colorId, sizeId);
+
         return ApiResponse.<ProductVariantResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Fetch product variant by product, color, size")
@@ -47,6 +50,9 @@ public class ProductVariantController {
     public ApiResponse<ProductVariantResponse> updatePriceAndQuantity(@Min(value = 1, message = "productVariantId phải lớn hơn 0")
                                                                           @PathVariable Long id,
                                                                       @RequestBody @Valid VariantUpdateRequest request) {
+        log.info("Received request to update ProductVariant with id={}, new price={}, new quantity={}",
+                id, request.getPrice(), request.getQuantity());
+
         return ApiResponse.<ProductVariantResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Update price quantity of Product-variant")
@@ -60,6 +66,8 @@ public class ProductVariantController {
             description = "API để xóa ProductVariant")
     @DeleteMapping("/product-variants/{id}")
     public ApiResponse<Void> delete(@Min(value = 1, message = "id phải lớn hơn 0") @PathVariable Long id) {
+        log.info("Received request to delete ProductVariant with id={}", id);
+
         productVariantService.delete(id);
         return ApiResponse.<Void>builder()
                 .code(HttpStatus.NO_CONTENT.value())
@@ -75,6 +83,8 @@ public class ProductVariantController {
     @PatchMapping("/product-variants/{id}/restore")
     public ApiResponse<ProductVariantResponse> restore(@Min(value = 1, message = "Id phải lớn hơn 0")
                                                 @PathVariable long id) {
+        log.info("Received request to restore ProductVariant with id={}", id);
+
         return ApiResponse.<ProductVariantResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Restore Product-variant By Id")

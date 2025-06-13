@@ -34,7 +34,7 @@ public class FileController {
 
     @Operation(description = "API upload nhiều images")
     @PostMapping(value = "/upload/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ApiResponse<List<FileResponse>> uploadImage(@RequestParam("files") List<MultipartFile> files) throws IOException, FileException {
+    public ApiResponse<List<FileResponse>> uploadImage(@RequestPart("files") List<MultipartFile> files) throws IOException, FileException {
 
         return ApiResponse.<List<FileResponse>>builder()
                 .code(HttpStatus.OK.value())

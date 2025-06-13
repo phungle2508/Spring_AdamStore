@@ -2,7 +2,6 @@ package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.constants.OrderStatus;
 import Spring_AdamStore.constants.PaymentMethod;
-import Spring_AdamStore.constants.PaymentStatus;
 import Spring_AdamStore.constants.RoleEnum;
 import Spring_AdamStore.dto.request.*;
 import Spring_AdamStore.dto.response.*;
@@ -19,7 +18,6 @@ import Spring_AdamStore.repository.criteria.SearchCriteria;
 import Spring_AdamStore.repository.relationship.PromotionUsageRepository;
 import Spring_AdamStore.service.CurrentUserService;
 import Spring_AdamStore.service.OrderService;
-import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.PaymentHistoryService;
 import Spring_AdamStore.service.relationship.PromotionUsageService;
 import Spring_AdamStore.service.relationship.UserHasRoleService;
@@ -31,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -40,8 +38,6 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static Spring_AdamStore.constants.OrderStatus.PENDING;
 
 @Service
 @Slf4j(topic = "ORDER-SERVICE")
@@ -69,6 +65,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public OrderResponse create(OrderRequest request) {
+        log.info("Creating order with data= {}", request);
+
         // ShippingFee
         double totalPrice = request.getShippingFee();
 
@@ -128,7 +126,9 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public OrderResponse fetchById(Long id) {
+    public OrderResponse fetchDetailById(Long id) {
+        log.info("Fetch Order By Id: {}", id);
+
         Order order = findOrderById(id);
 
         return orderMapper.toOrderResponse(order, orderMappingHelper);
@@ -136,10 +136,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public PageResponse<OrderResponse> fetchAll(Pageable pageable) {
+        log.info("Fetch All Order For Admin");
+
         Page<Order> orderPage = orderRepository.findAll(pageable);
 
         return PageResponse.<OrderResponse>builder()
-                .page(orderPage.getNumber() + 1)
+                .page(orderPage.getNumber())
                 .size(orderPage.getSize())
                 .totalPages(orderPage.getTotalPages())
                 .totalItems(orderPage.getTotalElements())
@@ -148,10 +150,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public PageResponse<OrderResponse> searchOrder(int pageNo, int pageSize, String sortBy, List<String> search) {
-        pageNo = pageNo - 1;
-
-        List<SearchCriteria> criteriaList = new ArrayList<>();
+    public PageResponse<OrderResponse> searchOrder(Pageable pageable, List<String> search) {
+       List<SearchCriteria> criteriaList = new ArrayList<>();
 
         // Lay danh sach dieu kien
         if(search != null){
@@ -163,21 +163,21 @@ public class OrderServiceImpl implements OrderService {
                 }
             }
         }
-        List<Order> orderList = getOrderList(pageNo, pageSize, sortBy, criteriaList);
+        List<Order> orderList = getOrderList(pageable, criteriaList);
 
         Long totalElements = getTotalElements(criteriaList);
-        int totalPages = (int) Math.ceil((double) totalElements / pageSize);
+        int totalPages = (int) Math.ceil((double) totalElements / pageable.getPageSize());
 
         return PageResponse.<OrderResponse>builder()
-                .page(pageNo + 1)
-                .size(pageSize)
+                .page(pageable.getPageNumber())
+                .size(pageable.getPageSize())
                 .totalPages(totalPages)
                 .totalItems(totalElements)
                 .items(orderMapper.toOrderResponseList(orderList, orderMappingHelper))
                 .build();
     }
 
-    private List<Order> getOrderList(int pageNo, int pageSize, String sortBy, List<SearchCriteria> criteriaList) {
+    private List<Order> getOrderList(Pageable pageable, List<SearchCriteria> criteriaList) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Order> query = builder.createQuery(Order.class);
         Root<Order> root = query.from(Order.class);
@@ -204,23 +204,19 @@ public class OrderServiceImpl implements OrderService {
         query.where(predicate);
 
         // Sort
-        if(StringUtils.hasLength(sortBy)){
-            Pattern pattern = Pattern.compile("(\\w+?)(-)(asc|desc)");
-            Matcher matcher = pattern.matcher(sortBy);
-            if(matcher.find()){
-                String columnName = matcher.group(1);
+        List<jakarta.persistence.criteria.Order> orders = new ArrayList<>();
+        for (Sort.Order order : pageable.getSort()) {
+            String property = order.getProperty();
 
-                if(matcher.group(3).equalsIgnoreCase("desc")){
-                    query.orderBy(builder.desc(root.get(columnName)));
-                }else{
-                    query.orderBy(builder.asc(root.get(columnName)));
-                }
-            }
+            Path<?> path = root.get(property);
+            orders.add(order.isAscending() ? builder.asc(path) : builder.desc(path));
         }
 
+        query.orderBy(orders);
+
         return entityManager.createQuery(query)
-                .setFirstResult(pageNo * pageSize)
-                .setMaxResults(pageSize)
+                .setFirstResult((int) pageable.getOffset())
+                .setMaxResults(pageable.getPageSize())
                 .getResultList();
     }
 
@@ -256,7 +252,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderResponse updateAddress(Long id, UpdateOrderAddressRequest request) {
+    public OrderResponse updateAddress(Long id, OrderAddressRequest request) {
+        log.info("Updated update address for orderId= {}" , id);
+
         Order order = findOrderById(id);
 
         if (!(order.getOrderStatus() == OrderStatus.PENDING || order.getOrderStatus() == OrderStatus.PROCESSING)) {
@@ -273,6 +271,8 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public void delete(Long id) {
+        log.info("Delete Order By Id: {}", id);
+
         Order order = findOrderById(id);
 
         orderItemRepository.deleteAllByOrderId(order.getId());

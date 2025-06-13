@@ -2,7 +2,6 @@ package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.dto.request.ReviewRequest;
 import Spring_AdamStore.dto.request.ReviewUpdateRequest;
-import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.dto.response.ReviewResponse;
 import Spring_AdamStore.entity.Product;
 import Spring_AdamStore.entity.Review;
@@ -14,14 +13,10 @@ import Spring_AdamStore.mapper.ReviewMappingHelper;
 import Spring_AdamStore.repository.ProductRepository;
 import Spring_AdamStore.repository.ReviewRepository;
 import Spring_AdamStore.service.CurrentUserService;
-import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.ReviewService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service

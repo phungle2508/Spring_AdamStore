@@ -7,7 +7,6 @@ import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.PermissionMapper;
 import Spring_AdamStore.repository.PermissionRepository;
-import Spring_AdamStore.service.PageableService;
 import Spring_AdamStore.service.PermissionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +39,7 @@ public class PermissionServiceImpl implements PermissionService {
         Page<Permission> permissionPage = permissionRepository.findAll(pageable);
 
         return PageResponse.<PermissionResponse>builder()
-                .page(permissionPage.getNumber() + 1)
+                .page(permissionPage.getNumber())
                 .size(permissionPage.getSize())
                 .totalPages(permissionPage.getTotalPages())
                 .totalItems(permissionPage.getTotalElements())

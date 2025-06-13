@@ -30,6 +30,7 @@ public class SecurityConfig {
 
     private final CustomJwtDecoder customJwtDecoder;
     private final CustomJwtAuthenticationConverter customJwtAuthenticationConverter;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     private final String[] PUBLIC_URLS  = {
             "/v1/auth/login","/v1/auth/register", "/v1/auth/register/*", "/v1/auth/logout",
@@ -38,7 +39,7 @@ public class SecurityConfig {
 
     private final String[] GET_URLS  = {
             "/v1/branches", "/v1/branches/*",
-            "/v1/products", "/v1/products/*",
+            "/v1/products", "/v1/products/**",
             "/v1/categories", "/v1/categories/*"
     };
 
@@ -48,15 +49,15 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(PUBLIC_URLS).permitAll()
                         .requestMatchers(HttpMethod.GET, GET_URLS).permitAll()
-                        .anyRequest().permitAll())
-//                .oauth2ResourceServer(oauth2 ->
-//                        oauth2.jwt(
-//                                        jwtConfigurer -> jwtConfigurer
-//                                                .decoder(customJwtDecoder)
-//                                                .jwtAuthenticationConverter(customJwtAuthenticationConverter)
-//                                )
-//                                .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
-//                )
+                        .anyRequest().authenticated())
+                .oauth2ResourceServer(oauth2 ->
+                        oauth2.jwt(
+                                        jwtConfigurer -> jwtConfigurer
+                                                .decoder(customJwtDecoder)
+                                                .jwtAuthenticationConverter(customJwtAuthenticationConverter)
+                                )
+                                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                )
         ;
 
         return http.build();

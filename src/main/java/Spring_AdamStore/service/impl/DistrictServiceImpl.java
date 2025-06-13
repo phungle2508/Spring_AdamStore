@@ -52,7 +52,7 @@ public class DistrictServiceImpl implements DistrictService {
         Page<District> districtPage = districtRepository.findAll(pageable);
 
         return PageResponse.<DistrictResponse>builder()
-                .page(districtPage.getNumber() + 1)
+                .page(districtPage.getNumber())
                 .size(districtPage.getSize())
                 .totalPages(districtPage.getTotalPages())
                 .totalItems(districtPage.getTotalElements())
@@ -88,7 +88,7 @@ public class DistrictServiceImpl implements DistrictService {
         Page<Ward> wardPage = wardRepository.findByDistrictId(districtId, pageable);
 
         return PageResponse.<WardResponse>builder()
-                .page(wardPage.getNumber() + 1)
+                .page(wardPage.getNumber())
                 .size(wardPage.getSize())
                 .totalPages(wardPage.getTotalPages())
                 .totalItems(wardPage.getTotalElements())

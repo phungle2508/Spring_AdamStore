@@ -37,19 +37,6 @@ public class CategoryController {
                 .build();
     }
 
-
-    @GetMapping("/categories/{id}")
-    public ApiResponse<CategoryResponse> fetchById(@Min(value = 1, message = "ID phải lớn hơn 0")
-                                                  @PathVariable Long id){
-        log.info("Received request to fetch Category by id: {}", id);
-
-        return ApiResponse.<CategoryResponse>builder()
-                .code(HttpStatus.OK.value())
-                .message("Fetch Category By Id")
-                .result(categoryService.fetchById(id))
-                .build();
-    }
-
     @Operation(summary = "Fetch All Categories For User",
     description = "Api này để lấy tất cả Categories (ACTIVE) cho User")
     @GetMapping("/categories")

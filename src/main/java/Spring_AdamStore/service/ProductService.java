@@ -15,7 +15,7 @@ public interface ProductService {
 
     ProductResponse create(ProductRequest request);
 
-    ProductResponse fetchById(Long id);
+    ProductResponse fetchDetailById(Long id);
 
     PageResponse<ProductResponse> fetchAll(Pageable pageable);
 
@@ -27,7 +27,7 @@ public interface ProductService {
 
     PageResponse<ReviewResponse> fetchReviewsByProductId(Pageable pageable,Long productId);
 
-    PageResponse<ProductResponse> searchProduct(int pageNo, int pageSize, String sortBy, List<String> search);
+    PageResponse<ProductResponse> searchProduct(Pageable pageable, List<String> search);
 
     ProductResponse restore(long id);
 

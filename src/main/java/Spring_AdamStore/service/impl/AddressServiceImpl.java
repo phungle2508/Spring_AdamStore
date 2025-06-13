@@ -83,7 +83,7 @@ public class AddressServiceImpl implements AddressService {
         Page<Address> addressPage = addressRepository.findAllAddresses(pageable);
 
         return PageResponse.<AddressResponse>builder()
-                .page(addressPage.getNumber() + 1)
+                .page(addressPage.getNumber())
                 .size(addressPage.getSize())
                 .totalPages(addressPage.getTotalPages())
                 .totalItems(addressPage.getTotalElements())
@@ -114,7 +114,6 @@ public class AddressServiceImpl implements AddressService {
                         userAddress.setIsDefault(false);
                         addressRepository.save(userAddress);
                     });
-
             address.setIsDefault(true);
         }
 
