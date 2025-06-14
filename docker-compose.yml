@@ -1,22 +1,23 @@
 
 services:
 
-  mysql-devjob:
-    image: mysql:8.0.41-debian
-    container_name: mysql-adam-store
+  postgres-adam-store:
+    image: postgres:15
+    container_name: postgres-adam-store
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: 123456
-      MYSQL_DATABASE: adamstore
+      POSTGRES_DB: adam-store
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
     volumes:
-      - adam_store_data:/var/lib/mysql
+      - adam_store_data:/var/lib/postgresql/data
       - ./initdb.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
-      - '3308:3306'
+      - '5433:5432'
     networks:
-      - adamstore_backend
+      - adam_store_backend
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p123456" ]
+      test: ["CMD", "pg_isready", "-U", "postgres"]
       interval: 30s
       retries: 5
       start_period: 30s
@@ -36,7 +37,7 @@ services:
       - REDIS_DISABLE_COMMANDS=FLUSHDB;FLUSHALL
     command: redis-server --requirepass 123456
     networks:
-      - adamstore_backend
+      - adam_store_backend
 
 
   spring-adam-store:
@@ -50,13 +51,13 @@ services:
     ports:
       - '8080:8080'
     networks:
-      - adamstore_backend
+      - adam_store_backend
     depends_on:
-      mysql-devjob:
+      postgres-adam-store:
         condition: service_healthy
 
 networks:
-  adamstore_backend:
+  adam_store_backend:
     driver: bridge
 
 volumes:
