@@ -28,7 +28,5 @@ public class PromotionResponse {
     private EntityStatus status;
 
     private String createdBy;
-    private String updatedBy;
     private LocalDate createdAt;
-    private LocalDate updatedAt;
 }

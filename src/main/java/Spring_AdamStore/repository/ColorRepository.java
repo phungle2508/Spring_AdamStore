@@ -13,6 +13,5 @@ public interface ColorRepository extends JpaRepository<Color, Long> {
 
     boolean existsByName(String name);
 
-    Set<Color> findAllByIdIn(Set<Long> colorSet);
 
 }

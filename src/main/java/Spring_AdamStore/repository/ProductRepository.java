@@ -1,5 +1,6 @@
 package Spring_AdamStore.repository;
 
+import Spring_AdamStore.dto.response.TopSellingDTO;
 import Spring_AdamStore.entity.Branch;
 import Spring_AdamStore.entity.District;
 import Spring_AdamStore.entity.Product;
@@ -10,6 +11,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -23,10 +26,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Page<Product> findByCategoryId(Long categoryId, Pageable pageable);
 
-    @Query(value = "SELECT * FROM products p WHERE p.category_id = :categoryId", nativeQuery = true)
-    Page<Product> findAllByCategoryId(Long categoryId, Pageable pageable);
-
-
     @Query(value = "SELECT COUNT(*) FROM products p WHERE p.category_id = :categoryId AND p.status = :status", nativeQuery = true)
     Long countActiveProductsByCategoryId(@Param("categoryId") Long categoryId, @Param("status") String status);
 
@@ -34,4 +33,29 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             countQuery = "SELECT COUNT(*) FROM products",
             nativeQuery = true)
     Page<Product> findAllProducts(Pageable pageable);
+
+
+
+    @Query("""
+        SELECT new Spring_AdamStore.dto.response.TopSellingDTO(
+            p.id,
+            p.name,
+            p.status,
+            SUM(oi.quantity),
+            SUM(CAST(oi.quantity * oi.unitPrice AS double))
+        )
+        FROM OrderItem oi
+        JOIN ProductVariant pv ON oi.productVariantId = pv.id
+        JOIN Product p ON pv.productId = p.id
+        JOIN Order o ON oi.orderId = o.id
+        WHERE o.orderStatus = 'DELIVERED'
+          AND o.orderDate BETWEEN :startDate AND :endDate
+        GROUP BY p.id, p.name, p.status
+        ORDER BY SUM(oi.quantity) DESC
+    """)
+    List<TopSellingDTO> findTopSellingProductsBetween(
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate
+    );
+
 }

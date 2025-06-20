@@ -37,39 +37,19 @@ public interface PaymentHistoryRepository extends JpaRepository<PaymentHistory, 
 
 
 
-    @Query("""
+    @Query(value = """
     SELECT new Spring_AdamStore.dto.response.RevenueByMonthDTO(
-        DATE_FORMAT(ph.paymentTime, '%Y-%m'),
+        FUNCTION('TO_CHAR', ph.paymentTime, 'YYYY-MM'),
         SUM(ph.totalAmount)
     )
     FROM PaymentHistory ph
     WHERE ph.isPrimary = true
       AND ph.paymentStatus = 'PAID'
       AND ph.paymentTime >= :startDate AND ph.paymentTime <= :endDate
-    GROUP BY DATE_FORMAT(ph.paymentTime, '%Y-%m')
-    ORDER BY DATE_FORMAT(ph.paymentTime, '%Y-%m')
-""")
+    GROUP BY FUNCTION('TO_CHAR', ph.paymentTime, 'YYYY-MM')
+    ORDER BY FUNCTION('TO_CHAR', ph.paymentTime, 'YYYY-MM')
+    """)
     List<RevenueByMonthDTO> getRevenueByMonth(@Param("startDate") LocalDateTime startDate,
                                               @Param("endDate") LocalDateTime endDate);
-
-
-    @Query("""
-        SELECT new Spring_AdamStore.dto.response.OrderRevenueDTO(
-            o.id,
-            u.email,
-            o.orderDate,
-            o.totalPrice
-        )
-        FROM Order o
-        JOIN User u
-        JOIN PaymentHistory ph
-        WHERE ph.isPrimary = true
-          AND ph.paymentStatus = 'PAID'
-          AND o.orderDate BETWEEN :startDate AND :endDate
-        ORDER BY o.orderDate
-    """)
-    Page<OrderRevenueDTO> getRevenueOrdersByDate(@Param("startDate") LocalDate startDate,
-                                                 @Param("endDate") LocalDate endDate,
-                                                 Pageable pageable);
 
 }
