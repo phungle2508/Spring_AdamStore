@@ -58,11 +58,11 @@ public class StatisticsController {
     @Operation(summary = "Fetched daily order revenue data",
     description = "API này dùng để lấy dữ liệu doanh thu của các đơn hàng (yyyy-MM-dd)")
     @GetMapping("/orders/revenue-by-date")
-    public ApiResponse<List<OrderResponse>> getOrderRevenueByDate(@RequestParam @Parameter(example = "2025-02-20") LocalDate startDate,
+    public ApiResponse<List<OrderRevenueDTO>> getOrderRevenueByDate(@RequestParam @Parameter(example = "2025-02-20") LocalDate startDate,
                                                                             @RequestParam @Parameter(example = "2025-05-10") LocalDate endDate){
         log.info("Received request to Fetched daily order revenue data");
 
-        return ApiResponse.<List<OrderResponse>>builder()
+        return ApiResponse.<List<OrderRevenueDTO>>builder()
                 .code(HttpStatus.OK.value())
                 .message("Fetched daily order revenue data")
                 .result(statisticsService.getOrderRevenueByDate(startDate, endDate))
