@@ -11,7 +11,7 @@ public interface StatisticsService {
 
     List<TopSellingDTO> getTopSellingProducts(LocalDate startDate, LocalDate endDate);
 
-    List<OrderResponse> getOrderRevenueByDate(LocalDate startDate, LocalDate endDate);
+    List<OrderRevenueDTO> getOrderRevenueByDate(LocalDate startDate, LocalDate endDate);
 
 
 }

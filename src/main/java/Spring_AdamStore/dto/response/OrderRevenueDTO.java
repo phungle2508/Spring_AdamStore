@@ -11,8 +11,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class OrderRevenueDTO {
 
-     private Long orderId;
+     private Long id;
      private String customerName;
+     private Double totalPrice;
+     private String paymentMethod;
      private LocalDate orderDate;
-     private Double totalAmount;
+     private String orderStatus;
+
 }

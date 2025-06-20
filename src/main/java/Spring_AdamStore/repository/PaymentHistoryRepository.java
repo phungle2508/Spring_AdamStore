@@ -28,6 +28,9 @@ public interface PaymentHistoryRepository extends JpaRepository<PaymentHistory, 
     Optional<PaymentHistory> findByOrderIdAndPaymentStatusAndPaymentMethod(Long orderId, PaymentStatus paymentStatus, PaymentMethod paymentMethod);
 
 
+    Optional<PaymentHistory> findByOrderIdAndPaymentStatus(Long orderId, PaymentStatus paymentStatus);
+
+
     @Query("SELECT p FROM PaymentHistory p " +
             "WHERE p.paymentStatus = :paymentStatus " +
             "AND p.paymentTime >= :startDate " +

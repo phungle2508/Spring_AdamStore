@@ -46,13 +46,13 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public List<OrderResponse> getOrderRevenueByDate(LocalDate startDate, LocalDate endDate) {
+    public List<OrderRevenueDTO> getOrderRevenueByDate(LocalDate startDate, LocalDate endDate) {
         log.info("Fetching daily order revenue from {} to {}", startDate, endDate);
 
         List<Order> orderList = orderRepository.findAllByOrderDateBetweenAndOrderStatus(
                 startDate, endDate, OrderStatus.DELIVERED);
 
-        return orderMapper.toOrderResponseList(orderList, orderMappingHelper);
+        return orderMapper.tOrderRevenueDtoList(orderList, orderMappingHelper);
     }
 
 }
