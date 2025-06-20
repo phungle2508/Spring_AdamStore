@@ -11,5 +11,4 @@ import java.util.Set;
 @Repository
 public interface SizeRepository extends JpaRepository<Size, Long> {
 
-    Set<Size> findAllByIdIn(Set<Long> sizeSet);
 }

@@ -19,6 +19,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("SELECT COUNT(o) > 0 FROM Order o WHERE o.userId = :userId AND o.orderStatus IN :statuses")
     Boolean existsByUserIdAndOrderStatusIn(@Param("userId") Long userId, @Param("statuses") List<OrderStatus> statuses);
 
+    List<Order> findAllByOrderDateBetweenAndOrderStatus(LocalDate startDate, LocalDate endDate, OrderStatus orderStatus);
+
 
     @Query("SELECT COUNT(o) > 0 FROM Order o WHERE o.addressId = :addressId AND o.orderStatus IN :statuses")
     boolean existsByAddressIdAndStatusIn(@Param("addressId") Long addressId,

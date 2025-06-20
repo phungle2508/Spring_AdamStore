@@ -5,6 +5,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDate;
 
 
 @Getter
@@ -14,6 +19,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class FileEntity {
 
     @Id
@@ -27,5 +33,10 @@ public class FileEntity {
     @Enumerated(EnumType.STRING)
     private FileType fileType;
 
+
+    @CreatedBy
+    private String createdBy;
+    @CreationTimestamp
+    private LocalDate createdAt;
 
 }
