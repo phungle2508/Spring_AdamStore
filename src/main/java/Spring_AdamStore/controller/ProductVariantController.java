@@ -25,7 +25,7 @@ public class ProductVariantController {
 
     @Operation(summary = "Fetch product variant by product, color, size"
             , description = "API để tìm kiếm Product-Variant theo product, color, size")
-    @GetMapping("/product-variants/{productId}/{colorId}/{sizeId}")
+    @GetMapping("/private/product-variants/{productId}/{colorId}/{sizeId}")
     public ApiResponse<ProductVariantResponse> findByProductAndColorAndSize(@Min(value = 1, message = "productId phải lớn hơn 0")
                                                                                 @PathVariable Long productId,
                                                                             @Min(value = 1, message = "colorId phải lớn hơn 0")
@@ -43,10 +43,9 @@ public class ProductVariantController {
     }
 
 
-    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Update price and quantity for a product variant",
             description = "API để cập nhật giá và số lượng cho ProductVariant")
-    @PutMapping("/product-variants/{id}")
+    @PutMapping("/admin/product-variants/{id}")
     public ApiResponse<ProductVariantResponse> updatePriceAndQuantity(@Min(value = 1, message = "productVariantId phải lớn hơn 0")
                                                                           @PathVariable Long id,
                                                                       @RequestBody @Valid VariantUpdateRequest request) {
@@ -61,10 +60,10 @@ public class ProductVariantController {
     }
 
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @Operation(summary = "Delete product variant",
             description = "API để xóa ProductVariant")
-    @DeleteMapping("/product-variants/{id}")
+    @DeleteMapping("/admin/product-variants/{id}")
     public ApiResponse<Void> delete(@Min(value = 1, message = "id phải lớn hơn 0") @PathVariable Long id) {
         log.info("Received request to delete ProductVariant with id={}", id);
 
@@ -77,10 +76,9 @@ public class ProductVariantController {
     }
 
 
-    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Restore product variant",
             description = "API để khôi phục ProductVariant")
-    @PatchMapping("/product-variants/{id}/restore")
+    @PatchMapping("/admin/product-variants/{id}/restore")
     public ApiResponse<ProductVariantResponse> restore(@Min(value = 1, message = "Id phải lớn hơn 0")
                                                 @PathVariable long id) {
         log.info("Received request to restore ProductVariant with id={}", id);

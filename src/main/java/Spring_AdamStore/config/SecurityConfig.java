@@ -27,29 +27,28 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-
     private final CustomJwtDecoder customJwtDecoder;
     private final CustomJwtAuthenticationConverter customJwtAuthenticationConverter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     private final String[] PUBLIC_URLS  = {
-            "/v1/auth/login","/v1/auth/register", "/v1/auth/register/*", "/v1/auth/logout",
-            "/v1/auth/refresh-token", "/v1/auth/forgot-password", "/v1/auth/forgot-password/*"
+            "/v1/public/**"
     };
 
-    private final String[] GET_URLS  = {
-            "/v1/branches", "/v1/branches/*",
-            "/v1/products", "/v1/products/**",
-            "/v1/categories", "/v1/categories/*"
+    private final String[] ADMIN_URLS = {
+            "/v1/admin/**"
     };
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
+
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(PUBLIC_URLS).permitAll()
-                        .requestMatchers(HttpMethod.GET, GET_URLS).permitAll()
-                        .anyRequest().authenticated())
+                        .requestMatchers(ADMIN_URLS).hasRole("ADMIN")
+                        .anyRequest().authenticated()
+                )
                 .oauth2ResourceServer(oauth2 ->
                         oauth2.jwt(
                                         jwtConfigurer -> jwtConfigurer

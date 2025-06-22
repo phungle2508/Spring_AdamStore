@@ -80,7 +80,8 @@ public enum ErrorCode {
     COLOR_HAS_USED_VARIANT(1068, "Không thể xóa màu vì có product variant đã sử dụng color này.", HttpStatus.FORBIDDEN),
     DEFAULT_ADDRESS_CANNOT_BE_DELETED(1069, "Không thể xóa địa chỉ mặc định", HttpStatus.BAD_REQUEST),
     ADDRESS_USED_IN_ORDER(1070, "Địa chỉ đã được sử dụng trong đơn hàng", HttpStatus.BAD_REQUEST),
-    FILE_NOT_EXISTED(1042, "File không tồn tại trong hệ thống", HttpStatus.NOT_FOUND)
+    FILE_NOT_EXISTED(1042, "File không tồn tại trong hệ thống", HttpStatus.NOT_FOUND),
+    ORDER_CANNOT_BE_CANCELLED(1043, "Đơn hàng không thể huỷ vì không ở trạng thái cho phép (PENDING hoặc PROCESSING)", HttpStatus.BAD_REQUEST)
 
     ;
 

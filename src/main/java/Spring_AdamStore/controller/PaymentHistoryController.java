@@ -33,7 +33,7 @@ public class PaymentHistoryController {
 
 
     @Operation(description = "Api này dùng để tìm kiếm Payment-History")
-    @GetMapping("/payment-histories/search")
+    @GetMapping("/admin/payment-histories/search")
     public ApiResponse<PageResponse<PaymentHistoryResponse>> searchPaymentHistories(@ParameterObject @PageableDefault Pageable pageable,
                                                                                   @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
                                                                                   @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
@@ -47,8 +47,8 @@ public class PaymentHistoryController {
                 .build();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/payment-histories/{id}")
+
+    @DeleteMapping("/admin/payment-histories/{id}")
     public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
                                     @PathVariable Long id){
         log.info("Received request to delete Payment-History with id: {}", id);

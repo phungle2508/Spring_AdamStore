@@ -25,8 +25,8 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/categories")
+
+    @PostMapping("/admin/categories")
     public ApiResponse<CategoryResponse> create(@Valid @RequestBody CategoryRequest request){
         log.info("Received request to create Category: {}", request);
 
@@ -39,7 +39,7 @@ public class CategoryController {
 
     @Operation(summary = "Fetch All Categories For User",
     description = "Api này để lấy tất cả Categories (ACTIVE) cho User")
-    @GetMapping("/categories")
+    @GetMapping("/public/categories")
     public ApiResponse<PageResponse<CategoryResponse>> fetchAll(@ParameterObject @PageableDefault Pageable pageable){
         log.info("Received request to fetch all Category for User");
 
@@ -50,10 +50,10 @@ public class CategoryController {
                 .build();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @Operation(summary = "Fetch All Categories For Admin",
             description = "Api này để lấy tất cả Categories (cả ACTIVE và INACTIVE) cho Admin")
-    @GetMapping("/categories/admin")
+    @GetMapping("/admin/categories")
     public ApiResponse<PageResponse<CategoryResponse>> fetchAllCategoriesForAdmin(@ParameterObject @PageableDefault Pageable pageable){
         log.info("Received request to fetch all Category for Admin");
 
@@ -64,8 +64,8 @@ public class CategoryController {
                 .build();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/categories/{id}")
+
+    @PutMapping("/admin/categories/{id}")
     public ApiResponse<CategoryResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                @PathVariable Long id, @Valid @RequestBody CategoryRequest request){
         log.info("Received request to update Category: {}, with Category id: {}", request, id);
@@ -78,9 +78,9 @@ public class CategoryController {
     }
 
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @Operation(summary = "Soft Delete Category")
-    @DeleteMapping("/categories/{id}")
+    @DeleteMapping("/admin/categories/{id}")
     public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
                                     @PathVariable Long id){
         log.info("Received request to delete Category by id: {}", id);
@@ -93,9 +93,9 @@ public class CategoryController {
                 .build();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @Operation(summary = "Restore Category")
-    @PatchMapping("/categories/{id}/restore")
+    @PatchMapping("/admin/categories/{id}/restore")
     public ApiResponse<CategoryResponse> restore(@Min(value = 1, message = "Id phải lớn hơn 0")
                                                @PathVariable long id) {
         log.info("Received request to restore Category by id: {}", id);
@@ -109,7 +109,7 @@ public class CategoryController {
 
     @Operation(summary = "Fetch All Products By Category For User",
             description = "API dùng để lấy danh sách products của category cho user")
-    @GetMapping("/categories/{categoryId}/products")
+    @GetMapping("/public/categories/{categoryId}/products")
     public ApiResponse<PageResponse<ProductResponse>> fetchProductByCategory(@ParameterObject @PageableDefault Pageable pageable,
                                                                          @Min(value = 1, message = "categoryId phải lớn hơn 0")
                                                                          @PathVariable Long categoryId){

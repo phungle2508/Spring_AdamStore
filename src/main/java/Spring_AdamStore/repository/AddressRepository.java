@@ -24,7 +24,7 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
     Optional<Address> findAddressById(@Param("id") Long id);
 
     @Query(value = "SELECT * FROM addresses",
-            countQuery = "SELECT COUNT(*) FROM tbl_address",
+            countQuery = "SELECT COUNT(*) FROM addresses",
             nativeQuery = true)
     Page<Address> findAllAddresses(Pageable pageable);
 }

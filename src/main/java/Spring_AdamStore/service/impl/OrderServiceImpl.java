@@ -177,6 +177,7 @@ public class OrderServiceImpl implements OrderService {
                 .build();
     }
 
+
     private List<Order> getOrderList(Pageable pageable, List<SearchCriteria> criteriaList) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Order> query = builder.createQuery(Order.class);
@@ -283,6 +284,20 @@ public class OrderServiceImpl implements OrderService {
 
         orderRepository.delete(order);
     }
+
+    @Override
+    public OrderResponse cancelOrder(Long orderId) {
+        Order order = findOrderById(orderId);
+
+        if (order.getOrderStatus() != OrderStatus.PENDING && order.getOrderStatus() != OrderStatus.PROCESSING) {
+            throw new AppException(ErrorCode.ORDER_CANNOT_BE_CANCELLED);
+        }
+
+        order.setOrderStatus(OrderStatus.CANCELLED);
+
+        return orderMapper.toOrderResponse(orderRepository.save(order), orderMappingHelper);
+    }
+
 
     private Order findOrderById(Long id) {
         return orderRepository.findById(id)

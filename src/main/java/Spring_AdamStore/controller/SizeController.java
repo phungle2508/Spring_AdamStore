@@ -29,7 +29,7 @@ public class SizeController {
 
     private final SizeService sizeService;
 
-    @GetMapping("/sizes")
+    @GetMapping("/public/sizes")
     public ApiResponse<PageResponse<SizeResponse>> fetchAll(@ParameterObject @PageableDefault Pageable pageable){
 
         log.info("Received request to fetch all Size");

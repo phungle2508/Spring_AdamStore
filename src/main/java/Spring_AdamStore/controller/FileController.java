@@ -26,14 +26,15 @@ import static Spring_AdamStore.constants.FileType.PRODUCT_IMAGE;
 @Slf4j(topic = "FILE-CONTROLLER")
 @RequiredArgsConstructor
 @Validated
-@RequestMapping("/v1/file")
+@RequestMapping("/v1")
 @RestController
 public class FileController {
 
     private final FileService productImageService;
 
-    @Operation(description = "API upload nhiều images")
-    @PostMapping(value = "/upload/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+
+    @Operation(description = "API upload hình ảnh (có thể tải nhiều ảnh lên)")
+    @PostMapping(value = "/admin/files/upload/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<List<FileResponse>> uploadImage(@RequestPart("files") List<MultipartFile> files) throws IOException, FileException {
 
         return ApiResponse.<List<FileResponse>>builder()
@@ -43,8 +44,8 @@ public class FileController {
                 .build();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/all")
+
+    @GetMapping("/admin/files/all")
     public ApiResponse<PageResponse<FileResponse>> getAllFiles(@ParameterObject @PageableDefault Pageable pageable,
                                                                FileType fileType){
         return ApiResponse.<PageResponse<FileResponse>>builder()
@@ -54,8 +55,8 @@ public class FileController {
                 .build();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/delete/{id}")
+
+    @DeleteMapping("/admin/files/delete/{id}")
     public ApiResponse<Void> delete(@PathVariable Long id) throws Exception {
          productImageService.deleteFile(id);
         return ApiResponse.<Void>builder()

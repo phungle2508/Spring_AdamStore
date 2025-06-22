@@ -30,8 +30,8 @@ public class ColorController {
 
     private final ColorService colorService;
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/colors")
+
+    @PostMapping("/admin/colors")
     public ApiResponse<ColorResponse> create(@Valid @RequestBody ColorRequest request){
         log.info("Received request to create color: {}", request);
 
@@ -42,7 +42,7 @@ public class ColorController {
                 .build();
     }
 
-    @GetMapping("/colors")
+    @GetMapping("/public/colors")
     public ApiResponse<PageResponse<ColorResponse>> fetchAll(@ParameterObject @PageableDefault Pageable pageable){
         log.info("Received request to fetch all colors");
 
@@ -53,8 +53,8 @@ public class ColorController {
                 .build();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/colors/{id}")
+
+    @PutMapping("/admin/colors/{id}")
     public ApiResponse<ColorResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                 @PathVariable Long id, @Valid @RequestBody ColorRequest request){
         log.info("Received request to update color with id: {}, data: {}", id, request);
@@ -66,8 +66,8 @@ public class ColorController {
                 .build();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/colors/{id}")
+
+    @DeleteMapping("/admin/colors/{id}")
     public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
                                     @PathVariable Long id){
         log.info("Received request to delete color with id: {}", id);
