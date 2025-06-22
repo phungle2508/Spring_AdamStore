@@ -26,7 +26,8 @@ public class RoleController {
 
     private final RoleService roleService;
 
-    @GetMapping("/roles/{id}")
+
+    @GetMapping("/admin/roles/{id}")
     public ApiResponse<RoleResponse> fetchRoleById(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                    @PathVariable long id){
         log.info("Received request to fetch role by id: {}", id);
@@ -38,8 +39,8 @@ public class RoleController {
                 .build();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/roles")
+
+    @GetMapping("/admin/roles")
     public ApiResponse<PageResponse<RoleResponse>> fetchAll(@ParameterObject @PageableDefault Pageable pageable){
         log.info("Received request to fetch all roles for admin");
 
@@ -50,8 +51,8 @@ public class RoleController {
                 .build();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/roles/{roleId}/permissions")
+
+    @GetMapping("/admin/roles/{roleId}/permissions")
     public ApiResponse<PageResponse<PermissionResponse>> getPermissionsByRole(@ParameterObject @PageableDefault Pageable pageable,
                                                                               @PathVariable long roleId) {
         log.info("Received request to fetch all permissions by Role");

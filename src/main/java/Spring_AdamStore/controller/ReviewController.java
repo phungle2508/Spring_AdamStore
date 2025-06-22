@@ -31,7 +31,7 @@ public class ReviewController {
 
     @Operation(summary = "Product Review",
     description = "API này dùng để đánh giá sản phẩm")
-    @PostMapping("/reviews")
+    @PostMapping("/private/reviews")
     public ApiResponse<ReviewResponse> create(@Valid @RequestBody ReviewRequest request){
         log.info("Received request to create review: {}", request);
 
@@ -43,7 +43,7 @@ public class ReviewController {
     }
 
 
-    @PutMapping("/reviews/{id}")
+    @PutMapping("/private/reviews/{id}")
     public ApiResponse<ReviewResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                  @PathVariable Long id, @Valid @RequestBody ReviewUpdateRequest request){
         log.info("Received request to update review: {}, with review id: {}", request, id);
@@ -56,7 +56,7 @@ public class ReviewController {
     }
 
 
-    @DeleteMapping("/reviews/{id}")
+    @DeleteMapping("/private/reviews/{id}")
     public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
                                     @PathVariable Long id){
         log.info("Received request to delete review by id: {}", id);

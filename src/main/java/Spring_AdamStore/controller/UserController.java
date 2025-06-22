@@ -34,10 +34,10 @@ public class UserController {
     private final UserService userService;
 
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @Operation(summary = "Create User with Role",
             description = "API này được sử dụng để tạo user và gán role vào user đó")
-    @PostMapping("/users")
+    @PostMapping("/admin/users")
     public ApiResponse<UserResponse> create(@Valid @RequestBody UserCreationRequest request){
         log.info("Received request to create User: {}", request);
 
@@ -49,7 +49,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/private/users/{id}")
     public ApiResponse<UserResponse> fetchById(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                @PathVariable long id){
         log.info("Received request to fetch User by id: {}", id);
@@ -62,7 +62,7 @@ public class UserController {
     }
 
     @Operation(summary = "Fetch All Users For Admin")
-    @GetMapping("/users")
+    @GetMapping("/admin/users")
     public ApiResponse<PageResponse<UserResponse>> fetchAllForAdmin(@ParameterObject @PageableDefault Pageable pageable){
         log.info("Received request to fetch all user for admin");
 
@@ -75,7 +75,7 @@ public class UserController {
 
     @Operation(summary = "Update User (No update Password)",
             description = "API này được sử dụng để update user")
-    @PutMapping("/users/{id}")
+    @PutMapping("/private/users/{id}")
     public ApiResponse<UserResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
                                             @PathVariable long id,@Valid @RequestBody UserUpdateRequest request){
         log.info("Received request to update user: {}, with user id: {}", request, id);
@@ -88,9 +88,9 @@ public class UserController {
     }
 
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @Operation(summary = "Soft Delete User")
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/admin/users/{id}")
     public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
                                     @PathVariable long id){
         log.info("Received request to delete user by id: {}", id);
@@ -103,9 +103,9 @@ public class UserController {
                 .build();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @Operation(summary = "Restore User")
-    @PatchMapping("/users/{id}/restore")
+    @PatchMapping("/admin/users/{id}/restore")
     public ApiResponse<UserResponse> restore(@Min(value = 1, message = "ID phải lớn hơn 0")
                                     @PathVariable long id){
         log.info("Received request to restore user by id: {}", id);
@@ -119,7 +119,7 @@ public class UserController {
 
     @Operation(summary = "Upload Avatar",
     description = "API để update avatar")
-    @PutMapping(value = "/users/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "/private/users/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     ApiResponse<UserResponse> updateAvatar(@RequestPart("file") MultipartFile file) throws FileException, IOException {
         log.info("Received request to Update Avatar");
 
@@ -132,7 +132,7 @@ public class UserController {
 
     @Operation(summary = "Fetch All Addresses For User",
             description = "Api lấy tất cả địa chỉ của user")
-    @GetMapping("/users/addresses")
+    @GetMapping("/private/users/addresses")
     public ApiResponse<PageResponse<AddressResponse>> getAddressesByUser(@ParameterObject @PageableDefault Pageable pageable) {
         log.info("Received request to fetch all Address For User");
 
@@ -143,9 +143,10 @@ public class UserController {
                 .build();
     }
 
+
     @Operation(summary = "Fetch Promotions By User",
             description = "Api lấy tất cả mã giảm giá mà user có thể sử dụng")
-    @GetMapping("/users/promotions/available")
+    @GetMapping("/private/users/promotions/available")
     public ApiResponse<PageResponse<PromotionResponse>> getPromotionsByUser(@ParameterObject @PageableDefault Pageable pageable){
         log.info("Received request to fetch all Promotion For User");
 

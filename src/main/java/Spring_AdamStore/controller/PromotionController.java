@@ -30,8 +30,8 @@ public class PromotionController {
 
     private final PromotionService promotionService;
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/promotions")
+
+    @PostMapping("/admin/promotions")
     public ApiResponse<PromotionResponse> create(@Valid @RequestBody PromotionRequest request){
         log.info("Received request to create Promotion: {}", request);
 
@@ -43,7 +43,7 @@ public class PromotionController {
     }
 
 
-    @GetMapping("/promotions/{id}")
+    @GetMapping("/private/promotions/{id}")
     public ApiResponse<PromotionResponse> fetchById(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                   @PathVariable Long id){
         log.info("Received request to fetch Promotion by id: {}", id);
@@ -57,7 +57,7 @@ public class PromotionController {
 
 
     @Operation(summary = "Fetch All Promotions For Admin")
-    @GetMapping("/promotions")
+    @GetMapping("/admin/promotions")
     public ApiResponse<PageResponse<PromotionResponse>> fetchAll(@ParameterObject @PageableDefault Pageable pageable){
         log.info("Received request to fetch all Promotion for admin");
 
@@ -68,8 +68,8 @@ public class PromotionController {
                 .build();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/promotions/{id}")
+
+    @PutMapping("/admin/promotions/{id}")
     public ApiResponse<PromotionResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                @PathVariable Long id, @Valid @RequestBody PromotionUpdateRequest request){
         log.info("Received request to update Promotion: {}, with Promotion id: {}", request, id);
@@ -82,9 +82,9 @@ public class PromotionController {
     }
 
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @Operation(summary = "Soft delete Promotion")
-    @DeleteMapping("/promotions/{id}")
+    @DeleteMapping("/admin/promotions/{id}")
     public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
                                     @PathVariable Long id){
         log.info("Received request to delete Promotion by id: {}", id);
@@ -97,10 +97,10 @@ public class PromotionController {
                 .build();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @Operation(summary = "Restore Promotion",
     description = "Api này để khôi phục Promotion")
-    @PatchMapping("/promotions/{id}/restore")
+    @PatchMapping("/admin/promotions/{id}/restore")
     public ApiResponse<PromotionResponse> restore(@Min(value = 1, message = "Id phải lớn hơn 0")
                                                  @PathVariable long id) {
         log.info("Received request to restore Promotion by id: {}", id);

@@ -30,8 +30,8 @@ public class BranchController {
 
     private final BranchService branchService;
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/branches")
+
+    @PostMapping("/admin/branches")
     public ApiResponse<BranchResponse> create(@Valid @RequestBody BranchRequest request){
         log.info("Received request to create branch: {}", request);
 
@@ -43,8 +43,7 @@ public class BranchController {
     }
 
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/branches/{id}")
+    @GetMapping("/public/branches/{id}")
     public ApiResponse<BranchResponse> fetchById(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                    @PathVariable Long id){
         log.info("Received request to fetch branch by id: {}", id);
@@ -59,7 +58,7 @@ public class BranchController {
 
     @Operation(summary = "Fetch All Branches For User",
     description = "API để lấy tất cả Branch (ACTIVE) cho user")
-    @GetMapping("/branches")
+    @GetMapping("/public/branches")
     public ApiResponse<PageResponse<BranchResponse>> fetchAll(@ParameterObject @PageableDefault Pageable pageable){
         log.info("Received request to fetch all branch for user");
 
@@ -70,10 +69,10 @@ public class BranchController {
                 .build();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @Operation(summary = "Fetch All Branches For Admin",
     description = "API này để lấy tất cả Branch (cả ACTIVE và INACTIVE) cho admin quản lý")
-    @GetMapping("/branches/admin")
+    @GetMapping("/admin/branches")
     public ApiResponse<PageResponse<BranchResponse>> fetchAllBranchesForAdmin(@ParameterObject @PageableDefault Pageable pageable){
         log.info("Received request to fetch all branch for admin");
 
@@ -85,8 +84,7 @@ public class BranchController {
     }
 
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/branches/{id}")
+    @PutMapping("/admin/branches/{id}")
     public ApiResponse<BranchResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                 @PathVariable Long id, @Valid @RequestBody BranchUpdateRequest request){
         log.info("Received request to update branch: {}, with branch id: {}", request, id);
@@ -99,10 +97,9 @@ public class BranchController {
     }
 
 
-    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Soft Delete Branch",
     description = "Api này để soft delete branch")
-    @DeleteMapping("/branches/{id}")
+    @DeleteMapping("/admin/branches/{id}")
     public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
                                     @PathVariable Long id){
         log.info("Received request to delete branch by id: {}", id);
@@ -115,10 +112,10 @@ public class BranchController {
                 .build();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @Operation(summary = "Restore Branch",
     description = "Api này để khôi phục Branch")
-    @PatchMapping("/branches/{id}/restore")
+    @PatchMapping("/admin/branches/{id}/restore")
     public ApiResponse<BranchResponse> restore(@Min(value = 1, message = "Id phải lớn hơn 0")
                                              @PathVariable long id) {
         log.info("Received request to restore branch by id: {}", id);

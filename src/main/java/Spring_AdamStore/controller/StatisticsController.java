@@ -17,13 +17,13 @@ import java.util.List;
 @Slf4j(topic = "STATISTICS-CONTROLLER")
 @RequiredArgsConstructor
 @Validated
-@RequestMapping("/v1/statistics")
+@RequestMapping("/v1/admin/statistics")
 @RestController
 public class StatisticsController {
 
     private final StatisticsService statisticsService;
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @Operation(summary = "Fetched monthly revenue data",
     description = "API này dùng để ấy doanh thu theo tháng trong khoảng (startDate (yyyy-MM-dd) đến endDate (yyyy-MM-dd))")
     @GetMapping("/revenues/monthly")
@@ -38,7 +38,7 @@ public class StatisticsController {
                 .build();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @Operation(summary = "Fetched top selling products",
             description = "API này dùng để lấy các sản phẩm bán chạy (yyyy-MM-dd)")
     @GetMapping("/products/top-selling")
@@ -54,7 +54,7 @@ public class StatisticsController {
                 .build();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @Operation(summary = "Fetched daily order revenue data",
     description = "API này dùng để lấy dữ liệu doanh thu của các đơn hàng (yyyy-MM-dd)")
     @GetMapping("/orders/revenue-by-date")

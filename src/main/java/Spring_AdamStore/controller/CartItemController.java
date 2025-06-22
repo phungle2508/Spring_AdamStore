@@ -28,7 +28,7 @@ public class CartItemController {
     private final CartItemService cartItemService;
 
     @Operation(description = "API thêm sản phẩm vào giỏ hàng")
-    @PostMapping("/cart-items")
+    @PostMapping("/private/cart-items")
     public ApiResponse<CartItemResponse> create(@Valid @RequestBody CartItemRequest request){
         log.info("Received create cart item request: {}", request);
 
@@ -40,7 +40,7 @@ public class CartItemController {
     }
 
 
-    @GetMapping("/cart-items/{id}")
+    @GetMapping("/private/cart-items/{id}")
     public ApiResponse<CartItemResponse> fetchById(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                    @PathVariable Long id){
         log.info("Received fetch cart item by id request: id={}", id);
@@ -52,7 +52,7 @@ public class CartItemController {
                 .build();
     }
 
-    @PutMapping("/cart-items/{id}")
+    @PutMapping("/private/cart-items/{id}")
     public ApiResponse<CartItemResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
                                                 @PathVariable Long id, @Valid @RequestBody CartItemUpdateRequest request){
         log.info("Received update cart item request: id={}, data={}", id, request);
@@ -65,7 +65,7 @@ public class CartItemController {
     }
 
 
-    @DeleteMapping("/cart-items/{id}")
+    @DeleteMapping("/private/cart-items/{id}")
     public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
                                     @PathVariable Long id){
         log.info("Received delete cart item request: id={}", id);
