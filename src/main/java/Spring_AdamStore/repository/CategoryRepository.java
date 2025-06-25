@@ -21,7 +21,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     Optional<Category> findCategoryById(@Param("id") Long id);
 
     @Query(value = "SELECT * FROM categories",
-            countQuery = "SELECT COUNT(*) FROM tbl_category",
+            countQuery = "SELECT COUNT(*) FROM categories",
             nativeQuery = true)
     Page<Category> findAllCategories(Pageable pageable);
 
