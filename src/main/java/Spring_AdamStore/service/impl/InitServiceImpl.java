@@ -37,6 +37,7 @@ public class InitServiceImpl implements InitService {
     private final AdminProperties adminProperties;
 
 
+
     @Transactional
     public void initRoles() {
         Role userRole = roleRepository.save(Role.builder()
