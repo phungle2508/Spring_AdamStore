@@ -24,7 +24,7 @@ public interface PromotionRepository extends JpaRepository<Promotion, Long> {
     Optional<Promotion> findPromotionById(@Param("id") Long id);
 
     @Query(value = "SELECT * FROM promotions",
-            countQuery = "SELECT COUNT(*) FROM tbl_promotion",
+            countQuery = "SELECT COUNT(*) FROM promotions",
             nativeQuery = true)
     Page<Promotion> findAllPromotions(Pageable pageable);
 

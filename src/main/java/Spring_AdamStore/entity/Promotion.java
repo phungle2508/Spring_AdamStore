@@ -24,7 +24,7 @@ import java.util.Set;
 @Setter
 @Table(name = "promotions")
 @SQLRestriction("status = 'ACTIVE'")
-@SQLDelete(sql = "UPDATE tbl_promotion SET status = 'INACTIVE' WHERE id = ?")
+@SQLDelete(sql = "UPDATE promotions SET status = 'INACTIVE' WHERE id = ?")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
