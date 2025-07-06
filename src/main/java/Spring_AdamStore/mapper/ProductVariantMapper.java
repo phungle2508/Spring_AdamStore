@@ -1,18 +1,10 @@
 package Spring_AdamStore.mapper;
 
-import Spring_AdamStore.dto.basic.EntityBasic;
 import Spring_AdamStore.dto.basic.ProductVariantBasic;
-import Spring_AdamStore.dto.request.ProductUpdateRequest;
-import Spring_AdamStore.dto.request.VariantUpdateRequest;
 import Spring_AdamStore.dto.response.ProductVariantResponse;
-import Spring_AdamStore.entity.Product;
 import Spring_AdamStore.entity.ProductVariant;
 import org.mapstruct.*;
-
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface ProductVariantMapper {

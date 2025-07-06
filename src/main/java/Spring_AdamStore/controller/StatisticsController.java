@@ -4,6 +4,7 @@ import Spring_AdamStore.dto.response.*;
 import Spring_AdamStore.service.StatisticsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -55,17 +56,14 @@ public class StatisticsController {
     }
 
 
-    @Operation(summary = "Fetched daily order revenue data",
-    description = "API này dùng để lấy dữ liệu doanh thu của các đơn hàng (yyyy-MM-dd)")
-    @GetMapping("/orders/revenue-by-date")
-    public ApiResponse<List<OrderRevenueDTO>> getOrderRevenueByDate(@RequestParam @Parameter(example = "2025-02-20") LocalDate startDate,
-                                                                            @RequestParam @Parameter(example = "2025-05-10") LocalDate endDate){
-        log.info("Received request to Fetched daily order revenue data");
+    @Operation(summary = "Export order revenue report to Excel",
+    description = "API này dùng để xuất dữ liệu doanh thu của các đơn hàng ra file Excel (yyyy-MM-dd)")
+    @GetMapping("/orders/revenue-by-date/export")
+    public void exportOrderRevenueToExcel(@RequestParam @Parameter(example = "2025-02-20") LocalDate startDate,
+                                          @RequestParam @Parameter(example = "2025-05-10") LocalDate endDate,
+                                          HttpServletResponse response){
+        log.info("Received request to export order revenue to Excel");
 
-        return ApiResponse.<List<OrderRevenueDTO>>builder()
-                .code(HttpStatus.OK.value())
-                .message("Fetched daily order revenue data")
-                .result(statisticsService.getOrderRevenueByDate(startDate, endDate))
-                .build();
+        statisticsService.exportOrderRevenueToExcel(startDate, endDate, response);
     }
 }
