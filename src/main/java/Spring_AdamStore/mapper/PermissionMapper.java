@@ -1,12 +1,8 @@
 package Spring_AdamStore.mapper;
 
-import Spring_AdamStore.dto.basic.EntityBasic;
 import Spring_AdamStore.dto.response.PermissionResponse;
-import Spring_AdamStore.entity.Permission;
-import Spring_AdamStore.entity.relationship.RoleHasPermission;
+import Spring_AdamStore.entity.sql.Permission;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 import org.mapstruct.NullValueCheckStrategy;
 
 import java.util.List;

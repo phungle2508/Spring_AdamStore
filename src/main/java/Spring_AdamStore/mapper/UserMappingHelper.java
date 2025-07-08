@@ -1,8 +1,8 @@
 package Spring_AdamStore.mapper;
 
 import Spring_AdamStore.dto.basic.EntityBasic;
-import Spring_AdamStore.entity.Role;
-import Spring_AdamStore.repository.RoleRepository;
+import Spring_AdamStore.entity.sql.Role;
+import Spring_AdamStore.repository.sql.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

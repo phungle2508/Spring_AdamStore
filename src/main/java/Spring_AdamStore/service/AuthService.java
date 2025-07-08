@@ -4,9 +4,7 @@ import Spring_AdamStore.dto.request.*;
 import Spring_AdamStore.dto.response.TokenResponse;
 import Spring_AdamStore.dto.response.UserResponse;
 import Spring_AdamStore.dto.response.VerificationCodeResponse;
-import Spring_AdamStore.entity.RedisVerificationCode;
 import com.nimbusds.jose.JOSEException;
-import jakarta.validation.Valid;
 
 import java.text.ParseException;
 

@@ -2,9 +2,8 @@ package Spring_AdamStore.mapper;
 
 import Spring_AdamStore.dto.basic.EntityBasic;
 import Spring_AdamStore.dto.basic.ProductVariantBasic;
-import Spring_AdamStore.entity.FileEntity;
-import Spring_AdamStore.entity.ProductVariant;
-import Spring_AdamStore.repository.*;
+import Spring_AdamStore.entity.sql.FileEntity;
+import Spring_AdamStore.repository.sql.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

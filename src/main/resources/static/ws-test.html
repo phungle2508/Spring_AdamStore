@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>🧠 Real-time Chat App</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        input, button { padding: 8px; margin: 5px 0; width: 300px; }
+        button { cursor: pointer; }
+        ul { list-style: none; padding: 0; }
+        li { margin-bottom: 6px; }
+        hr { margin: 20px 0; }
+    </style>
+</head>
+<body>
+
+<h2>🔐 Login</h2>
+<input type="text" id="email" placeholder="Email"><br>
+<input type="password" id="password" placeholder="Password"><br>
+<button onclick="login()">Login</button>
+
+<hr>
+
+<h2>💬 My Conversations</h2>
+<ul id="myConversationList"></ul>
+
+<hr>
+
+<h2>➕ Create Conversation</h2>
+<input type="text" id="participantIds" placeholder="User IDs (e.g. 2,3)"><br>
+<button onclick="connectConversation()">Create & Join</button>
+
+<hr>
+
+<h2>💬 Chat</h2>
+<label>Conversation ID:</label><br>
+<input type="text" id="conversationId" readonly><br>
+<input type="text" id="message" placeholder="Enter your message...">
+<button onclick="sendMessage()">Send</button>
+
+<h3>📥 Messages:</h3>
+<ul id="messageList"></ul>
+
+<script>
+    let stompClient = null;
+    let jwtToken = null;
+    let currentUserId = null;
+
+    const renderedConversations = new Set();
+    const subscribedConversationIds = new Set();
+    const renderedMessageIds = new Set();
+
+    function login() {
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+
+        if (!email || !password) {
+            alert("⚠️ Please enter both email and password.");
+            return;
+        }
+
+        fetch("http://localhost:8080/adamstore/v1/public/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password })
+        })
+            .then(res => res.json())
+            .then(data => {
+                jwtToken = data.result.accessToken;
+                currentUserId = JSON.parse(atob(jwtToken.split('.')[1])).sub;
+
+                alert("✅ Logged in successfully!");
+                connectWebSocket();
+                loadMyConversations();
+            })
+            .catch(err => {
+                console.error(err);
+                alert("❌ Login failed");
+            });
+    }
+
+    function connectWebSocket() {
+        const socket = new SockJS("http://localhost:8080/adamstore/ws");
+        stompClient = Stomp.over(socket);
+
+        stompClient.connect(
+            { Authorization: "Bearer " + jwtToken },
+            () => {
+                console.log("✅ WebSocket connected");
+
+                stompClient.subscribe("/topic/user." + currentUserId, (response) => {
+                    const convo = JSON.parse(response.body);
+                    addConversationToList(convo);
+                });
+            },
+            (error) => {
+                console.error("❌ WebSocket error", error);
+            }
+        );
+    }
+
+    function loadMyConversations() {
+        fetch("http://localhost:8080/adamstore/v1/private/conversations/my-conversations", {
+            headers: { Authorization: "Bearer " + jwtToken }
+        })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById("myConversationList").innerHTML = "";
+                // Không xóa renderedConversations để giữ tránh hiển thị trùng
+                data.result.forEach(addConversationToList);
+            });
+    }
+
+    function addConversationToList(convo) {
+        const convoIdStr = String(convo.id); // 🔁 Chuyển ID về dạng chuỗi
+
+        if (renderedConversations.has(convoIdStr)) {
+            console.log("🔁 Bỏ qua conversation đã có:", convoIdStr);
+            return;
+        }
+
+        console.log("✅ Thêm conversation mới:", convoIdStr);
+        renderedConversations.add(convoIdStr);
+
+        const li = document.createElement("li");
+
+        let title = convo.conversationName?.trim() || "";
+        if (!title) {
+            if (convo.type === "DIRECT") {
+                const other = convo.participants?.find(p => String(p.userId) !== String(currentUserId));
+                title = other?.name || "Direct chat";  // 🔁 dùng .name thay vì username
+            } else {
+                title = "Unnamed Group";
+            }
+        }
+
+        li.textContent = `${title} (ID: ${convoIdStr})`;
+        li.style.cursor = "pointer";
+        li.onclick = () => {
+            document.getElementById("conversationId").value = convoIdStr;
+            loadMessages(convoIdStr);
+            subscribeToConversation(convoIdStr);
+        };
+
+        document.getElementById("myConversationList").appendChild(li);
+    }
+
+
+    function connectConversation() {
+        const input = document.getElementById("participantIds").value.trim();
+        const ids = input.split(",").map(id => id.trim()).filter(Boolean);
+
+        if (ids.length === 0) {
+            alert("⚠️ Enter at least one user ID.");
+            return;
+        }
+
+        fetch("http://localhost:8080/adamstore/v1/private/conversations/create", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + jwtToken
+            },
+            body: JSON.stringify({ type: "DIRECT", participantIds: ids })
+        })
+            .then(res => res.json())
+            .then(data => {
+                const convo = data.result;
+                alert("✅ Conversation created");
+                addConversationToList(convo);
+                document.getElementById("conversationId").value = convo.id;
+                loadMessages(convo.id);
+                subscribeToConversation(convo.id);
+            })
+            .catch(err => {
+                console.error(err);
+                alert("❌ Failed to create conversation");
+            });
+    }
+
+    function loadMessages(convoId) {
+        fetch(`http://localhost:8080/adamstore/v1/private/messages?conversationId=${convoId}`, {
+            headers: { Authorization: "Bearer " + jwtToken }
+        })
+            .then(res => res.json())
+            .then(data => {
+                const list = document.getElementById("messageList");
+                list.innerHTML = "";
+                renderedMessageIds.clear();
+
+                data.result.forEach(renderMessage);
+            });
+    }
+
+    function subscribeToConversation(convoId) {
+        if (subscribedConversationIds.has(convoId)) return;
+
+        stompClient.subscribe("/topic/conversation." + convoId, (response) => {
+            const msg = JSON.parse(response.body);
+            renderMessage(msg);
+        });
+
+        subscribedConversationIds.add(convoId);
+    }
+
+    function renderMessage(msg) {
+        if (renderedMessageIds.has(msg.id)) return;
+        renderedMessageIds.add(msg.id);
+
+        const isMe = msg.me || msg.sender?.userId === currentUserId;
+        const senderName = msg.sender?.name || "Unknown";
+
+        const li = document.createElement("li");
+        li.textContent = `${senderName}: ${msg.message}${isMe ? " (me)" : ""}`;
+        document.getElementById("messageList").appendChild(li);
+    }
+
+    function sendMessage() {
+        const convoId = document.getElementById("conversationId").value.trim();
+        const message = document.getElementById("message").value.trim();
+
+        if (!convoId || !message) {
+            alert("⚠️ Select a conversation and type a message.");
+            return;
+        }
+
+        stompClient.send("/app/chat.sendMessage", {}, JSON.stringify({
+            conversationId: convoId,
+            message
+        }));
+
+        document.getElementById("message").value = "";
+    }
+</script>
+
+</body>
+</html>

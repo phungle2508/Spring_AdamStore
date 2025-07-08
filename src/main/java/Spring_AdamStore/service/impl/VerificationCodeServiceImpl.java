@@ -1,18 +1,16 @@
 package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.constants.VerificationType;
-import Spring_AdamStore.entity.RedisVerificationCode;
+import Spring_AdamStore.entity.nosql.RedisVerificationCode;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
-import Spring_AdamStore.repository.RedisVerificationCodeRepository;
+import Spring_AdamStore.repository.nosql.RedisVerificationCodeRepository;
 import Spring_AdamStore.service.RedisVerificationCodeService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 
 @Service
 @Slf4j(topic = "VERIFICATION-CODE-SERVICE")

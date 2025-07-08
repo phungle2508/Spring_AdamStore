@@ -9,11 +9,11 @@ spring:
       on-profile: dev
 
 
-  # Database
+  # Database - Postgresql
   datasource:
-    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/adam-store}
-    username: ${DATABASE_USERNAME:postgres}
-    password: ${DATABASE_PASSWORD:123456}
+    url: ${POSTGRESQL_URL:jdbc:postgresql://localhost:5432/adam-store}
+    username: ${POSTGRESQL_USERNAME:postgres}
+    password: ${POSTGRESQL_PASSWORD:123456}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -25,7 +25,16 @@ spring:
         physical_naming_strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
         implicit_naming_strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
 
+  data:
+    # MongoDB
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://admin:123456@localhost:27017/adam-chat?authSource=admin}
 
+    # Redis
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:123456}
 
 # Flyway
   flyway:
@@ -33,14 +42,6 @@ spring:
     locations: classpath:db/migration
     baseline-on-migrate: true
     out-of-order: true
-
-
-  # Redis
-  data:
-    redis:
-      host: ${REDIS_HOST:localhost}
-      port: ${REDIS_PORT:6379}
-      password: ${REDIS_PASSWORD:123456}
 
 
 # SendGrid

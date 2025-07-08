@@ -1,7 +1,7 @@
 package Spring_AdamStore.service.impl;
 
-import Spring_AdamStore.entity.RedisRevokedToken;
-import Spring_AdamStore.repository.RedisRevokedTokenRepository;
+import Spring_AdamStore.entity.nosql.RedisRevokedToken;
+import Spring_AdamStore.repository.nosql.RedisRevokedTokenRepository;
 import Spring_AdamStore.service.RedisTokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

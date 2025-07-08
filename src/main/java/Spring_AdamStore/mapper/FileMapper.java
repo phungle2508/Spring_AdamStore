@@ -1,7 +1,7 @@
 package Spring_AdamStore.mapper;
 
 import Spring_AdamStore.dto.response.FileResponse;
-import Spring_AdamStore.entity.FileEntity;
+import Spring_AdamStore.entity.sql.FileEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
 

@@ -5,8 +5,8 @@ import Spring_AdamStore.dto.request.RegisterRequest;
 import Spring_AdamStore.dto.request.UserCreationRequest;
 import Spring_AdamStore.dto.request.UserUpdateRequest;
 import Spring_AdamStore.dto.response.UserResponse;
-import Spring_AdamStore.entity.RedisPendingUser;
-import Spring_AdamStore.entity.User;
+import Spring_AdamStore.entity.nosql.RedisPendingUser;
+import Spring_AdamStore.entity.sql.User;
 import org.mapstruct.*;
 
 import java.util.List;

@@ -1,14 +1,14 @@
 package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.constants.TokenType;
-import Spring_AdamStore.entity.RefreshToken;
-import Spring_AdamStore.entity.Role;
-import Spring_AdamStore.entity.User;
+import Spring_AdamStore.entity.sql.RefreshToken;
+import Spring_AdamStore.entity.sql.Role;
+import Spring_AdamStore.entity.sql.User;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
-import Spring_AdamStore.repository.RefreshTokenRepository;
-import Spring_AdamStore.repository.RedisRevokedTokenRepository;
-import Spring_AdamStore.repository.RoleRepository;
+import Spring_AdamStore.repository.sql.RefreshTokenRepository;
+import Spring_AdamStore.repository.nosql.RedisRevokedTokenRepository;
+import Spring_AdamStore.repository.sql.RoleRepository;
 import Spring_AdamStore.service.TokenService;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;

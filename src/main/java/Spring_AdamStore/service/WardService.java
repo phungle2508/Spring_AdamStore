@@ -1,10 +1,8 @@
 package Spring_AdamStore.service;
 
-import Spring_AdamStore.dto.response.DistrictResponse;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.dto.response.WardResponse;
-import Spring_AdamStore.entity.District;
-import Spring_AdamStore.entity.Ward;
+import Spring_AdamStore.entity.sql.Ward;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;

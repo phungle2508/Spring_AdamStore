@@ -1,12 +1,7 @@
 package Spring_AdamStore.mapper;
 
-import Spring_AdamStore.dto.request.CartItemRequest;
-import Spring_AdamStore.dto.request.ColorRequest;
 import Spring_AdamStore.dto.response.CartItemResponse;
-import Spring_AdamStore.dto.response.ColorResponse;
-import Spring_AdamStore.entity.Cart;
-import Spring_AdamStore.entity.CartItem;
-import Spring_AdamStore.entity.Color;
+import Spring_AdamStore.entity.sql.CartItem;
 import org.mapstruct.*;
 
 import java.util.List;

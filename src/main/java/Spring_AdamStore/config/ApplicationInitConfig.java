@@ -1,25 +1,16 @@
 package Spring_AdamStore.config;
 
 import Spring_AdamStore.constants.AdminProperties;
-import Spring_AdamStore.constants.Gender;
-import Spring_AdamStore.constants.RoleEnum;
-import Spring_AdamStore.constants.SizeEnum;
-import Spring_AdamStore.entity.*;
-import Spring_AdamStore.repository.*;
+import Spring_AdamStore.repository.sql.ProvinceRepository;
+import Spring_AdamStore.repository.sql.RoleRepository;
+import Spring_AdamStore.repository.sql.SizeRepository;
+import Spring_AdamStore.repository.sql.UserRepository;
 import Spring_AdamStore.service.*;
-import Spring_AdamStore.service.relationship.UserHasRoleService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Slf4j(topic = "APPLICATION-INITIALIZATION")

@@ -2,7 +2,7 @@ package Spring_AdamStore.mapper;
 
 import Spring_AdamStore.dto.ghn.response.GhnWard;
 import Spring_AdamStore.dto.response.WardResponse;
-import Spring_AdamStore.entity.Ward;
+import Spring_AdamStore.entity.sql.Ward;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;

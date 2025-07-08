@@ -3,7 +3,7 @@ package Spring_AdamStore.mapper;
 import Spring_AdamStore.dto.basic.EntityBasic;
 import Spring_AdamStore.dto.request.ColorRequest;
 import Spring_AdamStore.dto.response.ColorResponse;
-import Spring_AdamStore.entity.Color;
+import Spring_AdamStore.entity.sql.Color;
 import org.mapstruct.*;
 
 import java.util.List;
