@@ -28,7 +28,7 @@ spring:
   data:
     # MongoDB
     mongodb:
-      uri: ${MONGODB_URI:mongodb://admin:123456@localhost:27017/adam-chat?authSource=admin}
+      uri: ${MONGODB_URI:mongodb://root:123456@localhost:27017/adam-chat?authSource=admin}
 
     # Redis
     redis:
