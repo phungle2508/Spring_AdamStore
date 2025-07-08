@@ -1,11 +1,11 @@
 package Spring_AdamStore.schedule;
 
 import Spring_AdamStore.constants.EntityStatus;
-import Spring_AdamStore.entity.Product;
-import Spring_AdamStore.entity.ProductVariant;
-import Spring_AdamStore.repository.ProductRepository;
-import Spring_AdamStore.repository.ProductVariantRepository;
-import Spring_AdamStore.repository.ReviewRepository;
+import Spring_AdamStore.entity.sql.Product;
+import Spring_AdamStore.entity.sql.ProductVariant;
+import Spring_AdamStore.repository.sql.ProductRepository;
+import Spring_AdamStore.repository.sql.ProductVariantRepository;
+import Spring_AdamStore.repository.sql.ReviewRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

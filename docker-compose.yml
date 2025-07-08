@@ -10,8 +10,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123456
     volumes:
-      - adam_store_data:/var/lib/postgresql/data
-      - ./initdb.sql:/docker-entrypoint-initdb.d/init.sql
+      - adam_postgresql_data:/var/lib/postgresql/data
     ports:
       - '5433:5432'
     networks:
@@ -22,6 +21,22 @@ services:
       retries: 5
       start_period: 30s
       timeout: 10s
+
+
+  mongodb-adam-store:
+    image: mongo:6.0
+    container_name: mongodb-adam-store
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 123456
+      MONGO_INITDB_DATABASE: adam-chat
+    ports:
+      - '27018:27017'
+    volumes:
+      - mongodb_adam_data:/data/db
+    networks:
+      - adam_store_backend
 
 
   redis:
@@ -61,5 +76,7 @@ networks:
     driver: bridge
 
 volumes:
-  adam_store_data:
+  adam_postgresql_data:
+    driver: local
+  mongodb_adam_data:
     driver: local

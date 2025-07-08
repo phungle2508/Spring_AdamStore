@@ -3,17 +3,15 @@ package Spring_AdamStore.mapper;
 import Spring_AdamStore.constants.PaymentStatus;
 import Spring_AdamStore.dto.response.AddressResponse;
 import Spring_AdamStore.dto.response.OrderItemResponse;
-import Spring_AdamStore.entity.OrderItem;
-import Spring_AdamStore.entity.User;
-import Spring_AdamStore.repository.AddressRepository;
-import Spring_AdamStore.repository.OrderItemRepository;
-import Spring_AdamStore.repository.PaymentHistoryRepository;
-import Spring_AdamStore.repository.UserRepository;
+import Spring_AdamStore.entity.sql.User;
+import Spring_AdamStore.repository.sql.AddressRepository;
+import Spring_AdamStore.repository.sql.OrderItemRepository;
+import Spring_AdamStore.repository.sql.PaymentHistoryRepository;
+import Spring_AdamStore.repository.sql.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Set;
 
 @Component
 @RequiredArgsConstructor

@@ -5,7 +5,7 @@ import Spring_AdamStore.dto.response.ApiResponse;
 import Spring_AdamStore.dto.response.TokenResponse;
 import Spring_AdamStore.dto.response.UserResponse;
 import Spring_AdamStore.dto.response.VerificationCodeResponse;
-import Spring_AdamStore.entity.RedisForgotPasswordToken;
+import Spring_AdamStore.entity.nosql.RedisForgotPasswordToken;
 import Spring_AdamStore.service.AccountRecoveryService;
 import Spring_AdamStore.service.AuthService;
 import com.nimbusds.jose.JOSEException;

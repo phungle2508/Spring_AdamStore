@@ -1,9 +1,7 @@
 package Spring_AdamStore.mapper;
 
-import Spring_AdamStore.dto.response.CartItemResponse;
 import Spring_AdamStore.dto.response.OrderItemResponse;
-import Spring_AdamStore.entity.CartItem;
-import Spring_AdamStore.entity.OrderItem;
+import Spring_AdamStore.entity.sql.OrderItem;
 import org.mapstruct.*;
 
 import java.util.List;

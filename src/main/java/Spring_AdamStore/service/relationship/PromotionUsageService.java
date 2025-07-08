@@ -1,12 +1,12 @@
 package Spring_AdamStore.service.relationship;
 
-import Spring_AdamStore.entity.Order;
-import Spring_AdamStore.entity.Promotion;
-import Spring_AdamStore.entity.User;
-import Spring_AdamStore.entity.relationship.PromotionUsage;
+import Spring_AdamStore.entity.sql.Order;
+import Spring_AdamStore.entity.sql.Promotion;
+import Spring_AdamStore.entity.sql.User;
+import Spring_AdamStore.entity.sql.relationship.PromotionUsage;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
-import Spring_AdamStore.repository.relationship.PromotionUsageRepository;
+import Spring_AdamStore.repository.sql.relationship.PromotionUsageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -2,16 +2,9 @@ package Spring_AdamStore.mapper;
 
 import Spring_AdamStore.dto.basic.EntityBasic;
 import Spring_AdamStore.dto.basic.WardBasic;
-import Spring_AdamStore.dto.response.FileResponse;
-import Spring_AdamStore.entity.*;
-import Spring_AdamStore.repository.*;
+import Spring_AdamStore.repository.sql.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor

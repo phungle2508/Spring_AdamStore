@@ -4,8 +4,7 @@ import Spring_AdamStore.dto.basic.EntityBasic;
 import Spring_AdamStore.dto.request.ProductRequest;
 import Spring_AdamStore.dto.request.ProductUpdateRequest;
 import Spring_AdamStore.dto.response.ProductResponse;
-import Spring_AdamStore.entity.Color;
-import Spring_AdamStore.entity.Product;
+import Spring_AdamStore.entity.sql.Product;
 import org.mapstruct.*;
 
 import java.util.List;

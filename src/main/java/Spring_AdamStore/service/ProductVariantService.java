@@ -3,10 +3,7 @@ package Spring_AdamStore.service;
 import Spring_AdamStore.dto.request.VariantRequest;
 import Spring_AdamStore.dto.request.VariantUpdateRequest;
 import Spring_AdamStore.dto.response.ProductVariantResponse;
-import Spring_AdamStore.entity.Color;
-import Spring_AdamStore.entity.Product;
-import Spring_AdamStore.entity.ProductVariant;
-import Spring_AdamStore.entity.Size;
+import Spring_AdamStore.entity.sql.ProductVariant;
 
 import java.util.List;
 import java.util.Set;

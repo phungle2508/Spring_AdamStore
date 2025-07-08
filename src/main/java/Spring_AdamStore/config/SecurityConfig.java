@@ -39,6 +39,10 @@ public class SecurityConfig {
             "/v1/admin/**"
     };
 
+    private static final String[] WEBSOCKET_URLS = {
+            "/ws-test.html", "/ws/**", "/app/**", "/topic/**"
+    };
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -46,6 +50,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(PUBLIC_URLS).permitAll()
+                        .requestMatchers(WEBSOCKET_URLS).permitAll()
                         .requestMatchers(ADMIN_URLS).hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
@@ -56,9 +61,7 @@ public class SecurityConfig {
                                                 .jwtAuthenticationConverter(customJwtAuthenticationConverter)
                                 )
                                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                )
-        ;
-
+                );
         return http.build();
     }
 
@@ -70,9 +73,7 @@ public class SecurityConfig {
                 "http://localhost:3000",
                 "http://localhost:3001",
                 "http://localhost:5173",
-                "http://localhost:5174",
-                "http://222.255.119.40:8080",
-                "https://222.255.119.40"
+                "http://localhost:5174"
         ));
 
         corsConfiguration.addAllowedMethod("*"); // cho phép tất cả method

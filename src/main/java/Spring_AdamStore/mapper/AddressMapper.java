@@ -2,7 +2,7 @@ package Spring_AdamStore.mapper;
 
 import Spring_AdamStore.dto.request.AddressRequest;
 import Spring_AdamStore.dto.response.AddressResponse;
-import Spring_AdamStore.entity.Address;
+import Spring_AdamStore.entity.sql.Address;
 import org.mapstruct.*;
 
 import java.util.List;

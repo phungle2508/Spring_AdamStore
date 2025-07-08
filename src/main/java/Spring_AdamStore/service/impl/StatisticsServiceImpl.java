@@ -2,12 +2,12 @@ package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.constants.OrderStatus;
 import Spring_AdamStore.dto.response.*;
-import Spring_AdamStore.entity.Order;
+import Spring_AdamStore.entity.sql.Order;
 import Spring_AdamStore.mapper.OrderMapper;
 import Spring_AdamStore.mapper.OrderMappingHelper;
-import Spring_AdamStore.repository.OrderRepository;
-import Spring_AdamStore.repository.PaymentHistoryRepository;
-import Spring_AdamStore.repository.ProductRepository;
+import Spring_AdamStore.repository.sql.OrderRepository;
+import Spring_AdamStore.repository.sql.PaymentHistoryRepository;
+import Spring_AdamStore.repository.sql.ProductRepository;
 import Spring_AdamStore.service.StatisticsService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

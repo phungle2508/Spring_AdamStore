@@ -1,7 +1,7 @@
 package Spring_AdamStore.mapper;
 
 import Spring_AdamStore.dto.response.ProductVariantResponse;
-import Spring_AdamStore.repository.ProductVariantRepository;
+import Spring_AdamStore.repository.sql.ProductVariantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

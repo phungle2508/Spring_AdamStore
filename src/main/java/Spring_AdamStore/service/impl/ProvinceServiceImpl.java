@@ -2,14 +2,14 @@ package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.dto.ghn.response.GhnProvinceResponse;
 import Spring_AdamStore.dto.response.*;
-import Spring_AdamStore.entity.District;
-import Spring_AdamStore.entity.Province;
+import Spring_AdamStore.entity.sql.District;
+import Spring_AdamStore.entity.sql.Province;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.DistrictMapper;
 import Spring_AdamStore.mapper.ProvinceMapper;
-import Spring_AdamStore.repository.DistrictRepository;
-import Spring_AdamStore.repository.ProvinceRepository;
+import Spring_AdamStore.repository.sql.DistrictRepository;
+import Spring_AdamStore.repository.sql.ProvinceRepository;
 import Spring_AdamStore.repository.httpclient.GhnClient;
 import Spring_AdamStore.service.ProvinceService;
 import lombok.RequiredArgsConstructor;

@@ -2,11 +2,11 @@ package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.dto.response.PermissionResponse;
-import Spring_AdamStore.entity.Permission;
+import Spring_AdamStore.entity.sql.Permission;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.PermissionMapper;
-import Spring_AdamStore.repository.PermissionRepository;
+import Spring_AdamStore.repository.sql.PermissionRepository;
 import Spring_AdamStore.service.PermissionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

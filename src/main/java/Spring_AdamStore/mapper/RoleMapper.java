@@ -2,9 +2,7 @@ package Spring_AdamStore.mapper;
 
 import Spring_AdamStore.dto.basic.EntityBasic;
 import Spring_AdamStore.dto.response.RoleResponse;
-import Spring_AdamStore.entity.Color;
-import Spring_AdamStore.entity.Role;
-import Spring_AdamStore.entity.relationship.UserHasRole;
+import Spring_AdamStore.entity.sql.Role;
 import org.mapstruct.*;
 
 import java.util.List;

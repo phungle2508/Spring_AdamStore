@@ -1,10 +1,9 @@
 
 package Spring_AdamStore.mapper;
 
-import Spring_AdamStore.dto.request.OrderRequest;
 import Spring_AdamStore.dto.response.OrderResponse;
 import Spring_AdamStore.dto.response.OrderRevenueDTO;
-import Spring_AdamStore.entity.Order;
+import Spring_AdamStore.entity.sql.Order;
 import org.mapstruct.*;
 
 import java.util.List;
