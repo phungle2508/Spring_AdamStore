@@ -56,6 +56,7 @@ public class ApplicationInitConfig {
                 initService.initProvinces();
             }
 
+            log.info("INIT APPLICATION FINISHED SUCCESSFULLY");
         };
     }
 
