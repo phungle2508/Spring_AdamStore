@@ -30,8 +30,7 @@ public class QRCodeController {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ImageIO.write(image, "png", baos);
 
-        return ResponseEntity
-                .ok()
+        return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_PNG)
                 .body(baos.toByteArray());
     }
