@@ -11,6 +11,7 @@ import Spring_AdamStore.service.relationship.UserHasRoleService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -69,6 +70,7 @@ public class InitServiceImpl implements InitService {
         cartService.createCartForUser(admin);
     }
 
+    @Async
     @Transactional
     public void initSizes() {
         List<Size> sizeList = SizeEnum.getAllSizes();
@@ -76,6 +78,7 @@ public class InitServiceImpl implements InitService {
         sizeRepository.saveAllAndFlush(sizeList);
     }
 
+    @Async
     @Transactional
     public void initProvinces(){
         List<Province> provinceList = provinceService.loadProvincesFromGhn();
