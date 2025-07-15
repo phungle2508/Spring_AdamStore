@@ -189,6 +189,11 @@
 			<artifactId>javase</artifactId>
 			<version>3.3.0</version>
 		</dependency>
+		<!--Kafka-->
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
+		</dependency>
 
 	</dependencies>
 

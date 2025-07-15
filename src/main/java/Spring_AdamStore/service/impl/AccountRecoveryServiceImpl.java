@@ -1,6 +1,7 @@
 package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.constants.TokenType;
+import Spring_AdamStore.dto.event.EmailEvent;
 import Spring_AdamStore.dto.request.EmailRequest;
 import Spring_AdamStore.dto.request.ResetPasswordRequest;
 import Spring_AdamStore.dto.response.VerificationCodeResponse;
@@ -21,6 +22,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.BadJwtException;
 import org.springframework.stereotype.Service;
@@ -42,6 +44,7 @@ public class AccountRecoveryServiceImpl implements AccountRecoveryService {
     private final RedisForgotPwdTokenRepository redisForgotPwdTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final RedisVerificationCodeService redisVerificationCodeService;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
     @Value("${jwt.reset.expiry-in-minutes}")
     private long resetTokenExpiration;
@@ -57,7 +60,12 @@ public class AccountRecoveryServiceImpl implements AccountRecoveryService {
         RedisVerificationCode redisVerificationCode = redisVerificationCodeService
                     .saveVerificationCode(user.getEmail(), FORGOT_PASSWORD);
 
-        emailService.sendPasswordResetCode(user.getEmail(), user.getName(), redisVerificationCode.getVerificationCode());
+        // Kafka
+        kafkaTemplate.send("email-reset-code", EmailEvent.builder()
+                .toEmail(user.getEmail())
+                .name(user.getName())
+                .verificationCode(redisVerificationCode.getVerificationCode())
+                .build());
 
         return VerificationCodeResponse.builder()
                 .email(redisVerificationCode.getEmail())
