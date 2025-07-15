@@ -12,6 +12,8 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.concurrent.CompletableFuture;
+
 
 @Slf4j(topic = "APPLICATION-INITIALIZATION")
 @RequiredArgsConstructor
@@ -44,17 +46,23 @@ public class ApplicationInitConfig {
                 initService.initAdmin();
             }
 
-            if(sizeRepository.count() == 0){
-                log.info("Initializing Sizes...");
+            CompletableFuture<Void> sizesFuture = CompletableFuture.runAsync(() -> {
+                if(sizeRepository.count() == 0){
+                    log.info("Initializing Sizes...");
 
-                initService.initSizes();
-            }
+                    initService.initSizes();
+                }
+            });
 
-            if(provinceRepository.count() == 0){
-                log.info("Initializing Provinces and Districts...");
+            CompletableFuture<Void> provincesFuture = CompletableFuture.runAsync(() -> {
+                if(provinceRepository.count() == 0){
+                    log.info("Initializing Provinces and Districts...");
 
-                initService.initProvinces();
-            }
+                    initService.initProvinces();
+                }
+            });
+
+            CompletableFuture.allOf(sizesFuture, provincesFuture).join();
 
             log.info("INIT APPLICATION FINISHED SUCCESSFULLY");
         };

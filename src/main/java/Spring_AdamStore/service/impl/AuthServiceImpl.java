@@ -4,6 +4,7 @@ import Spring_AdamStore.constants.EntityStatus;
 import Spring_AdamStore.constants.RoleEnum;
 import Spring_AdamStore.constants.TokenType;
 import Spring_AdamStore.dto.basic.EntityBasic;
+import Spring_AdamStore.dto.event.EmailEvent;
 import Spring_AdamStore.dto.request.*;
 import Spring_AdamStore.dto.response.TokenResponse;
 import Spring_AdamStore.dto.response.UserResponse;
@@ -26,6 +27,7 @@ import com.nimbusds.jwt.SignedJWT;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -55,6 +57,7 @@ public class AuthServiceImpl implements AuthService {
     private final EmailService emailService;
     private final RoleRepository roleRepository;
     private final UserMappingHelper userMappingHelper;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
 
     @Override
@@ -92,8 +95,12 @@ public class AuthServiceImpl implements AuthService {
         redisPendingUser.setTtl(redisVerificationCode.getTtl());
         redisPendingUserRepository.save(redisPendingUser);
 
-        emailService.sendOtpRegisterEmail(redisPendingUser.getEmail(),
-                redisPendingUser.getName(), redisVerificationCode.getVerificationCode());
+        // Kafka
+        kafkaTemplate.send("email-register", EmailEvent.builder()
+                        .toEmail(redisPendingUser.getEmail())
+                        .name(redisPendingUser.getName())
+                        .verificationCode(redisVerificationCode.getVerificationCode())
+                .build());
 
         return VerificationCodeResponse.builder()
                 .email(redisVerificationCode.getEmail())

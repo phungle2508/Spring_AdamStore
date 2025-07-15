@@ -1,5 +1,6 @@
 package Spring_AdamStore.service.impl;
 
+import Spring_AdamStore.dto.event.EmailEvent;
 import Spring_AdamStore.service.EmailService;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
@@ -11,6 +12,7 @@ import com.sendgrid.helpers.mail.objects.Personalization;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -77,29 +79,31 @@ public class EmailServiceImpl implements EmailService {
 
 
     @Override
-    public void sendOtpRegisterEmail(String toEmail, String name, String otp) {
-        log.info("Sending OTP email for registration to '{}', name='{}'", toEmail, name);
+    @KafkaListener(topics = "email-register", groupId = "adam-email-register-group")
+    public void sendOtpRegisterEmail(EmailEvent event) {
+        log.info("Sending OTP email for registration to '{}', name='{}'", event.getToEmail(), event.getName());
 
         Map<String, String> dynamicData = new HashMap<>();
-        dynamicData.put("name", name);
-        dynamicData.put("otp", otp);
+        dynamicData.put("name", event.getName());
+        dynamicData.put("otp", event.getVerificationCode());
 
-        sendTemplateEmail(toEmail,
+        sendTemplateEmail(event.getToEmail(),
                 "Hoàn tất đăng ký Adam Store - Mã xác thực",
                 templateIdOtpRegister,
                 dynamicData);
     }
 
 
+    @KafkaListener(topics = "email-reset-code", groupId = "adam-email-reset-group")
     @Override
-    public void sendPasswordResetCode(String toEmail, String name, String verificationCode) {
-        log.info("Sending password reset email to '{}', name='{}'", toEmail, name);
+    public void sendPasswordResetCode(EmailEvent event) {
+        log.info("Sending password reset email to '{}', name='{}'", event.getToEmail(), event.getName());
 
         Map<String, String> dynamicData = new HashMap<>();
-        dynamicData.put("name", name);
-        dynamicData.put("verificationCode", verificationCode);
+        dynamicData.put("name", event.getName());
+        dynamicData.put("verificationCode", event.getVerificationCode());
 
-        sendTemplateEmail(toEmail,
+        sendTemplateEmail(event.getToEmail(),
                 "Đặt lại mật khẩu Adam Store - Mã xác thực",
                 templateIdResetPasswordVerification,
                 dynamicData);
