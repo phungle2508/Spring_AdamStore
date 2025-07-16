@@ -31,3 +31,11 @@ auth:
     verification-code:
       expiration-minutes: 10
 
+cors:
+  allowed-origins:
+    - http://localhost:3000
+    - http://localhost:5173
+    - http://localhost:3001
+    - http://localhost:5174
+    - ${EXTRA_ORIGIN:https://default.example.com}
+
