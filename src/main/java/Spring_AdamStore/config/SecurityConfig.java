@@ -1,6 +1,8 @@
 package Spring_AdamStore.config;
 
+import Spring_AdamStore.constants.CorsProperties;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
@@ -19,6 +21,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -30,6 +33,8 @@ public class SecurityConfig {
     private final CustomJwtDecoder customJwtDecoder;
     private final CustomJwtAuthenticationConverter customJwtAuthenticationConverter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final CorsProperties corsProperties;
+
 
     private final String[] PUBLIC_URLS  = {
             "/v1/public/**"
@@ -68,13 +73,9 @@ public class SecurityConfig {
     @Bean
     public CorsFilter corsFilter(){
         CorsConfiguration corsConfiguration = new CorsConfiguration();
+
         // cho phép yêu cầu từ cac cong
-        corsConfiguration.setAllowedOrigins(List.of(
-                "http://localhost:3000",
-                "http://localhost:3001",
-                "http://localhost:5173",
-                "http://localhost:5174"
-        ));
+        corsConfiguration.setAllowedOrigins(corsProperties.getAllowedOrigins());
 
         corsConfiguration.addAllowedMethod("*"); // cho phép tất cả method
         corsConfiguration.addAllowedHeader("*"); // cho phép tất cả header
