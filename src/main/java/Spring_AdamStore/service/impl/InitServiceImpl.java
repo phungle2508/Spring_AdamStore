@@ -70,7 +70,7 @@ public class InitServiceImpl implements InitService {
         cartService.createCartForUser(admin);
     }
 
-    @Async
+
     @Transactional
     public void initSizes() {
         List<Size> sizeList = SizeEnum.getAllSizes();
@@ -78,7 +78,7 @@ public class InitServiceImpl implements InitService {
         sizeRepository.saveAllAndFlush(sizeList);
     }
 
-    @Async
+
     @Transactional
     public void initProvinces(){
         List<Province> provinceList = provinceService.loadProvincesFromGhn();
