@@ -462,7 +462,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Chi nhánh 1\",\r\n  \"location\": \"123 Đường Trần Duy Hưng, Quận Cầu Giấy\",\r\n  \"phone\": \"0578647737\"\r\n}\r\n",
+							"raw": "{\r\n  \"name\": \"Chi nhánh 1\",\r\n  \"location\": \"159 Đường Hoàng Hoa Thám, Quận Ba Đình, Hà Nội\",\r\n  \"phone\": \"0933123123\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -596,7 +596,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Chi nhánh 1\",\r\n  \"location\": \"22 Đường Trần Duy Hưng, Quận Cầu Giấy\",\r\n  \"phone\": \"0578647732\"\r\n}\r\n",
+							"raw": "{\r\n  \"name\": \"Chi nhánh 1\",\r\n  \"location\": \"123 Đường Trần Duy Hưng, Quận Cầu Giấy, Hà Nội\",\r\n  \"phone\": \"0578647737\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1702,7 +1702,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"code\": \"SALE25\",\r\n  \"description\": \"Giảm 25% toàn bộ sản phẩm\",\r\n  \"discountPercent\": 25,\r\n  \"startDate\": \"2025-05-21\",\r\n  \"endDate\": \"2025-07-22\"\r\n}\r\n",
+							"raw": "{\r\n  \"code\": \"WELCOME10\",\r\n  \"description\": \"Giảm 10% cho khách hàng mới\",\r\n  \"discountPercent\": 10,\r\n  \"startDate\": \"2025-01-01\",\r\n  \"endDate\": \"2025-12-31\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2447,7 +2447,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Áo thun nam thể thao\",\r\n  \"description\": \"Áo thun nam chất liệu cotton, thoáng mát phù hợp cho thể thao.\",\r\n  \"categoryId\": 1,\r\n  \"variants\": [\r\n    {\r\n      \"colorId\": 2,\r\n      \"sizeId\": 3,\r\n      \"imageId\": 1,\r\n      \"price\": 199000,\r\n      \"quantity\": 100\r\n    },\r\n    {\r\n      \"colorId\": 3,\r\n      \"sizeId\": 2,\r\n      \"imageId\": 3,\r\n      \"price\": 199000,\r\n      \"quantity\": 50\r\n    }\r\n  ]\r\n}\r\n",
+							"raw": "{\r\n  \"name\": \"Áo Sơ Mi Nam Ngắn Tay Kẻ Caro\",\r\n  \"description\": \"Áo sơ mi vải flannel cao cấp, phong cách Hàn Quốc\",\r\n  \"categoryId\": 1,\r\n  \"variants\": [\r\n    { \"colorId\": 1, \"sizeId\": 1, \"imageId\": 1, \"price\": 289000, \"quantity\": 100 },\r\n    { \"colorId\": 1, \"sizeId\": 2, \"imageId\": 1, \"price\": 289000, \"quantity\": 100 },\r\n    { \"colorId\": 1, \"sizeId\": 3, \"imageId\": 1, \"price\": 289000, \"quantity\": 100 },\r\n    { \"colorId\": 2, \"sizeId\": 1, \"imageId\": 2, \"price\": 279000, \"quantity\": 100 },\r\n    { \"colorId\": 2, \"sizeId\": 2, \"imageId\": 2, \"price\": 279000, \"quantity\": 100 },\r\n    { \"colorId\": 2, \"sizeId\": 3, \"imageId\": 2, \"price\": 279000, \"quantity\": 100 },\r\n    { \"colorId\": 3, \"sizeId\": 1, \"imageId\": 3, \"price\": 299000, \"quantity\": 100 },\r\n    { \"colorId\": 3, \"sizeId\": 2, \"imageId\": 3, \"price\": 299000, \"quantity\": 100 },\r\n    { \"colorId\": 3, \"sizeId\": 3, \"imageId\": 3, \"price\": 299000, \"quantity\": 100 }\r\n  ]\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2583,7 +2583,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Áo thun tay ngắn\",\r\n  \"description\": \"Áo thun chất liệu cotton cao cấp\",\r\n  \"categoryId\": 1,\r\n  \"variants\": [\r\n    {\r\n      \"colorId\": 3,\r\n      \"sizeId\": 2,\r\n      \"imageId\": 1,\r\n      \"price\": 199000,\r\n      \"quantity\": 50\r\n    },\r\n    {\r\n      \"colorId\": 2,\r\n      \"sizeId\": 2,\r\n      \"imageId\": 3,\r\n      \"price\": 205000,\r\n      \"quantity\": 30\r\n    }\r\n  ]\r\n}\r\n",
+							"raw": "{\r\n  \"name\": \"Áo Sơ Mi Nam Ngắn Tay Kẻ Caro\",\r\n  \"description\": \"Áo sơ mi vải flannel cao cấp, phong cách Hàn Quốc\",\r\n  \"categoryId\": 1,\r\n  \"variants\": [\r\n    { \"colorId\": 1, \"sizeId\": 1, \"imageId\": 1, \"price\": 289000, \"quantity\": 100 },\r\n    { \"colorId\": 1, \"sizeId\": 2, \"imageId\": 1, \"price\": 289000, \"quantity\": 100 },\r\n    { \"colorId\": 1, \"sizeId\": 3, \"imageId\": 1, \"price\": 289000, \"quantity\": 100 },\r\n    { \"colorId\": 2, \"sizeId\": 1, \"imageId\": 2, \"price\": 279000, \"quantity\": 100 },\r\n    { \"colorId\": 2, \"sizeId\": 2, \"imageId\": 2, \"price\": 279000, \"quantity\": 100 },\r\n    { \"colorId\": 2, \"sizeId\": 3, \"imageId\": 2, \"price\": 279000, \"quantity\": 100 },\r\n    { \"colorId\": 3, \"sizeId\": 1, \"imageId\": 3, \"price\": 299000, \"quantity\": 100 },\r\n    { \"colorId\": 3, \"sizeId\": 2, \"imageId\": 3, \"price\": 299000, \"quantity\": 100 },\r\n    { \"colorId\": 3, \"sizeId\": 3, \"imageId\": 3, \"price\": 299000, \"quantity\": 100 }\r\n  ]\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2605,7 +2605,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "2"
+									"value": "1"
 								}
 							]
 						}
@@ -3892,7 +3892,7 @@
 		},
 		{
 			"key": "accessToken",
-			"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlcyI6WyJBRE1JTiJdLCJpc3MiOiJBZG1pbiIsImV4cCI6MTc1MjgxNzM4MywiaWF0IjoxNzUyNjg1MzgzLCJqdGkiOiJkNjI1NmQ3OS05ZDg5LTQ1YmUtYWNjYy1lNDkwYTg0MTQwNjQifQ.zRQYCqleEMaNK8qQLRva4rzOMgLDXx-mN193nfJdMOthg2ucb2MK-QgCYNS94jlR_nLWFtLTs4LQPIAd2Wwnew",
+			"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0aHV5ZHVuZzIxMDMwNUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIl0sImlzcyI6IlRow7l5IER1bmciLCJleHAiOjE3NTI4OTcwMDEsImlhdCI6MTc1Mjc2NTAwMSwianRpIjoiNjQ5NzlkMmMtZGMwMi00MWJiLWJlMzQtOWMzNTVjZTQyNzYwIn0.aa6bTfm7W1OQLxnnZ7v1LXY4-ZpwgZrxLaEqjauP_-9MrVElC3LOlkC32U0NQnOBae0dRopObADkiR6RtS8DsA",
 			"type": "string"
 		}
 	]
