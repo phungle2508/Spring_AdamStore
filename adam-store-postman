@@ -3892,7 +3892,7 @@
 		},
 		{
 			"key": "accessToken",
-			"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0aHV5ZHVuZzIxMDMwNUBnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIl0sImlzcyI6IlRow7l5IER1bmciLCJleHAiOjE3NTI4OTcwMDEsImlhdCI6MTc1Mjc2NTAwMSwianRpIjoiNjQ5NzlkMmMtZGMwMi00MWJiLWJlMzQtOWMzNTVjZTQyNzYwIn0.aa6bTfm7W1OQLxnnZ7v1LXY4-ZpwgZrxLaEqjauP_-9MrVElC3LOlkC32U0NQnOBae0dRopObADkiR6RtS8DsA",
+			"value": "",
 			"type": "string"
 		}
 	]
