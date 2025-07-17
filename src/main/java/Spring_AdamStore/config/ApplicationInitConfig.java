@@ -34,17 +34,20 @@ public class ApplicationInitConfig {
 
         return args -> {
 
-            if (roleRepository.count() == 0) {
-                log.info("Initializing roles...");
+            CompletableFuture<Void> roleAdminFuture = CompletableFuture.runAsync(() -> {
+                        if (roleRepository.count() == 0) {
+                            log.info("Initializing roles...");
 
-                initService.initRoles();
-            }
+                            initService.initRoles();
+                        }
 
-            if (userRepository.countByEmail(adminProperties.getEmail()) == 0) {
-                log.info("Creating default admin account...");
+                        if (userRepository.countByEmail(adminProperties.getEmail()) == 0) {
+                            log.info("Creating default admin account...");
 
-                initService.initAdmin();
-            }
+                            initService.initAdmin();
+                        }
+            });
+
 
             CompletableFuture<Void> sizesFuture = CompletableFuture.runAsync(() -> {
                 if(sizeRepository.count() == 0){
@@ -62,7 +65,7 @@ public class ApplicationInitConfig {
                 }
             });
 
-            CompletableFuture.allOf(sizesFuture, provincesFuture).join();
+            CompletableFuture.allOf(roleAdminFuture, sizesFuture, provincesFuture).join();
 
             log.info("INIT APPLICATION FINISHED SUCCESSFULLY");
         };
