@@ -21,6 +21,7 @@ public class VariantMappingHelper {
         return productVariantRepository.findById(variantId)
                 .map(variant -> ProductVariantBasic.builder()
                         .id(variant.getId())
+                        .imageUrl(getImageUrl(variant.getImageId()))
                         .color(getColor(variant.getColorId()))
                         .size(getSize(variant.getSizeId()))
                         .product(getProduct(variant.getProductId()))
