@@ -15,4 +15,8 @@ public interface ConversationRepository extends MongoRepository<Conversation, St
 
     @Query("{'participants.userId' : ?0}")
     List<Conversation> findAllByParticipantIdsContains(Long userId);
+
+    @Query("{ 'conversationName': { $regex: ?0, $options: 'i' } }")
+    List<Conversation> findByConversationNameContainingIgnoreCase(String keyword);
+
 }

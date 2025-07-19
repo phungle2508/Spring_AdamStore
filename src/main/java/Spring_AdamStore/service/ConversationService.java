@@ -10,4 +10,7 @@ public interface ConversationService {
     ConversationResponse createConversation(ConversationRequest request);
 
     List<ConversationResponse> myConversations();
+
+    List<ConversationResponse> searchConversationsByName(String name);
+
 }

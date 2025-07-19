@@ -2,7 +2,6 @@ package Spring_AdamStore.service.impl;
 
 import Spring_AdamStore.constants.OrderStatus;
 import Spring_AdamStore.constants.PaymentMethod;
-import Spring_AdamStore.constants.RoleEnum;
 import Spring_AdamStore.dto.request.*;
 import Spring_AdamStore.dto.response.*;
 import Spring_AdamStore.entity.sql.*;
@@ -12,31 +11,21 @@ import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.OrderMapper;
 import Spring_AdamStore.mapper.OrderMappingHelper;
-import Spring_AdamStore.repository.criteria.SearchCriteriaQueryConsumer;
-import Spring_AdamStore.repository.criteria.SearchCriteria;
 import Spring_AdamStore.repository.sql.relationship.PromotionUsageRepository;
 import Spring_AdamStore.repository.sql.*;
 import Spring_AdamStore.service.CurrentUserService;
 import Spring_AdamStore.service.OrderService;
 import Spring_AdamStore.service.PaymentHistoryService;
 import Spring_AdamStore.service.relationship.PromotionUsageService;
-import Spring_AdamStore.service.relationship.UserHasRoleService;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.criteria.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 @Slf4j(topic = "ORDER-SERVICE")

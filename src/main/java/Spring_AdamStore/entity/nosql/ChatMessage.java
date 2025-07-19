@@ -21,6 +21,7 @@ public class ChatMessage {
     @Indexed
     private String conversationId;
 
+    @Indexed
     private String message;
 
     private ParticipantInfo sender;

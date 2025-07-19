@@ -1,6 +1,6 @@
 package Spring_AdamStore.config;
 
-import Spring_AdamStore.constants.AdminProperties;
+import Spring_AdamStore.constants.AppProperties;
 import Spring_AdamStore.repository.sql.ProvinceRepository;
 import Spring_AdamStore.repository.sql.RoleRepository;
 import Spring_AdamStore.repository.sql.SizeRepository;
@@ -25,7 +25,7 @@ public class ApplicationInitConfig {
     private final ProvinceRepository provinceRepository;
     private final InitService initService;
     private final SizeRepository sizeRepository;
-    private final AdminProperties adminProperties;
+    private final AppProperties appProperties;
 
 
     @Bean
@@ -41,7 +41,7 @@ public class ApplicationInitConfig {
                             initService.initRoles();
                         }
 
-                        if (userRepository.countByEmail(adminProperties.getEmail()) == 0) {
+                        if (userRepository.countByEmail(appProperties.getAdmin().getEmail()) == 0) {
                             log.info("Creating default admin account...");
 
                             initService.initAdmin();

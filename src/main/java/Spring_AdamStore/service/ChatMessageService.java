@@ -11,4 +11,6 @@ public interface ChatMessageService {
      ChatMessageResponse createMessage(ChatMessageRequest request, Principal principal);
 
      List<ChatMessageResponse> getMessages(String conversationId);
+
+     List<ChatMessageResponse> searchMessages(String conversationId, String keyword);
 }

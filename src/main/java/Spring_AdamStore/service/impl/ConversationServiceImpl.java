@@ -1,5 +1,6 @@
 package Spring_AdamStore.service.impl;
 
+import Spring_AdamStore.constants.AppProperties;
 import Spring_AdamStore.dto.request.ConversationRequest;
 import Spring_AdamStore.dto.response.ConversationResponse;
 import Spring_AdamStore.entity.nosql.Conversation;
@@ -8,7 +9,6 @@ import Spring_AdamStore.entity.sql.User;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.ConversationMapper;
-import Spring_AdamStore.mapper.ConversationMappingHelper;
 import Spring_AdamStore.repository.nosql.ConversationRepository;
 import Spring_AdamStore.repository.sql.UserRepository;
 import Spring_AdamStore.service.ConversationService;
@@ -31,8 +31,8 @@ public class ConversationServiceImpl implements ConversationService {
     private final ConversationRepository conversationRepository;
     private final CurrentUserService currentUserService;
     private final UserRepository userRepository;
-    private final ConversationMappingHelper mappingHelper;
     private final ConversationMapper conversationMapper;
+    private final AppProperties appProperties;
 
     public ConversationResponse createConversation(ConversationRequest request) {
         log.info("Create conversation with request: {}", request);
@@ -53,22 +53,29 @@ public class ConversationServiceImpl implements ConversationService {
 
         Optional<Conversation> existing = conversationRepository.findByParticipantsHash(userIdHash);
         if (existing.isPresent()) {
-            return conversationMapper.toConversationResponse(existing.get(), mappingHelper);
+            return conversationMapper.toConversationResponse(existing.get());
         }
 
         List<ParticipantInfo> participantInfoList = createParticipantInfo(curentUser, participantInfo);
+
+        String avatarUrl = Optional.ofNullable(participantInfo.getAvatarUrl())
+                .filter(url -> !url.trim().isEmpty())
+                .orElse(appProperties.getDefaultAvatarUrl());
 
         // Build conversation info
         Conversation conversation = Conversation.builder()
                 .type(request.getType())
                 .participantsHash(userIdHash)
+                .conversationName(participantInfo.getName())
+                .conversationAvatar(avatarUrl)
                 .createdDate(LocalDateTime.now())
                 .modifiedDate(LocalDateTime.now())
                 .participants(participantInfoList)
                 .build();
 
-        return conversationMapper.toConversationResponse(conversationRepository.save(conversation), mappingHelper);
+        return conversationMapper.toConversationResponse(conversationRepository.save(conversation));
     }
+
 
     public List<ConversationResponse> myConversations() {
         log.info("Fetching conversations for current user");
@@ -78,9 +85,21 @@ public class ConversationServiceImpl implements ConversationService {
         List<Conversation> conversations = conversationRepository.findAllByParticipantIdsContains(curentUser.getId());
 
         return conversations.stream()
-                .map(conversation ->  conversationMapper.toConversationResponse(conversation, mappingHelper))
+                .map(conversationMapper::toConversationResponse)
                 .toList();
     }
+
+    @Override
+    public List<ConversationResponse> searchConversationsByName(String name) {
+        log.info("Searching conversations by name: {}", name);
+
+        List<Conversation> conversations = conversationRepository.findByConversationNameContainingIgnoreCase(name);
+
+        return conversations.stream()
+                .map(conversationMapper::toConversationResponse)
+                .toList();
+    }
+
 
 
     private List<ParticipantInfo> createParticipantInfo(User currentUser, User participantInfo){

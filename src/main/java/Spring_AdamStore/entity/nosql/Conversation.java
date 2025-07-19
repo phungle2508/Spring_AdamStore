@@ -21,6 +21,12 @@ public class Conversation {
 
     private String type; // GROUP, DIRECT
 
+    @Indexed
+    private String conversationName;
+
+    @Indexed
+    private String conversationAvatar;
+
     @Indexed(unique = true)
     private String participantsHash;
 

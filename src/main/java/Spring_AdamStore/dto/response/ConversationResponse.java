@@ -15,13 +15,20 @@ import java.util.List;
 public class ConversationResponse {
 
     private String id;
+
     private String type;
+
     private String participantsHash;
+
     private String conversationAvatar;
+
     private String conversationName;
+
     private List<ParticipantInfo> participants;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createdDate;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime modifiedDate;
 }
