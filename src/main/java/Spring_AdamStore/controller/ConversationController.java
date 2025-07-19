@@ -45,6 +45,7 @@ public class ConversationController {
                 .build();
     }
 
+
     @Operation(summary = "Get conversations of current user",
             description = "Lấy danh sách các cuộc trò chuyện của người dùng hiện tại")
     @GetMapping("/my-conversations")
@@ -57,5 +58,20 @@ public class ConversationController {
                 .result(conversationService.myConversations())
                 .build();
     }
+
+
+    @GetMapping("/search")
+    @Operation(summary = "Search conversations by Name", description = "Tìm kiếm các cuộc hội thoại theo tên (conversationName)")
+    public ApiResponse<List<ConversationResponse>> searchConversationsByName(@RequestParam String name) {
+        log.info("Received request to searching conversations with name: {}", name);
+
+        return ApiResponse.<List<ConversationResponse>>builder()
+                .code(HttpStatus.OK.value())
+                .message("Search results")
+                .result(conversationService.searchConversationsByName(name))
+                .build();
+    }
+
+
 
 }

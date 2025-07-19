@@ -1,6 +1,6 @@
 package Spring_AdamStore.service.impl;
 
-import Spring_AdamStore.constants.AdminProperties;
+import Spring_AdamStore.constants.AppProperties;
 import Spring_AdamStore.constants.Gender;
 import Spring_AdamStore.constants.RoleEnum;
 import Spring_AdamStore.constants.SizeEnum;
@@ -11,7 +11,6 @@ import Spring_AdamStore.service.relationship.UserHasRoleService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +34,7 @@ public class InitServiceImpl implements InitService {
     private final CartService cartService;
     private final WardService wardService;
     private final WardRepository wardRepository;
-    private final AdminProperties adminProperties;
+    private final AppProperties appProperties;
 
 
 
@@ -59,9 +58,10 @@ public class InitServiceImpl implements InitService {
     public void initAdmin() {
         User admin = userRepository.save(User.builder()
                 .name("Admin")
-                .email(adminProperties.getEmail())
-                .password(passwordEncoder.encode(adminProperties.getPassword()))
+                .email(appProperties.getAdmin().getEmail())
+                .password(passwordEncoder.encode(appProperties.getAdmin().getPassword()))
                 .dob(LocalDate.now())
+                .avatarUrl(appProperties.getDefaultAvatarUrl())
                 .gender(Gender.MALE)
                 .build());
 

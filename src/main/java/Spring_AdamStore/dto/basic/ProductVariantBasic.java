@@ -11,7 +11,7 @@ public class ProductVariantBasic {
 
     private Long id;
 
-    private String imageUrl;
+    private ImageBasic image;
     private EntityBasic color;
     private EntityBasic size;
     private EntityBasic product;

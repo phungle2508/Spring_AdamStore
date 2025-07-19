@@ -3,6 +3,7 @@ package Spring_AdamStore.service.impl;
 import Spring_AdamStore.dto.request.ChatMessageRequest;
 import Spring_AdamStore.dto.response.ChatMessageResponse;
 import Spring_AdamStore.entity.nosql.ChatMessage;
+import Spring_AdamStore.entity.nosql.Conversation;
 import Spring_AdamStore.entity.nosql.ParticipantInfo;
 import Spring_AdamStore.entity.sql.User;
 import Spring_AdamStore.exception.AppException;
@@ -32,6 +33,8 @@ public class ChatMessageServiceImpl implements ChatMessageService {
     private final CurrentUserService currentUserService;
 
     public ChatMessageResponse createMessage(ChatMessageRequest request, Principal principal) {
+        log.info("Create Message for conversationId {}", request.getConversationId());
+
         UserPrincipal userPrincipal = (UserPrincipal) principal;
         String email = userPrincipal.getName();
 
@@ -77,6 +80,32 @@ public class ChatMessageServiceImpl implements ChatMessageService {
                 .map(chatMessage -> toChatMessageResponse(chatMessage, curentUser))
                 .toList();
     }
+
+    @Override
+    public List<ChatMessageResponse> searchMessages(String conversationId, String keyword) {
+        log.info("Search Message for Conversation : {}", conversationId);
+
+        User curentUser = currentUserService.getCurrentUser();
+
+        // Check current user join conversation
+        Conversation conversation = conversationRepository.findById(conversationId)
+                .orElseThrow(() -> new AppException(ErrorCode.CONVERSATION_NOT_FOUND));
+
+        boolean isParticipant = conversation.getParticipants().stream()
+                .anyMatch(p -> curentUser.getEmail().equals(p.getEmail()));
+
+        if (!isParticipant) {
+            throw new AppException(ErrorCode.NOT_A_PARTICIPANT);
+        }
+
+        // Tìm kiếm message
+        List<ChatMessage> messages = chatMessageRepository.searchMessagesInConversation(conversationId, keyword);
+
+        return messages.stream()
+                .map(m -> toChatMessageResponse(m, curentUser))
+                .toList();
+    }
+
 
     private ParticipantInfo createSender(User user){
         return ParticipantInfo.builder()

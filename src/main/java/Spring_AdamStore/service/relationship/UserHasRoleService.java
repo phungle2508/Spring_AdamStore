@@ -31,17 +31,4 @@ public class UserHasRoleService {
 
         return userHasRoleRepository.save(userHasRole);
     }
-
-
-    public boolean checkRoleForUser(User user, RoleEnum roleEnum){
-       Role role = roleRepository.findByName(roleEnum.name())
-            .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_EXISTED));
-
-       return userHasRoleRepository.findById(UserHasRoleId.builder()
-               .userId(user.getId())
-               .roleId(role.getId())
-               .build())
-               .isPresent();
-    }
-
 }

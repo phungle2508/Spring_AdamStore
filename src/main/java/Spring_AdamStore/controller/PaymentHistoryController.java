@@ -37,7 +37,7 @@ public class PaymentHistoryController {
     public ApiResponse<PageResponse<PaymentHistoryResponse>> searchPaymentHistories(@ParameterObject @PageableDefault Pageable pageable,
                                                                                   @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
                                                                                   @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
-                                                                                  @RequestParam PaymentStatus paymentStatus){
+                                                                                  @RequestParam(required = false) PaymentStatus paymentStatus){
         log.info("Received search request for Payment-Histories: startDate={}, endDate={}, status={}", startDate, endDate, paymentStatus);
 
         return ApiResponse.<PageResponse<PaymentHistoryResponse>>builder()

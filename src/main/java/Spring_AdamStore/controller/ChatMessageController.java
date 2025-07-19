@@ -30,6 +30,7 @@ public class ChatMessageController {
     private final ChatMessageService chatMessageService;
     private final SimpMessagingTemplate messagingTemplate;
 
+
     @MessageMapping("/chat.sendMessage")
     void create(@Payload @Valid ChatMessageRequest request, Principal principal) {
         log.info("Received message from user = {} : {}", principal.getName(), request.getMessage());
@@ -43,6 +44,7 @@ public class ChatMessageController {
         log.info("{} send Message successfully", principal.getName());
     }
 
+
     @Operation(summary = "Fetch all messages for conversationId",
             description = "Lấy danh sách tin nhắn  trong một cuộc trò chuyện")
     @GetMapping("/private/messages")
@@ -53,6 +55,21 @@ public class ChatMessageController {
                 .code(HttpStatus.OK.value())
                 .message("Get Messages for conversationId")
                 .result(chatMessageService.getMessages(conversationId))
+                .build();
+    }
+
+
+    @Operation(summary = "Search messages in a conversation by keyword")
+    @GetMapping("private/messages/search")
+    public ApiResponse<List<ChatMessageResponse>> searchMessages(
+            @RequestParam String conversationId,
+            @RequestParam String keyword) {
+        log.info("Received request search messages conversationId {}, with keyword: {}", conversationId, keyword);
+
+        return ApiResponse.<List<ChatMessageResponse>>builder()
+                .code(HttpStatus.OK.value())
+                .message("Search messages in a conversation by keyword")
+                .result(chatMessageService.searchMessages(conversationId, keyword))
                 .build();
     }
 

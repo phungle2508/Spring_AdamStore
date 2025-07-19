@@ -3249,7 +3249,7 @@
 					"response": []
 				},
 				{
-					"name": "Search Order For Current User Or Admin",
+					"name": "Get Orders for Current User",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -3260,7 +3260,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/adamstore/v1/private/orders/search?page=0&size=10&sort&search=orderStatus~PENDING",
+							"raw": "{{baseUrl}}/adamstore/v1/private/user/orders?page=0&size=10&sort&orderStatus=PROCESSING",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -3268,8 +3268,8 @@
 								"adamstore",
 								"v1",
 								"private",
-								"orders",
-								"search"
+								"user",
+								"orders"
 							],
 							"query": [
 								{
@@ -3285,8 +3285,8 @@
 									"value": null
 								},
 								{
-									"key": "search",
-									"value": "orderStatus~PENDING"
+									"key": "orderStatus",
+									"value": "PROCESSING"
 								}
 							]
 						}
@@ -3533,6 +3533,59 @@
 								{
 									"key": "id",
 									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Orders for Admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/adamstore/v1/admin/orders/search?page=0&size=10&sort&startDate=2025-02-01&endDate=2025-12-31&orderStatus=PROCESSING",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"adamstore",
+								"v1",
+								"admin",
+								"orders",
+								"search"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "sort",
+									"value": null
+								},
+								{
+									"key": "startDate",
+									"value": "2025-02-01"
+								},
+								{
+									"key": "endDate",
+									"value": "2025-12-31"
+								},
+								{
+									"key": "orderStatus",
+									"value": "PROCESSING"
 								}
 							]
 						}
@@ -3797,6 +3850,39 @@
 					"response": []
 				},
 				{
+					"name": "Search Conversation By Name",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/adamstore/v1/private/conversations/search?name=An",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"adamstore",
+								"v1",
+								"private",
+								"conversations",
+								"search"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "An"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get Messages",
 					"request": {
 						"auth": {
@@ -3822,6 +3908,43 @@
 								{
 									"key": "conversationId",
 									"value": "686d472942127a3c7dc1f3e5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search messages by keyword",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/adamstore/v1/private/messages/search?conversationId=687bc23a4746a12572c4799a&keyword=hello",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"adamstore",
+								"v1",
+								"private",
+								"messages",
+								"search"
+							],
+							"query": [
+								{
+									"key": "conversationId",
+									"value": "687bc23a4746a12572c4799a"
+								},
+								{
+									"key": "keyword",
+									"value": "hello"
 								}
 							]
 						}
