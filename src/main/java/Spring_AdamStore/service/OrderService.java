@@ -1,5 +1,6 @@
 package Spring_AdamStore.service;
 
+import Spring_AdamStore.constants.OrderStatus;
 import Spring_AdamStore.dto.request.OrderRequest;
 import Spring_AdamStore.dto.request.OrderAddressRequest;
 import Spring_AdamStore.dto.response.OrderResponse;
@@ -7,6 +8,7 @@ import Spring_AdamStore.dto.response.PageResponse;
 import jakarta.validation.constraints.Min;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface OrderService {
@@ -15,13 +17,13 @@ public interface OrderService {
 
     OrderResponse fetchDetailById(Long id);
 
-    PageResponse<OrderResponse> fetchAll(Pageable pageable);
-
     OrderResponse updateAddress(Long id, OrderAddressRequest request);
 
     void delete(Long id);
 
-    PageResponse<OrderResponse> searchOrder(Pageable pageable, List<String> search);
-
     OrderResponse cancelOrder(Long orderId);
+
+    PageResponse<OrderResponse> getOrdersForUser(Pageable pageable, OrderStatus orderStatus);
+
+    PageResponse<OrderResponse> searchOrdersForAdmin(Pageable pageable, LocalDate startDate, LocalDate endDate, OrderStatus orderStatus);
 }

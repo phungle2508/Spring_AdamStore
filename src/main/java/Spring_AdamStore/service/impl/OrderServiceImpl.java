@@ -52,13 +52,10 @@ public class OrderServiceImpl implements OrderService {
     private final OrderItemRepository orderItemRepository;
     private final PromotionRepository promotionRepository;
     private final PaymentHistoryRepository paymentHistoryRepository;
-    private final UserHasRoleService userHasRoleService;
     private final PromotionUsageService promotionUsageService;
     private final PromotionUsageRepository promotionUsageRepository;
     private final PaymentHistoryService paymentHistoryService;
     private final OrderMappingHelper orderMappingHelper;
-    @PersistenceContext
-    private EntityManager entityManager;
 
 
     @Override
@@ -134,123 +131,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public PageResponse<OrderResponse> fetchAll(Pageable pageable) {
-        log.info("Fetch All Order For Admin");
-
-        Page<Order> orderPage = orderRepository.findAll(pageable);
-
-        return PageResponse.<OrderResponse>builder()
-                .page(orderPage.getNumber())
-                .size(orderPage.getSize())
-                .totalPages(orderPage.getTotalPages())
-                .totalItems(orderPage.getTotalElements())
-                .items(orderMapper.toOrderResponseList(orderPage.getContent(), orderMappingHelper))
-                .build();
-    }
-
-    @Override
-    public PageResponse<OrderResponse> searchOrder(Pageable pageable, List<String> search) {
-       List<SearchCriteria> criteriaList = new ArrayList<>();
-
-        // Lay danh sach dieu kien
-        if(search != null){
-            for(String s : search){
-                Pattern pattern = Pattern.compile("(\\w+?)(~|>|<)(.*)");
-                Matcher matcher = pattern.matcher(s);
-                if(matcher.find()){
-                    criteriaList.add(new SearchCriteria(matcher.group(1), matcher.group(2), matcher.group(3)));
-                }
-            }
-        }
-        List<Order> orderList = getOrderList(pageable, criteriaList);
-
-        Long totalElements = getTotalElements(criteriaList);
-        int totalPages = (int) Math.ceil((double) totalElements / pageable.getPageSize());
-
-        return PageResponse.<OrderResponse>builder()
-                .page(pageable.getPageNumber())
-                .size(pageable.getPageSize())
-                .totalPages(totalPages)
-                .totalItems(totalElements)
-                .items(orderMapper.toOrderResponseList(orderList, orderMappingHelper))
-                .build();
-    }
-
-
-    private List<Order> getOrderList(Pageable pageable, List<SearchCriteria> criteriaList) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Order> query = builder.createQuery(Order.class);
-        Root<Order> root = query.from(Order.class);
-
-        // xu ly dieu kien
-        Predicate predicate = builder.conjunction();
-
-        // check user
-        User currentUser = currentUserService.getCurrentUser();
-        boolean isAdmin = userHasRoleService.checkRoleForUser(currentUser, RoleEnum.ADMIN);
-        if (!isAdmin) {
-            Join<Order, User> userJoin = root.join("user", JoinType.LEFT);
-            predicate = builder.and(predicate, builder.equal(userJoin.get("id"), currentUser.getId()));
-        }
-
-        // search
-        if(!CollectionUtils.isEmpty(criteriaList)){
-            SearchCriteriaQueryConsumer queryConsumer = new SearchCriteriaQueryConsumer(builder, predicate, root);
-            criteriaList.forEach(queryConsumer);
-
-            predicate = builder.and(predicate, queryConsumer.getPredicate());
-        }
-
-        query.where(predicate);
-
-        // Sort
-        List<jakarta.persistence.criteria.Order> orders = new ArrayList<>();
-        for (Sort.Order order : pageable.getSort()) {
-            String property = order.getProperty();
-
-            Path<?> path = root.get(property);
-            orders.add(order.isAscending() ? builder.asc(path) : builder.desc(path));
-        }
-
-        query.orderBy(orders);
-
-        return entityManager.createQuery(query)
-                .setFirstResult((int) pageable.getOffset())
-                .setMaxResults(pageable.getPageSize())
-                .getResultList();
-    }
-
-    private Long getTotalElements(List<SearchCriteria> criteriaList) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Long> countQuery = builder.createQuery(Long.class);
-        Root<Order> root = countQuery.from(Order.class);
-
-        // Xu ly dieu kien tim kiem
-        Predicate predicate = builder.conjunction();
-
-        // check user
-        User currentUser = currentUserService.getCurrentUser();
-        boolean isAdmin = userHasRoleService.checkRoleForUser(currentUser, RoleEnum.ADMIN);
-        if (!isAdmin) {
-            Join<Order, User> userJoin = root.join("user", JoinType.LEFT);
-            predicate = builder.and(predicate, builder.equal(userJoin.get("id"), currentUser.getId()));
-        }
-
-        // search
-        if(!CollectionUtils.isEmpty(criteriaList)){
-            SearchCriteriaQueryConsumer queryConsumer = new SearchCriteriaQueryConsumer(builder, predicate, root);
-            criteriaList.forEach(queryConsumer);
-
-            predicate = builder.and(predicate, queryConsumer.getPredicate());
-        }
-
-        countQuery.select(builder.count(root));
-        countQuery.where(predicate);
-
-        return entityManager.createQuery(countQuery).getSingleResult();
-    }
-
-    @Override
     @Transactional
     public OrderResponse updateAddress(Long id, OrderAddressRequest request) {
         log.info("Updated update address for orderId= {}" , id);
@@ -286,6 +166,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderResponse cancelOrder(Long orderId) {
+        log.info("Cancel order with ID: {}", orderId);
+
         Order order = findOrderById(orderId);
 
         if (order.getOrderStatus() != OrderStatus.PENDING && order.getOrderStatus() != OrderStatus.PROCESSING) {
@@ -295,6 +177,38 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderStatus(OrderStatus.CANCELLED);
 
         return orderMapper.toOrderResponse(orderRepository.save(order), orderMappingHelper);
+    }
+
+    @Override
+    public PageResponse<OrderResponse> getOrdersForUser(Pageable pageable, OrderStatus orderStatus) {
+        log.info("Fetching orders for current user, with status: {}",orderStatus);
+
+        User user = currentUserService.getCurrentUser();
+
+        Page<Order> page = orderRepository.findByUserIdAndOrderStatus(pageable, user.getId(), orderStatus);
+
+        return PageResponse.<OrderResponse>builder()
+                .page(page.getNumber())
+                .size(page.getSize())
+                .totalPages(page.getTotalPages())
+                .totalItems(page.getTotalElements())
+                .items(orderMapper.toOrderResponseList(page.getContent(), orderMappingHelper))
+                .build();
+    }
+
+    @Override
+    public PageResponse<OrderResponse> searchOrdersForAdmin(Pageable pageable, LocalDate startDate, LocalDate endDate, OrderStatus orderStatus) {
+        log.info("Admin search orders from {} to {}, with status: {}", startDate, endDate, orderStatus);
+
+        Page<Order> orderPage = orderRepository.findOrdersByDateAndStatus(startDate, endDate, orderStatus, pageable);
+
+        return PageResponse.<OrderResponse>builder()
+                .page(orderPage.getNumber())
+                .size(orderPage.getSize())
+                .totalPages(orderPage.getTotalPages())
+                .totalItems(orderPage.getTotalElements())
+                .items(orderMapper.toOrderResponseList(orderPage.getContent(), orderMappingHelper))
+                .build();
     }
 
 

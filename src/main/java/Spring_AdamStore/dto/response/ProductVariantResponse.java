@@ -2,6 +2,7 @@ package Spring_AdamStore.dto.response;
 
 import Spring_AdamStore.constants.EntityStatus;
 import Spring_AdamStore.dto.basic.EntityBasic;
+import Spring_AdamStore.dto.basic.ImageBasic;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.*;
@@ -19,10 +20,10 @@ public class ProductVariantResponse {
     private Double price;
     private Integer quantity;
     private Boolean isAvailable;
-    private String imageUrl;
 
     private EntityStatus status;
 
+    private ImageBasic image;
     private EntityBasic size;
     private EntityBasic color;
 }

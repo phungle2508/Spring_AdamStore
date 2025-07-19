@@ -1,5 +1,6 @@
 package Spring_AdamStore.controller;
 
+import Spring_AdamStore.constants.OrderStatus;
 import Spring_AdamStore.dto.ghn.response.ShippingFeeResponse;
 import Spring_AdamStore.dto.request.OrderRequest;
 import Spring_AdamStore.dto.request.PaymentCallbackRequest;
@@ -18,10 +19,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Slf4j(topic = "ORDER-CONTROLLER")
@@ -64,30 +67,40 @@ public class OrderController {
                 .build();
     }
 
-    @Operation(summary = "Fetch Order For Admin",
-            description = "Api này dùng để lấy tất cả đơn hàng")
-    @GetMapping("/admin/orders")
-    public ApiResponse<PageResponse<OrderResponse>> fetchAll(@ParameterObject @PageableDefault Pageable pageable){
-        log.info("Received request to fetch all Order For Admin");
+
+    @Operation(summary = "Get Orders for Current User",
+            description = "Lấy danh sách đơn hàng của người dùng hiện tại, lọc theo trạng thái")
+    @GetMapping("/private/user/orders")
+    public ApiResponse<PageResponse<OrderResponse>> getOrdersForUser(
+            @ParameterObject @PageableDefault Pageable pageable,
+            @RequestParam OrderStatus orderStatus) {
+        log.info("Received request to get orders for current user. Status = {}", orderStatus);
 
         return ApiResponse.<PageResponse<OrderResponse>>builder()
                 .code(HttpStatus.OK.value())
-                .result(orderService.fetchAll(pageable))
-                .message("Fetch All Orders For Admin")
+                .result(orderService.getOrdersForUser(pageable, orderStatus))
+                .message("Orders for Current User")
                 .build();
     }
 
-    @Operation(summary = "Search Order For Current User Or Admin",
-            description = "Search Order cho User hiện tại hoặc Admin dựa vào token")
-    @GetMapping("/private/orders/search")
-    public ApiResponse<PageResponse<OrderResponse>> searchOrder(@ParameterObject @PageableDefault Pageable pageable,
-                                                                    @RequestParam(required = false) List<String> search){
+
+    @Operation(summary = "Search Orders for Admin",
+            description = "API cho admin lấy danh sách đơn hàng theo khoảng thời gian và trạng thái (tuỳ chọn)")
+    @GetMapping("/admin/orders/search")
+    public ApiResponse<PageResponse<OrderResponse>> searchOrdersForAdmin(
+            @ParameterObject @PageableDefault Pageable pageable,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam(required = false) OrderStatus orderStatus) {
+        log.info("Received request to search orders for admin. From {} to {}, Status = {}", startDate, endDate, orderStatus);
+
         return ApiResponse.<PageResponse<OrderResponse>>builder()
                 .code(HttpStatus.OK.value())
-                .result(orderService.searchOrder(pageable, search))
-                .message("Search Order For Current User Or Admin")
+                .message("Search orders for admin")
+                .result(orderService.searchOrdersForAdmin(pageable, startDate, endDate, orderStatus))
                 .build();
     }
+
 
     @Operation(summary = "Update Address for Order",
     description = "Cập nhập đia chỉ cho đơn hàng ở trạng thái PENDING hoặc PROCESSING")

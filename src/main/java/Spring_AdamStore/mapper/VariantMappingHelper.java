@@ -1,6 +1,7 @@
 package Spring_AdamStore.mapper;
 
 import Spring_AdamStore.dto.basic.EntityBasic;
+import Spring_AdamStore.dto.basic.ImageBasic;
 import Spring_AdamStore.dto.basic.ProductVariantBasic;
 import Spring_AdamStore.entity.sql.FileEntity;
 import Spring_AdamStore.repository.sql.*;
@@ -21,7 +22,7 @@ public class VariantMappingHelper {
         return productVariantRepository.findById(variantId)
                 .map(variant -> ProductVariantBasic.builder()
                         .id(variant.getId())
-                        .imageUrl(getImageUrl(variant.getImageId()))
+                        .image(getImage(variant.getImageId()))
                         .color(getColor(variant.getColorId()))
                         .size(getSize(variant.getSizeId()))
                         .product(getProduct(variant.getProductId()))
@@ -29,9 +30,9 @@ public class VariantMappingHelper {
                 .orElse(null);
     }
 
-    public String getImageUrl(Long imageId){
+    public ImageBasic getImage(Long imageId){
         return fileRepository.findById(imageId)
-                .map(FileEntity::getImageUrl)
+                .map(file -> new ImageBasic(file.getId(), file.getImageUrl()))
                 .orElse(null);
     }
 
