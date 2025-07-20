@@ -13,4 +13,6 @@ public interface ChatMessageService {
      List<ChatMessageResponse> getMessages(String conversationId);
 
      List<ChatMessageResponse> searchMessages(String conversationId, String keyword);
+
+     void deleteMessage(String id);
 }

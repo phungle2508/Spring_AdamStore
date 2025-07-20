@@ -12,10 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -60,7 +57,7 @@ public class ChatMessageController {
 
 
     @Operation(summary = "Search messages in a conversation by keyword")
-    @GetMapping("private/messages/search")
+    @GetMapping("/private/messages/search")
     public ApiResponse<List<ChatMessageResponse>> searchMessages(
             @RequestParam String conversationId,
             @RequestParam String keyword) {
@@ -72,5 +69,21 @@ public class ChatMessageController {
                 .result(chatMessageService.searchMessages(conversationId, keyword))
                 .build();
     }
+
+
+    @Operation(summary = "Delete message by id")
+    @DeleteMapping("/private/messages/{id}")
+    public ApiResponse<Void> deleteMessage(@PathVariable String id) {
+        log.info("Received request to delete message with id: {}", id);
+
+        chatMessageService.deleteMessage(id);
+
+        return ApiResponse.<Void>builder()
+                .code(HttpStatus.OK.value())
+                .message("Message deleted successfully")
+                .build();
+    }
+
+
 
 }
