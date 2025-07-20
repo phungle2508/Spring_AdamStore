@@ -106,6 +106,24 @@ public class ChatMessageServiceImpl implements ChatMessageService {
                 .toList();
     }
 
+    @Override
+    public ChatMessage deleteMessage(String messageId) {
+        log.info("Delete Message By Id : {}", messageId);
+
+        ChatMessage chatMessage = chatMessageRepository.findById(messageId)
+                .orElseThrow(() -> new AppException(ErrorCode.MESSAGE_NOT_FOUND));
+
+        User currentUser = currentUserService.getCurrentUser();
+        if (!chatMessage.getSender().getEmail().equals(currentUser.getEmail())) {
+            throw new AppException(ErrorCode.UNAUTHORIZED);
+        }
+
+        chatMessageRepository.deleteById(messageId);
+
+        return chatMessage;
+    }
+
+
 
     private ParticipantInfo createSender(User user){
         return ParticipantInfo.builder()

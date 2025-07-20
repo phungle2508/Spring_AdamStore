@@ -3,22 +3,22 @@ package Spring_AdamStore.controller;
 import Spring_AdamStore.dto.request.ChatMessageRequest;
 import Spring_AdamStore.dto.response.ApiResponse;
 import Spring_AdamStore.dto.response.ChatMessageResponse;
+import Spring_AdamStore.entity.nosql.ChatMessage;
 import Spring_AdamStore.service.ChatMessageService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 
 @Slf4j(topic = "CHAT-MESSAGE-CONTROLLER")
@@ -41,14 +41,15 @@ public class ChatMessageController {
                 "/topic/conversation." + request.getConversationId(),
                 response);
 
-        log.info("{} send Message successfully", principal.getName());
+        log.info("User {} sent message successfully. Message ID: {}, Conversation ID: {}",
+                response.getSender().getName(), response.getId(), request.getConversationId());
     }
 
 
     @Operation(summary = "Fetch all messages for conversationId",
             description = "Lấy danh sách tin nhắn  trong một cuộc trò chuyện")
     @GetMapping("/private/messages")
-    ApiResponse<List<ChatMessageResponse>> getMessages(@RequestParam("conversationId") String conversationId) {
+    public ApiResponse<List<ChatMessageResponse>> getMessages(@RequestParam("conversationId") String conversationId) {
         log.info("Received request to fetch messages for conversationId: {}", conversationId);
 
         return ApiResponse.<List<ChatMessageResponse>>builder()
@@ -60,7 +61,7 @@ public class ChatMessageController {
 
 
     @Operation(summary = "Search messages in a conversation by keyword")
-    @GetMapping("private/messages/search")
+    @GetMapping("/private/messages/search")
     public ApiResponse<List<ChatMessageResponse>> searchMessages(
             @RequestParam String conversationId,
             @RequestParam String keyword) {
@@ -72,5 +73,28 @@ public class ChatMessageController {
                 .result(chatMessageService.searchMessages(conversationId, keyword))
                 .build();
     }
+
+
+    @Operation(summary = "Delete message by id")
+    @DeleteMapping("/private/messages/{messageId}")
+    public ApiResponse<Void> deleteMessage(@PathVariable String messageId) {
+        log.info("Received request to delete message with id: {}", messageId);
+
+        ChatMessage deletedMsg = chatMessageService.deleteMessage(messageId);
+
+        // Delete message realtime
+        messagingTemplate.convertAndSend("/topic/conversation." + deletedMsg.getConversationId(),
+                Map.of("type", "DELETE", "messageId", messageId)
+        );
+
+        log.info(" Message with ID: {} deleted successfully", messageId);
+
+        return ApiResponse.<Void>builder()
+                .code(HttpStatus.OK.value())
+                .message("Delete Message By Id")
+                .build();
+    }
+
+
 
 }
