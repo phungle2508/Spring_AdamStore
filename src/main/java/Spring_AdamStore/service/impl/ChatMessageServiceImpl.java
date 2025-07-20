@@ -107,7 +107,7 @@ public class ChatMessageServiceImpl implements ChatMessageService {
     }
 
     @Override
-    public void deleteMessage(String messageId) {
+    public ChatMessage deleteMessage(String messageId) {
         log.info("Delete Message By Id : {}", messageId);
 
         ChatMessage chatMessage = chatMessageRepository.findById(messageId)
@@ -119,6 +119,8 @@ public class ChatMessageServiceImpl implements ChatMessageService {
         }
 
         chatMessageRepository.deleteById(messageId);
+
+        return chatMessage;
     }
 
 

@@ -2,6 +2,7 @@ package Spring_AdamStore.service;
 
 import Spring_AdamStore.dto.request.ChatMessageRequest;
 import Spring_AdamStore.dto.response.ChatMessageResponse;
+import Spring_AdamStore.entity.nosql.ChatMessage;
 
 import java.security.Principal;
 import java.util.List;
@@ -14,5 +15,5 @@ public interface ChatMessageService {
 
      List<ChatMessageResponse> searchMessages(String conversationId, String keyword);
 
-     void deleteMessage(String id);
+     ChatMessage deleteMessage(String id);
 }
