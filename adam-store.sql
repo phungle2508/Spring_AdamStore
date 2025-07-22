@@ -2007,9 +2007,9 @@ COPY public.flyway_schema_history (installed_rank, version, description, type, s
 5	5	create branch tables	SQL	V5__create_branch_tables.sql	1311895496	postgres	2025-07-17 20:31:44.454356	54	t
 6	6	create color tables	SQL	V6__create_color_tables.sql	-467070452	postgres	2025-07-17 20:31:44.524723	19	t
 7	7	create size tables	SQL	V7__create_size_tables.sql	321971859	postgres	2025-07-17 20:31:44.552083	12	t
-8	8	create file tables	SQL	V8__create_file_tables.sql	1520961341	postgres	2025-07-17 20:31:44.572376	18	t
-9	9	create category tables	SQL	V9__create_category_tables.sql	-1643217532	postgres	2025-07-17 20:31:44.598996	16	t
-10	10	create product tables	SQL	V10__create_product_tables.sql	110843624	postgres	2025-07-17 20:31:44.623547	78	t
+8	8	create file tables	SQL	V10__create_file_tables.sql	1520961341	postgres	2025-07-17 20:31:44.572376	18	t
+9	9	create category tables	SQL	V8__create_category_tables.sql	-1643217532	postgres	2025-07-17 20:31:44.598996	16	t
+10	10	create product tables	SQL	V9__create_product_tables.sql	110843624	postgres	2025-07-17 20:31:44.623547	78	t
 11	11	create cart tables	SQL	V11__create_cart_tables.sql	508368939	postgres	2025-07-17 20:31:44.714489	26	t
 12	12	create review tables	SQL	V12__create_review_tables.sql	200805201	postgres	2025-07-17 20:31:44.754004	18	t
 13	13	create order tables	SQL	V13__create_order_tables.sql	-1334359747	postgres	2025-07-17 20:31:44.780524	30	t

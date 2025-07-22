@@ -14,7 +14,8 @@ public interface ProductMapper {
 
     Product toProduct(ProductRequest request);
 
-    @Mapping(target = "variants", expression = "java(context.getVariant(product.getId()))")
+    @Mapping(target = "variants", expression = "java(context.getVariants(product.getId()))")
+    @Mapping(target = "images", expression = "java(context.getImages(product.getId()))")
     ProductResponse toProductResponse(Product product, @Context ProductMappingHelper context);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

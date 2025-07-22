@@ -11,7 +11,6 @@ public interface ProductVariantMapper {
 
     @Mapping(target = "color", expression = "java(context.getColor(variant.getColorId()))")
     @Mapping(target = "size", expression = "java(context.getSize(variant.getSizeId()))")
-    @Mapping(target = "image", expression = "java(context.getImage(variant.getImageId()))")
     ProductVariantResponse toProductVariantResponse(ProductVariant variant, @Context VariantMappingHelper context);
 
     List<ProductVariantResponse> toProductVariantResponseList(List<ProductVariant> productVariantList, @Context VariantMappingHelper context);

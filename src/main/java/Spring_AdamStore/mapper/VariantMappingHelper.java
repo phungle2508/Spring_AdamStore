@@ -1,9 +1,10 @@
 package Spring_AdamStore.mapper;
 
+import Spring_AdamStore.constants.FileType;
 import Spring_AdamStore.dto.basic.EntityBasic;
 import Spring_AdamStore.dto.basic.ImageBasic;
 import Spring_AdamStore.dto.basic.ProductVariantBasic;
-import Spring_AdamStore.entity.sql.FileEntity;
+import Spring_AdamStore.entity.sql.ProductVariant;
 import Spring_AdamStore.repository.sql.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -22,7 +23,6 @@ public class VariantMappingHelper {
         return productVariantRepository.findById(variantId)
                 .map(variant -> ProductVariantBasic.builder()
                         .id(variant.getId())
-                        .image(getImage(variant.getImageId()))
                         .color(getColor(variant.getColorId()))
                         .size(getSize(variant.getSizeId()))
                         .product(getProduct(variant.getProductId()))
@@ -30,11 +30,18 @@ public class VariantMappingHelper {
                 .orElse(null);
     }
 
-    public ImageBasic getImage(Long imageId){
-        return fileRepository.findById(imageId)
-                .map(file -> new ImageBasic(file.getId(), file.getImageUrl()))
+
+    public ImageBasic getImageBasic(Long variantId){
+        Long productId = productVariantRepository.findById(variantId)
+                .map(ProductVariant::getProductId)
+                .orElse(null);
+
+        return fileRepository.findAllByFileTypeAndProductId(FileType.PRODUCT_IMAGE, productId)
+                .stream().map(file -> new ImageBasic(file.getId(), file.getImageUrl()))
+                .findFirst()
                 .orElse(null);
     }
+
 
     public EntityBasic getSize(Long sizeId){
         return sizeRepository.findById(sizeId)

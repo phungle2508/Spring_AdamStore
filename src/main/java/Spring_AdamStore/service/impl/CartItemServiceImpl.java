@@ -19,6 +19,7 @@ import Spring_AdamStore.service.CurrentUserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.bouncycastle.asn1.x500.style.RFC4519Style;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -42,8 +43,7 @@ public class CartItemServiceImpl implements CartItemService {
 
         Cart cart = findCartByUser();
 
-        ProductVariant productVariant = productVariantRepository.findById(request.getProductVariantId())
-                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_VARIANT_NOT_EXISTED));
+        ProductVariant productVariant = findProductVariant(request.getProductVariantId());
 
         // check sl hang con
         if (productVariant.getQuantity() < request.getQuantity()) {
@@ -84,7 +84,18 @@ public class CartItemServiceImpl implements CartItemService {
 
         CartItem cartItem = findCartItemById(id);
 
-        cartItem.setQuantity(request.getQuantity());
+        if (request.getQuantity() != null && request.getQuantity() > 0) {
+            cartItem.setQuantity(request.getQuantity());
+        }
+
+        ProductVariant variant = findProductVariant(cartItem.getProductVariantId());
+
+        ProductVariant newVariant = productVariantRepository
+                .findByProductIdAndColorIdAndSizeId(variant.getProductId(), request.getColorId(), request.getSizeId())
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_VARIANT_NOT_EXISTED));
+
+        cartItem.setProductVariantId(newVariant.getId());
+
         return cartItemMapper.toCartItemResponse(cartItemRepository.save(cartItem), cartItemMappingHelper);
     }
 
@@ -109,4 +120,10 @@ public class CartItemServiceImpl implements CartItemService {
         return cartRepository.findByUserId(user.getId())
                 .orElseThrow(()->new AppException(ErrorCode.CART_NOT_EXISTED));
     }
+
+    private ProductVariant findProductVariant(Long id){
+        return productVariantRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_VARIANT_NOT_EXISTED));
+    }
+
 }

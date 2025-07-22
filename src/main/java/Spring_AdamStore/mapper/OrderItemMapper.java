@@ -10,6 +10,7 @@ import java.util.List;
 public interface OrderItemMapper {
 
     @Mapping(target = "productVariant", expression = "java(context.getProductVariantBasic(orderItem.getProductVariantId()))")
+    @Mapping(target = "image", expression = "java(context.getImageBasic(orderItem.getProductVariantId()))")
     OrderItemResponse toOrderItemResponse(OrderItem orderItem, @Context OrderItemMappingHelper context);
 
     List<OrderItemResponse> toOrderItemResponseList(List<OrderItem> orderItemList, @Context OrderItemMappingHelper context);

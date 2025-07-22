@@ -37,8 +37,6 @@ public class ProductVariant {
 
     private Long sizeId;
 
-    private Long imageId;
-
 
     @PrePersist
     public void handleBeforeCreate(){

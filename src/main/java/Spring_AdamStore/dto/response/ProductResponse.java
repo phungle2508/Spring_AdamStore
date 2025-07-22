@@ -3,6 +3,7 @@ package Spring_AdamStore.dto.response;
 
 import Spring_AdamStore.constants.EntityStatus;
 import Spring_AdamStore.dto.basic.EntityBasic;
+import Spring_AdamStore.dto.basic.ImageBasic;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.*;
@@ -32,6 +33,8 @@ public class ProductResponse {
     private EntityStatus status;
 
     private LocalDate createdAt;
+
+    private List<ImageBasic> images;
 
     private List<ProductVariantResponse> variants;
 
