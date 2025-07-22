@@ -5,7 +5,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
-public class VariantRequest {
+public class VariantCreateRequest {
+
+    @NotNull(message = "productId không được null")
+    private Long productId;
 
     @NotNull(message = "colorId không được null")
     private Long colorId;

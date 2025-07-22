@@ -50,6 +50,7 @@ public class Product {
     @UpdateTimestamp
     private LocalDate updatedAt;
 
+
     private Long categoryId;
 
 

@@ -23,7 +23,6 @@ public class ProductVariantResponse {
 
     private EntityStatus status;
 
-    private ImageBasic image;
     private EntityBasic size;
     private EntityBasic color;
 }

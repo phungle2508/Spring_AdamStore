@@ -1,5 +1,7 @@
 package Spring_AdamStore.controller;
 
+import Spring_AdamStore.dto.request.VariantCreateRequest;
+import Spring_AdamStore.dto.request.VariantRequest;
 import Spring_AdamStore.dto.request.VariantUpdateRequest;
 import Spring_AdamStore.dto.response.ApiResponse;
 import Spring_AdamStore.dto.response.ProductVariantResponse;
@@ -41,6 +43,20 @@ public class ProductVariantController {
                 .result(productVariantService.findByProductAndColorAndSize(productId, colorId, sizeId))
                 .build();
     }
+
+    @Operation(summary = "Create new product variant",
+            description = "API để tạo ProductVariant mới theo product, color, size, giá và số lượng")
+    @PostMapping("/admin/product-variants")
+    public ApiResponse<ProductVariantResponse> createProductVariant(@RequestBody @Valid VariantCreateRequest request) {
+        log.info("Creating new ProductVariant: {}", request);
+
+        return ApiResponse.<ProductVariantResponse>builder()
+                .code(HttpStatus.CREATED.value())
+                .message("ProductVariant created successfully")
+                .result(productVariantService.createProductVariant(request))
+                .build();
+    }
+
 
 
     @Operation(summary = "Update price and quantity for a product variant",

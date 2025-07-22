@@ -31,10 +31,12 @@ public class FileEntity {
     @Enumerated(EnumType.STRING)
     private FileType fileType;
 
-
     @CreatedBy
     private String createdBy;
     @CreationTimestamp
     private LocalDate createdAt;
+
+
+    private Long productId;
 
 }

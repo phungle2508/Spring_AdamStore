@@ -1,8 +1,10 @@
 package Spring_AdamStore.service.impl;
 
+import Spring_AdamStore.constants.FileType;
 import Spring_AdamStore.dto.request.ProductRequest;
 import Spring_AdamStore.dto.request.ProductUpdateRequest;
 import Spring_AdamStore.dto.response.*;
+import Spring_AdamStore.entity.sql.FileEntity;
 import Spring_AdamStore.entity.sql.Product;
 import Spring_AdamStore.entity.sql.ProductVariant;
 import Spring_AdamStore.entity.sql.Review;
@@ -11,10 +13,7 @@ import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.mapper.*;
 import Spring_AdamStore.repository.criteria.SearchCriteriaQueryConsumer;
 import Spring_AdamStore.repository.criteria.SearchCriteria;
-import Spring_AdamStore.repository.sql.CategoryRepository;
-import Spring_AdamStore.repository.sql.ProductRepository;
-import Spring_AdamStore.repository.sql.ProductVariantRepository;
-import Spring_AdamStore.repository.sql.ReviewRepository;
+import Spring_AdamStore.repository.sql.*;
 import Spring_AdamStore.service.ProductService;
 import Spring_AdamStore.service.ProductVariantService;
 import jakarta.persistence.EntityManager;
@@ -51,6 +50,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductVariantService productVariantService;
     private final ProductVariantRepository productVariantRepository;
     private final ProductVariantMapper productVariantMapper;
+    private final FileRepository fileRepository;
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -69,6 +69,9 @@ public class ProductServiceImpl implements ProductService {
         Product product = productMapper.toProduct(request);
 
         productRepository.save(product);
+
+        // Save Image
+        assignImagesToProduct(product.getId(), request.getImageIds());
 
         productVariantService.saveVariantByProduct(product.getId(), request.getVariants());
 
@@ -132,7 +135,12 @@ public class ProductServiceImpl implements ProductService {
 
         productMapper.updateProduct(product, request);
 
-        productVariantService.saveVariantByProduct(product.getId(), request.getVariants());
+        // Update Image
+        if(!CollectionUtils.isEmpty(request.getImageIds())){
+            unlinkOldImages(product.getId());
+
+            assignImagesToProduct(product.getId(), request.getImageIds());
+        }
 
         return productMapper.toProductResponse(productRepository.save(product), productMappingHelper);
     }
@@ -291,6 +299,21 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
     }
 
+    private void assignImagesToProduct(Long productId, List<Long> imageIds) {
+        List<FileEntity> fileList = fileRepository.findAllByFileTypeAndIdIn(FileType.PRODUCT_IMAGE, imageIds);
+
+        fileList.forEach(file -> file.setProductId(productId));
+
+        fileRepository.saveAll(fileList);
+    }
+
+    private void unlinkOldImages(Long productId){
+        List<FileEntity> currentImages = fileRepository.findAllByFileTypeAndProductId(FileType.PRODUCT_IMAGE, productId);
+
+        currentImages.forEach(fileEntity -> fileEntity.setProductId(null));
+
+        fileRepository.saveAll(currentImages);
+    }
 
 
 

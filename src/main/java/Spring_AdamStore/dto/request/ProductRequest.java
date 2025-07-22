@@ -17,6 +17,9 @@ public class ProductRequest {
     @NotNull(message = "categoryId không được null")
     private Long categoryId;
 
+    @NotNull(message = "imageIds không được null")
+    private List<Long> imageIds;
+
     @NotEmpty(message = "Danh sách biến thể sản phẩm không được để trống")
     @Size(min = 1, message = "Phải có ít nhất một biến thể sản phẩm")
     private List<VariantRequest> variants;

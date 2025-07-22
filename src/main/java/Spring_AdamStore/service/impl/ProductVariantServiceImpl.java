@@ -1,5 +1,6 @@
 package Spring_AdamStore.service.impl;
 
+import Spring_AdamStore.dto.request.VariantCreateRequest;
 import Spring_AdamStore.dto.request.VariantRequest;
 import Spring_AdamStore.dto.request.VariantUpdateRequest;
 import Spring_AdamStore.dto.response.ProductVariantResponse;
@@ -30,7 +31,7 @@ public class ProductVariantServiceImpl implements ProductVariantService {
     private final ProductVariantRepository productVariantRepository;
     private final ProductVariantMapper productVariantMapper;
     private final VariantMappingHelper variantMappingHelper;
-    private final FileRepository fileRepository;
+    private final ProductRepository productRepository;
     private final SizeRepository sizeRepository;
     private final ColorRepository colorRepository;
     private final OrderItemRepository orderItemRepository;
@@ -47,6 +48,30 @@ public class ProductVariantServiceImpl implements ProductVariantService {
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_VARIANT_NOT_EXISTED));
 
         return productVariantMapper.toProductVariantResponse(variant, variantMappingHelper);
+    }
+
+
+    @Override
+    public ProductVariantResponse createProductVariant(VariantCreateRequest request) {
+        findProductById(request.getProductId());
+
+        Color color = findColorById(request.getColorId());
+        Size size = findSizeById(request.getSizeId());
+
+        productVariantRepository
+                .findByProductIdAndColorIdAndSizeId(request.getProductId(), request.getColorId(), request.getSizeId())
+                .ifPresent(variant -> {throw new AppException(ErrorCode.PRODUCT_VARIANT_EXISTED);});
+
+        ProductVariant variant = ProductVariant.builder()
+                .productId(request.getProductId())
+                .colorId(color.getId())
+                .sizeId(size.getId())
+                .price(request.getPrice())
+                .quantity(request.getQuantity())
+                .isAvailable(true)
+                .build();
+
+        return productVariantMapper.toProductVariantResponse(productVariantRepository.save(variant), variantMappingHelper);
     }
 
 
@@ -101,13 +126,11 @@ public class ProductVariantServiceImpl implements ProductVariantService {
         for (VariantRequest request : variantRequests) {
             Color color = findColorById(request.getColorId());
             Size size = findSizeById(request.getSizeId());
-            FileEntity image = findFileById(request.getImageId());
 
             ProductVariant variant = ProductVariant.builder()
                     .productId(productId)
                     .colorId(color.getId())
                     .sizeId(size.getId())
-                    .imageId(image.getId())
                     .price(request.getPrice())
                     .quantity(request.getQuantity())
                     .isAvailable(true)
@@ -118,6 +141,7 @@ public class ProductVariantServiceImpl implements ProductVariantService {
 
         return new HashSet<>(productVariantRepository.saveAll(variantSet));
     }
+
 
 
     @Override
@@ -136,9 +160,9 @@ public class ProductVariantServiceImpl implements ProductVariantService {
                 .orElseThrow(() -> new AppException(ErrorCode.SIZE_NOT_EXISTED));
     }
 
-    private FileEntity findFileById(Long id) {
-        return fileRepository.findById(id)
-                .orElseThrow(() -> new AppException(ErrorCode.FILE_NOT_EXISTED));
+    private Product findProductById(Long id) {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
     }
 
 }

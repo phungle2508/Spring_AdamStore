@@ -36,16 +36,13 @@ CREATE TABLE product_variants (
          product_id BIGINT,
          color_id BIGINT,
          size_id BIGINT,
-         image_id BIGINT,
 
          CONSTRAINT fk_product_variant_product FOREIGN KEY (product_id) REFERENCES products(id),
          CONSTRAINT fk_product_variant_color FOREIGN KEY (color_id) REFERENCES colors(id),
-         CONSTRAINT fk_product_variant_size FOREIGN KEY (size_id) REFERENCES sizes(id),
-         CONSTRAINT fk_product_variant_image FOREIGN KEY (image_id) REFERENCES files(id)
+         CONSTRAINT fk_product_variant_size FOREIGN KEY (size_id) REFERENCES sizes(id)
 );
 
 -- Index
 CREATE INDEX idx_variant_product_id ON product_variants (product_id);
 CREATE INDEX idx_variant_color_id ON product_variants (color_id);
 CREATE INDEX idx_variant_size_id ON product_variants (size_id);
-CREATE INDEX idx_variant_image_id ON product_variants (image_id);
