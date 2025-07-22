@@ -83,7 +83,8 @@ public class UserServiceImpl implements UserService {
 
             List<UserHasRole> userRoles = roleSet.stream().map(role -> UserHasRole.builder()
                     .id(new UserHasRoleId(user.getId(), role.getId()))
-                    .build())
+                            .state(ACTIVE)
+                            .build())
                     .collect(Collectors.toList());
 
             userHasRoleRepository.saveAll(userRoles);

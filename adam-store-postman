@@ -96,7 +96,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"email\": \"lean270804@gmail.com\",\r\n  \"verificationCode\": \"440271\"\r\n}",
+									"raw": "{\r\n  \"email\": \"lean270804@gmail.com\",\r\n  \"verificationCode\": \"187472\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1324,7 +1324,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{baseUrl}}/adamstore/v1/private/provinces?page=0&size=60&sort",
+									"raw": "{{baseUrl}}/adamstore/v1/private/provinces?page=0&size=100&sort",
 									"host": [
 										"{{baseUrl}}"
 									],
@@ -1341,7 +1341,7 @@
 										},
 										{
 											"key": "size",
-											"value": "60"
+											"value": "100"
 										},
 										{
 											"key": "sort",
@@ -1393,7 +1393,7 @@
 									"variable": [
 										{
 											"key": "provinceId",
-											"value": "269"
+											"value": "201"
 										}
 									]
 								}
@@ -2062,7 +2062,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Sơ Mi\",\r\n  \"description\": \"Áo Sơ Mi Nam\"\r\n}",
+							"raw": "{\r\n  \"name\": \"Áo Sơ Mi\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2165,7 +2165,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Sơ Mi\",\r\n  \"description\": \"Áo Sơ Mi Nam\"\r\n}",
+							"raw": "{\r\n  \"name\": \"Quần Bò\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2187,7 +2187,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "1"
+									"value": "5"
 								}
 							]
 						}
@@ -2447,7 +2447,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Áo Sơ Mi Nam Ngắn Tay Kẻ Caro\",\r\n  \"description\": \"Áo sơ mi vải flannel cao cấp, phong cách Hàn Quốc\",\r\n  \"categoryId\": 1,\r\n  \"variants\": [\r\n    { \"colorId\": 1, \"sizeId\": 1, \"imageId\": 1, \"price\": 289000, \"quantity\": 100 },\r\n    { \"colorId\": 1, \"sizeId\": 2, \"imageId\": 1, \"price\": 289000, \"quantity\": 100 },\r\n    { \"colorId\": 1, \"sizeId\": 3, \"imageId\": 1, \"price\": 289000, \"quantity\": 100 },\r\n    { \"colorId\": 2, \"sizeId\": 1, \"imageId\": 2, \"price\": 279000, \"quantity\": 100 },\r\n    { \"colorId\": 2, \"sizeId\": 2, \"imageId\": 2, \"price\": 279000, \"quantity\": 100 },\r\n    { \"colorId\": 2, \"sizeId\": 3, \"imageId\": 2, \"price\": 279000, \"quantity\": 100 },\r\n    { \"colorId\": 3, \"sizeId\": 1, \"imageId\": 3, \"price\": 299000, \"quantity\": 100 },\r\n    { \"colorId\": 3, \"sizeId\": 2, \"imageId\": 3, \"price\": 299000, \"quantity\": 100 },\r\n    { \"colorId\": 3, \"sizeId\": 3, \"imageId\": 3, \"price\": 299000, \"quantity\": 100 }\r\n  ]\r\n}\r\n",
+							"raw": "{\r\n  \"name\": \"ÁO SƠ MI DENIM DÁNG DÀI\",\r\n  \"description\": \"Áo sơ mi denim dáng dài, phong cách cổ điển, phù hợp cả nam và nữ. Chất liệu vải dày dặn, thoáng khí, dễ phối đồ.\",\r\n  \"categoryId\": 1,\r\n  \"imageIds\": [1, 2, 3, 4],\r\n  \"variants\": [\r\n    { \"colorId\": 1, \"sizeId\": 1, \"price\": 300000, \"quantity\": 100 },\r\n    { \"colorId\": 1, \"sizeId\": 2, \"price\": 300000, \"quantity\": 100 },\r\n    { \"colorId\": 1, \"sizeId\": 3, \"price\": 300000, \"quantity\": 100 },\r\n    { \"colorId\": 1, \"sizeId\": 4, \"price\": 300000, \"quantity\": 100 },\r\n    { \"colorId\": 1, \"sizeId\": 5, \"price\": 300000, \"quantity\": 100 },\r\n\r\n    { \"colorId\": 2, \"sizeId\": 1, \"price\": 300000, \"quantity\": 100 },\r\n    { \"colorId\": 2, \"sizeId\": 2, \"price\": 300000, \"quantity\": 100 },\r\n    { \"colorId\": 2, \"sizeId\": 3, \"price\": 300000, \"quantity\": 100 },\r\n    { \"colorId\": 2, \"sizeId\": 4, \"price\": 300000, \"quantity\": 100 },\r\n    { \"colorId\": 2, \"sizeId\": 5, \"price\": 300000, \"quantity\": 100 },\r\n\r\n    { \"colorId\": 4, \"sizeId\": 1, \"price\": 300000, \"quantity\": 100 },\r\n    { \"colorId\": 4, \"sizeId\": 2, \"price\": 300000, \"quantity\": 100 },\r\n    { \"colorId\": 4, \"sizeId\": 3, \"price\": 300000, \"quantity\": 100 },\r\n    { \"colorId\": 4, \"sizeId\": 4, \"price\": 300000, \"quantity\": 100 },\r\n    { \"colorId\": 4, \"sizeId\": 5, \"price\": 300000, \"quantity\": 100 }\r\n  ]\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2486,7 +2486,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "4"
+									"value": "1"
 								}
 							]
 						}
@@ -2583,7 +2583,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Áo Sơ Mi Nam Ngắn Tay Kẻ Caro\",\r\n  \"description\": \"Áo sơ mi vải flannel cao cấp, phong cách Hàn Quốc\",\r\n  \"categoryId\": 1,\r\n  \"variants\": [\r\n    { \"colorId\": 1, \"sizeId\": 1, \"imageId\": 1, \"price\": 289000, \"quantity\": 100 },\r\n    { \"colorId\": 1, \"sizeId\": 2, \"imageId\": 1, \"price\": 289000, \"quantity\": 100 },\r\n    { \"colorId\": 1, \"sizeId\": 3, \"imageId\": 1, \"price\": 289000, \"quantity\": 100 },\r\n    { \"colorId\": 2, \"sizeId\": 1, \"imageId\": 2, \"price\": 279000, \"quantity\": 100 },\r\n    { \"colorId\": 2, \"sizeId\": 2, \"imageId\": 2, \"price\": 279000, \"quantity\": 100 },\r\n    { \"colorId\": 2, \"sizeId\": 3, \"imageId\": 2, \"price\": 279000, \"quantity\": 100 },\r\n    { \"colorId\": 3, \"sizeId\": 1, \"imageId\": 3, \"price\": 299000, \"quantity\": 100 },\r\n    { \"colorId\": 3, \"sizeId\": 2, \"imageId\": 3, \"price\": 299000, \"quantity\": 100 },\r\n    { \"colorId\": 3, \"sizeId\": 3, \"imageId\": 3, \"price\": 299000, \"quantity\": 100 }\r\n  ]\r\n}\r\n",
+							"raw": "{\r\n    \"name\": \"ÁO PHÔNG HỌA TIẾT NALGENE ®\",\r\n    \"description\": \"Áo phông unisex in họa tiết thương hiệu Nalgene, chất liệu cotton thoáng mát\",\r\n    \"categoryId\": 1,\r\n    \"imageIds\": [1, 2, 3]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2823,6 +2823,30 @@
 			"name": "module product-variant",
 			"item": [
 				{
+					"name": "Create New Product Variant",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"productId\": 1,\r\n  \"colorId\": 2,\r\n  \"sizeId\": 3,\r\n  \"price\": 299000,\r\n  \"quantity\": 10\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/adamstore/v1/admin/product-variants"
+					},
+					"response": []
+				},
+				{
 					"name": "Fetch product variant by product, color, size",
 					"request": {
 						"auth": {
@@ -2867,7 +2891,7 @@
 					"response": []
 				},
 				{
-					"name": "Update price quantity of Product-variant",
+					"name": "Update Product Variant",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -3050,7 +3074,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"quantity\": 1\r\n}",
+							"raw": "{\r\n  \"colorId\": 1,\r\n  \"sizeId\": 1,\r\n  \"quantity\": 2\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3072,7 +3096,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "1"
 								}
 							]
 						}
