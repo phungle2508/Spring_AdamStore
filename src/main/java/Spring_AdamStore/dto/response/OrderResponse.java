@@ -24,6 +24,7 @@ public class OrderResponse {
 
     private Long id;
     private LocalDate orderDate;
+    private Double discountAmount;
     private Double totalPrice;
     private OrderStatus orderStatus;
 

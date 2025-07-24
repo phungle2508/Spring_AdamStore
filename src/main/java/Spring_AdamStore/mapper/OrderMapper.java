@@ -14,6 +14,7 @@ public interface OrderMapper {
     @Mapping(target = "address", expression = "java(context.getAddressResponse(order.getAddressId()))")
     @Mapping(target = "customerName", expression = "java(context.getUserName(order.getUserId()))")
     @Mapping(target = "orderItems", expression = "java(context.getListOrderItemResponse(order.getId()))")
+    @Mapping(target = "discountAmount", expression = "java(context.getDiscountAmount(order.getUserId(), order.getId()))")
     OrderResponse toOrderResponse(Order order, @Context OrderMappingHelper context);
 
     List<OrderResponse> toOrderResponseList(List<Order> orderList, @Context OrderMappingHelper context);
