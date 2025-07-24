@@ -44,7 +44,7 @@ public class ReviewServiceImpl implements ReviewService {
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
         review.setProductId(product.getId());
 
-        return reviewMapper.toReviewResponse(reviewRepository.save(review));
+        return reviewMapper.toReviewResponse(reviewRepository.save(review), reviewMappingHelper);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         reviewMapper.update(review, request, reviewMappingHelper);
 
-        return reviewMapper.toReviewResponse(reviewRepository.save(review));
+        return reviewMapper.toReviewResponse(reviewRepository.save(review), reviewMappingHelper);
     }
 
     @Override

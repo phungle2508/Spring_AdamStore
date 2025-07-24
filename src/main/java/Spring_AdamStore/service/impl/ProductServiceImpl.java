@@ -51,6 +51,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductVariantRepository productVariantRepository;
     private final ProductVariantMapper productVariantMapper;
     private final FileRepository fileRepository;
+    private final ReviewMappingHelper reviewMappingHelper;
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -285,7 +286,7 @@ public class ProductServiceImpl implements ProductService {
                 .size(reviewPage.getSize())
                 .totalPages(reviewPage.getTotalPages())
                 .totalItems(reviewPage.getTotalElements())
-                .items(reviewMapper.toReviewResponseList(reviewPage.getContent()))
+                .items(reviewMapper.toReviewResponseList(reviewPage.getContent(), reviewMappingHelper))
                 .build();
     }
 
