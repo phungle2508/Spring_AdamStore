@@ -3713,6 +3713,44 @@
 			"name": "module statistics",
 			"item": [
 				{
+					"name": "Get Order Revenue Summary",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/adamstore/v1/admin/statistics/orders/summary?startDate=2025-02-20&endDate=2025-08-30",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"adamstore",
+								"v1",
+								"admin",
+								"statistics",
+								"orders",
+								"summary"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "2025-02-20"
+								},
+								{
+									"key": "endDate",
+									"value": "2025-08-30"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Fetched monthly revenue data",
 					"request": {
 						"auth": {
@@ -3724,7 +3762,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/adamstore/v1/admin/statistics/revenues/monthly?startDate=2025-02-20&endDate=2025-07-10",
+							"raw": "{{baseUrl}}/adamstore/v1/admin/statistics/revenues/monthly?startDate=2025-02-20&endDate=2025-08-30",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -3743,7 +3781,7 @@
 								},
 								{
 									"key": "endDate",
-									"value": "2025-07-10"
+									"value": "2025-08-30"
 								}
 							]
 						},
@@ -3763,7 +3801,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/adamstore/v1/admin/statistics/products/top-selling?startDate=2025-02-20&endDate=2025-07-10",
+							"raw": "{{baseUrl}}/adamstore/v1/admin/statistics/products/top-selling?startDate=2025-02-20&endDate=2025-08-30",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -3782,7 +3820,7 @@
 								},
 								{
 									"key": "endDate",
-									"value": "2025-07-10"
+									"value": "2025-08-30"
 								}
 							]
 						}
@@ -3801,7 +3839,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/adamstore/v1/admin/statistics/orders/revenue-by-date/export?startDate=2025-02-20&endDate=2025-07-10",
+							"raw": "{{baseUrl}}/adamstore/v1/admin/statistics/orders/revenue-by-date/export?startDate=2025-02-20&endDate=2025-08-30",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -3821,7 +3859,7 @@
 								},
 								{
 									"key": "endDate",
-									"value": "2025-07-10"
+									"value": "2025-08-30"
 								}
 							]
 						},

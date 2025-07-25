@@ -25,8 +25,25 @@ public class StatisticsController {
     private final StatisticsService statisticsService;
 
 
+    @Operation(summary = "Get total orders and revenue",
+            description = "API lấy tổng số lượng đơn hàng và tổng doanh thu trong khoảng startDate đến endDate (yyyy-MM-dd)")
+    @GetMapping("/orders/summary")
+    public ApiResponse<OrderStatsDTO> getOrderRevenueSummary(
+            @RequestParam @Parameter(example = "2025-02-20") LocalDate startDate,
+            @RequestParam @Parameter(example = "2025-05-10") LocalDate endDate) {
+        log.info("Received request to get order revenue summary");
+
+        return ApiResponse.<OrderStatsDTO>builder()
+                .code(HttpStatus.OK.value())
+                .message("Fetched order revenue summary")
+                .result(statisticsService.getOrderRevenueSummary(startDate, endDate))
+                .build();
+    }
+
+
+
     @Operation(summary = "Fetched monthly revenue data",
-    description = "API này dùng để ấy doanh thu theo tháng trong khoảng (startDate (yyyy-MM-dd) đến endDate (yyyy-MM-dd))")
+    description = "API để ấy doanh thu theo tháng trong khoảng (startDate (yyyy-MM-dd) đến endDate (yyyy-MM-dd))")
     @GetMapping("/revenues/monthly")
     public ApiResponse<List<RevenueByMonthDTO>> getMonthlyRevenue(@RequestParam @Parameter(example = "2025-02-20") LocalDate startDate,
                                                        @RequestParam @Parameter(example = "2025-05-10") LocalDate endDate){
@@ -41,7 +58,7 @@ public class StatisticsController {
 
 
     @Operation(summary = "Fetched top selling products",
-            description = "API này dùng để lấy các sản phẩm bán chạy (yyyy-MM-dd)")
+            description = "API để lấy các sản phẩm bán chạy (yyyy-MM-dd)")
     @GetMapping("/products/top-selling")
     public ApiResponse<List<TopSellingDTO>> getTopSellingProducts(@RequestParam("startDate") @Parameter(example = "2025-02-20") LocalDate startDate,
                                                                   @RequestParam("endDate") @Parameter(example = "2025-05-10") LocalDate endDate) {
@@ -57,7 +74,7 @@ public class StatisticsController {
 
 
     @Operation(summary = "Export order revenue report to Excel",
-    description = "API này dùng để xuất dữ liệu doanh thu của các đơn hàng ra file Excel (yyyy-MM-dd)")
+    description = "API để xuất dữ liệu doanh thu của các đơn hàng ra file Excel (yyyy-MM-dd)")
     @GetMapping("/orders/revenue-by-date/export")
     public void exportOrderRevenueToExcel(@RequestParam @Parameter(example = "2025-02-20") LocalDate startDate,
                                           @RequestParam @Parameter(example = "2025-05-10") LocalDate endDate,
