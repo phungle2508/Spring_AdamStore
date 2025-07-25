@@ -36,6 +36,21 @@ public class StatisticsServiceImpl implements StatisticsService {
     private final OrderMappingHelper orderMappingHelper;
 
     @Override
+    public OrderStatsDTO getOrderRevenueSummary(LocalDate startDate, LocalDate endDate) {
+        log.info("Calculating total orders and revenue from {} to {}", startDate, endDate);
+
+        List<Order> orders = orderRepository.findAllByOrderDateBetweenAndOrderStatus(
+                startDate, endDate, OrderStatus.DELIVERED);
+
+        long totalOrders = orders.size();
+        double totalRevenue = orders.stream()
+                .mapToDouble(Order::getTotalPrice)
+                .sum();
+
+        return new OrderStatsDTO(totalOrders, totalRevenue);
+    }
+
+    @Override
     public List<RevenueByMonthDTO> getRevenueByMonth(LocalDate startDate, LocalDate endDate) {
         log.info("Getting monthly revenue from {} to {}", startDate, endDate);
 
