@@ -29,8 +29,8 @@ public class StatisticsController {
             description = "API lấy tổng số lượng đơn hàng và tổng doanh thu trong khoảng startDate đến endDate (yyyy-MM-dd)")
     @GetMapping("/orders/summary")
     public ApiResponse<OrderStatsDTO> getOrderRevenueSummary(
-            @RequestParam @Parameter(example = "2025-02-20") LocalDate startDate,
-            @RequestParam @Parameter(example = "2025-05-10") LocalDate endDate) {
+            @RequestParam @Parameter(example = "2025-06-20") LocalDate startDate,
+            @RequestParam @Parameter(example = "2025-08-10") LocalDate endDate) {
         log.info("Received request to get order revenue summary");
 
         return ApiResponse.<OrderStatsDTO>builder()

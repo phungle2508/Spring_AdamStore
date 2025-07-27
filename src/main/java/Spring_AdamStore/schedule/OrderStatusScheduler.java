@@ -10,6 +10,7 @@ import Spring_AdamStore.repository.sql.PaymentHistoryRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +29,16 @@ public class OrderStatusScheduler {
     private final PaymentHistoryRepository paymentHistoryRepository;
 
 
+    @Value("${order.status.processing-to-shipped-days:1}")
+    private int processingToShippedDays;
+
+    @Value("${order.status.shipped-to-delivered-days:3}")
+    private int shippedToDeliveredDays;
+
+    @Value("${order.status.pending-to-cancel-days:1}")
+    private int pendingToCancelDays;
+
+
     @Scheduled(cron = "0 0 0 * * ?")
     @Transactional
     public void updateOrderStatusProcessingToShipped() {
@@ -36,7 +47,7 @@ public class OrderStatusScheduler {
         LocalDate currentDate = LocalDate.now();
 
         List<Order> orderList = orderRepository.findByOrderStatusAndOrderDateBefore(OrderStatus.PROCESSING,
-                currentDate.minusDays(1));
+                currentDate.minusDays(processingToShippedDays));
 
         orderList.forEach(order ->  order.setOrderStatus(OrderStatus.SHIPPED));
         orderRepository.saveAll(orderList);
@@ -50,7 +61,7 @@ public class OrderStatusScheduler {
         LocalDate currentDate = LocalDate.now();
 
         List<Order> orderList = orderRepository.findByOrderStatusAndOrderDateBefore(OrderStatus.SHIPPED,
-                currentDate.minusDays(3));
+                currentDate.minusDays(shippedToDeliveredDays));
 
         orderList.forEach(order -> {
             order.setOrderStatus(OrderStatus.DELIVERED);
@@ -87,7 +98,7 @@ public class OrderStatusScheduler {
         LocalDate currentDate = LocalDate.now();
 
         List<Order> orderList = orderRepository.findByOrderStatusAndOrderDateBefore(PENDING,
-                currentDate.minusDays(1));
+                currentDate.minusDays(pendingToCancelDays));
 
         orderList.forEach(order ->  order.setOrderStatus(OrderStatus.CANCELLED));
         orderRepository.saveAll(orderList);
