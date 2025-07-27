@@ -3,6 +3,7 @@ server:
   servlet:
     context-path: /adamstore
 
+
 spring:
   application:
     name: Spring_AdamStore
@@ -24,6 +25,7 @@ app:
 
   default-avatar-url: https://yourdomain.com/default-avatar.png
 
+
 auth:
   register:
     verification-code:
@@ -33,6 +35,7 @@ auth:
     verification-code:
       expiration-minutes: 10
 
+
 cors:
   allowed-origins:
     - http://localhost:3000
@@ -40,4 +43,11 @@ cors:
     - http://localhost:3001
     - http://localhost:5174
     - ${EXTRA_ORIGIN:https://default.example.com}
+
+
+order:
+  status:
+    processing-to-shipped-days: 1
+    shipped-to-delivered-days: 3
+    pending-to-cancel-days: 1
 
