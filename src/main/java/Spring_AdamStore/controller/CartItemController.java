@@ -9,6 +9,7 @@ import Spring_AdamStore.service.CartItemService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
@@ -17,6 +18,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j(topic = "CART-ITEM-CONTROLLER")
 @RequiredArgsConstructor
@@ -74,6 +77,19 @@ public class CartItemController {
         return ApiResponse.<Void>builder()
                 .code(HttpStatus.NO_CONTENT.value())
                 .message("Delete CartItem By Id")
+                .result(null)
+                .build();
+    }
+
+    @Operation(description = "API xoá nhiều cart item theo danh sách ID")
+    @DeleteMapping("/private/cart-items")
+    public ApiResponse<Void> deleteCartItems(@RequestBody @NotEmpty(message = "Danh sách ID không được trống") List<Long> ids) {
+        log.info("Received delete multiple cart items request: ids={}", ids);
+
+        cartItemService.deleteCartItems(ids);
+        return ApiResponse.<Void>builder()
+                .code(HttpStatus.NO_CONTENT.value())
+                .message("Delete CartItems By Id List")
                 .result(null)
                 .build();
     }

@@ -3135,6 +3135,30 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Delete List Cart Item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    5,\r\n    6,\r\n    7\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/adamstore/v1/private/cart-items"
+					},
+					"response": []
 				}
 			]
 		},
