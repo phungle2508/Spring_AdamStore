@@ -19,9 +19,9 @@ import Spring_AdamStore.service.CurrentUserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.bouncycastle.asn1.x500.style.RFC4519Style;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -108,6 +108,22 @@ public class CartItemServiceImpl implements CartItemService {
 
         cartItemRepository.delete(cartItem);
     }
+
+
+    @Override
+    @Transactional
+    public void deleteCartItems(List<Long> ids) {
+        log.info("Deleting cart items with ids: {}", ids);
+
+        List<CartItem> cartItems = cartItemRepository.findAllById(ids);
+
+        if (cartItems.size() != ids.size()) {
+            throw new AppException(ErrorCode.CART_ITEM_NOT_EXISTED);
+        }
+
+        cartItemRepository.deleteAll(cartItems);
+    }
+
 
     private CartItem findCartItemById(Long id) {
         return cartItemRepository.findById(id)
