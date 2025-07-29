@@ -23,7 +23,7 @@ public interface OrderService {
 
     OrderResponse cancelOrder(Long orderId);
 
-    PageResponse<OrderResponse> getOrdersForUser(Pageable pageable, OrderStatus orderStatus);
+    List<OrderResponse> getOrdersForUser(OrderStatus orderStatus);
 
     PageResponse<OrderResponse> searchOrdersForAdmin(Pageable pageable, LocalDate startDate, LocalDate endDate, OrderStatus orderStatus);
 }

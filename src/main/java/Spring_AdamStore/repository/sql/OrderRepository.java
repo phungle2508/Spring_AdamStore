@@ -16,9 +16,9 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query("SELECT o FROM Order o WHERE o.userId = :userId AND o.orderStatus = :orderStatus")
-    Page<Order> findByUserIdAndOrderStatus(Pageable pageable,
-                                           @Param("userId") Long userId,
+    List<Order> findByUserIdAndOrderStatus(@Param("userId") Long userId,
                                            @Param("orderStatus") OrderStatus orderStatus);
+
 
     @Query("SELECT o FROM Order o " +
             "WHERE o.orderDate >= :startDate AND o.orderDate <= :endDate " +
