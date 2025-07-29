@@ -169,20 +169,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public PageResponse<OrderResponse> getOrdersForUser(Pageable pageable, OrderStatus orderStatus) {
+    public List<OrderResponse> getOrdersForUser(OrderStatus orderStatus) {
         log.info("Fetching orders for current user, with status: {}",orderStatus);
 
         User user = currentUserService.getCurrentUser();
 
-        Page<Order> page = orderRepository.findByUserIdAndOrderStatus(pageable, user.getId(), orderStatus);
+        List<Order> orderList = orderRepository.findByUserIdAndOrderStatus(user.getId(), orderStatus);
 
-        return PageResponse.<OrderResponse>builder()
-                .page(page.getNumber())
-                .size(page.getSize())
-                .totalPages(page.getTotalPages())
-                .totalItems(page.getTotalElements())
-                .items(orderMapper.toOrderResponseList(page.getContent(), orderMappingHelper))
-                .build();
+        return orderMapper.toOrderResponseList(orderList, orderMappingHelper);
     }
 
     @Override

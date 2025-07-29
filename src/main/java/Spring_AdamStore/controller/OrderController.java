@@ -71,14 +71,12 @@ public class OrderController {
     @Operation(summary = "Get Orders for Current User",
             description = "Lấy danh sách đơn hàng của người dùng hiện tại, lọc theo trạng thái")
     @GetMapping("/private/user/orders")
-    public ApiResponse<PageResponse<OrderResponse>> getOrdersForUser(
-            @ParameterObject @PageableDefault Pageable pageable,
-            @RequestParam OrderStatus orderStatus) {
+    public ApiResponse<List<OrderResponse>> getOrdersForUser(@RequestParam OrderStatus orderStatus) {
         log.info("Received request to get orders for current user. Status = {}", orderStatus);
 
-        return ApiResponse.<PageResponse<OrderResponse>>builder()
+        return ApiResponse.<List<OrderResponse>>builder()
                 .code(HttpStatus.OK.value())
-                .result(orderService.getOrdersForUser(pageable, orderStatus))
+                .result(orderService.getOrdersForUser(orderStatus))
                 .message("Orders for Current User")
                 .build();
     }
