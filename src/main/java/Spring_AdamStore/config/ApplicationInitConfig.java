@@ -41,11 +41,11 @@ public class ApplicationInitConfig {
                             initService.initRoles();
                         }
 
-                        if (userRepository.countByEmail(appProperties.getAdmin().getEmail()) == 0) {
-                            log.info("Creating default admin account...");
-
-                            initService.initAdmin();
-                        }
+//                        if (userRepository.countByEmail(appProperties.getAdmin().getEmail()) == 0) {
+//                            log.info("Creating default admin account...");
+//
+//                            initService.initAdmin();
+//                        }
             });
 
 
