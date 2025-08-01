@@ -38,7 +38,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static Spring_AdamStore.constants.EntityStatus.ACTIVE;
-import static Spring_AdamStore.constants.FileType.AVATAR;
 
 @Service
 @Slf4j(topic = "USER-SERVICE")
@@ -182,7 +181,7 @@ public class UserServiceImpl implements UserService {
 
         User user = currentUserService.getCurrentUser();
 
-        FileResponse fileResponse = fileService.uploadFile(file, AVATAR);
+        FileResponse fileResponse = fileService.uploadFile(file);
 
         user.setAvatarUrl(fileResponse.getImageUrl());
 

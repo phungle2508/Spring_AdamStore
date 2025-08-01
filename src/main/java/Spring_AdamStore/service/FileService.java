@@ -1,6 +1,5 @@
 package Spring_AdamStore.service;
 
-import Spring_AdamStore.constants.FileType;
 import Spring_AdamStore.dto.response.FileResponse;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.exception.FileException;
@@ -12,11 +11,11 @@ import java.util.List;
 
 public interface FileService {
 
-    List<FileResponse> uploadListFile(List<MultipartFile> files, FileType fileType) throws FileException, IOException;
+    List<FileResponse> uploadListFile(List<MultipartFile> files) throws FileException, IOException;
 
-    FileResponse uploadFile(MultipartFile file, FileType fileType) throws FileException, IOException;
+    FileResponse uploadFile(MultipartFile file) throws FileException, IOException;
 
     void deleteFile(Long id) throws FileException, IOException;
 
-    PageResponse<FileResponse> getAllFiles(Pageable pageable, FileType fileType);
+    PageResponse<FileResponse> getAllFiles(Pageable pageable);
 }

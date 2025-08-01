@@ -25,6 +25,11 @@ app:
 
   default-avatar-url: https://yourdomain.com/default-avatar.png
 
+  batch-size:
+    district: 1000
+    ward: 300
+    province: 30
+
 
 auth:
   register:
@@ -51,3 +56,8 @@ order:
     shipped-to-delivered-days: 3
     pending-to-cancel-days: 1
 
+location:
+  data:
+    province-path: classpath:data/provinces.csv
+    district-path: classpath:data/districts.csv
+    ward-path: classpath:data/wards.csv

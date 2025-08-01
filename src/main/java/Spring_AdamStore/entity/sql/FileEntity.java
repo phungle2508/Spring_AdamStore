@@ -1,6 +1,5 @@
 package Spring_AdamStore.entity.sql;
 
-import Spring_AdamStore.constants.FileType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -27,9 +26,6 @@ public class FileEntity {
     private String publicId;
     private String fileName;
     private String imageUrl;
-
-    @Enumerated(EnumType.STRING)
-    private FileType fileType;
 
     @CreatedBy
     private String createdBy;

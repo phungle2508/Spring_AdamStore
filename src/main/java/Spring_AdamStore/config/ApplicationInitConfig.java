@@ -61,7 +61,9 @@ public class ApplicationInitConfig {
                 if(provinceRepository.count() == 0){
                     log.info("Initializing Provinces and Districts...");
 
-                    initService.initProvinces();
+                    initService.importProvincesFromCsv();
+                    initService.importDistrictsFromCsv();
+                    initService.importWardFromCsv();
                 }
             });
 
