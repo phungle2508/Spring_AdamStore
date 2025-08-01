@@ -1957,7 +1957,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"rating\": 5,\r\n    \"comment\": \"sản pham dep\",\r\n    \"imageUrls\": [\r\n        \"aaaaa.png\",\r\n        \"bbb.png\"\r\n    ],\r\n    \"productId\": 2\r\n}",
+							"raw": "{\r\n    \"rating\": 4.7,\r\n    \"comment\": \"Sản phẩm tốt, vải mịn, mặc rất thích\",\r\n    \"imageUrls\": [\r\n        \"http://res.cloudinary.com/dz5wejuuf/image/upload/v1754042721/adam-store/images/jyb7tdsme6x9xyk2ch5k.webp\",\r\n        \"http://res.cloudinary.com/dz5wejuuf/image/upload/v1754042721/adam-store/images/jyb7tdsme6x9xyk2ch5k.webp\"\r\n    ],\r\n    \"productId\": 6\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2062,7 +2062,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Áo Sơ Mi\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Áo Polo\",\r\n    \"imageUrl\": \"http://res.cloudinary.com/dz5wejuuf/image/upload/v1754039466/adam-store/images/ggt5qjl2dwof2dedravn.jpg\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2165,7 +2165,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Quần Bò\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Áo Sơ Mi\",\r\n    \"imageUrl\": \"http://res.cloudinary.com/dz5wejuuf/image/upload/v1753800639/adam-store/images/oohugxio6rhnk5j6sufk.jpg\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2362,7 +2362,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/adamstore/v1/admin/files/all?page=0&size=10&sort&fileType=PRODUCT_IMAGE",
+							"raw": "{{baseUrl}}/adamstore/v1/admin/files/all?page=0&size=10&sort",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -2385,10 +2385,6 @@
 								{
 									"key": "sort",
 									"value": null
-								},
-								{
-									"key": "fileType",
-									"value": "PRODUCT_IMAGE"
 								}
 							]
 						}
@@ -2447,7 +2443,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"ÁO SƠ MI DENIM DÁNG DÀI\",\r\n  \"description\": \"Áo sơ mi denim dáng dài, phong cách cổ điển, phù hợp cả nam và nữ. Chất liệu vải dày dặn, thoáng khí, dễ phối đồ.\",\r\n  \"categoryId\": 1,\r\n  \"imageIds\": [1, 2, 3, 4],\r\n  \"variants\": [\r\n    { \"colorId\": 1, \"sizeId\": 1, \"price\": 300000, \"quantity\": 100 },\r\n    { \"colorId\": 1, \"sizeId\": 2, \"price\": 300000, \"quantity\": 100 },\r\n    { \"colorId\": 1, \"sizeId\": 3, \"price\": 300000, \"quantity\": 100 },\r\n    { \"colorId\": 1, \"sizeId\": 4, \"price\": 300000, \"quantity\": 100 },\r\n    { \"colorId\": 1, \"sizeId\": 5, \"price\": 300000, \"quantity\": 100 },\r\n\r\n    { \"colorId\": 2, \"sizeId\": 1, \"price\": 300000, \"quantity\": 100 },\r\n    { \"colorId\": 2, \"sizeId\": 2, \"price\": 300000, \"quantity\": 100 },\r\n    { \"colorId\": 2, \"sizeId\": 3, \"price\": 300000, \"quantity\": 100 },\r\n    { \"colorId\": 2, \"sizeId\": 4, \"price\": 300000, \"quantity\": 100 },\r\n    { \"colorId\": 2, \"sizeId\": 5, \"price\": 300000, \"quantity\": 100 },\r\n\r\n    { \"colorId\": 4, \"sizeId\": 1, \"price\": 300000, \"quantity\": 100 },\r\n    { \"colorId\": 4, \"sizeId\": 2, \"price\": 300000, \"quantity\": 100 },\r\n    { \"colorId\": 4, \"sizeId\": 3, \"price\": 300000, \"quantity\": 100 },\r\n    { \"colorId\": 4, \"sizeId\": 4, \"price\": 300000, \"quantity\": 100 },\r\n    { \"colorId\": 4, \"sizeId\": 5, \"price\": 300000, \"quantity\": 100 }\r\n  ]\r\n}\r\n",
+							"raw": "{\r\n  \"name\": \"QUẦN SHORT BERMUDA VẢI COTTON BẠC MÀU\",\r\n  \"description\": \"Quần short Bermuda vải cotton bạc màu, thoáng mát, dễ phối đồ, phù hợp đi chơi, dạo phố.\",\r\n  \"categoryId\": 1,\r\n  \"imageIds\": [49, 50, 51, 52],\r\n  \"variants\": [\r\n    { \"colorId\": 1, \"sizeId\": 1, \"price\": 560000, \"quantity\": 100 },\r\n    { \"colorId\": 1, \"sizeId\": 2, \"price\": 560000, \"quantity\": 100 },\r\n    { \"colorId\": 1, \"sizeId\": 3, \"price\": 560000, \"quantity\": 100 },\r\n    { \"colorId\": 1, \"sizeId\": 4, \"price\": 560000, \"quantity\": 100 },\r\n    { \"colorId\": 1, \"sizeId\": 5, \"price\": 560000, \"quantity\": 100 },\r\n    { \"colorId\": 1, \"sizeId\": 6, \"price\": 560000, \"quantity\": 100 },\r\n\r\n    { \"colorId\": 2, \"sizeId\": 1, \"price\": 560000, \"quantity\": 100 },\r\n    { \"colorId\": 2, \"sizeId\": 2, \"price\": 560000, \"quantity\": 100 },\r\n    { \"colorId\": 2, \"sizeId\": 3, \"price\": 560000, \"quantity\": 100 },\r\n    { \"colorId\": 2, \"sizeId\": 4, \"price\": 560000, \"quantity\": 100 },\r\n    { \"colorId\": 2, \"sizeId\": 5, \"price\": 560000, \"quantity\": 100 },\r\n    { \"colorId\": 2, \"sizeId\": 6, \"price\": 560000, \"quantity\": 100 },\r\n\r\n    { \"colorId\": 4, \"sizeId\": 1, \"price\": 560000, \"quantity\": 100 },\r\n    { \"colorId\": 4, \"sizeId\": 2, \"price\": 560000, \"quantity\": 100 },\r\n    { \"colorId\": 4, \"sizeId\": 3, \"price\": 560000, \"quantity\": 100 },\r\n    { \"colorId\": 4, \"sizeId\": 4, \"price\": 560000, \"quantity\": 100 },\r\n    { \"colorId\": 4, \"sizeId\": 5, \"price\": 560000, \"quantity\": 100 },\r\n    { \"colorId\": 4, \"sizeId\": 6, \"price\": 560000, \"quantity\": 100 }\r\n  ]\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3308,7 +3304,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/adamstore/v1/private/user/orders?page=0&size=10&sort&orderStatus=PROCESSING",
+							"raw": "{{baseUrl}}/adamstore/v1/private/user/orders?orderStatus=PROCESSING",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -3321,60 +3317,8 @@
 							],
 							"query": [
 								{
-									"key": "page",
-									"value": "0"
-								},
-								{
-									"key": "size",
-									"value": "10"
-								},
-								{
-									"key": "sort",
-									"value": null
-								},
-								{
 									"key": "orderStatus",
 									"value": "PROCESSING"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Fetch All Orders For Admin",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "{{accessToken}}"
-							}
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/adamstore/v1/admin/orders?page=0&size=10&sort",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"adamstore",
-								"v1",
-								"admin",
-								"orders"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "0"
-								},
-								{
-									"key": "size",
-									"value": "10"
-								},
-								{
-									"key": "sort",
-									"value": null
 								}
 							]
 						}

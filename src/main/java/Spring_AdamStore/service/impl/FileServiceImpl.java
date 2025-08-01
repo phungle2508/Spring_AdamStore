@@ -1,6 +1,5 @@
 package Spring_AdamStore.service.impl;
 
-import Spring_AdamStore.constants.FileType;
 import Spring_AdamStore.dto.response.FileResponse;
 import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.entity.sql.FileEntity;
@@ -42,14 +41,14 @@ public class FileServiceImpl implements FileService {
 
     private static final List<String> IMAGE_TYPES = Arrays.asList("image/jpeg", "image/png", "image/gif", "image/webp");
 
-    public List<FileResponse> uploadListFile(List<MultipartFile> files, FileType fileType) throws FileException, IOException {
+    public List<FileResponse> uploadListFile(List<MultipartFile> files) throws FileException, IOException {
         if (files == null || files.isEmpty()) {
             throw new FileException("File trống. Không thể lưu trữ file");
         }
 
         List<FileResponse> responses = new ArrayList<>();
         for (MultipartFile file : files) {
-            FileResponse saved = uploadFile(file, fileType);
+            FileResponse saved = uploadFile(file);
             responses.add(saved);
         }
 
@@ -58,7 +57,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     @Transactional
-    public FileResponse uploadFile(MultipartFile file, FileType fileType) throws FileException, IOException {
+    public FileResponse uploadFile(MultipartFile file) throws FileException, IOException {
         if (file == null || file.isEmpty()) {
             throw new FileException("File trống. Không thể lưu trữ file");
         }
@@ -71,7 +70,6 @@ public class FileServiceImpl implements FileService {
         FileEntity fileEntity = FileEntity.builder()
                 .publicId(uploadResult.get("public_id").toString())
                 .fileName(file.getOriginalFilename())
-                .fileType(fileType)
                 .imageUrl(uploadResult.get("url").toString())
                 .build();
 
@@ -88,8 +86,8 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public PageResponse<FileResponse> getAllFiles(Pageable pageable, FileType fileType) {
-        Page<FileEntity> productImagePage = fileRepository.findAllByFileType(pageable, fileType);
+    public PageResponse<FileResponse> getAllFiles(Pageable pageable) {
+        Page<FileEntity> productImagePage = fileRepository.findAll(pageable);
 
         return PageResponse.<FileResponse>builder()
                 .page(productImagePage.getNumber())

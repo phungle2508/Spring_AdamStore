@@ -1,6 +1,5 @@
 package Spring_AdamStore.mapper;
 
-import Spring_AdamStore.constants.FileType;
 import Spring_AdamStore.dto.basic.EntityBasic;
 import Spring_AdamStore.dto.basic.ImageBasic;
 import Spring_AdamStore.dto.basic.ProductVariantBasic;
@@ -36,7 +35,7 @@ public class VariantMappingHelper {
                 .map(ProductVariant::getProductId)
                 .orElse(null);
 
-        return fileRepository.findAllByFileTypeAndProductId(FileType.PRODUCT_IMAGE, productId)
+        return fileRepository.findAllByProductId(productId)
                 .stream().map(file -> new ImageBasic(file.getId(), file.getImageUrl()))
                 .findFirst()
                 .orElse(null);

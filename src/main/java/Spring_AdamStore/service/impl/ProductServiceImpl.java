@@ -1,6 +1,5 @@
 package Spring_AdamStore.service.impl;
 
-import Spring_AdamStore.constants.FileType;
 import Spring_AdamStore.dto.request.ProductRequest;
 import Spring_AdamStore.dto.request.ProductUpdateRequest;
 import Spring_AdamStore.dto.response.*;
@@ -301,7 +300,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private void assignImagesToProduct(Long productId, List<Long> imageIds) {
-        List<FileEntity> fileList = fileRepository.findAllByFileTypeAndIdIn(FileType.PRODUCT_IMAGE, imageIds);
+        List<FileEntity> fileList = fileRepository.findAllByIdIn(imageIds);
 
         fileList.forEach(file -> file.setProductId(productId));
 
@@ -309,7 +308,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private void unlinkOldImages(Long productId){
-        List<FileEntity> currentImages = fileRepository.findAllByFileTypeAndProductId(FileType.PRODUCT_IMAGE, productId);
+        List<FileEntity> currentImages = fileRepository.findAllByProductId(productId);
 
         currentImages.forEach(fileEntity -> fileEntity.setProductId(null));
 

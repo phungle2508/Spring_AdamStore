@@ -2,6 +2,7 @@
 CREATE TABLE categories (
           id BIGSERIAL PRIMARY KEY,
           name VARCHAR(255) NOT NULL UNIQUE,
+          image_url TEXT,
           status VARCHAR(50) NOT NULL,
           created_by VARCHAR(255),
           updated_by VARCHAR(255),
