@@ -30,6 +30,16 @@ public class ReviewServiceImpl implements ReviewService {
     private final ProductRepository productRepository;
     private final ReviewMappingHelper reviewMappingHelper;
 
+
+    @Override
+    public ReviewResponse fetchById(Long id) {
+        log.info("Fetching review by id: {}", id);
+
+        Review review = findReviewById(id);
+        return reviewMapper.toReviewResponse(review, reviewMappingHelper);
+    }
+
+
     @Override
     @Transactional
     public ReviewResponse create(ReviewRequest request) {
@@ -66,6 +76,8 @@ public class ReviewServiceImpl implements ReviewService {
         Review review = findReviewById(id);
         reviewRepository.delete(review);
     }
+
+
 
     private Review findReviewById(Long id) {
         return reviewRepository.findById(id)

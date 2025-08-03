@@ -59,7 +59,7 @@ public class ApplicationInitConfig {
 
             CompletableFuture<Void> provincesFuture = CompletableFuture.runAsync(() -> {
                 if(provinceRepository.count() == 0){
-                    log.info("Initializing Provinces and Districts...");
+                    log.info("Initializing Provinces, Districts and Wards...");
 
                     initService.importProvincesFromCsv();
                     initService.importDistrictsFromCsv();
