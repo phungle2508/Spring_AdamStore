@@ -29,6 +29,22 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
+
+    @Operation(summary = "Get Review By Id",
+            description = "API này dùng để lấy review theo ID")
+    @GetMapping("/private/reviews/{id}")
+    public ApiResponse<ReviewResponse> getById(@Min(value = 1, message = "ID phải lớn hơn 0")
+                                               @PathVariable Long id) {
+        log.info("Received request to get review by id: {}", id);
+
+        return ApiResponse.<ReviewResponse>builder()
+                .code(HttpStatus.OK.value())
+                .message("Get Review By Id")
+                .result(reviewService.fetchById(id))
+                .build();
+    }
+
+
     @Operation(summary = "Product Review",
     description = "API này dùng để đánh giá sản phẩm")
     @PostMapping("/private/reviews")
