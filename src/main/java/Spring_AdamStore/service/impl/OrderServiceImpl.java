@@ -200,10 +200,12 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_EXISTED));
     }
 
+
     private Address findAddressById(Long addressId){
         return addressRepository.findById(addressId)
                 .orElseThrow(() -> new AppException(ErrorCode.ADDRESS_NOT_EXISTED));
     }
+
 
     private double applyPromotion(Long promotionId, Order order, double currentTotal) {
         Promotion promotion = promotionRepository.findById(promotionId)

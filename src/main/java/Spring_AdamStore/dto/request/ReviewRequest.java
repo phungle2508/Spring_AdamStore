@@ -17,7 +17,7 @@ public class ReviewRequest {
 
     private List<String> imageUrls;
 
-    @NotNull(message = "Product ID không được để trống")
-    @Min(value = 1, message = "Product ID phải lớn hơn 0")
-    private Long productId;
+    @NotNull(message = "orderItemId không được để trống")
+    @Min(value = 1, message = "orderItemId phải lớn hơn 0")
+    private Long orderItemId;
 }

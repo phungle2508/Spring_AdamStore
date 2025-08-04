@@ -3,19 +3,13 @@ package Spring_AdamStore.controller;
 import Spring_AdamStore.dto.request.ReviewRequest;
 import Spring_AdamStore.dto.request.ReviewUpdateRequest;
 import Spring_AdamStore.dto.response.ApiResponse;
-import Spring_AdamStore.dto.response.PageResponse;
 import Spring_AdamStore.dto.response.ReviewResponse;
 import Spring_AdamStore.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -30,17 +24,17 @@ public class ReviewController {
     private final ReviewService reviewService;
 
 
-    @Operation(summary = "Get Review By Id",
-            description = "API này dùng để lấy review theo ID")
-    @GetMapping("/private/reviews/{id}")
-    public ApiResponse<ReviewResponse> getById(@Min(value = 1, message = "ID phải lớn hơn 0")
-                                               @PathVariable Long id) {
-        log.info("Received request to get review by id: {}", id);
+    @Operation(summary = "Get review by Order Item ID of the current user",
+            description = "API này dùng để lấy review theo OrderItemId của người dùng hiện tại")
+    @GetMapping("/private/reviews/order-items/{orderItemId}")
+    public ApiResponse<ReviewResponse> getByOrderItemId(@PathVariable @Min(value = 1, message = "orderItemId phải lớn hơn 0")
+                                                            Long orderItemId) {
+        log.info("Received request to get review by OrderItem ID: {}, of the current user", orderItemId);
 
         return ApiResponse.<ReviewResponse>builder()
                 .code(HttpStatus.OK.value())
-                .message("Get Review By Id")
-                .result(reviewService.fetchById(id))
+                .message("Get review by OrderItem ID of the current user")
+                .result(reviewService.getByOrderItemId(orderItemId))
                 .build();
     }
 
@@ -84,4 +78,22 @@ public class ReviewController {
                 .result(null)
                 .build();
     }
+
+    @Operation(summary = "Check if current user reviewed the order item",
+            description = "API kiểm tra xem user hiện tại đã đánh giá sản phẩm trong đơn hàng chưa")
+    @GetMapping("/private/reviews/check/{orderItemId}")
+    public ApiResponse<Boolean> isOrderItemReviewedByUser(@PathVariable @Min(value = 1, message = "orderItemId phải lớn hơn 0")
+                                                              Long orderItemId) {
+        log.info("Received request to check if current user has reviewed order item with ID: {}", orderItemId);
+
+        boolean hasReviewed = reviewService.isOrderItemReviewedByUser(orderItemId);
+
+        return ApiResponse.<Boolean>builder()
+                .code(HttpStatus.OK.value())
+                .message("Check if user reviewed this order item")
+                .result(hasReviewed)
+                .build();
+    }
+
+
 }
