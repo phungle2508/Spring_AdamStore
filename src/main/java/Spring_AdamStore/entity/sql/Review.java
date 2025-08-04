@@ -39,4 +39,6 @@ public class Review {
 
     private Long productId;
 
+    private Long orderItemId;
+
 }

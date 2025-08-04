@@ -3,7 +3,6 @@ package Spring_AdamStore.service;
 import Spring_AdamStore.dto.request.ReviewRequest;
 import Spring_AdamStore.dto.request.ReviewUpdateRequest;
 import Spring_AdamStore.dto.response.ReviewResponse;
-import jakarta.validation.constraints.Min;
 
 public interface ReviewService {
 
@@ -13,5 +12,7 @@ public interface ReviewService {
 
     void delete(Long id);
 
-    ReviewResponse fetchById(Long id);
+    boolean isOrderItemReviewedByUser(Long orderItemId);
+
+    ReviewResponse getByOrderItemId(Long orderItemId);
 }

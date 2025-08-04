@@ -1945,7 +1945,7 @@
 			"name": "module review",
 			"item": [
 				{
-					"name": "Get Review By Id",
+					"name": "Get Review By OrderItem Id",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1956,7 +1956,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/adamstore/v1/private/reviews/:id",
+							"raw": "{{baseUrl}}/adamstore/v1/private/reviews/order-items/:orderItemId",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -1965,11 +1965,46 @@
 								"v1",
 								"private",
 								"reviews",
-								":id"
+								"order-items",
+								":orderItemId"
 							],
 							"variable": [
 								{
-									"key": "id",
+									"key": "orderItemId",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check user reviewed the order item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/adamstore/v1/private/reviews/check/:orderItemId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"adamstore",
+								"v1",
+								"private",
+								"reviews",
+								"check",
+								":orderItemId"
+							],
+							"variable": [
+								{
+									"key": "orderItemId",
 									"value": "1"
 								}
 							]
@@ -1990,7 +2025,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"rating\": 4.7,\r\n    \"comment\": \"Sản phẩm tốt, vải mịn, mặc rất thích\",\r\n    \"imageUrls\": [\r\n        \"http://res.cloudinary.com/dz5wejuuf/image/upload/v1754042721/adam-store/images/jyb7tdsme6x9xyk2ch5k.webp\",\r\n        \"http://res.cloudinary.com/dz5wejuuf/image/upload/v1754042721/adam-store/images/jyb7tdsme6x9xyk2ch5k.webp\"\r\n    ],\r\n    \"productId\": 6\r\n}",
+							"raw": "{\r\n  \"rating\": 4.9,\r\n  \"comment\": \"Sản phẩm rất tốt, giao hàng nhanh!\",\r\n  \"imageUrls\": [\r\n    \"http://res.cloudinary.com/dz5wejuuf/image/upload/v1754294222/adam-store/images/jgoqeui1sh2hxijimkc8.webp\",\r\n    \"http://res.cloudinary.com/dz5wejuuf/image/upload/v1754294223/adam-store/images/h3nbce62i3o9xpn1ok9v.webp\"\r\n  ],\r\n  \"orderItemId\": 1\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3313,7 +3348,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"addressId\": 1,\r\n  \"orderItems\": [\r\n    {\r\n      \"productVariantId\": 1,\r\n      \"quantity\": 1\r\n    }\r\n  ],\r\n  \"promotionId\": 1,\r\n  \"shippingFee\": 50000,\r\n  \"paymentMethod\": \"VNPAY\"\r\n}",
+							"raw": "{\r\n  \"addressId\": 9,\r\n  \"orderItems\": [\r\n    {\r\n      \"productVariantId\": 92,\r\n      \"quantity\": 1\r\n    },\r\n    {\r\n      \"productVariantId\": 38,\r\n      \"quantity\": 2\r\n    }\r\n  ],\r\n  \"promotionId\": 2,\r\n  \"shippingFee\": 50000,\r\n  \"paymentMethod\": \"VNPAY\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

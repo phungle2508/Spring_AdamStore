@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
@@ -18,4 +20,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     int getTotalReviewsByProductId(@Param("productId") Long productId);
 
     Page<Review> findAllByProductId(Long productId, Pageable pageable);
+
+    Optional<Review> findByOrderItemIdAndUserId(Long orderItemId, Long userId);
+
 }
