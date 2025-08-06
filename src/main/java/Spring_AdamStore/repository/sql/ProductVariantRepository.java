@@ -29,4 +29,10 @@ public interface ProductVariantRepository extends JpaRepository<ProductVariant, 
 
     @Query( value = "SELECT * FROM product_variants pv WHERE pv.product_id = :productId", nativeQuery = true)
    List<ProductVariant> getAllByProductId(@Param("productId") Long productId);
+
+    @Query("SELECT MIN(pv.price) FROM ProductVariant pv WHERE pv.productId = :productId AND pv.status = 'ACTIVE'")
+    Double findMinPriceByProductId(@Param("productId") Long productId);
+
+    @Query("SELECT MAX(pv.price) FROM ProductVariant pv WHERE pv.productId = :productId AND pv.status = 'ACTIVE'")
+    Double findMaxPriceByProductId(@Param("productId") Long productId);
 }

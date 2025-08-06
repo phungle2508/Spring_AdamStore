@@ -2,6 +2,9 @@ package Spring_AdamStore.entity.sql;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 
 @Getter
@@ -20,6 +23,8 @@ public class CartItem {
     private Double price;
     private Integer quantity;
 
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
     private Long cartId;
 

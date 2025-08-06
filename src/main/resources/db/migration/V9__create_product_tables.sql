@@ -9,6 +9,9 @@ CREATE TABLE products (
          average_rating DOUBLE PRECISION,
          total_reviews INTEGER,
 
+         min_price DOUBLE PRECISION,
+         max_price DOUBLE PRECISION,
+
          status VARCHAR(50) NOT NULL,
 
          created_by VARCHAR(255),

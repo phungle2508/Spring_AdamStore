@@ -75,7 +75,10 @@ public class ProductServiceImpl implements ProductService {
 
         productVariantService.saveVariantByProduct(product.getId(), request.getVariants());
 
-        return productMapper.toProductResponse(product, productMappingHelper);
+        product.setMaxPrice(productVariantRepository.findMaxPriceByProductId(product.getId()));
+        product.setMinPrice(productVariantRepository.findMinPriceByProductId(product.getId()));
+
+        return productMapper.toProductResponse(productRepository.save(product), productMappingHelper);
     }
 
     @Override
@@ -289,6 +292,7 @@ public class ProductServiceImpl implements ProductService {
                 .build();
     }
 
+
     private void findCategoryById(Long id){
         categoryRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_EXISTED));
@@ -314,7 +318,6 @@ public class ProductServiceImpl implements ProductService {
 
         fileRepository.saveAll(currentImages);
     }
-
 
 
 
