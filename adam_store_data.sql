@@ -96,52 +96,45 @@ INSERT INTO public.colors VALUES (4, 'Blue');
 -- Data for Name: products; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.products VALUES (1, 'ÁO PHÔNG HEAVYWEIGHT MAY VIỀN', 'Áo phông chất liệu heavyweight, may viền tỉ mỉ, form rộng thoải mái, phù hợp đi chơi hoặc mặc hằng ngày.', true, 0, 5, 0, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-01', '2025-08-01', 1);
-INSERT INTO public.products VALUES (2, 'ÁO NỈ PHỐI KẺ SỌC KHÁC MÀU', 'Áo nỉ thiết kế phối kẻ sọc khác màu độc đáo, chất vải mềm mại giữ ấm tốt, phù hợp cho những ngày se lạnh.', true, 0, 5, 0, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-01', '2025-08-01', 1);
-INSERT INTO public.products VALUES (3, 'ÁO DENIM KIỂU SƠ MI THÊU HỌA TIẾT', 'Áo denim thiết kế kiểu sơ mi kết hợp hoạ tiết thêu tinh tế, mang phong cách cá tính, dễ phối đồ, phù hợp cả đi chơi và dạo phố.', true, 0, 5, 0, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-01', '2025-08-01', 2);
-INSERT INTO public.products VALUES (4, 'ÁO SƠ MI VẢI DỆT OXFORD', 'Áo sơ mi chất liệu vải dệt Oxford mềm mại, bền màu, thích hợp cho môi trường công sở và cả phong cách thường ngày.', true, 0, 5, 0, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-01', '2025-08-01', 2);
-INSERT INTO public.products VALUES (5, 'ÁO POLO DỆT KIM COTTON - LEN', 'Áo polo dệt kim chất liệu cotton pha len, mềm mại, co giãn tốt, thích hợp mặc đi làm, đi chơi hoặc dạo phố.', true, 0, 5, 0, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-01', '2025-08-01', 3);
-INSERT INTO public.products VALUES (6, 'ÁO POLO DỆT SỢI DỌC', 'Áo polo dệt sợi dọc mang lại cảm giác mát mẻ, co giãn tốt và sang trọng, thích hợp mặc hằng ngày hoặc đi chơi.', true, 0, 5, 0, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-01', '2025-08-01', 3);
-INSERT INTO public.products VALUES (7, 'ÁO KHOÁC VẢI KỸ THUẬT WATER REPELLENT', 'Áo khoác vải kỹ thuật chống thấm nước, chống gió, thích hợp cho các hoạt động ngoài trời và thời tiết lạnh.', true, 0, 5, 0, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-01', '2025-08-01', 4);
-INSERT INTO public.products VALUES (8, 'ÁO KHOÁC BOMBER RELAXED FIT', 'Áo khoác bomber phom relaxed, thiết kế thời trang, phù hợp đi chơi, đi làm hoặc mặc thường ngày.', true, 0, 5, 0, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-01', '2025-08-01', 4);
-INSERT INTO public.products VALUES (9, 'QUẦN SHORT BERMUDA DENIM RELAXED FIT XẾP LI', 'Quần short Bermuda chất denim, phom relaxed fit, thiết kế xếp li hiện đại, thoải mái cho các hoạt động hằng ngày.', true, 0, 5, 0, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-01', '2025-08-01', 5);
-INSERT INTO public.products VALUES (10, 'QUẦN SHORT BERMUDA VẢI SẦN HỌA TIẾT KẺ SỌC', 'Quần short Bermuda vải sần, họa tiết kẻ sọc hiện đại, trẻ trung, dễ phối đồ cho phong cách năng động.', true, 0, 5, 0, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-01', '2025-08-01', 5);
-INSERT INTO public.products VALUES (11, 'JEANS SLIM FIT TIMELESS', 'Quần jeans slim fit thiết kế tối giản, phù hợp mặc hằng ngày, giữ form và bền màu theo thời gian.', true, 0, 5, 0, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-01', '2025-08-01', 6);
-INSERT INTO public.products VALUES (12, 'QUẦN CHINO VẢI COTTON - SỢI GAI', 'Quần chino vải cotton sợi gai, thoáng mát, đứng form, dễ phối đồ, phù hợp mặc đi làm hoặc dạo phố.', true, 0, 5, 0, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-01', '2025-08-01', 6);
-INSERT INTO public.products VALUES (13, 'ÁO PHÔNG IN CHỮ KHÁC MÀU', 'Áo phông in chữ phong cách, chất vải cotton thoáng mát, phù hợp đi chơi, đi học, dễ phối đồ.', true, 0, 5, 0, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-03', '2025-08-03', 1);
-INSERT INTO public.products VALUES (14, 'ÁO PHÔNG HỌA TIẾT CÂY CỌ', 'Áo phông họa tiết cây cọ độc đáo, chất liệu cotton thoáng mát, thích hợp mặc mùa hè.', true, 0, 5, 0, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-03', '2025-08-03', 1);
-INSERT INTO public.products VALUES (15, 'ÁO PHÔNG VẢI DỆT KHÔNG ĐỀU HỌA TIẾT KẺ', 'Áo phông vải dệt không đều tạo hiệu ứng họa tiết kẻ độc đáo, thoải mái và dễ phối đồ.', true, 0, 5, 0, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-03', '2025-08-03', 1);
-INSERT INTO public.products VALUES (16, 'ÁO SƠ MI VẢI LINEN - COTTON', 'Áo sơ mi vải Linen pha Cotton, thoáng mát, thấm hút tốt, thích hợp đi làm, đi chơi, dễ phối đồ.', true, 0, 5, 0, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-04', '2025-08-04', 2);
-INSERT INTO public.products VALUES (17, 'QUẦN CARGO VẢI DENIM CÓ TÚI', 'Quần cargo chất liệu denim có túi, thiết kế mạnh mẽ, phong cách đường phố, phù hợp mặc hàng ngày hoặc dạo phố.', true, 0, 5, 0, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-05', '2025-08-05', 6);
-INSERT INTO public.products VALUES (18, 'QUẦN JEANS SLIM STRAIGHT FIT', 'Quần jeans kiểu slim straight fit, thiết kế hiện đại, dễ phối đồ, phù hợp sử dụng hàng ngày hoặc đi chơi.', true, 0, 5, 0, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-05', '2025-08-05', 6);
+INSERT INTO public.products VALUES (1, 'ÁO PHÔNG HEAVYWEIGHT MAY VIỀN', 'Áo phông chất liệu heavyweight, may viền tỉ mỉ, form rộng thoải mái, phù hợp đi chơi hoặc mặc hằng ngày.', true, 0, 5, 0, 400000, 500000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-01', '2025-08-01', 1);
+INSERT INTO public.products VALUES (2, 'ÁO NỈ PHỐI KẺ SỌC KHÁC MÀU', 'Áo nỉ thiết kế phối kẻ sọc khác màu độc đáo, chất vải mềm mại giữ ấm tốt, phù hợp cho những ngày se lạnh.', true, 0, 5, 0, 450000, 550000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-01', '2025-08-01', 1);
+INSERT INTO public.products VALUES (3, 'ÁO DENIM KIỂU SƠ MI THÊU HỌA TIẾT', 'Áo denim thiết kế kiểu sơ mi kết hợp hoạ tiết thêu tinh tế, mang phong cách cá tính, dễ phối đồ, phù hợp cả đi chơi và dạo phố.', true, 0, 5, 0, 650000, 750000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-01', '2025-08-01', 2);
+INSERT INTO public.products VALUES (4, 'ÁO SƠ MI VẢI DỆT OXFORD', 'Áo sơ mi chất liệu vải dệt Oxford mềm mại, bền màu, thích hợp cho môi trường công sở và cả phong cách thường ngày.', true, 0, 5, 0, 600000, 700000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-01', '2025-08-01', 2);
+INSERT INTO public.products VALUES (5, 'ÁO POLO DỆT KIM COTTON - LEN', 'Áo polo dệt kim chất liệu cotton pha len, mềm mại, co giãn tốt, thích hợp mặc đi làm, đi chơi hoặc dạo phố.', true, 0, 5, 0, 780000, 830000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-01', '2025-08-01', 3);
+INSERT INTO public.products VALUES (6, 'ÁO POLO DỆT SỢI DỌC', 'Áo polo dệt sợi dọc mang lại cảm giác mát mẻ, co giãn tốt và sang trọng, thích hợp mặc hằng ngày hoặc đi chơi.', true, 0, 5, 0, 750000, 790000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-01', '2025-08-01', 3);
+INSERT INTO public.products VALUES (7, 'ÁO KHOÁC VẢI KỸ THUẬT WATER REPELLENT', 'Áo khoác vải kỹ thuật chống thấm nước, chống gió, thích hợp cho các hoạt động ngoài trời và thời tiết lạnh.', true, 0, 5, 0, 880000, 920000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-01', '2025-08-01', 4);
+INSERT INTO public.products VALUES (8, 'ÁO KHOÁC BOMBER RELAXED FIT', 'Áo khoác bomber phom relaxed, thiết kế thời trang, phù hợp đi chơi, đi làm hoặc mặc thường ngày.', true, 0, 5, 0, 930000, 980000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-01', '2025-08-01', 4);
+INSERT INTO public.products VALUES (9, 'QUẦN SHORT BERMUDA DENIM RELAXED FIT XẾP LI', 'Quần short Bermuda chất denim, phom relaxed fit, thiết kế xếp li hiện đại, thoải mái cho các hoạt động hằng ngày.', true, 0, 5, 0, 800000, 840000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-01', '2025-08-01', 5);
+INSERT INTO public.products VALUES (10, 'QUẦN SHORT BERMUDA VẢI SẦN HỌA TIẾT KẺ SỌC', 'Quần short Bermuda vải sần, họa tiết kẻ sọc hiện đại, trẻ trung, dễ phối đồ cho phong cách năng động.', true, 0, 5, 0, 860000, 900000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-01', '2025-08-01', 5);
+INSERT INTO public.products VALUES (11, 'JEANS SLIM FIT TIMELESS', 'Quần jeans slim fit thiết kế tối giản, phù hợp mặc hằng ngày, giữ form và bền màu theo thời gian.', true, 0, 5, 0, 720000, 780000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-01', '2025-08-01', 6);
+INSERT INTO public.products VALUES (12, 'QUẦN CHINO VẢI COTTON - SỢI GAI', 'Quần chino vải cotton sợi gai, thoáng mát, đứng form, dễ phối đồ, phù hợp mặc đi làm hoặc dạo phố.', true, 0, 5, 0, 760000, 810000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-01', '2025-08-01', 6);
+INSERT INTO public.products VALUES (13, 'ÁO PHÔNG IN CHỮ KHÁC MÀU', 'Áo phông in chữ phong cách, chất vải cotton thoáng mát, phù hợp đi chơi, đi học, dễ phối đồ.', true, 0, 5, 0, 580000, 620000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-03', '2025-08-03', 1);
+INSERT INTO public.products VALUES (14, 'ÁO PHÔNG HỌA TIẾT CÂY CỌ', 'Áo phông họa tiết cây cọ độc đáo, chất liệu cotton thoáng mát, thích hợp mặc mùa hè.', true, 0, 5, 0, 660000, 720000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-03', '2025-08-03', 1);
+INSERT INTO public.products VALUES (15, 'ÁO PHÔNG VẢI DỆT KHÔNG ĐỀU HỌA TIẾT KẺ', 'Áo phông vải dệt không đều tạo hiệu ứng họa tiết kẻ độc đáo, thoải mái và dễ phối đồ.', true, 0, 5, 0, 730000, 780000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-03', '2025-08-03', 1);
+INSERT INTO public.products VALUES (16, 'ÁO SƠ MI VẢI LINEN - COTTON', 'Áo sơ mi vải Linen pha Cotton, thoáng mát, thấm hút tốt, thích hợp đi làm, đi chơi, dễ phối đồ.', true, 0, 5, 0, 880000, 930000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-04', '2025-08-04', 2);
+INSERT INTO public.products VALUES (17, 'QUẦN CARGO VẢI DENIM CÓ TÚI', 'Quần cargo chất liệu denim có túi, thiết kế mạnh mẽ, phong cách đường phố, phù hợp mặc hàng ngày hoặc dạo phố.', true, 0, 5, 0, 920000, 990000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-05', '2025-08-05', 6);
+INSERT INTO public.products VALUES (18, 'QUẦN JEANS SLIM STRAIGHT FIT', 'Quần jeans kiểu slim straight fit, thiết kế hiện đại, dễ phối đồ, phù hợp sử dụng hàng ngày hoặc đi chơi.', true, 0, 5, 0, 930000, 970000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-05', '2025-08-05', 6);
+INSERT INTO public.products VALUES (19, 'ÁO KHOÁC CỔ PHỐI LEN MÓC', 'Áo khoác cổ phối len móc, mang phong cách retro hiện đại, chất liệu cao cấp, phù hợp thời tiết thu đông.', true, 0, 5, 0, 820000, 900000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-07', '2025-08-07', 4);
+INSERT INTO public.products VALUES (20, 'ÁO KHOÁC VẢI BẠC MÀU CÓ MŨ', 'Áo khoác vải bạc màu có mũ, chống nắng, chống nước nhẹ, thời trang và tiện lợi, phù hợp đi chơi và hoạt động ngoài trời.', true, 0, 5, 0, 910000, 980000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-07', '2025-08-07', 4);
 
 
 --
 -- Data for Name: product_variants; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.product_variants VALUES (1, true, 450000, 100, 'ACTIVE', 1, 1, 2);
 INSERT INTO public.product_variants VALUES (5, true, 450000, 100, 'ACTIVE', 1, 2, 3);
 INSERT INTO public.product_variants VALUES (6, true, 450000, 100, 'ACTIVE', 1, 2, 4);
 INSERT INTO public.product_variants VALUES (8, true, 450000, 100, 'ACTIVE', 1, 3, 4);
 INSERT INTO public.product_variants VALUES (11, true, 450000, 100, 'ACTIVE', 1, 2, 1);
 INSERT INTO public.product_variants VALUES (13, true, 450000, 100, 'ACTIVE', 1, 1, 4);
-INSERT INTO public.product_variants VALUES (14, true, 450000, 100, 'ACTIVE', 1, 2, 5);
-INSERT INTO public.product_variants VALUES (15, true, 450000, 100, 'ACTIVE', 1, 2, 2);
-INSERT INTO public.product_variants VALUES (16, true, 500000, 100, 'ACTIVE', 2, 1, 2);
-INSERT INTO public.product_variants VALUES (17, true, 500000, 100, 'ACTIVE', 2, 3, 2);
 INSERT INTO public.product_variants VALUES (18, true, 500000, 100, 'ACTIVE', 2, 3, 5);
 INSERT INTO public.product_variants VALUES (19, true, 500000, 100, 'ACTIVE', 2, 2, 1);
 INSERT INTO public.product_variants VALUES (20, true, 500000, 100, 'ACTIVE', 2, 2, 3);
 INSERT INTO public.product_variants VALUES (21, true, 500000, 100, 'ACTIVE', 2, 2, 5);
 INSERT INTO public.product_variants VALUES (22, true, 500000, 100, 'ACTIVE', 2, 3, 1);
-INSERT INTO public.product_variants VALUES (24, true, 500000, 100, 'ACTIVE', 2, 1, 4);
 INSERT INTO public.product_variants VALUES (25, true, 500000, 100, 'ACTIVE', 2, 2, 2);
 INSERT INTO public.product_variants VALUES (26, true, 500000, 100, 'ACTIVE', 2, 2, 4);
 INSERT INTO public.product_variants VALUES (27, true, 500000, 100, 'ACTIVE', 2, 1, 3);
-INSERT INTO public.product_variants VALUES (29, true, 500000, 100, 'ACTIVE', 2, 3, 4);
-INSERT INTO public.product_variants VALUES (30, true, 500000, 100, 'ACTIVE', 2, 1, 5);
-INSERT INTO public.product_variants VALUES (31, true, 700000, 100, 'ACTIVE', 3, 4, 6);
 INSERT INTO public.product_variants VALUES (34, true, 700000, 100, 'ACTIVE', 3, 2, 3);
 INSERT INTO public.product_variants VALUES (35, true, 700000, 100, 'ACTIVE', 3, 4, 2);
 INSERT INTO public.product_variants VALUES (37, true, 700000, 100, 'ACTIVE', 3, 1, 5);
@@ -152,12 +145,6 @@ INSERT INTO public.product_variants VALUES (42, true, 700000, 100, 'ACTIVE', 3, 
 INSERT INTO public.product_variants VALUES (43, true, 700000, 100, 'ACTIVE', 3, 2, 2);
 INSERT INTO public.product_variants VALUES (44, true, 700000, 100, 'ACTIVE', 3, 2, 5);
 INSERT INTO public.product_variants VALUES (45, true, 700000, 100, 'ACTIVE', 3, 1, 3);
-INSERT INTO public.product_variants VALUES (46, true, 700000, 100, 'ACTIVE', 3, 2, 1);
-INSERT INTO public.product_variants VALUES (47, true, 700000, 100, 'ACTIVE', 3, 1, 4);
-INSERT INTO public.product_variants VALUES (48, true, 700000, 100, 'ACTIVE', 3, 4, 5);
-INSERT INTO public.product_variants VALUES (49, true, 650000, 100, 'ACTIVE', 4, 1, 6);
-INSERT INTO public.product_variants VALUES (50, true, 650000, 100, 'ACTIVE', 4, 1, 2);
-INSERT INTO public.product_variants VALUES (51, true, 650000, 100, 'ACTIVE', 4, 2, 2);
 INSERT INTO public.product_variants VALUES (52, true, 650000, 100, 'ACTIVE', 4, 3, 4);
 INSERT INTO public.product_variants VALUES (53, true, 650000, 100, 'ACTIVE', 4, 3, 2);
 INSERT INTO public.product_variants VALUES (54, true, 650000, 100, 'ACTIVE', 4, 1, 3);
@@ -166,13 +153,6 @@ INSERT INTO public.product_variants VALUES (56, true, 650000, 100, 'ACTIVE', 4, 
 INSERT INTO public.product_variants VALUES (57, true, 650000, 100, 'ACTIVE', 4, 2, 3);
 INSERT INTO public.product_variants VALUES (58, true, 650000, 100, 'ACTIVE', 4, 1, 4);
 INSERT INTO public.product_variants VALUES (59, true, 650000, 100, 'ACTIVE', 4, 2, 5);
-INSERT INTO public.product_variants VALUES (61, true, 650000, 100, 'ACTIVE', 4, 3, 6);
-INSERT INTO public.product_variants VALUES (62, true, 650000, 100, 'ACTIVE', 4, 3, 3);
-INSERT INTO public.product_variants VALUES (63, true, 650000, 100, 'ACTIVE', 4, 2, 4);
-INSERT INTO public.product_variants VALUES (64, true, 800000, 100, 'ACTIVE', 5, 1, 5);
-INSERT INTO public.product_variants VALUES (65, true, 800000, 100, 'ACTIVE', 5, 3, 6);
-INSERT INTO public.product_variants VALUES (66, true, 800000, 100, 'ACTIVE', 5, 1, 3);
-INSERT INTO public.product_variants VALUES (67, true, 800000, 100, 'ACTIVE', 5, 1, 6);
 INSERT INTO public.product_variants VALUES (68, true, 800000, 100, 'ACTIVE', 5, 3, 3);
 INSERT INTO public.product_variants VALUES (69, true, 800000, 100, 'ACTIVE', 5, 2, 4);
 INSERT INTO public.product_variants VALUES (70, true, 800000, 100, 'ACTIVE', 5, 1, 4);
@@ -181,16 +161,9 @@ INSERT INTO public.product_variants VALUES (72, true, 800000, 100, 'ACTIVE', 5, 
 INSERT INTO public.product_variants VALUES (73, true, 800000, 100, 'ACTIVE', 5, 2, 3);
 INSERT INTO public.product_variants VALUES (74, true, 800000, 100, 'ACTIVE', 5, 3, 5);
 INSERT INTO public.product_variants VALUES (75, true, 800000, 100, 'ACTIVE', 5, 1, 2);
-INSERT INTO public.product_variants VALUES (76, true, 800000, 100, 'ACTIVE', 5, 3, 2);
-INSERT INTO public.product_variants VALUES (77, true, 800000, 100, 'ACTIVE', 5, 2, 2);
-INSERT INTO public.product_variants VALUES (78, true, 800000, 100, 'ACTIVE', 5, 2, 6);
-INSERT INTO public.product_variants VALUES (79, true, 770000, 100, 'ACTIVE', 6, 1, 1);
-INSERT INTO public.product_variants VALUES (80, true, 770000, 100, 'ACTIVE', 6, 4, 3);
-INSERT INTO public.product_variants VALUES (81, true, 770000, 100, 'ACTIVE', 6, 4, 1);
 INSERT INTO public.product_variants VALUES (83, true, 770000, 100, 'ACTIVE', 6, 1, 5);
 INSERT INTO public.product_variants VALUES (84, true, 770000, 100, 'ACTIVE', 6, 2, 3);
 INSERT INTO public.product_variants VALUES (85, true, 770000, 100, 'ACTIVE', 6, 1, 6);
-INSERT INTO public.product_variants VALUES (2, true, 450000, 97, 'ACTIVE', 1, 3, 2);
 INSERT INTO public.product_variants VALUES (86, true, 770000, 98, 'ACTIVE', 6, 1, 2);
 INSERT INTO public.product_variants VALUES (4, true, 450000, 98, 'ACTIVE', 1, 1, 1);
 INSERT INTO public.product_variants VALUES (87, true, 770000, 97, 'ACTIVE', 6, 2, 2);
@@ -198,22 +171,14 @@ INSERT INTO public.product_variants VALUES (12, true, 450000, 97, 'ACTIVE', 1, 3
 INSERT INTO public.product_variants VALUES (89, true, 770000, 100, 'ACTIVE', 6, 4, 5);
 INSERT INTO public.product_variants VALUES (88, true, 770000, 97, 'ACTIVE', 6, 1, 3);
 INSERT INTO public.product_variants VALUES (9, true, 450000, 97, 'ACTIVE', 1, 3, 5);
-INSERT INTO public.product_variants VALUES (33, true, 700000, 96, 'ACTIVE', 3, 1, 2);
 INSERT INTO public.product_variants VALUES (28, true, 500000, 95, 'ACTIVE', 2, 1, 1);
 INSERT INTO public.product_variants VALUES (60, true, 650000, 98, 'ACTIVE', 4, 2, 6);
 INSERT INTO public.product_variants VALUES (10, true, 450000, 92, 'ACTIVE', 1, 1, 5);
 INSERT INTO public.product_variants VALUES (90, true, 770000, 100, 'ACTIVE', 6, 2, 1);
-INSERT INTO public.product_variants VALUES (32, true, 700000, 98, 'ACTIVE', 3, 2, 4);
 INSERT INTO public.product_variants VALUES (38, true, 700000, 98, 'ACTIVE', 3, 4, 3);
 INSERT INTO public.product_variants VALUES (23, true, 500000, 98, 'ACTIVE', 2, 3, 3);
 INSERT INTO public.product_variants VALUES (93, true, 770000, 100, 'ACTIVE', 6, 2, 6);
 INSERT INTO public.product_variants VALUES (94, true, 770000, 100, 'ACTIVE', 6, 4, 4);
-INSERT INTO public.product_variants VALUES (95, true, 770000, 100, 'ACTIVE', 6, 2, 4);
-INSERT INTO public.product_variants VALUES (96, true, 770000, 100, 'ACTIVE', 6, 2, 5);
-INSERT INTO public.product_variants VALUES (97, true, 900000, 100, 'ACTIVE', 7, 1, 5);
-INSERT INTO public.product_variants VALUES (98, true, 900000, 100, 'ACTIVE', 7, 2, 6);
-INSERT INTO public.product_variants VALUES (99, true, 900000, 100, 'ACTIVE', 7, 2, 5);
-INSERT INTO public.product_variants VALUES (100, true, 900000, 100, 'ACTIVE', 7, 4, 3);
 INSERT INTO public.product_variants VALUES (101, true, 900000, 100, 'ACTIVE', 7, 1, 6);
 INSERT INTO public.product_variants VALUES (103, true, 900000, 100, 'ACTIVE', 7, 4, 1);
 INSERT INTO public.product_variants VALUES (104, true, 900000, 100, 'ACTIVE', 7, 4, 2);
@@ -223,11 +188,6 @@ INSERT INTO public.product_variants VALUES (108, true, 900000, 100, 'ACTIVE', 7,
 INSERT INTO public.product_variants VALUES (109, true, 900000, 100, 'ACTIVE', 7, 4, 5);
 INSERT INTO public.product_variants VALUES (111, true, 900000, 100, 'ACTIVE', 7, 1, 1);
 INSERT INTO public.product_variants VALUES (112, true, 900000, 100, 'ACTIVE', 7, 1, 2);
-INSERT INTO public.product_variants VALUES (113, true, 900000, 100, 'ACTIVE', 7, 1, 4);
-INSERT INTO public.product_variants VALUES (114, true, 900000, 100, 'ACTIVE', 7, 2, 4);
-INSERT INTO public.product_variants VALUES (115, true, 950000, 100, 'ACTIVE', 8, 2, 6);
-INSERT INTO public.product_variants VALUES (116, true, 950000, 100, 'ACTIVE', 8, 3, 3);
-INSERT INTO public.product_variants VALUES (117, true, 950000, 100, 'ACTIVE', 8, 1, 1);
 INSERT INTO public.product_variants VALUES (118, true, 950000, 100, 'ACTIVE', 8, 1, 4);
 INSERT INTO public.product_variants VALUES (119, true, 950000, 100, 'ACTIVE', 8, 1, 2);
 INSERT INTO public.product_variants VALUES (120, true, 950000, 100, 'ACTIVE', 8, 2, 4);
@@ -239,11 +199,6 @@ INSERT INTO public.product_variants VALUES (125, true, 950000, 100, 'ACTIVE', 8,
 INSERT INTO public.product_variants VALUES (126, true, 950000, 100, 'ACTIVE', 8, 1, 6);
 INSERT INTO public.product_variants VALUES (127, true, 950000, 100, 'ACTIVE', 8, 3, 4);
 INSERT INTO public.product_variants VALUES (128, true, 950000, 100, 'ACTIVE', 8, 2, 2);
-INSERT INTO public.product_variants VALUES (129, true, 950000, 100, 'ACTIVE', 8, 2, 5);
-INSERT INTO public.product_variants VALUES (130, true, 950000, 100, 'ACTIVE', 8, 1, 5);
-INSERT INTO public.product_variants VALUES (131, true, 950000, 100, 'ACTIVE', 8, 2, 3);
-INSERT INTO public.product_variants VALUES (132, true, 950000, 100, 'ACTIVE', 8, 3, 6);
-INSERT INTO public.product_variants VALUES (133, true, 820000, 100, 'ACTIVE', 9, 2, 4);
 INSERT INTO public.product_variants VALUES (135, true, 820000, 100, 'ACTIVE', 9, 1, 3);
 INSERT INTO public.product_variants VALUES (136, true, 820000, 100, 'ACTIVE', 9, 4, 5);
 INSERT INTO public.product_variants VALUES (137, true, 820000, 100, 'ACTIVE', 9, 2, 2);
@@ -255,10 +210,6 @@ INSERT INTO public.product_variants VALUES (142, true, 820000, 100, 'ACTIVE', 9,
 INSERT INTO public.product_variants VALUES (143, true, 820000, 100, 'ACTIVE', 9, 1, 4);
 INSERT INTO public.product_variants VALUES (144, true, 820000, 100, 'ACTIVE', 9, 4, 2);
 INSERT INTO public.product_variants VALUES (145, true, 820000, 100, 'ACTIVE', 9, 1, 2);
-INSERT INTO public.product_variants VALUES (146, true, 820000, 100, 'ACTIVE', 9, 4, 4);
-INSERT INTO public.product_variants VALUES (147, true, 820000, 100, 'ACTIVE', 9, 2, 6);
-INSERT INTO public.product_variants VALUES (148, true, 880000, 100, 'ACTIVE', 10, 2, 2);
-INSERT INTO public.product_variants VALUES (149, true, 880000, 100, 'ACTIVE', 10, 3, 5);
 INSERT INTO public.product_variants VALUES (151, true, 880000, 100, 'ACTIVE', 10, 3, 6);
 INSERT INTO public.product_variants VALUES (152, true, 880000, 100, 'ACTIVE', 10, 3, 3);
 INSERT INTO public.product_variants VALUES (153, true, 880000, 100, 'ACTIVE', 10, 2, 3);
@@ -271,11 +222,6 @@ INSERT INTO public.product_variants VALUES (160, true, 880000, 100, 'ACTIVE', 10
 INSERT INTO public.product_variants VALUES (161, true, 880000, 100, 'ACTIVE', 10, 1, 4);
 INSERT INTO public.product_variants VALUES (162, true, 880000, 100, 'ACTIVE', 10, 2, 5);
 INSERT INTO public.product_variants VALUES (163, true, 880000, 100, 'ACTIVE', 10, 3, 2);
-INSERT INTO public.product_variants VALUES (164, true, 880000, 100, 'ACTIVE', 10, 1, 5);
-INSERT INTO public.product_variants VALUES (165, true, 880000, 100, 'ACTIVE', 10, 3, 1);
-INSERT INTO public.product_variants VALUES (166, true, 750000, 100, 'ACTIVE', 11, 1, 4);
-INSERT INTO public.product_variants VALUES (167, true, 750000, 100, 'ACTIVE', 11, 2, 5);
-INSERT INTO public.product_variants VALUES (168, true, 750000, 100, 'ACTIVE', 11, 2, 6);
 INSERT INTO public.product_variants VALUES (169, true, 750000, 100, 'ACTIVE', 11, 1, 1);
 INSERT INTO public.product_variants VALUES (170, true, 750000, 100, 'ACTIVE', 11, 4, 2);
 INSERT INTO public.product_variants VALUES (171, true, 750000, 100, 'ACTIVE', 11, 1, 6);
@@ -284,20 +230,13 @@ INSERT INTO public.product_variants VALUES (173, true, 750000, 100, 'ACTIVE', 11
 INSERT INTO public.product_variants VALUES (174, true, 750000, 100, 'ACTIVE', 11, 4, 3);
 INSERT INTO public.product_variants VALUES (175, true, 750000, 100, 'ACTIVE', 11, 1, 5);
 INSERT INTO public.product_variants VALUES (176, true, 750000, 100, 'ACTIVE', 11, 4, 6);
-INSERT INTO public.product_variants VALUES (150, true, 880000, 98, 'ACTIVE', 10, 1, 6);
 INSERT INTO public.product_variants VALUES (177, true, 750000, 100, 'ACTIVE', 11, 1, 3);
 INSERT INTO public.product_variants VALUES (178, true, 750000, 100, 'ACTIVE', 11, 4, 5);
 INSERT INTO public.product_variants VALUES (179, true, 750000, 100, 'ACTIVE', 11, 2, 1);
 INSERT INTO public.product_variants VALUES (180, true, 750000, 100, 'ACTIVE', 11, 2, 2);
-INSERT INTO public.product_variants VALUES (134, true, 820000, 98, 'ACTIVE', 9, 1, 5);
 INSERT INTO public.product_variants VALUES (156, true, 880000, 99, 'ACTIVE', 10, 2, 4);
 INSERT INTO public.product_variants VALUES (91, true, 770000, 98, 'ACTIVE', 6, 4, 2);
 INSERT INTO public.product_variants VALUES (181, true, 750000, 100, 'ACTIVE', 11, 4, 1);
-INSERT INTO public.product_variants VALUES (182, true, 750000, 100, 'ACTIVE', 11, 1, 2);
-INSERT INTO public.product_variants VALUES (183, true, 750000, 100, 'ACTIVE', 11, 2, 3);
-INSERT INTO public.product_variants VALUES (184, true, 780000, 100, 'ACTIVE', 12, 1, 1);
-INSERT INTO public.product_variants VALUES (185, true, 780000, 100, 'ACTIVE', 12, 2, 6);
-INSERT INTO public.product_variants VALUES (186, true, 780000, 100, 'ACTIVE', 12, 1, 6);
 INSERT INTO public.product_variants VALUES (187, true, 780000, 100, 'ACTIVE', 12, 2, 4);
 INSERT INTO public.product_variants VALUES (188, true, 780000, 100, 'ACTIVE', 12, 1, 3);
 INSERT INTO public.product_variants VALUES (189, true, 780000, 100, 'ACTIVE', 12, 2, 3);
@@ -310,14 +249,9 @@ INSERT INTO public.product_variants VALUES (195, true, 780000, 100, 'ACTIVE', 12
 INSERT INTO public.product_variants VALUES (196, true, 780000, 100, 'ACTIVE', 12, 1, 4);
 INSERT INTO public.product_variants VALUES (197, true, 780000, 100, 'ACTIVE', 12, 3, 2);
 INSERT INTO public.product_variants VALUES (199, true, 780000, 100, 'ACTIVE', 12, 2, 5);
-INSERT INTO public.product_variants VALUES (201, true, 780000, 100, 'ACTIVE', 12, 3, 4);
-INSERT INTO public.product_variants VALUES (3, true, 450000, 99, 'ACTIVE', 1, 1, 3);
 INSERT INTO public.product_variants VALUES (102, true, 900000, 97, 'ACTIVE', 7, 2, 1);
 INSERT INTO public.product_variants VALUES (7, true, 450000, 96, 'ACTIVE', 1, 3, 1);
 INSERT INTO public.product_variants VALUES (110, true, 900000, 99, 'ACTIVE', 7, 1, 3);
-INSERT INTO public.product_variants VALUES (202, true, 600000, 100, 'ACTIVE', 13, 2, 5);
-INSERT INTO public.product_variants VALUES (203, true, 600000, 100, 'ACTIVE', 13, 2, 1);
-INSERT INTO public.product_variants VALUES (204, true, 600000, 100, 'ACTIVE', 13, 1, 3);
 INSERT INTO public.product_variants VALUES (205, true, 600000, 100, 'ACTIVE', 13, 3, 6);
 INSERT INTO public.product_variants VALUES (206, true, 600000, 100, 'ACTIVE', 13, 2, 2);
 INSERT INTO public.product_variants VALUES (207, true, 600000, 100, 'ACTIVE', 13, 1, 1);
@@ -331,11 +265,6 @@ INSERT INTO public.product_variants VALUES (214, true, 600000, 100, 'ACTIVE', 13
 INSERT INTO public.product_variants VALUES (215, true, 600000, 100, 'ACTIVE', 13, 1, 4);
 INSERT INTO public.product_variants VALUES (216, true, 600000, 100, 'ACTIVE', 13, 3, 5);
 INSERT INTO public.product_variants VALUES (217, true, 600000, 100, 'ACTIVE', 13, 3, 2);
-INSERT INTO public.product_variants VALUES (218, true, 600000, 100, 'ACTIVE', 13, 1, 2);
-INSERT INTO public.product_variants VALUES (219, true, 600000, 100, 'ACTIVE', 13, 3, 1);
-INSERT INTO public.product_variants VALUES (220, true, 690000, 100, 'ACTIVE', 14, 2, 5);
-INSERT INTO public.product_variants VALUES (221, true, 690000, 100, 'ACTIVE', 14, 1, 4);
-INSERT INTO public.product_variants VALUES (222, true, 690000, 100, 'ACTIVE', 14, 1, 6);
 INSERT INTO public.product_variants VALUES (223, true, 690000, 100, 'ACTIVE', 14, 2, 6);
 INSERT INTO public.product_variants VALUES (224, true, 690000, 100, 'ACTIVE', 14, 1, 1);
 INSERT INTO public.product_variants VALUES (225, true, 690000, 100, 'ACTIVE', 14, 1, 2);
@@ -348,12 +277,6 @@ INSERT INTO public.product_variants VALUES (231, true, 690000, 100, 'ACTIVE', 14
 INSERT INTO public.product_variants VALUES (232, true, 690000, 100, 'ACTIVE', 14, 1, 3);
 INSERT INTO public.product_variants VALUES (233, true, 690000, 100, 'ACTIVE', 14, 1, 5);
 INSERT INTO public.product_variants VALUES (234, true, 690000, 100, 'ACTIVE', 14, 2, 3);
-INSERT INTO public.product_variants VALUES (235, true, 690000, 100, 'ACTIVE', 14, 2, 4);
-INSERT INTO public.product_variants VALUES (236, true, 690000, 100, 'ACTIVE', 14, 3, 3);
-INSERT INTO public.product_variants VALUES (237, true, 690000, 100, 'ACTIVE', 14, 3, 4);
-INSERT INTO public.product_variants VALUES (238, true, 750000, 100, 'ACTIVE', 15, 2, 5);
-INSERT INTO public.product_variants VALUES (239, true, 750000, 100, 'ACTIVE', 15, 1, 1);
-INSERT INTO public.product_variants VALUES (240, true, 750000, 100, 'ACTIVE', 15, 1, 2);
 INSERT INTO public.product_variants VALUES (241, true, 750000, 100, 'ACTIVE', 15, 2, 2);
 INSERT INTO public.product_variants VALUES (242, true, 750000, 100, 'ACTIVE', 15, 3, 3);
 INSERT INTO public.product_variants VALUES (243, true, 750000, 100, 'ACTIVE', 15, 2, 3);
@@ -367,30 +290,17 @@ INSERT INTO public.product_variants VALUES (250, true, 750000, 100, 'ACTIVE', 15
 INSERT INTO public.product_variants VALUES (251, true, 750000, 100, 'ACTIVE', 15, 1, 6);
 INSERT INTO public.product_variants VALUES (252, true, 750000, 100, 'ACTIVE', 15, 3, 5);
 INSERT INTO public.product_variants VALUES (253, true, 750000, 100, 'ACTIVE', 15, 2, 1);
-INSERT INTO public.product_variants VALUES (254, true, 750000, 100, 'ACTIVE', 15, 3, 4);
-INSERT INTO public.product_variants VALUES (255, true, 750000, 100, 'ACTIVE', 15, 3, 6);
 INSERT INTO public.product_variants VALUES (92, true, 770000, 98, 'ACTIVE', 6, 4, 6);
 INSERT INTO public.product_variants VALUES (105, true, 900000, 98, 'ACTIVE', 7, 4, 6);
 INSERT INTO public.product_variants VALUES (82, true, 770000, 99, 'ACTIVE', 6, 1, 4);
 INSERT INTO public.product_variants VALUES (36, true, 700000, 98, 'ACTIVE', 3, 1, 1);
-INSERT INTO public.product_variants VALUES (200, true, 780000, 99, 'ACTIVE', 12, 3, 1);
 INSERT INTO public.product_variants VALUES (198, true, 780000, 99, 'ACTIVE', 12, 2, 2);
-INSERT INTO public.product_variants VALUES (256, true, 900000, 100, 'ACTIVE', 16, 2, 3);
-INSERT INTO public.product_variants VALUES (257, true, 900000, 100, 'ACTIVE', 16, 2, 1);
-INSERT INTO public.product_variants VALUES (258, true, 900000, 100, 'ACTIVE', 16, 1, 4);
 INSERT INTO public.product_variants VALUES (259, true, 900000, 100, 'ACTIVE', 16, 1, 5);
 INSERT INTO public.product_variants VALUES (260, true, 900000, 100, 'ACTIVE', 16, 2, 2);
 INSERT INTO public.product_variants VALUES (261, true, 900000, 100, 'ACTIVE', 16, 2, 6);
 INSERT INTO public.product_variants VALUES (262, true, 900000, 100, 'ACTIVE', 16, 1, 6);
 INSERT INTO public.product_variants VALUES (263, true, 900000, 100, 'ACTIVE', 16, 1, 1);
 INSERT INTO public.product_variants VALUES (264, true, 900000, 100, 'ACTIVE', 16, 1, 3);
-INSERT INTO public.product_variants VALUES (265, true, 900000, 100, 'ACTIVE', 16, 2, 5);
-INSERT INTO public.product_variants VALUES (266, true, 900000, 100, 'ACTIVE', 16, 1, 2);
-INSERT INTO public.product_variants VALUES (267, true, 900000, 100, 'ACTIVE', 16, 2, 4);
-INSERT INTO public.product_variants VALUES (268, true, 990000, 100, 'ACTIVE', 17, 3, 4);
-INSERT INTO public.product_variants VALUES (269, true, 990000, 100, 'ACTIVE', 17, 2, 5);
-INSERT INTO public.product_variants VALUES (270, true, 990000, 100, 'ACTIVE', 17, 3, 3);
-INSERT INTO public.product_variants VALUES (271, true, 990000, 100, 'ACTIVE', 17, 3, 6);
 INSERT INTO public.product_variants VALUES (272, true, 990000, 100, 'ACTIVE', 17, 1, 2);
 INSERT INTO public.product_variants VALUES (273, true, 990000, 100, 'ACTIVE', 17, 1, 3);
 INSERT INTO public.product_variants VALUES (274, true, 990000, 100, 'ACTIVE', 17, 3, 1);
@@ -405,9 +315,6 @@ INSERT INTO public.product_variants VALUES (282, true, 990000, 100, 'ACTIVE', 17
 INSERT INTO public.product_variants VALUES (283, true, 990000, 100, 'ACTIVE', 17, 1, 5);
 INSERT INTO public.product_variants VALUES (284, true, 990000, 100, 'ACTIVE', 17, 1, 6);
 INSERT INTO public.product_variants VALUES (285, true, 990000, 100, 'ACTIVE', 17, 3, 2);
-INSERT INTO public.product_variants VALUES (286, true, 960000, 100, 'ACTIVE', 18, 3, 3);
-INSERT INTO public.product_variants VALUES (287, true, 960000, 100, 'ACTIVE', 18, 1, 3);
-INSERT INTO public.product_variants VALUES (288, true, 960000, 100, 'ACTIVE', 18, 2, 2);
 INSERT INTO public.product_variants VALUES (289, true, 960000, 100, 'ACTIVE', 18, 1, 4);
 INSERT INTO public.product_variants VALUES (290, true, 960000, 100, 'ACTIVE', 18, 2, 5);
 INSERT INTO public.product_variants VALUES (291, true, 960000, 100, 'ACTIVE', 18, 3, 5);
@@ -420,23 +327,158 @@ INSERT INTO public.product_variants VALUES (297, true, 960000, 100, 'ACTIVE', 18
 INSERT INTO public.product_variants VALUES (298, true, 960000, 100, 'ACTIVE', 18, 1, 1);
 INSERT INTO public.product_variants VALUES (299, true, 960000, 100, 'ACTIVE', 18, 3, 2);
 INSERT INTO public.product_variants VALUES (300, true, 960000, 100, 'ACTIVE', 18, 3, 1);
-INSERT INTO public.product_variants VALUES (301, true, 960000, 100, 'ACTIVE', 18, 3, 6);
-INSERT INTO public.product_variants VALUES (302, true, 960000, 100, 'ACTIVE', 18, 1, 2);
-INSERT INTO public.product_variants VALUES (303, true, 960000, 100, 'ACTIVE', 18, 2, 1);
+INSERT INTO public.product_variants VALUES (1, true, 400000, 100, 'ACTIVE', 1, 1, 2);
+INSERT INTO public.product_variants VALUES (2, true, 400000, 97, 'ACTIVE', 1, 3, 2);
+INSERT INTO public.product_variants VALUES (3, true, 400000, 99, 'ACTIVE', 1, 1, 3);
+INSERT INTO public.product_variants VALUES (14, true, 500000, 100, 'ACTIVE', 1, 2, 5);
+INSERT INTO public.product_variants VALUES (15, true, 500000, 100, 'ACTIVE', 1, 2, 2);
+INSERT INTO public.product_variants VALUES (16, true, 450000, 100, 'ACTIVE', 2, 1, 2);
+INSERT INTO public.product_variants VALUES (17, true, 450000, 100, 'ACTIVE', 2, 3, 2);
+INSERT INTO public.product_variants VALUES (29, true, 550000, 100, 'ACTIVE', 2, 3, 4);
+INSERT INTO public.product_variants VALUES (30, true, 550000, 100, 'ACTIVE', 2, 1, 5);
+INSERT INTO public.product_variants VALUES (32, true, 650000, 98, 'ACTIVE', 3, 2, 4);
+INSERT INTO public.product_variants VALUES (33, true, 650000, 96, 'ACTIVE', 3, 1, 2);
+INSERT INTO public.product_variants VALUES (46, true, 750000, 100, 'ACTIVE', 3, 2, 1);
+INSERT INTO public.product_variants VALUES (47, true, 750000, 100, 'ACTIVE', 3, 1, 4);
+INSERT INTO public.product_variants VALUES (48, true, 750000, 100, 'ACTIVE', 3, 4, 5);
+INSERT INTO public.product_variants VALUES (49, true, 600000, 100, 'ACTIVE', 4, 1, 6);
+INSERT INTO public.product_variants VALUES (50, true, 600000, 100, 'ACTIVE', 4, 1, 2);
+INSERT INTO public.product_variants VALUES (51, true, 600000, 100, 'ACTIVE', 4, 2, 2);
+INSERT INTO public.product_variants VALUES (61, true, 700000, 100, 'ACTIVE', 4, 3, 6);
+INSERT INTO public.product_variants VALUES (62, true, 700000, 100, 'ACTIVE', 4, 3, 3);
+INSERT INTO public.product_variants VALUES (63, true, 700000, 100, 'ACTIVE', 4, 2, 4);
+INSERT INTO public.product_variants VALUES (64, true, 780000, 100, 'ACTIVE', 5, 1, 5);
+INSERT INTO public.product_variants VALUES (65, true, 780000, 100, 'ACTIVE', 5, 3, 6);
+INSERT INTO public.product_variants VALUES (66, true, 780000, 100, 'ACTIVE', 5, 1, 3);
+INSERT INTO public.product_variants VALUES (67, true, 780000, 100, 'ACTIVE', 5, 1, 6);
+INSERT INTO public.product_variants VALUES (76, true, 830000, 100, 'ACTIVE', 5, 3, 2);
+INSERT INTO public.product_variants VALUES (77, true, 830000, 100, 'ACTIVE', 5, 2, 2);
+INSERT INTO public.product_variants VALUES (78, true, 830000, 100, 'ACTIVE', 5, 2, 6);
+INSERT INTO public.product_variants VALUES (79, true, 750000, 100, 'ACTIVE', 6, 1, 1);
+INSERT INTO public.product_variants VALUES (80, true, 750000, 100, 'ACTIVE', 6, 4, 3);
+INSERT INTO public.product_variants VALUES (81, true, 750000, 100, 'ACTIVE', 6, 4, 1);
+INSERT INTO public.product_variants VALUES (95, true, 790000, 100, 'ACTIVE', 6, 2, 4);
+INSERT INTO public.product_variants VALUES (96, true, 790000, 100, 'ACTIVE', 6, 2, 5);
+INSERT INTO public.product_variants VALUES (97, true, 880000, 100, 'ACTIVE', 7, 1, 5);
+INSERT INTO public.product_variants VALUES (98, true, 880000, 100, 'ACTIVE', 7, 2, 6);
+INSERT INTO public.product_variants VALUES (99, true, 880000, 100, 'ACTIVE', 7, 2, 5);
+INSERT INTO public.product_variants VALUES (100, true, 880000, 100, 'ACTIVE', 7, 4, 3);
+INSERT INTO public.product_variants VALUES (113, true, 920000, 100, 'ACTIVE', 7, 1, 4);
+INSERT INTO public.product_variants VALUES (114, true, 920000, 100, 'ACTIVE', 7, 2, 4);
+INSERT INTO public.product_variants VALUES (115, true, 930000, 100, 'ACTIVE', 8, 2, 6);
+INSERT INTO public.product_variants VALUES (116, true, 930000, 100, 'ACTIVE', 8, 3, 3);
+INSERT INTO public.product_variants VALUES (117, true, 930000, 100, 'ACTIVE', 8, 1, 1);
+INSERT INTO public.product_variants VALUES (129, true, 980000, 100, 'ACTIVE', 8, 2, 5);
+INSERT INTO public.product_variants VALUES (130, true, 980000, 100, 'ACTIVE', 8, 1, 5);
+INSERT INTO public.product_variants VALUES (131, true, 980000, 100, 'ACTIVE', 8, 2, 3);
+INSERT INTO public.product_variants VALUES (132, true, 980000, 100, 'ACTIVE', 8, 3, 6);
+INSERT INTO public.product_variants VALUES (133, true, 800000, 100, 'ACTIVE', 9, 2, 4);
+INSERT INTO public.product_variants VALUES (134, true, 800000, 98, 'ACTIVE', 9, 1, 5);
+INSERT INTO public.product_variants VALUES (146, true, 840000, 100, 'ACTIVE', 9, 4, 4);
+INSERT INTO public.product_variants VALUES (147, true, 840000, 100, 'ACTIVE', 9, 2, 6);
+INSERT INTO public.product_variants VALUES (148, true, 860000, 100, 'ACTIVE', 10, 2, 2);
+INSERT INTO public.product_variants VALUES (149, true, 860000, 100, 'ACTIVE', 10, 3, 5);
+INSERT INTO public.product_variants VALUES (150, true, 860000, 98, 'ACTIVE', 10, 1, 6);
+INSERT INTO public.product_variants VALUES (164, true, 900000, 100, 'ACTIVE', 10, 1, 5);
+INSERT INTO public.product_variants VALUES (165, true, 900000, 100, 'ACTIVE', 10, 3, 1);
+INSERT INTO public.product_variants VALUES (166, true, 720000, 100, 'ACTIVE', 11, 1, 4);
+INSERT INTO public.product_variants VALUES (167, true, 720000, 100, 'ACTIVE', 11, 2, 5);
+INSERT INTO public.product_variants VALUES (168, true, 720000, 100, 'ACTIVE', 11, 2, 6);
+INSERT INTO public.product_variants VALUES (182, true, 780000, 100, 'ACTIVE', 11, 1, 2);
+INSERT INTO public.product_variants VALUES (183, true, 780000, 100, 'ACTIVE', 11, 2, 3);
+INSERT INTO public.product_variants VALUES (184, true, 760000, 100, 'ACTIVE', 12, 1, 1);
+INSERT INTO public.product_variants VALUES (185, true, 760000, 100, 'ACTIVE', 12, 2, 6);
+INSERT INTO public.product_variants VALUES (186, true, 760000, 100, 'ACTIVE', 12, 1, 6);
+INSERT INTO public.product_variants VALUES (200, true, 810000, 99, 'ACTIVE', 12, 3, 1);
+INSERT INTO public.product_variants VALUES (201, true, 810000, 100, 'ACTIVE', 12, 3, 4);
+INSERT INTO public.product_variants VALUES (202, true, 580000, 100, 'ACTIVE', 13, 2, 5);
+INSERT INTO public.product_variants VALUES (203, true, 580000, 100, 'ACTIVE', 13, 2, 1);
+INSERT INTO public.product_variants VALUES (204, true, 580000, 100, 'ACTIVE', 13, 1, 3);
+INSERT INTO public.product_variants VALUES (218, true, 620000, 100, 'ACTIVE', 13, 1, 2);
+INSERT INTO public.product_variants VALUES (219, true, 620000, 100, 'ACTIVE', 13, 3, 1);
+INSERT INTO public.product_variants VALUES (220, true, 660000, 100, 'ACTIVE', 14, 2, 5);
+INSERT INTO public.product_variants VALUES (221, true, 660000, 100, 'ACTIVE', 14, 1, 4);
+INSERT INTO public.product_variants VALUES (222, true, 660000, 100, 'ACTIVE', 14, 1, 6);
+INSERT INTO public.product_variants VALUES (235, true, 720000, 100, 'ACTIVE', 14, 2, 4);
+INSERT INTO public.product_variants VALUES (236, true, 720000, 100, 'ACTIVE', 14, 3, 3);
+INSERT INTO public.product_variants VALUES (237, true, 720000, 100, 'ACTIVE', 14, 3, 4);
+INSERT INTO public.product_variants VALUES (238, true, 730000, 100, 'ACTIVE', 15, 2, 5);
+INSERT INTO public.product_variants VALUES (239, true, 730000, 100, 'ACTIVE', 15, 1, 1);
+INSERT INTO public.product_variants VALUES (240, true, 730000, 100, 'ACTIVE', 15, 1, 2);
+INSERT INTO public.product_variants VALUES (254, true, 780000, 100, 'ACTIVE', 15, 3, 4);
+INSERT INTO public.product_variants VALUES (255, true, 780000, 100, 'ACTIVE', 15, 3, 6);
+INSERT INTO public.product_variants VALUES (256, true, 880000, 100, 'ACTIVE', 16, 2, 3);
+INSERT INTO public.product_variants VALUES (257, true, 880000, 100, 'ACTIVE', 16, 2, 1);
+INSERT INTO public.product_variants VALUES (258, true, 880000, 100, 'ACTIVE', 16, 1, 4);
+INSERT INTO public.product_variants VALUES (265, true, 930000, 100, 'ACTIVE', 16, 2, 5);
+INSERT INTO public.product_variants VALUES (266, true, 930000, 100, 'ACTIVE', 16, 1, 2);
+INSERT INTO public.product_variants VALUES (267, true, 930000, 100, 'ACTIVE', 16, 2, 4);
+INSERT INTO public.product_variants VALUES (268, true, 920000, 100, 'ACTIVE', 17, 3, 4);
+INSERT INTO public.product_variants VALUES (269, true, 920000, 100, 'ACTIVE', 17, 2, 5);
+INSERT INTO public.product_variants VALUES (270, true, 920000, 100, 'ACTIVE', 17, 3, 3);
+INSERT INTO public.product_variants VALUES (271, true, 920000, 100, 'ACTIVE', 17, 3, 6);
+INSERT INTO public.product_variants VALUES (286, true, 930000, 100, 'ACTIVE', 18, 3, 3);
+INSERT INTO public.product_variants VALUES (287, true, 930000, 100, 'ACTIVE', 18, 1, 3);
+INSERT INTO public.product_variants VALUES (288, true, 930000, 100, 'ACTIVE', 18, 2, 2);
+INSERT INTO public.product_variants VALUES (301, true, 970000, 100, 'ACTIVE', 18, 3, 6);
+INSERT INTO public.product_variants VALUES (302, true, 970000, 100, 'ACTIVE', 18, 1, 2);
+INSERT INTO public.product_variants VALUES (303, true, 970000, 100, 'ACTIVE', 18, 2, 1);
+INSERT INTO public.product_variants VALUES (304, true, 900000, 100, 'ACTIVE', 19, 1, 6);
+INSERT INTO public.product_variants VALUES (305, true, 850000, 100, 'ACTIVE', 19, 1, 3);
+INSERT INTO public.product_variants VALUES (306, true, 850000, 100, 'ACTIVE', 19, 2, 3);
+INSERT INTO public.product_variants VALUES (307, true, 850000, 100, 'ACTIVE', 19, 2, 4);
+INSERT INTO public.product_variants VALUES (308, true, 820000, 100, 'ACTIVE', 19, 2, 2);
+INSERT INTO public.product_variants VALUES (309, true, 820000, 100, 'ACTIVE', 19, 1, 1);
+INSERT INTO public.product_variants VALUES (310, true, 820000, 100, 'ACTIVE', 19, 1, 2);
+INSERT INTO public.product_variants VALUES (311, true, 850000, 100, 'ACTIVE', 19, 1, 4);
+INSERT INTO public.product_variants VALUES (312, true, 900000, 100, 'ACTIVE', 19, 1, 5);
+INSERT INTO public.product_variants VALUES (313, true, 900000, 100, 'ACTIVE', 19, 2, 5);
+INSERT INTO public.product_variants VALUES (314, true, 900000, 100, 'ACTIVE', 19, 2, 6);
+INSERT INTO public.product_variants VALUES (315, true, 820000, 100, 'ACTIVE', 19, 2, 1);
+INSERT INTO public.product_variants VALUES (316, true, 910000, 100, 'ACTIVE', 20, 4, 2);
+INSERT INTO public.product_variants VALUES (317, true, 930000, 100, 'ACTIVE', 20, 2, 3);
+INSERT INTO public.product_variants VALUES (318, true, 980000, 100, 'ACTIVE', 20, 4, 5);
+INSERT INTO public.product_variants VALUES (319, true, 980000, 100, 'ACTIVE', 20, 1, 6);
+INSERT INTO public.product_variants VALUES (320, true, 980000, 100, 'ACTIVE', 20, 2, 6);
+INSERT INTO public.product_variants VALUES (321, true, 980000, 100, 'ACTIVE', 20, 2, 5);
+INSERT INTO public.product_variants VALUES (322, true, 930000, 100, 'ACTIVE', 20, 4, 3);
+INSERT INTO public.product_variants VALUES (323, true, 980000, 100, 'ACTIVE', 20, 1, 5);
+INSERT INTO public.product_variants VALUES (324, true, 930000, 100, 'ACTIVE', 20, 1, 4);
+INSERT INTO public.product_variants VALUES (325, true, 910000, 100, 'ACTIVE', 20, 4, 1);
+INSERT INTO public.product_variants VALUES (326, true, 930000, 100, 'ACTIVE', 20, 4, 4);
+INSERT INTO public.product_variants VALUES (327, true, 930000, 100, 'ACTIVE', 20, 1, 3);
+INSERT INTO public.product_variants VALUES (328, true, 910000, 100, 'ACTIVE', 20, 1, 2);
+INSERT INTO public.product_variants VALUES (329, true, 910000, 100, 'ACTIVE', 20, 1, 1);
+INSERT INTO public.product_variants VALUES (330, true, 930000, 100, 'ACTIVE', 20, 2, 4);
+INSERT INTO public.product_variants VALUES (331, true, 910000, 100, 'ACTIVE', 20, 2, 2);
+INSERT INTO public.product_variants VALUES (332, true, 910000, 100, 'ACTIVE', 20, 2, 1);
+INSERT INTO public.product_variants VALUES (333, true, 980000, 100, 'ACTIVE', 20, 4, 6);
+INSERT INTO public.product_variants VALUES (24, true, 500000, 99, 'ACTIVE', 2, 1, 4);
+INSERT INTO public.product_variants VALUES (31, true, 650000, 98, 'ACTIVE', 3, 4, 6);
 
 
 --
 -- Data for Name: cart_items; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.cart_items VALUES (1, 450000, 2, 2, 4);
-INSERT INTO public.cart_items VALUES (2, 800000, 3, 2, 66);
-INSERT INTO public.cart_items VALUES (3, 900000, 1, 2, 103);
-INSERT INTO public.cart_items VALUES (4, 650000, 1, 2, 54);
-INSERT INTO public.cart_items VALUES (5, 450000, 2, 3, 4);
-INSERT INTO public.cart_items VALUES (6, 770000, 2, 3, 88);
-INSERT INTO public.cart_items VALUES (7, 900000, 3, 3, 103);
-INSERT INTO public.cart_items VALUES (8, 900000, 1, 3, 112);
+INSERT INTO public.cart_items VALUES (1, 450000, 2, '2025-08-07 00:44:32.315133', 2, 4);
+INSERT INTO public.cart_items VALUES (2, 450000, 2, '2025-08-07 00:44:35.68613', 2, 5);
+INSERT INTO public.cart_items VALUES (3, 770000, 3, '2025-08-07 00:44:43.638035', 2, 92);
+INSERT INTO public.cart_items VALUES (4, 880000, 1, '2025-08-07 00:44:49.636277', 2, 152);
+INSERT INTO public.cart_items VALUES (5, 810000, 1, '2025-08-07 00:44:53.850785', 2, 200);
+INSERT INTO public.cart_items VALUES (6, 750000, 1, '2025-08-07 00:44:57.232129', 2, 252);
+INSERT INTO public.cart_items VALUES (7, 820000, 1, '2025-08-07 00:45:02.710618', 2, 142);
+INSERT INTO public.cart_items VALUES (8, 800000, 1, '2025-08-07 00:45:28.353529', 5, 134);
+INSERT INTO public.cart_items VALUES (9, 900000, 1, '2025-08-07 00:45:33.499734', 5, 102);
+INSERT INTO public.cart_items VALUES (10, 780000, 2, '2025-08-07 00:45:41.677083', 5, 199);
+INSERT INTO public.cart_items VALUES (11, 720000, 2, '2025-08-07 00:45:45.379949', 5, 235);
+INSERT INTO public.cart_items VALUES (12, 400000, 2, '2025-08-07 00:45:48.643016', 5, 3);
+INSERT INTO public.cart_items VALUES (13, 880000, 2, '2025-08-07 00:46:30.504936', 3, 99);
+INSERT INTO public.cart_items VALUES (14, 650000, 1, '2025-08-07 00:46:35.09888', 3, 33);
+INSERT INTO public.cart_items VALUES (15, 820000, 1, '2025-08-07 00:46:38.900641', 3, 145);
+INSERT INTO public.cart_items VALUES (16, 950000, 1, '2025-08-07 00:46:43.097921', 3, 120);
+INSERT INTO public.cart_items VALUES (17, 600000, 1, '2025-08-07 00:46:48.716872', 3, 205);
+INSERT INTO public.cart_items VALUES (18, 690000, 1, '2025-08-07 00:46:53.140799', 3, 223);
 
 
 --
@@ -577,6 +619,14 @@ INSERT INTO public.files VALUES (131, 'adam-store/images/rvmkfzlgc4kzc00ux1vd', 
 INSERT INTO public.files VALUES (132, 'adam-store/images/uazvlqtbjnnvoed8gevu', '4.2.jpg', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754329643/adam-store/images/uazvlqtbjnnvoed8gevu.jpg', 'admin@gmail.com', '2025-08-05', 18);
 INSERT INTO public.files VALUES (133, 'adam-store/images/uivlw4xnrdtbws1txto6', '4.3.jpg', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754329645/adam-store/images/uivlw4xnrdtbws1txto6.jpg', 'admin@gmail.com', '2025-08-05', 18);
 INSERT INTO public.files VALUES (134, 'adam-store/images/uz1ae0eqr12tyaotxl6q', '4.4.jpg', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754329646/adam-store/images/uz1ae0eqr12tyaotxl6q.jpg', 'admin@gmail.com', '2025-08-05', 18);
+INSERT INTO public.files VALUES (135, 'adam-store/images/oo7qvqq6skjr3p1o2ext', '3.1.jpg', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754501923/adam-store/images/oo7qvqq6skjr3p1o2ext.jpg', 'admin@gmail.com', '2025-08-07', 19);
+INSERT INTO public.files VALUES (136, 'adam-store/images/oai0ourvab47xhcndrsm', '3.2.jpg', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754501925/adam-store/images/oai0ourvab47xhcndrsm.jpg', 'admin@gmail.com', '2025-08-07', 19);
+INSERT INTO public.files VALUES (137, 'adam-store/images/ffyhrgo2q6wcnufyr3nh', '3.3.jpg', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754501927/adam-store/images/ffyhrgo2q6wcnufyr3nh.jpg', 'admin@gmail.com', '2025-08-07', 19);
+INSERT INTO public.files VALUES (138, 'adam-store/images/iiwglbiopqozbqxtrjdz', '3.4.jpg', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754501929/adam-store/images/iiwglbiopqozbqxtrjdz.jpg', 'admin@gmail.com', '2025-08-07', 19);
+INSERT INTO public.files VALUES (139, 'adam-store/images/h28asddwvyh63ifwv4na', '4.1.jpg', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754502141/adam-store/images/h28asddwvyh63ifwv4na.jpg', 'admin@gmail.com', '2025-08-07', 20);
+INSERT INTO public.files VALUES (140, 'adam-store/images/jqszlemx29dtzide0wjo', '4.2.jpg', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754502143/adam-store/images/jqszlemx29dtzide0wjo.jpg', 'admin@gmail.com', '2025-08-07', 20);
+INSERT INTO public.files VALUES (141, 'adam-store/images/sxou53jtppkicfipyusx', '4.3.jpg', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754502145/adam-store/images/sxou53jtppkicfipyusx.jpg', 'admin@gmail.com', '2025-08-07', 20);
+INSERT INTO public.files VALUES (142, 'adam-store/images/ln0cognwxqlmzlfiqpgf', '4.4.jpg', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754502147/adam-store/images/ln0cognwxqlmzlfiqpgf.jpg', 'admin@gmail.com', '2025-08-07', 20);
 
 
 --
@@ -608,6 +658,7 @@ INSERT INTO public.orders VALUES (18, '2025-08-03', 960000, 'SHIPPED', '2025-08-
 INSERT INTO public.orders VALUES (19, '2025-08-03', 3285000, 'SHIPPED', '2025-08-05', 9, 9);
 INSERT INTO public.orders VALUES (20, '2025-08-03', 697000, 'SHIPPED', '2025-08-05', 9, 9);
 INSERT INTO public.orders VALUES (26, '2025-08-05', 3000000, 'PROCESSING', '2025-08-05', 1, 2);
+INSERT INTO public.orders VALUES (27, '2025-08-07', 1850000, 'PROCESSING', '2025-08-07', 4, 3);
 
 
 --
@@ -646,6 +697,8 @@ INSERT INTO public.order_items VALUES (30, 1, 880000, 156, 25);
 INSERT INTO public.order_items VALUES (31, 1, 500000, 23, 25);
 INSERT INTO public.order_items VALUES (32, 2, 770000, 91, 26);
 INSERT INTO public.order_items VALUES (33, 2, 700000, 32, 26);
+INSERT INTO public.order_items VALUES (34, 1, 500000, 24, 27);
+INSERT INTO public.order_items VALUES (35, 2, 650000, 31, 27);
 
 
 --
@@ -677,6 +730,7 @@ INSERT INTO public.payment_history VALUES (22, true, 'VNPAY', 2230000, 'PAID', '
 INSERT INTO public.payment_history VALUES (23, true, 'VNPAY', 2470000, 'PAID', '2025-08-04 15:26:11.384057', 24);
 INSERT INTO public.payment_history VALUES (24, true, 'VNPAY', 1430000, 'PAID', '2025-08-04 15:26:16.913022', 25);
 INSERT INTO public.payment_history VALUES (25, true, 'VNPAY', 3000000, 'PAID', '2025-08-05 00:49:26.185455', 26);
+INSERT INTO public.payment_history VALUES (26, true, 'VNPAY', 1850000, 'PAID', '2025-08-07 00:47:41.900844', 27);
 
 
 --
@@ -749,19 +803,22 @@ INSERT INTO public.refresh_tokens VALUES (24, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJh
 INSERT INTO public.refresh_tokens VALUES (25, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlcyI6WyJBRE1JTiJdLCJpc3MiOiJBZG1pbiIsImV4cCI6MTc1NjA1MjAwOSwiaWF0IjoxNzU0MzI0MDA5LCJqdGkiOiI2NGQ1M2NlOS1kNzFhLTRkMzAtYjBjYS1iOTc0M2Y3NjkyNGMifQ.z7ql2jhAJ8-tolICNhpMPjyijkuhcK2zPlpCv5xeNlZ6mIhrEH34oKLJmHUVpStKUfOf8qiPi-oLagx4nOPwXw', '2025-08-24 23:13:29.163916');
 INSERT INTO public.refresh_tokens VALUES (26, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlcyI6WyJBRE1JTiJdLCJpc3MiOiJBZG1pbiIsImV4cCI6MTc1NjA1NjYzNCwiaWF0IjoxNzU0MzI4NjM0LCJqdGkiOiIxNmVkYWU5NC1kY2Y1LTRiYTAtODFhMC05YjdjYTAyMmZlNzkifQ.k-ZD-xrShumWaGsEDAd267Km2Ix7TTIgz-yL_4suQuVnwsnC3Y5nA-M372HR75Cb3PKQPTjFRuwBAo-UyybovA', '2025-08-25 00:30:34.410547');
 INSERT INTO public.refresh_tokens VALUES (27, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsZWFuMjcwODA0QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJMw6ogVsSDbiBBbiIsImV4cCI6MTc1NjA1NzcxOCwiaWF0IjoxNzU0MzI5NzE4LCJqdGkiOiJkZWYwM2NlNC0xNzMxLTQwMDMtYjFkMS1hNTNlZDljM2YxZWYifQ.UJsfGrnhuPAXgTok8COxSDB0RXYEL_NhkasEWsh8NDpj3emvvmMFXtlCOC8hvZCdcg6rkWJSatdGjIjmRbLYZQ', '2025-08-25 00:48:38.419429');
+INSERT INTO public.refresh_tokens VALUES (28, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsZWFuMjcwODA0QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJMw6ogVsSDbiBBbiIsImV4cCI6MTc1NjIzMDIzNywiaWF0IjoxNzU0NTAyMjM3LCJqdGkiOiI2ZTMzYzE1My0yOGE2LTQwMTAtODk1MC1kZWRlOTE3YzlhMDcifQ._nPWhiZgPe8IVuAh6tEK_7VWJLow-u7wWWmdugtLrRaS8tZbKidO0dSXJuFLuJDFt8V0W6mHn-TKATBCA2rczw', '2025-08-27 00:43:57.946772');
+INSERT INTO public.refresh_tokens VALUES (29, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0aHV5ZHVuZzIxMDNAZ21haWwuY29tIiwicm9sZXMiOlsiQURNSU4iLCJVU0VSIl0sImlzcyI6IlRow7l5IER1bmciLCJleHAiOjE3NTYyMzAzMTEsImlhdCI6MTc1NDUwMjMxMSwianRpIjoiOTMzYmE3NGMtY2QxMC00YjhhLWEyMDUtYzQ3ZDAyZTk5YTEyIn0.FqTuGZy5RuMuiLOphFZYUpCV9onXyzV33QmaU00G4T7IpfnjTlUCugD5E6A6OKlNIHu1vrPo5ZxknTmhPTusEg', '2025-08-27 00:45:11.315098');
+INSERT INTO public.refresh_tokens VALUES (30, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYWltaW5odHUxMzA4MDNAZ21haWwuY29tIiwicm9sZXMiOlsiQURNSU4iLCJVU0VSIl0sImlzcyI6Ik1haSBNaW5oIFTDuiIsImV4cCI6MTc1NjIzMDM3NiwiaWF0IjoxNzU0NTAyMzc2LCJqdGkiOiI1Y2RhNjA5NS1lYjA0LTQxYjUtYWJlYy1kMjFjYmU5NTlkOTQifQ.da2M1FZ9mISJGjPcYxwZKjJ29X1LZOM7ChHH6c-p6nQOIbTMmpg4Ek75PBVkIwHA-gCFvjEiM3mCvwJlP5Zn9w', '2025-08-27 00:46:16.155599');
 
 
 --
 -- Data for Name: reviews; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO public.reviews VALUES (5, 3.5, 'Sản phẩm ổn trong tầm giá, giao hơi chậm một chút.', '["http://res.cloudinary.com/dz5wejuuf/image/upload/v1754328761/adam-store/images/r3qaeazpl1qcjqmurqga.webp"]', '2025-08-04', '2025-08-04', 2, 3, 25);
 INSERT INTO public.reviews VALUES (2, 3.9, 'Sản phẩm như mô tả, tuy nhiên chất vải chưa thực sự ưng ý.', '["http://res.cloudinary.com/dz5wejuuf/image/upload/v1754294228/adam-store/images/average1.webp", "http://res.cloudinary.com/dz5wejuuf/image/upload/v1754294229/adam-store/images/average2.webp"]', '2025-08-04', '2025-08-04', 2, 6, 2);
 INSERT INTO public.reviews VALUES (22, 4, 'Sản phẩm giống mô tả, chất lượng ổn định với mức giá này.', '[]', '2025-08-04', '2025-08-04', 8, 7, 18);
 INSERT INTO public.reviews VALUES (24, 2.5, 'Hàng khác ảnh quảng cáo, form hơi lỏng, đường may chưa đẹp.', '[]', '2025-08-04', '2025-08-04', 9, 6, 20);
 INSERT INTO public.reviews VALUES (1, 4.7, 'Sản phẩm rất tốt, giao hàng nhanh!', '["http://res.cloudinary.com/dz5wejuuf/image/upload/v1754328648/adam-store/images/zr4saxryyvom26sur28c.webp", "http://res.cloudinary.com/dz5wejuuf/image/upload/v1754328650/adam-store/images/vi0tnkyupjrzqmabjbph.webp"]', '2025-08-04', '2025-08-04', 2, 1, 1);
 INSERT INTO public.reviews VALUES (3, 4.5, 'Sản phẩm vượt mong đợi, đóng gói cẩn thận và chất lượng tuyệt vời!', '["http://res.cloudinary.com/dz5wejuuf/image/upload/v1754328652/adam-store/images/md0vv0m5xmeyhsbpeltr.webp"]', '2025-08-04', '2025-08-04', 2, 7, 3);
 INSERT INTO public.reviews VALUES (4, 3.7, 'Chất lượng sản phẩm rất tốt, đúng như mô tả. Sẽ ủng hộ lần sau!', '["http://res.cloudinary.com/dz5wejuuf/image/upload/v1754328760/adam-store/images/uctjo7f5x9v8jrqfp27p.webp"]', '2025-08-04', '2025-08-04', 2, 7, 22);
-INSERT INTO public.reviews VALUES (5, 3.5, 'Sản phẩm ổn trong tầm giá, giao hơi chậm một chút.', '["http://res.cloudinary.com/dz5wejuuf/image/upload/v1754328761/adam-store/images/r3qaeazpl1qcjqmurqga.webp"]', '2025-08-04', '2025-08-04', 2, 3, 25);
 INSERT INTO public.reviews VALUES (6, 2.8, 'Sản phẩm không giống mô tả, cần cải thiện khâu kiểm tra hàng.', '["http://res.cloudinary.com/dz5wejuuf/image/upload/v1754328762/adam-store/images/wzgb2uw2wsiqbpvfga32.webp"]', '2025-08-04', '2025-08-04', 3, 1, 4);
 INSERT INTO public.reviews VALUES (7, 2.9, 'Giao sai màu, chất lượng chưa như mong đợi.', '["http://res.cloudinary.com/dz5wejuuf/image/upload/v1754328763/adam-store/images/sqesoue5gah9e4qpu2tv.webp"]', '2025-08-04', '2025-08-04', 3, 6, 5);
 INSERT INTO public.reviews VALUES (8, 3.5, 'Tạm ổn, cần cải thiện chất lượng đóng gói.', '["http://res.cloudinary.com/dz5wejuuf/image/upload/v1754328762/adam-store/images/wzgb2uw2wsiqbpvfga32.webp"]', '2025-08-04', '2025-08-04', 3, 12, 26);
@@ -828,7 +885,7 @@ SELECT pg_catalog.setval('public.branches_id_seq', 3, true);
 -- Name: cart_items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.cart_items_id_seq', 8, true);
+SELECT pg_catalog.setval('public.cart_items_id_seq', 18, true);
 
 
 --
@@ -856,28 +913,28 @@ SELECT pg_catalog.setval('public.colors_id_seq', 4, true);
 -- Name: files_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.files_id_seq', 134, true);
+SELECT pg_catalog.setval('public.files_id_seq', 142, true);
 
 
 --
 -- Name: order_items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.order_items_id_seq', 33, true);
+SELECT pg_catalog.setval('public.order_items_id_seq', 35, true);
 
 
 --
 -- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.orders_id_seq', 26, true);
+SELECT pg_catalog.setval('public.orders_id_seq', 27, true);
 
 
 --
 -- Name: payment_history_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.payment_history_id_seq', 25, true);
+SELECT pg_catalog.setval('public.payment_history_id_seq', 26, true);
 
 
 --
@@ -891,14 +948,14 @@ SELECT pg_catalog.setval('public.permissions_id_seq', 1, false);
 -- Name: product_variants_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.product_variants_id_seq', 303, true);
+SELECT pg_catalog.setval('public.product_variants_id_seq', 333, true);
 
 
 --
 -- Name: products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.products_id_seq', 18, true);
+SELECT pg_catalog.setval('public.products_id_seq', 20, true);
 
 
 --
@@ -919,7 +976,7 @@ SELECT pg_catalog.setval('public.promotions_id_seq', 7, true);
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 27, true);
+SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 30, true);
 
 
 --

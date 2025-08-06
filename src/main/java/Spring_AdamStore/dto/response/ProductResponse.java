@@ -30,6 +30,9 @@ public class ProductResponse {
     private Integer soldQuantity;
     private Integer totalReviews;
 
+    private Double minPrice;
+    private Double maxPrice;
+
     private EntityStatus status;
 
     private LocalDate createdAt;

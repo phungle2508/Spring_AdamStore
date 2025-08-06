@@ -4,6 +4,8 @@ import Spring_AdamStore.dto.basic.ImageBasic;
 import Spring_AdamStore.dto.basic.ProductVariantBasic;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Builder
@@ -15,6 +17,7 @@ public class CartItemResponse {
 
     private Double price;
     private Integer quantity;
+    private LocalDateTime createdAt;
 
     private ImageBasic image;
 

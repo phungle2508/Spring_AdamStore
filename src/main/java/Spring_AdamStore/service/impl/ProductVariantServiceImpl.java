@@ -71,7 +71,11 @@ public class ProductVariantServiceImpl implements ProductVariantService {
                 .isAvailable(true)
                 .build();
 
-        return productVariantMapper.toProductVariantResponse(productVariantRepository.save(variant), variantMappingHelper);
+        productVariantRepository.save(variant);
+
+        updateMinMaxPriceForProduct(request.getProductId());
+
+        return productVariantMapper.toProductVariantResponse(variant, variantMappingHelper);
     }
 
 
@@ -85,8 +89,11 @@ public class ProductVariantServiceImpl implements ProductVariantService {
 
         productVariant.setPrice(request.getPrice());
         productVariant.setQuantity(request.getQuantity());
+        productVariantRepository.save(productVariant);
 
-        return productVariantMapper.toProductVariantResponse(productVariantRepository.save(productVariant), variantMappingHelper);
+        updateMinMaxPriceForProduct(productVariant.getProductId());
+
+        return productVariantMapper.toProductVariantResponse(productVariant, variantMappingHelper);
     }
 
     @Override
@@ -143,12 +150,10 @@ public class ProductVariantServiceImpl implements ProductVariantService {
     }
 
 
-
     @Override
     public List<ProductVariant> findAllProductVariantByProductId(Long id) {
         return productVariantRepository.findAllByProductId(id);
     }
-
 
     private Color findColorById(Long id) {
         return colorRepository.findById(id)
@@ -163,6 +168,15 @@ public class ProductVariantServiceImpl implements ProductVariantService {
     private Product findProductById(Long id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
+    }
+
+    private void updateMinMaxPriceForProduct(Long productId){
+        Product product = findProductById(productId);
+
+        product.setMaxPrice(productVariantRepository.findMaxPriceByProductId(product.getId()));
+        product.setMinPrice(productVariantRepository.findMinPriceByProductId(product.getId()));
+
+        productRepository.save(product);
     }
 
 }

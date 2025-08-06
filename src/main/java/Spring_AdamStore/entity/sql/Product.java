@@ -38,6 +38,10 @@ public class Product {
     private Double averageRating;
     private Integer totalReviews;
 
+    private Double minPrice;
+    private Double maxPrice;
+
+
     @Enumerated(EnumType.STRING)
     private EntityStatus status;
 
