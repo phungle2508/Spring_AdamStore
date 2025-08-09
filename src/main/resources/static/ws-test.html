@@ -49,12 +49,13 @@
 <ul id="messageList"></ul>
 
 <script>
+    // Dùng base URL linh hoạt theo môi trường
+    const baseUrl = window.location.origin + '/adamstore';
     let stompClient = null;
     let jwtToken = null;
     let currentUserId = null;
 
     const allConversations = [];
-    const renderedConversations = new Set();
     const subscribedConversationIds = new Set();
     const renderedMessageIds = new Set();
 
@@ -67,7 +68,7 @@
             return;
         }
 
-        fetch("http://localhost:8080/adamstore/v1/public/auth/login", {
+        fetch(`${baseUrl}/v1/public/auth/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password })
@@ -87,7 +88,7 @@
     }
 
     function connectWebSocket() {
-        const socket = new SockJS("http://localhost:8080/adamstore/ws");
+        const socket = new SockJS(`${baseUrl}/ws`);
         stompClient = Stomp.over(socket);
 
         stompClient.connect(
@@ -106,7 +107,7 @@
     }
 
     function loadMyConversations() {
-        fetch("http://localhost:8080/adamstore/v1/private/conversations/my-conversations", {
+        fetch(`${baseUrl}/v1/private/conversations/my-conversations`, {
             headers: { Authorization: "Bearer " + jwtToken }
         })
             .then(res => res.json())
@@ -171,7 +172,7 @@
             return;
         }
 
-        fetch("http://localhost:8080/adamstore/v1/private/conversations/create", {
+        fetch(`${baseUrl}/v1/private/conversations/create`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -195,7 +196,7 @@
     }
 
     function loadMessages(convoId) {
-        fetch(`http://localhost:8080/adamstore/v1/private/messages?conversationId=${convoId}`, {
+        fetch(`${baseUrl}/v1/private/messages?conversationId=${convoId}`, {
             headers: { Authorization: "Bearer " + jwtToken }
         })
             .then(res => res.json())
@@ -213,7 +214,6 @@
         stompClient.subscribe("/topic/conversation." + convoId, (response) => {
             const msg = JSON.parse(response.body);
 
-            // Neu la xoa tin nhan
             if (msg.type === "DELETE") {
                 const messageIdToDelete = msg.messageId;
                 const liToDelete = document.querySelector(`[data-message-id='${messageIdToDelete}']`);
@@ -224,7 +224,6 @@
                 return;
             }
 
-            // Nguoc lai thi la tao message
             renderMessage(msg);
         });
 
@@ -267,7 +266,7 @@
     function deleteMessage(messageId, liElement) {
         if (!confirm("❓ Are you sure you want to delete this message?")) return;
 
-        fetch(`http://localhost:8080/adamstore/v1/private/messages/${messageId}`, {
+        fetch(`${baseUrl}/v1/private/messages/${messageId}`, {
             method: "DELETE",
             headers: { Authorization: "Bearer " + jwtToken }
         })
