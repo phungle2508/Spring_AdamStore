@@ -33,6 +33,8 @@ INSERT INTO public.addresses VALUES (11, true, true, 'ACTIVE', '0345224008', 's�
 INSERT INTO public.addresses VALUES (5, false, true, 'ACTIVE', '0339896911', 'số 133, đường 19-5', '1B1515', 1542, 201, 5, 'thuydung2103@gmail.com', 'thuydung2103@gmail.com', '2025-08-01', '2025-08-08');
 INSERT INTO public.addresses VALUES (12, true, true, 'ACTIVE', '0327391133', 'số 201', '1B1517', 1542, 201, 10, 'mai123@gmail.com', 'mai123@gmail.com', '2025-08-08', '2025-08-08');
 INSERT INTO public.addresses VALUES (13, true, true, 'ACTIVE', '0327399988', 'số 22', '1B1510', 1542, 201, 11, 'manh123@gmail.com', 'manh123@gmail.com', '2025-08-08', '2025-08-08');
+INSERT INTO public.addresses VALUES (14, true, true, 'ACTIVE', '0327399921', 'số 233', '1B1510', 1542, 201, 12, 'tien123@gmail.com', 'tien123@gmail.com', '2025-08-09', '2025-08-09');
+INSERT INTO public.addresses VALUES (15, true, true, 'ACTIVE', '0337299158', 'số 106', '1B1510', 1542, 201, 13, 'hieu123@gmail.com', 'hieu123@gmail.com', '2025-08-09', '2025-08-09');
 
 
 --
@@ -59,6 +61,8 @@ INSERT INTO public.users VALUES (9, 'Đình Văn', 'van123@gmail.com', '$2a$10$g
 INSERT INTO public.users VALUES (3, 'Mai Minh Tú', 'maiminhtu130803@gmail.com', '$2a$10$UevFeye5rmxrHhdCL9fQ3us1U7KhNgVMeufj.7amTXG83URO45.fG', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754294894/adam-store/images/glsoav6mdh662arvlkgr.webp', NULL, NULL, 'ACTIVE', 'lean270804@gmail.com', 'maiminhtu130803@gmail.com', '2025-08-01', '2025-08-04');
 INSERT INTO public.users VALUES (10, 'Thị Mai', 'mai123@gmail.com', '$2a$10$F7kSIqfAAbvXajDqHm2BXOgGVm0dEf.sPQy5pXky1hvkkXsSg/PQS', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754643232/adam-store/images/ax13v0ooslvvb28to6ys.jpg', NULL, NULL, 'ACTIVE', 'admin@gmail.com', 'mai123@gmail.com', '2025-08-08', '2025-08-08');
 INSERT INTO public.users VALUES (11, 'Tiến Mạnh', 'manh123@gmail.com', '$2a$10$G2eyoY1qfUCtMgaabKb5wO0asWmd3R/HQ69E9MNznCzWSZWOeUaLG', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754643704/adam-store/images/k7yzyf6zhh3qgebbkeaw.jpg', NULL, NULL, 'ACTIVE', 'mai123@gmail.com', 'manh123@gmail.com', '2025-08-08', '2025-08-08');
+INSERT INTO public.users VALUES (12, 'Duy Tiến', 'tien123@gmail.com', '$2a$10$3BhfV9AqDZgjKuOsagH7Ce8zBmBokrWuXcJHmmsyAl5T6jeu9qYPO', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754753036/adam-store/images/hsxqub3gmvnhoovxilg3.jpg', NULL, NULL, 'ACTIVE', 'manh123@gmail.com', 'tien123@gmail.com', '2025-08-09', '2025-08-09');
+INSERT INTO public.users VALUES (13, 'Điêu Hiếu', 'hieu123@gmail.com', '$2a$10$HbXPDjq0HE3j1fTI/MF8PeUto0iDdEUxZjWSETcvcUbQ6PVqZZ4eq', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754753410/adam-store/images/mpbhmj0cfalthl9multy.jpg', NULL, NULL, 'ACTIVE', 'tien123@gmail.com', 'hieu123@gmail.com', '2025-08-09', '2025-08-09');
 
 
 --
@@ -76,6 +80,8 @@ INSERT INTO public.carts VALUES (8, '2025-08-03', '2025-08-03', 8);
 INSERT INTO public.carts VALUES (9, '2025-08-03', '2025-08-03', 9);
 INSERT INTO public.carts VALUES (10, '2025-08-08', '2025-08-08', 10);
 INSERT INTO public.carts VALUES (11, '2025-08-08', '2025-08-08', 11);
+INSERT INTO public.carts VALUES (12, '2025-08-09', '2025-08-09', 12);
+INSERT INTO public.carts VALUES (13, '2025-08-09', '2025-08-09', 13);
 
 
 --
@@ -133,6 +139,9 @@ INSERT INTO public.products VALUES (26, 'ÁO POLO VẢI BẠC MÀU IN CHỮ', '�
 INSERT INTO public.products VALUES (27, 'QUẦN SHORT BERMUDA VẢI PHA LINEN', 'Quần short Bermuda vải pha linen, thoáng mát, lịch sự, thích hợp dạo phố, đi làm hay đi chơi.', true, 0, 5, 0, 450000, 520000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-08', '2025-08-08', 5);
 INSERT INTO public.products VALUES (28, 'QUẦN SHORT BERMUDA VẢI DỆT JACQUARD', 'Quần short Bermuda vải dệt Jacquard, họa tiết sang trọng, thoáng mát, phù hợp đi chơi và dạo phố.', true, 0, 5, 0, 510000, 560000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-08', '2025-08-08', 5);
 INSERT INTO public.products VALUES (29, 'ÁO PHÔNG CỔ ĐÍNH KHUY', 'Áo phông cổ đính khuy, chất liệu thoải mái, phù hợp mặc đi làm, đi chơi, dễ phối đồ.', true, 0, 5, 0, 630000, 670000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-08', '2025-08-08', 1);
+INSERT INTO public.products VALUES (30, 'QUẦN JEANS RÁCH DÁNG SKINNY FIT', 'Quần jeans rách dáng skinny fit, co giãn nhẹ, phong cách trẻ trung, dễ phối đồ.', true, 0, 5, 0, 810000, 880000, 'ACTIVE', 'manh123@gmail.com', 'manh123@gmail.com', '2025-08-09', '2025-08-09', 6);
+INSERT INTO public.products VALUES (31, 'JEANS BARREL FIT LIMITED EDITION', 'Quần jeans dáng barrel fit phiên bản giới hạn, chất denim cao cấp, form rộng thoải mái, phong cách thời thượng.', true, 0, 5, 0, 830000, 900000, 'ACTIVE', 'manh123@gmail.com', 'manh123@gmail.com', '2025-08-09', '2025-08-09', 6);
+INSERT INTO public.products VALUES (32, 'QUẦN JEANS FLARE FIT', 'Quần jeans ống loe, chất denim cao cấp, tôn dáng, dễ phối đồ, phù hợp nhiều phong cách.', true, 0, 5, 0, 880000, 920000, 'ACTIVE', 'manh123@gmail.com', 'manh123@gmail.com', '2025-08-09', '2025-08-09', 6);
 
 
 --
@@ -141,7 +150,6 @@ INSERT INTO public.products VALUES (29, 'ÁO PHÔNG CỔ ĐÍNH KHUY', 'Áo phô
 
 INSERT INTO public.product_variants VALUES (6, true, 450000, 100, 'ACTIVE', 1, 2, 4);
 INSERT INTO public.product_variants VALUES (8, true, 450000, 100, 'ACTIVE', 1, 3, 4);
-INSERT INTO public.product_variants VALUES (11, true, 450000, 100, 'ACTIVE', 1, 2, 1);
 INSERT INTO public.product_variants VALUES (13, true, 450000, 100, 'ACTIVE', 1, 1, 4);
 INSERT INTO public.product_variants VALUES (18, true, 500000, 100, 'ACTIVE', 2, 3, 5);
 INSERT INTO public.product_variants VALUES (19, true, 500000, 100, 'ACTIVE', 2, 2, 1);
@@ -201,7 +209,6 @@ INSERT INTO public.product_variants VALUES (104, true, 900000, 100, 'ACTIVE', 7,
 INSERT INTO public.product_variants VALUES (106, true, 900000, 100, 'ACTIVE', 7, 2, 3);
 INSERT INTO public.product_variants VALUES (107, true, 900000, 100, 'ACTIVE', 7, 2, 2);
 INSERT INTO public.product_variants VALUES (108, true, 900000, 100, 'ACTIVE', 7, 4, 4);
-INSERT INTO public.product_variants VALUES (109, true, 900000, 100, 'ACTIVE', 7, 4, 5);
 INSERT INTO public.product_variants VALUES (111, true, 900000, 100, 'ACTIVE', 7, 1, 1);
 INSERT INTO public.product_variants VALUES (112, true, 900000, 100, 'ACTIVE', 7, 1, 2);
 INSERT INTO public.product_variants VALUES (118, true, 950000, 100, 'ACTIVE', 8, 1, 4);
@@ -213,7 +220,6 @@ INSERT INTO public.product_variants VALUES (124, true, 950000, 100, 'ACTIVE', 8,
 INSERT INTO public.product_variants VALUES (125, true, 950000, 100, 'ACTIVE', 8, 3, 2);
 INSERT INTO public.product_variants VALUES (126, true, 950000, 100, 'ACTIVE', 8, 1, 6);
 INSERT INTO public.product_variants VALUES (127, true, 950000, 100, 'ACTIVE', 8, 3, 4);
-INSERT INTO public.product_variants VALUES (128, true, 950000, 100, 'ACTIVE', 8, 2, 2);
 INSERT INTO public.product_variants VALUES (135, true, 820000, 100, 'ACTIVE', 9, 1, 3);
 INSERT INTO public.product_variants VALUES (136, true, 820000, 100, 'ACTIVE', 9, 4, 5);
 INSERT INTO public.product_variants VALUES (137, true, 820000, 100, 'ACTIVE', 9, 2, 2);
@@ -226,6 +232,9 @@ INSERT INTO public.product_variants VALUES (143, true, 820000, 100, 'ACTIVE', 9,
 INSERT INTO public.product_variants VALUES (144, true, 820000, 100, 'ACTIVE', 9, 4, 2);
 INSERT INTO public.product_variants VALUES (120, true, 950000, 97, 'ACTIVE', 8, 2, 4);
 INSERT INTO public.product_variants VALUES (5, true, 450000, 99, 'ACTIVE', 1, 2, 3);
+INSERT INTO public.product_variants VALUES (109, true, 900000, 99, 'ACTIVE', 7, 4, 5);
+INSERT INTO public.product_variants VALUES (11, true, 450000, 99, 'ACTIVE', 1, 2, 1);
+INSERT INTO public.product_variants VALUES (128, true, 950000, 99, 'ACTIVE', 8, 2, 2);
 INSERT INTO public.product_variants VALUES (145, true, 820000, 100, 'ACTIVE', 9, 1, 2);
 INSERT INTO public.product_variants VALUES (151, true, 880000, 100, 'ACTIVE', 10, 3, 6);
 INSERT INTO public.product_variants VALUES (152, true, 880000, 100, 'ACTIVE', 10, 3, 3);
@@ -269,11 +278,9 @@ INSERT INTO public.product_variants VALUES (102, true, 900000, 97, 'ACTIVE', 7, 
 INSERT INTO public.product_variants VALUES (7, true, 450000, 96, 'ACTIVE', 1, 3, 1);
 INSERT INTO public.product_variants VALUES (110, true, 900000, 99, 'ACTIVE', 7, 1, 3);
 INSERT INTO public.product_variants VALUES (205, true, 600000, 100, 'ACTIVE', 13, 3, 6);
-INSERT INTO public.product_variants VALUES (206, true, 600000, 100, 'ACTIVE', 13, 2, 2);
 INSERT INTO public.product_variants VALUES (207, true, 600000, 100, 'ACTIVE', 13, 1, 1);
 INSERT INTO public.product_variants VALUES (208, true, 600000, 100, 'ACTIVE', 13, 1, 5);
 INSERT INTO public.product_variants VALUES (209, true, 600000, 100, 'ACTIVE', 13, 2, 4);
-INSERT INTO public.product_variants VALUES (210, true, 600000, 100, 'ACTIVE', 13, 3, 4);
 INSERT INTO public.product_variants VALUES (211, true, 600000, 100, 'ACTIVE', 13, 2, 6);
 INSERT INTO public.product_variants VALUES (212, true, 600000, 100, 'ACTIVE', 13, 1, 6);
 INSERT INTO public.product_variants VALUES (213, true, 600000, 100, 'ACTIVE', 13, 2, 3);
@@ -281,16 +288,13 @@ INSERT INTO public.product_variants VALUES (214, true, 600000, 100, 'ACTIVE', 13
 INSERT INTO public.product_variants VALUES (215, true, 600000, 100, 'ACTIVE', 13, 1, 4);
 INSERT INTO public.product_variants VALUES (216, true, 600000, 100, 'ACTIVE', 13, 3, 5);
 INSERT INTO public.product_variants VALUES (217, true, 600000, 100, 'ACTIVE', 13, 3, 2);
-INSERT INTO public.product_variants VALUES (223, true, 690000, 100, 'ACTIVE', 14, 2, 6);
 INSERT INTO public.product_variants VALUES (224, true, 690000, 100, 'ACTIVE', 14, 1, 1);
 INSERT INTO public.product_variants VALUES (225, true, 690000, 100, 'ACTIVE', 14, 1, 2);
 INSERT INTO public.product_variants VALUES (226, true, 690000, 100, 'ACTIVE', 14, 3, 6);
 INSERT INTO public.product_variants VALUES (227, true, 690000, 100, 'ACTIVE', 14, 2, 2);
 INSERT INTO public.product_variants VALUES (228, true, 690000, 100, 'ACTIVE', 14, 3, 2);
 INSERT INTO public.product_variants VALUES (229, true, 690000, 100, 'ACTIVE', 14, 3, 5);
-INSERT INTO public.product_variants VALUES (230, true, 690000, 100, 'ACTIVE', 14, 2, 1);
 INSERT INTO public.product_variants VALUES (231, true, 690000, 100, 'ACTIVE', 14, 3, 1);
-INSERT INTO public.product_variants VALUES (232, true, 690000, 100, 'ACTIVE', 14, 1, 3);
 INSERT INTO public.product_variants VALUES (233, true, 690000, 100, 'ACTIVE', 14, 1, 5);
 INSERT INTO public.product_variants VALUES (234, true, 690000, 100, 'ACTIVE', 14, 2, 3);
 INSERT INTO public.product_variants VALUES (241, true, 750000, 100, 'ACTIVE', 15, 2, 2);
@@ -313,6 +317,11 @@ INSERT INTO public.product_variants VALUES (36, true, 700000, 98, 'ACTIVE', 3, 1
 INSERT INTO public.product_variants VALUES (198, true, 780000, 99, 'ACTIVE', 12, 2, 2);
 INSERT INTO public.product_variants VALUES (259, true, 900000, 100, 'ACTIVE', 16, 1, 5);
 INSERT INTO public.product_variants VALUES (172, true, 750000, 99, 'ACTIVE', 11, 4, 4);
+INSERT INTO public.product_variants VALUES (206, true, 600000, 97, 'ACTIVE', 13, 2, 2);
+INSERT INTO public.product_variants VALUES (232, true, 690000, 99, 'ACTIVE', 14, 1, 3);
+INSERT INTO public.product_variants VALUES (230, true, 690000, 98, 'ACTIVE', 14, 2, 1);
+INSERT INTO public.product_variants VALUES (210, true, 600000, 99, 'ACTIVE', 13, 3, 4);
+INSERT INTO public.product_variants VALUES (223, true, 690000, 99, 'ACTIVE', 14, 2, 6);
 INSERT INTO public.product_variants VALUES (261, true, 900000, 100, 'ACTIVE', 16, 2, 6);
 INSERT INTO public.product_variants VALUES (262, true, 900000, 100, 'ACTIVE', 16, 1, 6);
 INSERT INTO public.product_variants VALUES (263, true, 900000, 100, 'ACTIVE', 16, 1, 1);
@@ -334,7 +343,6 @@ INSERT INTO public.product_variants VALUES (285, true, 990000, 100, 'ACTIVE', 17
 INSERT INTO public.product_variants VALUES (289, true, 960000, 100, 'ACTIVE', 18, 1, 4);
 INSERT INTO public.product_variants VALUES (290, true, 960000, 100, 'ACTIVE', 18, 2, 5);
 INSERT INTO public.product_variants VALUES (291, true, 960000, 100, 'ACTIVE', 18, 3, 5);
-INSERT INTO public.product_variants VALUES (292, true, 960000, 100, 'ACTIVE', 18, 1, 6);
 INSERT INTO public.product_variants VALUES (293, true, 960000, 100, 'ACTIVE', 18, 2, 3);
 INSERT INTO public.product_variants VALUES (294, true, 960000, 100, 'ACTIVE', 18, 1, 5);
 INSERT INTO public.product_variants VALUES (295, true, 960000, 100, 'ACTIVE', 18, 2, 4);
@@ -344,7 +352,6 @@ INSERT INTO public.product_variants VALUES (298, true, 960000, 100, 'ACTIVE', 18
 INSERT INTO public.product_variants VALUES (299, true, 960000, 100, 'ACTIVE', 18, 3, 2);
 INSERT INTO public.product_variants VALUES (300, true, 960000, 100, 'ACTIVE', 18, 3, 1);
 INSERT INTO public.product_variants VALUES (2, true, 400000, 97, 'ACTIVE', 1, 3, 2);
-INSERT INTO public.product_variants VALUES (3, true, 400000, 99, 'ACTIVE', 1, 1, 3);
 INSERT INTO public.product_variants VALUES (14, true, 500000, 100, 'ACTIVE', 1, 2, 5);
 INSERT INTO public.product_variants VALUES (15, true, 500000, 100, 'ACTIVE', 1, 2, 2);
 INSERT INTO public.product_variants VALUES (16, true, 450000, 100, 'ACTIVE', 2, 1, 2);
@@ -400,6 +407,8 @@ INSERT INTO public.product_variants VALUES (167, true, 720000, 100, 'ACTIVE', 11
 INSERT INTO public.product_variants VALUES (168, true, 720000, 100, 'ACTIVE', 11, 2, 6);
 INSERT INTO public.product_variants VALUES (99, true, 880000, 98, 'ACTIVE', 7, 2, 5);
 INSERT INTO public.product_variants VALUES (1, true, 400000, 99, 'ACTIVE', 1, 1, 2);
+INSERT INTO public.product_variants VALUES (292, true, 960000, 98, 'ACTIVE', 18, 1, 6);
+INSERT INTO public.product_variants VALUES (3, true, 400000, 98, 'ACTIVE', 1, 1, 3);
 INSERT INTO public.product_variants VALUES (182, true, 780000, 100, 'ACTIVE', 11, 1, 2);
 INSERT INTO public.product_variants VALUES (183, true, 780000, 100, 'ACTIVE', 11, 2, 3);
 INSERT INTO public.product_variants VALUES (184, true, 760000, 100, 'ACTIVE', 12, 1, 1);
@@ -473,7 +482,6 @@ INSERT INTO public.product_variants VALUES (336, true, 810000, 100, 'ACTIVE', 21
 INSERT INTO public.product_variants VALUES (337, true, 810000, 100, 'ACTIVE', 21, 1, 1);
 INSERT INTO public.product_variants VALUES (338, true, 830000, 100, 'ACTIVE', 21, 1, 3);
 INSERT INTO public.product_variants VALUES (339, true, 810000, 100, 'ACTIVE', 21, 2, 1);
-INSERT INTO public.product_variants VALUES (340, true, 880000, 100, 'ACTIVE', 21, 2, 5);
 INSERT INTO public.product_variants VALUES (341, true, 880000, 100, 'ACTIVE', 21, 1, 6);
 INSERT INTO public.product_variants VALUES (342, true, 810000, 100, 'ACTIVE', 21, 2, 2);
 INSERT INTO public.product_variants VALUES (343, true, 880000, 100, 'ACTIVE', 21, 2, 6);
@@ -484,9 +492,10 @@ INSERT INTO public.product_variants VALUES (347, true, 950000, 100, 'ACTIVE', 22
 INSERT INTO public.product_variants VALUES (348, true, 950000, 100, 'ACTIVE', 22, 1, 4);
 INSERT INTO public.product_variants VALUES (349, true, 920000, 100, 'ACTIVE', 22, 1, 1);
 INSERT INTO public.product_variants VALUES (350, true, 990000, 100, 'ACTIVE', 22, 1, 6);
+INSERT INTO public.product_variants VALUES (320, true, 980000, 94, 'ACTIVE', 20, 2, 6);
 INSERT INTO public.product_variants VALUES (270, true, 920000, 99, 'ACTIVE', 17, 3, 3);
 INSERT INTO public.product_variants VALUES (220, true, 660000, 99, 'ACTIVE', 14, 2, 5);
-INSERT INTO public.product_variants VALUES (320, true, 980000, 97, 'ACTIVE', 20, 2, 6);
+INSERT INTO public.product_variants VALUES (340, true, 880000, 98, 'ACTIVE', 21, 2, 5);
 INSERT INTO public.product_variants VALUES (351, true, 950000, 100, 'ACTIVE', 22, 2, 3);
 INSERT INTO public.product_variants VALUES (352, true, 950000, 100, 'ACTIVE', 22, 2, 5);
 INSERT INTO public.product_variants VALUES (353, true, 990000, 100, 'ACTIVE', 22, 2, 6);
@@ -570,10 +579,10 @@ INSERT INTO public.product_variants VALUES (435, true, 520000, 100, 'ACTIVE', 27
 INSERT INTO public.product_variants VALUES (436, true, 530000, 100, 'ACTIVE', 28, 1, 3);
 INSERT INTO public.product_variants VALUES (437, true, 530000, 100, 'ACTIVE', 28, 1, 4);
 INSERT INTO public.product_variants VALUES (438, true, 560000, 100, 'ACTIVE', 28, 1, 6);
-INSERT INTO public.product_variants VALUES (406, true, 660000, 98, 'ACTIVE', 25, 3, 4);
 INSERT INTO public.product_variants VALUES (370, true, 880000, 98, 'ACTIVE', 23, 1, 2);
 INSERT INTO public.product_variants VALUES (369, true, 900000, 97, 'ACTIVE', 23, 3, 4);
 INSERT INTO public.product_variants VALUES (410, true, 620000, 94, 'ACTIVE', 25, 2, 2);
+INSERT INTO public.product_variants VALUES (406, true, 660000, 96, 'ACTIVE', 25, 3, 4);
 INSERT INTO public.product_variants VALUES (439, true, 530000, 100, 'ACTIVE', 28, 2, 4);
 INSERT INTO public.product_variants VALUES (440, true, 510000, 100, 'ACTIVE', 28, 2, 2);
 INSERT INTO public.product_variants VALUES (441, true, 530000, 100, 'ACTIVE', 28, 2, 3);
@@ -598,6 +607,54 @@ INSERT INTO public.product_variants VALUES (459, true, 670000, 100, 'ACTIVE', 29
 INSERT INTO public.product_variants VALUES (360, true, 880000, 97, 'ACTIVE', 23, 1, 1);
 INSERT INTO public.product_variants VALUES (201, true, 810000, 98, 'ACTIVE', 12, 3, 4);
 INSERT INTO public.product_variants VALUES (260, true, 900000, 97, 'ACTIVE', 16, 2, 2);
+INSERT INTO public.product_variants VALUES (460, true, 880000, 100, 'ACTIVE', 30, 2, 6);
+INSERT INTO public.product_variants VALUES (461, true, 840000, 100, 'ACTIVE', 30, 1, 3);
+INSERT INTO public.product_variants VALUES (462, true, 840000, 100, 'ACTIVE', 30, 1, 5);
+INSERT INTO public.product_variants VALUES (463, true, 810000, 100, 'ACTIVE', 30, 2, 2);
+INSERT INTO public.product_variants VALUES (464, true, 840000, 100, 'ACTIVE', 30, 2, 4);
+INSERT INTO public.product_variants VALUES (465, true, 840000, 100, 'ACTIVE', 30, 2, 3);
+INSERT INTO public.product_variants VALUES (466, true, 840000, 100, 'ACTIVE', 30, 2, 5);
+INSERT INTO public.product_variants VALUES (467, true, 880000, 100, 'ACTIVE', 30, 1, 6);
+INSERT INTO public.product_variants VALUES (468, true, 810000, 100, 'ACTIVE', 30, 1, 1);
+INSERT INTO public.product_variants VALUES (469, true, 810000, 100, 'ACTIVE', 30, 1, 2);
+INSERT INTO public.product_variants VALUES (471, true, 810000, 100, 'ACTIVE', 30, 2, 1);
+INSERT INTO public.product_variants VALUES (473, true, 830000, 100, 'ACTIVE', 31, 1, 2);
+INSERT INTO public.product_variants VALUES (474, true, 860000, 100, 'ACTIVE', 31, 3, 4);
+INSERT INTO public.product_variants VALUES (475, true, 900000, 100, 'ACTIVE', 31, 1, 6);
+INSERT INTO public.product_variants VALUES (476, true, 860000, 100, 'ACTIVE', 31, 2, 4);
+INSERT INTO public.product_variants VALUES (477, true, 860000, 100, 'ACTIVE', 31, 1, 3);
+INSERT INTO public.product_variants VALUES (478, true, 900000, 100, 'ACTIVE', 31, 3, 5);
+INSERT INTO public.product_variants VALUES (479, true, 900000, 100, 'ACTIVE', 31, 2, 6);
+INSERT INTO public.product_variants VALUES (481, true, 830000, 100, 'ACTIVE', 31, 1, 1);
+INSERT INTO public.product_variants VALUES (482, true, 900000, 100, 'ACTIVE', 31, 1, 5);
+INSERT INTO public.product_variants VALUES (483, true, 830000, 100, 'ACTIVE', 31, 3, 2);
+INSERT INTO public.product_variants VALUES (484, true, 860000, 100, 'ACTIVE', 31, 3, 3);
+INSERT INTO public.product_variants VALUES (485, true, 830000, 100, 'ACTIVE', 31, 2, 1);
+INSERT INTO public.product_variants VALUES (486, true, 860000, 100, 'ACTIVE', 31, 2, 3);
+INSERT INTO public.product_variants VALUES (487, true, 860000, 100, 'ACTIVE', 31, 1, 4);
+INSERT INTO public.product_variants VALUES (488, true, 830000, 100, 'ACTIVE', 31, 2, 2);
+INSERT INTO public.product_variants VALUES (489, true, 900000, 100, 'ACTIVE', 31, 3, 6);
+INSERT INTO public.product_variants VALUES (490, true, 880000, 100, 'ACTIVE', 32, 3, 2);
+INSERT INTO public.product_variants VALUES (491, true, 880000, 100, 'ACTIVE', 32, 2, 1);
+INSERT INTO public.product_variants VALUES (492, true, 880000, 100, 'ACTIVE', 32, 1, 2);
+INSERT INTO public.product_variants VALUES (493, true, 920000, 100, 'ACTIVE', 32, 1, 5);
+INSERT INTO public.product_variants VALUES (494, true, 900000, 100, 'ACTIVE', 32, 2, 4);
+INSERT INTO public.product_variants VALUES (495, true, 880000, 100, 'ACTIVE', 32, 3, 1);
+INSERT INTO public.product_variants VALUES (496, true, 920000, 100, 'ACTIVE', 32, 1, 6);
+INSERT INTO public.product_variants VALUES (497, true, 880000, 100, 'ACTIVE', 32, 2, 2);
+INSERT INTO public.product_variants VALUES (498, true, 900000, 100, 'ACTIVE', 32, 3, 4);
+INSERT INTO public.product_variants VALUES (499, true, 920000, 100, 'ACTIVE', 32, 3, 5);
+INSERT INTO public.product_variants VALUES (500, true, 900000, 100, 'ACTIVE', 32, 1, 3);
+INSERT INTO public.product_variants VALUES (501, true, 900000, 100, 'ACTIVE', 32, 2, 3);
+INSERT INTO public.product_variants VALUES (502, true, 880000, 100, 'ACTIVE', 32, 1, 1);
+INSERT INTO public.product_variants VALUES (503, true, 900000, 100, 'ACTIVE', 32, 3, 3);
+INSERT INTO public.product_variants VALUES (504, true, 900000, 100, 'ACTIVE', 32, 1, 4);
+INSERT INTO public.product_variants VALUES (505, true, 920000, 100, 'ACTIVE', 32, 2, 6);
+INSERT INTO public.product_variants VALUES (506, true, 920000, 100, 'ACTIVE', 32, 2, 5);
+INSERT INTO public.product_variants VALUES (507, true, 920000, 100, 'ACTIVE', 32, 3, 6);
+INSERT INTO public.product_variants VALUES (470, true, 840000, 97, 'ACTIVE', 30, 1, 4);
+INSERT INTO public.product_variants VALUES (480, true, 900000, 98, 'ACTIVE', 31, 2, 5);
+INSERT INTO public.product_variants VALUES (472, true, 830000, 98, 'ACTIVE', 31, 3, 1);
 
 
 --
@@ -816,6 +873,20 @@ INSERT INTO public.files VALUES (185, 'adam-store/images/wlqx85wpx4zm65qh1anj', 
 INSERT INTO public.files VALUES (186, 'adam-store/images/qrrt9e0tklxlzwcvuhko', '41.webp', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754643843/adam-store/images/qrrt9e0tklxlzwcvuhko.webp', 'manh123@gmail.com', '2025-08-08', NULL);
 INSERT INTO public.files VALUES (187, 'adam-store/images/zpcsf3dj1lzgsaxiynfr', '42.webp', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754643845/adam-store/images/zpcsf3dj1lzgsaxiynfr.webp', 'manh123@gmail.com', '2025-08-08', NULL);
 INSERT INTO public.files VALUES (188, 'adam-store/images/wvp0xst0phkvqizcwafx', '43.webp', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754643846/adam-store/images/wvp0xst0phkvqizcwafx.webp', 'manh123@gmail.com', '2025-08-08', NULL);
+INSERT INTO public.files VALUES (189, 'adam-store/images/bpdyc66rtdoypiuqykfg', '5.1.jpg', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754751174/adam-store/images/bpdyc66rtdoypiuqykfg.jpg', 'manh123@gmail.com', '2025-08-09', 30);
+INSERT INTO public.files VALUES (190, 'adam-store/images/ovighlfgj8zyaq7xkovm', '5.2.jpg', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754751175/adam-store/images/ovighlfgj8zyaq7xkovm.jpg', 'manh123@gmail.com', '2025-08-09', 30);
+INSERT INTO public.files VALUES (191, 'adam-store/images/ekngdgwqya0d4cqfwdkf', '5.34.jpg', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754751177/adam-store/images/ekngdgwqya0d4cqfwdkf.jpg', 'manh123@gmail.com', '2025-08-09', 30);
+INSERT INTO public.files VALUES (192, 'adam-store/images/vuewhphhpmcb7cd0h3nk', '5.4.jpg', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754751179/adam-store/images/vuewhphhpmcb7cd0h3nk.jpg', 'manh123@gmail.com', '2025-08-09', 30);
+INSERT INTO public.files VALUES (193, 'adam-store/images/aezuu94z1ssfllyvirkp', '6.1.jpg', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754751365/adam-store/images/aezuu94z1ssfllyvirkp.jpg', 'manh123@gmail.com', '2025-08-09', 31);
+INSERT INTO public.files VALUES (194, 'adam-store/images/alivzpop6gnmmfg25i7m', '6.2.jpg', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754751367/adam-store/images/alivzpop6gnmmfg25i7m.jpg', 'manh123@gmail.com', '2025-08-09', 31);
+INSERT INTO public.files VALUES (195, 'adam-store/images/gojkk9om0mwz3wni0sif', '6.3.jpg', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754751369/adam-store/images/gojkk9om0mwz3wni0sif.jpg', 'manh123@gmail.com', '2025-08-09', 31);
+INSERT INTO public.files VALUES (196, 'adam-store/images/pm8fpq4jk4oxgyvnzkhx', '6.4.jpg', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754751371/adam-store/images/pm8fpq4jk4oxgyvnzkhx.jpg', 'manh123@gmail.com', '2025-08-09', 31);
+INSERT INTO public.files VALUES (197, 'adam-store/images/cggqkr8zuvbwar0hrnyj', '7.1.jpg', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754751504/adam-store/images/cggqkr8zuvbwar0hrnyj.jpg', 'manh123@gmail.com', '2025-08-09', 32);
+INSERT INTO public.files VALUES (198, 'adam-store/images/ganptitjyu7rrxngcidn', '7.2.jpg', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754751506/adam-store/images/ganptitjyu7rrxngcidn.jpg', 'manh123@gmail.com', '2025-08-09', 32);
+INSERT INTO public.files VALUES (199, 'adam-store/images/uwwlkoxayxnuy3teqxfe', '7.3.jpg', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754751507/adam-store/images/uwwlkoxayxnuy3teqxfe.jpg', 'manh123@gmail.com', '2025-08-09', 32);
+INSERT INTO public.files VALUES (200, 'adam-store/images/rjjcw9woepctdmmvnm0c', '7.4.jpg', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754751509/adam-store/images/rjjcw9woepctdmmvnm0c.jpg', 'manh123@gmail.com', '2025-08-09', 32);
+INSERT INTO public.files VALUES (201, 'adam-store/images/hsxqub3gmvnhoovxilg3', '1.jpg', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754753036/adam-store/images/hsxqub3gmvnhoovxilg3.jpg', 'tien123@gmail.com', '2025-08-09', NULL);
+INSERT INTO public.files VALUES (202, 'adam-store/images/mpbhmj0cfalthl9multy', '2.jpg', 'http://res.cloudinary.com/dz5wejuuf/image/upload/v1754753410/adam-store/images/mpbhmj0cfalthl9multy.jpg', 'hieu123@gmail.com', '2025-08-09', NULL);
 
 
 --
@@ -857,6 +928,14 @@ INSERT INTO public.orders VALUES (33, '2025-08-08', 3500000, 'PROCESSING', '2025
 INSERT INTO public.orders VALUES (34, '2025-08-08', 2890000, 'PROCESSING', '2025-08-08', 11, 5);
 INSERT INTO public.orders VALUES (35, '2025-08-08', 1921000, 'PROCESSING', '2025-08-08', 12, 10);
 INSERT INTO public.orders VALUES (36, '2025-08-08', 1504500, 'PROCESSING', '2025-08-08', 13, 11);
+INSERT INTO public.orders VALUES (37, '2025-08-09', 4370000, 'PROCESSING', '2025-08-09', 13, 11);
+INSERT INTO public.orders VALUES (38, '2025-08-09', 3890000, 'PENDING', '2025-08-09', 13, 11);
+INSERT INTO public.orders VALUES (39, '2025-08-09', 2540000, 'PROCESSING', '2025-08-09', 13, 11);
+INSERT INTO public.orders VALUES (40, '2025-08-09', 2160000, 'PROCESSING', '2025-08-09', 14, 12);
+INSERT INTO public.orders VALUES (41, '2025-08-09', 2023000, 'PROCESSING', '2025-08-09', 13, 12);
+INSERT INTO public.orders VALUES (43, '2025-08-09', 1504500, 'PROCESSING', '2025-08-09', 15, 13);
+INSERT INTO public.orders VALUES (44, '2025-08-09', 2500000, 'PROCESSING', '2025-08-09', 15, 13);
+INSERT INTO public.orders VALUES (42, '2025-08-09', 2570000, 'PENDING', '2025-08-09', 14, 12);
 
 
 --
@@ -914,6 +993,22 @@ INSERT INTO public.order_items VALUES (49, 1, 450000, 5, 35);
 INSERT INTO public.order_items VALUES (50, 2, 880000, 99, 35);
 INSERT INTO public.order_items VALUES (51, 2, 660000, 406, 36);
 INSERT INTO public.order_items VALUES (52, 1, 400000, 1, 36);
+INSERT INTO public.order_items VALUES (53, 3, 600000, 206, 37);
+INSERT INTO public.order_items VALUES (54, 3, 840000, 470, 37);
+INSERT INTO public.order_items VALUES (55, 3, 980000, 320, 38);
+INSERT INTO public.order_items VALUES (56, 1, 900000, 109, 38);
+INSERT INTO public.order_items VALUES (57, 1, 690000, 232, 39);
+INSERT INTO public.order_items VALUES (58, 2, 900000, 480, 39);
+INSERT INTO public.order_items VALUES (59, 2, 830000, 472, 40);
+INSERT INTO public.order_items VALUES (60, 1, 450000, 11, 40);
+INSERT INTO public.order_items VALUES (61, 2, 690000, 230, 41);
+INSERT INTO public.order_items VALUES (62, 1, 950000, 128, 41);
+INSERT INTO public.order_items VALUES (63, 1, 600000, 210, 42);
+INSERT INTO public.order_items VALUES (64, 2, 960000, 292, 42);
+INSERT INTO public.order_items VALUES (65, 1, 400000, 3, 43);
+INSERT INTO public.order_items VALUES (66, 2, 660000, 406, 43);
+INSERT INTO public.order_items VALUES (67, 2, 880000, 340, 44);
+INSERT INTO public.order_items VALUES (68, 1, 690000, 223, 44);
 
 
 --
@@ -955,6 +1050,14 @@ INSERT INTO public.payment_history VALUES (32, true, 'VNPAY', 3500000, 'PAID', '
 INSERT INTO public.payment_history VALUES (33, true, 'VNPAY', 2890000, 'PAID', '2025-08-08 15:51:56.190329', 34);
 INSERT INTO public.payment_history VALUES (34, true, 'VNPAY', 1921000, 'PAID', '2025-08-08 15:56:56.517764', 35);
 INSERT INTO public.payment_history VALUES (35, true, 'VNPAY', 1504500, 'PAID', '2025-08-08 16:02:39.834584', 36);
+INSERT INTO public.payment_history VALUES (36, true, 'VNPAY', 4370000, 'PAID', '2025-08-09 22:00:49.495674', 37);
+INSERT INTO public.payment_history VALUES (37, false, 'VNPAY', 3890000, 'PENDING', '2025-08-09 22:01:01.793676', 38);
+INSERT INTO public.payment_history VALUES (38, true, 'VNPAY', 2540000, 'PAID', '2025-08-09 22:21:43.940258', 39);
+INSERT INTO public.payment_history VALUES (39, true, 'VNPAY', 2160000, 'PAID', '2025-08-09 22:24:56.385541', 40);
+INSERT INTO public.payment_history VALUES (40, true, 'VNPAY', 2023000, 'PAID', '2025-08-09 22:25:40.588605', 41);
+INSERT INTO public.payment_history VALUES (41, false, 'VNPAY', 2570000, 'PENDING', '2025-08-09 22:29:12.396116', 42);
+INSERT INTO public.payment_history VALUES (42, true, 'VNPAY', 1504500, 'PAID', '2025-08-09 22:31:20.820971', 43);
+INSERT INTO public.payment_history VALUES (43, true, 'VNPAY', 2500000, 'PAID', '2025-08-09 22:33:08.159503', 44);
 
 
 --
@@ -996,6 +1099,8 @@ INSERT INTO public.promotion_usages VALUES (13, 365000, '2025-08-03 14:06:11.055
 INSERT INTO public.promotion_usages VALUES (14, 123000, '2025-08-03 14:08:33.120478', 9, 2, 20);
 INSERT INTO public.promotion_usages VALUES (15, 339000, '2025-08-08 15:56:50.518891', 10, 2, 35);
 INSERT INTO public.promotion_usages VALUES (16, 265500, '2025-08-08 16:02:32.020081', 11, 2, 36);
+INSERT INTO public.promotion_usages VALUES (17, 357000, '2025-08-09 22:25:33.816829', 12, 2, 41);
+INSERT INTO public.promotion_usages VALUES (18, 265500, '2025-08-09 22:31:15.201508', 13, 2, 43);
 
 
 --
@@ -1038,6 +1143,15 @@ INSERT INTO public.refresh_tokens VALUES (33, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0
 INSERT INTO public.refresh_tokens VALUES (34, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlcyI6WyJBRE1JTiJdLCJpc3MiOiJBZG1pbiIsImV4cCI6MTc1NjM3MTE1MSwiaWF0IjoxNzU0NjQzMTUxLCJqdGkiOiJhNGM2OWYyMS02OTA3LTRhMDgtYTgzZC1iZjFiZWY3NGU3MjcifQ.gn8IdI16AJFq7HBwSTSX1fZ7eqE_nVH2_a75pk1N01fLTfRdMdrI0_pgBkFnnJsc0OUIdLLMMgwrYZEJrwIZSQ', '2025-08-28 15:52:31.635331');
 INSERT INTO public.refresh_tokens VALUES (35, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYWkxMjNAZ21haWwuY29tIiwicm9sZXMiOlsiQURNSU4iLCJVU0VSIl0sImlzcyI6IlRo4buLIE1haSIsImV4cCI6MTc1NjM3MTE4NSwiaWF0IjoxNzU0NjQzMTg1LCJqdGkiOiIzNGEzZDhhNS0wYTllLTQ1OWUtOThjNy0zMjdiNzNhZTIyYjUifQ.QuCUbJkJnQjrPOSmP1H9kshybEpEMAJUirre7OMp3SakamGJKuUykN64nS2Yj6rjcHeuYWA7MgWtxiWAnxYuSA', '2025-08-28 15:53:05.460117');
 INSERT INTO public.refresh_tokens VALUES (36, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYW5oMTIzQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJUaeG6v24gTeG6oW5oIiwiZXhwIjoxNzU2MzcxNjU4LCJpYXQiOjE3NTQ2NDM2NTgsImp0aSI6ImEwZjI3YzAyLTEzNmEtNGZjMi05NjNhLWQ1YTMwNWYzZWI4ZSJ9.dyiUtsePuzp7xSdu0jyBxSoEgDsVJJiY1qLSscAy2tGsTCdEi5AHBsfmXft3TIXPyTrua08bTyc-aZWvh1T-Qw', '2025-08-28 16:00:58.153401');
+INSERT INTO public.refresh_tokens VALUES (37, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYW5oMTIzQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJUaeG6v24gTeG6oW5oIiwiZXhwIjoxNzU2NDc5NTk1LCJpYXQiOjE3NTQ3NTE1OTUsImp0aSI6IjdiMzQyN2FjLWU0NjQtNGY4Yi04MGE1LTZmYTQ3ZTA1NjY5ZCJ9.CgVdrLoYychD5pXhyMWNQlgbLSL2R7GGomheKSGNAotAYfivJhCwGQpJ9sIO17QXomAZlAvt-BQnzhHQ7S2OMw', '2025-08-29 21:59:55.653705');
+INSERT INTO public.refresh_tokens VALUES (38, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0aWVuMTIzQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJEdXkgVGnhur9uIiwiZXhwIjoxNzU2NDgwOTc0LCJpYXQiOjE3NTQ3NTI5NzQsImp0aSI6ImFhM2E0YzY1LTUwYjItNDMzMi04NDk5LWY2MjEwNzc2NDU2MyJ9.KMQkrw5PD4Q_Uv3ju6TeoBuv2M0P40R_brHHmqFn-zG4eD2OcauPVDimLzvbNIArIIxrWsSEf02ffQlVddGZXg', '2025-08-29 22:22:54.535774');
+INSERT INTO public.refresh_tokens VALUES (39, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoaWV1MTIzQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiLEkGnDqnUgSGnhur91IiwiZXhwIjoxNzU2NDgxMzc5LCJpYXQiOjE3NTQ3NTMzNzksImp0aSI6ImMxN2JkMjMxLWRlNTAtNGRhNC05Y2JkLTZmMzI4NTc3ODcyNCJ9.B86AIus4Pi90cied5wnL6eio8ND3ZZcGXq265udI9woqFkUru6Xupb9fURRU5GAqOXxp7QnSnak4UiVl9EI_OQ', '2025-08-29 22:29:39.656075');
+INSERT INTO public.refresh_tokens VALUES (40, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0aWVuMTIzQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJEdXkgVGnhur9uIiwiZXhwIjoxNzU2NDgxNjAyLCJpYXQiOjE3NTQ3NTM2MDIsImp0aSI6Ijc0ODY1MDA1LTU2MzctNGRhOS1hMTQ4LWNjNWNhODkwMjcxMiJ9.Bxs_mBPXlGGJQu6a7sJZdTcFLsYHdr9XmvyhmbkaQvxOmpaI_DmCZ6Rjy0hqH2ko3x4XI5Whp1i807brJzRcsg', '2025-08-29 22:33:22.542164');
+INSERT INTO public.refresh_tokens VALUES (41, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlcyI6WyJBRE1JTiJdLCJpc3MiOiJBZG1pbiIsImV4cCI6MTc1NjQ4MzcwNSwiaWF0IjoxNzU0NzU1NzA1LCJqdGkiOiI2YjljNWVlOC04ZGYyLTQ2N2MtYjY1OS00YmQyMTQwN2VmNzIifQ.66X9grWGpxM7j456f-F98vzBZVG8PVvGNJEcMfamD3iySMvjuq0EmzJJAWdR_-DNHM4BSm44-JgNSeyaGec5Mg', '2025-08-29 23:08:25.01575');
+INSERT INTO public.refresh_tokens VALUES (42, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlcyI6WyJBRE1JTiJdLCJpc3MiOiJBZG1pbiIsImV4cCI6MTc1NjQ4MzcwOCwiaWF0IjoxNzU0NzU1NzA4LCJqdGkiOiI4M2IyYmU2My03YWMyLTQ1YzEtOThlNi1hZGVjZTdiMzUzMzcifQ.qnB24pXo-7iLjFn7MU0W2GfZnuNUCa1XB2fHGhgyZFLThP_AEKs_MWvg-damKkFqDky1u2d_zHTbeL4PqQPzwA', '2025-08-29 23:08:28.51075');
+INSERT INTO public.refresh_tokens VALUES (43, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlcyI6WyJBRE1JTiJdLCJpc3MiOiJBZG1pbiIsImV4cCI6MTc1NjQ4NDAyMCwiaWF0IjoxNzU0NzU2MDIwLCJqdGkiOiJjMjc3Mjc1NC0xMDMyLTQ2MzAtOWIyNi1lZDk1ZmFjOTc2NTEifQ.CngBL0rKfTotNROg1RwAnLO0fuqi9pdeg8vDN-PDzvBuGaW4QAgbUn5slQECY4hVfpUhrTUh3QETIe2SoSI-FQ', '2025-08-29 23:13:40.310344');
+INSERT INTO public.refresh_tokens VALUES (44, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYW5oMTIzQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJUaeG6v24gTeG6oW5oIiwiZXhwIjoxNzU2NDg0MDY5LCJpYXQiOjE3NTQ3NTYwNjksImp0aSI6Ijc3ZTAwOTliLWEzN2EtNDQzMy1iNmY5LTMyNjI3YzE2MmU2NiJ9.ofGTI9I8q2cNg9MZth5DAyAdYnoGMajJM0Q4nnDe6X6wYTtACW5qako_Z8da-Q2yFf3jHOUtd-CzWdC5P4AlRw', '2025-08-29 23:14:29.159432');
+INSERT INTO public.refresh_tokens VALUES (45, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlcyI6WyJBRE1JTiJdLCJpc3MiOiJBZG1pbiIsImV4cCI6MTc1NjQ4NDA5NSwiaWF0IjoxNzU0NzU2MDk1LCJqdGkiOiJjMTcxMjI2My0zOGY1LTQ1OWItODg5Yi0xMmIxNzFjMGNiNjEifQ.iaXQF6YhB7RXkf089We0qYOS3Ebjdu5D9NIzyIQPfuofrb9Wr0XJVg2zwox7aKsN3Ytxde1fO-M4afBBqoR5kA', '2025-08-29 23:14:55.253349');
 
 
 --
@@ -1072,6 +1186,12 @@ INSERT INTO public.reviews VALUES (25, 3.5, 'Vải ổn, mặc lên vừa nhưng
 INSERT INTO public.reviews VALUES (26, 4.2, 'Mặc vừa vặn, màu đẹp, giao hàng nhanh.', '["http://res.cloudinary.com/dz5wejuuf/image/upload/v1754643357/adam-store/images/fm7yrrh8samlwi6x92j1.webp"]', '2025-08-08', '2025-08-08', 10, 7, 50);
 INSERT INTO public.reviews VALUES (27, 4.5, 'Mặc thoải mái, chất vải mịn, màu chuẩn.', '["http://res.cloudinary.com/dz5wejuuf/image/upload/v1754643845/adam-store/images/zpcsf3dj1lzgsaxiynfr.webp"]', '2025-08-08', '2025-08-08', 11, 25, 51);
 INSERT INTO public.reviews VALUES (28, 2, 'Chất vải không như mong đợi, giao hàng chậm.', '["http://res.cloudinary.com/dz5wejuuf/image/upload/v1754643843/adam-store/images/qrrt9e0tklxlzwcvuhko.webp"]', '2025-08-08', '2025-08-08', 11, 1, 52);
+INSERT INTO public.reviews VALUES (29, 3.5, 'Hàng khác ảnh quảng cáo, form hơi lỏng, đường may chưa đẹp.', '["http://res.cloudinary.com/dz5wejuuf/image/upload/v1754751507/adam-store/images/uwwlkoxayxnuy3teqxfe.jpg"]', '2025-08-09', '2025-08-09', 11, 14, 57);
+INSERT INTO public.reviews VALUES (30, 3.9, 'Hàng khác ảnh quảng cáo, form hơi lỏng, đường may chưa đẹp.', '["http://res.cloudinary.com/dz5wejuuf/image/upload/v1754751507/adam-store/images/uwwlkoxayxnuy3teqxfe.jpg"]', '2025-08-09', '2025-08-09', 12, 31, 59);
+INSERT INTO public.reviews VALUES (31, 4.5, 'Chất lượng vượt mong đợi, đường may tỉ mỉ, form chuẩn như hình. Đóng gói cẩn thận.', '["http://res.cloudinary.com/dz5wejuuf/image/upload/v1754751509/adam-store/images/rjjcw9woepctdmmvnm0c.jpg"]', '2025-08-09', '2025-08-09', 12, 14, 61);
+INSERT INTO public.reviews VALUES (32, 3.5, 'Vải hơi mỏng so với mong đợi, nhưng màu sắc khá đẹp.', '["http://res.cloudinary.com/dz5wejuuf/image/upload/v1754751506/adam-store/images/ganptitjyu7rrxngcidn.jpg"]', '2025-08-09', '2025-08-09', 12, 8, 62);
+INSERT INTO public.reviews VALUES (33, 4.8, 'Hàng đẹp, chất vải mịn, mặc rất thoải mái. Sẽ ủng hộ lần sau.', '["http://res.cloudinary.com/dz5wejuuf/image/upload/v1754751504/adam-store/images/cggqkr8zuvbwar0hrnyj.jpg"]', '2025-08-09', '2025-08-09', 13, 1, 65);
+INSERT INTO public.reviews VALUES (34, 2.5, 'Đường may ẩu, giao hàng chậm hơn dự kiến.', '["http://res.cloudinary.com/dz5wejuuf/image/upload/v1754751506/adam-store/images/ganptitjyu7rrxngcidn.jpg"]', '2025-08-09', '2025-08-09', 13, 25, 66);
 
 
 --
@@ -1105,13 +1225,17 @@ INSERT INTO public.user_has_role VALUES (10, 1, 'ACTIVE');
 INSERT INTO public.user_has_role VALUES (10, 2, 'ACTIVE');
 INSERT INTO public.user_has_role VALUES (11, 1, 'ACTIVE');
 INSERT INTO public.user_has_role VALUES (11, 2, 'ACTIVE');
+INSERT INTO public.user_has_role VALUES (12, 1, 'ACTIVE');
+INSERT INTO public.user_has_role VALUES (12, 2, 'ACTIVE');
+INSERT INTO public.user_has_role VALUES (13, 1, 'ACTIVE');
+INSERT INTO public.user_has_role VALUES (13, 2, 'ACTIVE');
 
 
 --
 -- Name: addresses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.addresses_id_seq', 13, true);
+SELECT pg_catalog.setval('public.addresses_id_seq', 15, true);
 
 
 --
@@ -1132,7 +1256,7 @@ SELECT pg_catalog.setval('public.cart_items_id_seq', 18, true);
 -- Name: carts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.carts_id_seq', 11, true);
+SELECT pg_catalog.setval('public.carts_id_seq', 13, true);
 
 
 --
@@ -1153,28 +1277,28 @@ SELECT pg_catalog.setval('public.colors_id_seq', 4, true);
 -- Name: files_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.files_id_seq', 188, true);
+SELECT pg_catalog.setval('public.files_id_seq', 202, true);
 
 
 --
 -- Name: order_items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.order_items_id_seq', 52, true);
+SELECT pg_catalog.setval('public.order_items_id_seq', 68, true);
 
 
 --
 -- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.orders_id_seq', 36, true);
+SELECT pg_catalog.setval('public.orders_id_seq', 44, true);
 
 
 --
 -- Name: payment_history_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.payment_history_id_seq', 35, true);
+SELECT pg_catalog.setval('public.payment_history_id_seq', 43, true);
 
 
 --
@@ -1188,21 +1312,21 @@ SELECT pg_catalog.setval('public.permissions_id_seq', 1, false);
 -- Name: product_variants_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.product_variants_id_seq', 459, true);
+SELECT pg_catalog.setval('public.product_variants_id_seq', 507, true);
 
 
 --
 -- Name: products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.products_id_seq', 29, true);
+SELECT pg_catalog.setval('public.products_id_seq', 32, true);
 
 
 --
 -- Name: promotion_usages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.promotion_usages_id_seq', 16, true);
+SELECT pg_catalog.setval('public.promotion_usages_id_seq', 18, true);
 
 
 --
@@ -1216,14 +1340,14 @@ SELECT pg_catalog.setval('public.promotions_id_seq', 7, true);
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 36, true);
+SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 45, true);
 
 
 --
 -- Name: reviews_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.reviews_id_seq', 28, true);
+SELECT pg_catalog.setval('public.reviews_id_seq', 34, true);
 
 
 --
@@ -1244,7 +1368,7 @@ SELECT pg_catalog.setval('public.sizes_id_seq', 7, true);
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 11, true);
+SELECT pg_catalog.setval('public.users_id_seq', 13, true);
 
 
 --
