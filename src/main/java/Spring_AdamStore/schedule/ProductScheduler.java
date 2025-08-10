@@ -3,6 +3,7 @@ package Spring_AdamStore.schedule;
 import Spring_AdamStore.constants.EntityStatus;
 import Spring_AdamStore.entity.sql.Product;
 import Spring_AdamStore.entity.sql.ProductVariant;
+import Spring_AdamStore.repository.sql.OrderItemRepository;
 import Spring_AdamStore.repository.sql.ProductRepository;
 import Spring_AdamStore.repository.sql.ProductVariantRepository;
 import Spring_AdamStore.repository.sql.ReviewRepository;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j(topic = "PRODUCT-SCHEDULER")
@@ -22,20 +24,26 @@ public class ProductScheduler {
     private final ProductRepository productRepository;
     private final ReviewRepository reviewRepository;
     private final ProductVariantRepository productVariantRepository;
+    private final OrderItemRepository orderItemRepository;
 
 
-    @Scheduled(cron = "0 0 0 */7 * ?")
+    @Scheduled(cron = "0 0 0 * * ?")
     public void updateProductRatings() {
-        log.info("Update Products Ratings");
+        log.info("Updating all Products ratings, reviews, and sold quantities...");
 
         List<Product> productList = productRepository.findAll();
         for (Product product : productList) {
             double avgRating = reviewRepository.getAverageRatingByProductId(product.getId());
-            int totalReviews = reviewRepository.getTotalReviewsByProductId(product.getId());
             product.setAverageRating(avgRating);
+
+            int totalReviews = reviewRepository.getTotalReviewsByProductId(product.getId());
             product.setTotalReviews(totalReviews);
-            productRepository.save(product);
+
+            int totalSold = orderItemRepository.getTotalSoldByProductId(product.getId());
+            product.setSoldQuantity(totalSold);
         }
+
+        productRepository.saveAll(productList);
     }
 
     @Scheduled(cron = "0 0 * * * ?")
@@ -44,12 +52,16 @@ public class ProductScheduler {
         log.info("The product availability check...");
 
         Iterable<ProductVariant> productVariants = productVariantRepository.findAll();
+
+        List<ProductVariant> variantsToUpdate = new ArrayList<>();
         for (ProductVariant variant : productVariants) {
             if (variant.getQuantity() == 0) {
                 variant.setIsAvailable(false);
-                productVariantRepository.save(variant);
+                variantsToUpdate.add(variant);
             }
         }
+        productVariantRepository.saveAll(variantsToUpdate);
+
 
         List<Product> products = productRepository.findAll();
         for (Product product : products) {
