@@ -17,6 +17,7 @@ CREATE TABLE users (
 
 
 -- Index
-CREATE INDEX idx_users_name ON users(name);
-CREATE INDEX idx_users_email ON users(email);
-CREATE INDEX idx_users_password ON users(password);
+CREATE INDEX idx_user_name ON users(name);
+CREATE INDEX idx_user_email ON users(email);
+CREATE INDEX idx_user_password ON users(password);
+CREATE INDEX idx_user_avatar_url ON users(avatar_url);
