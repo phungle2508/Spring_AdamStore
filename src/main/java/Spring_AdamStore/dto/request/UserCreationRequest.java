@@ -1,6 +1,7 @@
 package Spring_AdamStore.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -19,5 +20,6 @@ public class UserCreationRequest {
     @NotBlank(message = "Password không được để trống")
     private String password;
 
+    @NotEmpty(message = "roleIds không được bỏ trống")
     private Set<Long> roleIds;
 }

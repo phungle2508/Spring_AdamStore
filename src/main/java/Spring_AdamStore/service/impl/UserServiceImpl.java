@@ -75,20 +75,19 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(user);
 
-        // role user mac dinh
-        userHasRoleService.saveUserHasRole(user, RoleEnum.USER);
-        if(!CollectionUtils.isEmpty(request.getRoleIds())){
-            Set<Role> roleSet = roleRepository.findAllByIdIn(request.getRoleIds());
-
-            List<UserHasRole> userRoles = roleSet.stream().map(role -> UserHasRole.builder()
-                    .id(new UserHasRoleId(user.getId(), role.getId()))
-                            .state(ACTIVE)
-                            .build())
-                    .collect(Collectors.toList());
-
-            userHasRoleRepository.saveAll(userRoles);
+        Set<Role> roleSet = roleRepository.findAllByIdIn(request.getRoleIds());
+        if (roleSet.isEmpty()){
+            throw new AppException(ErrorCode.ROLE_NOT_EXISTED);
         }
 
+        List<UserHasRole> userRoles = roleSet.stream().map(role -> UserHasRole.builder()
+                .id(new UserHasRoleId(user.getId(), role.getId()))
+                        .state(ACTIVE)
+                        .build())
+                .collect(Collectors.toList());
+        userHasRoleRepository.saveAll(userRoles);
+
+        // Cart
         cartService.createCartForUser(user);
 
         return userMapper.toUserResponse(user, userMappingHelper);
@@ -130,10 +129,10 @@ public class UserServiceImpl implements UserService {
         if(!CollectionUtils.isEmpty(request.getRoleIds())){
             userHasRoleRepository.deleteAllByIdUserId(user.getId());
 
-            // role user mac dinh
-            userHasRoleService.saveUserHasRole(user, RoleEnum.USER);
-
             Set<Role> roleSet = roleRepository.findAllByIdIn(request.getRoleIds());
+            if (roleSet.isEmpty()){
+                throw new AppException(ErrorCode.ROLE_NOT_EXISTED);
+            }
 
             Set<UserHasRole> userRoles = roleSet.stream().map(role -> UserHasRole.builder()
                             .id(new UserHasRoleId(user.getId(), role.getId()))
