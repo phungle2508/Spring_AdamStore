@@ -228,10 +228,25 @@ public class ProductServiceImpl implements ProductService {
         Predicate predicate = builder.conjunction();
 
         if(!CollectionUtils.isEmpty(criteriaList)){ // search job
-            SearchCriteriaQueryConsumer queryConsumer = new SearchCriteriaQueryConsumer(builder, predicate, root);
-            criteriaList.forEach(queryConsumer);
 
-            predicate = builder.and(predicate, queryConsumer.getPredicate());
+            for (SearchCriteria sc : criteriaList) {
+                // If colorId
+                if ("colorId".equalsIgnoreCase(sc.getKey())) {
+                    // Subquery
+                    Subquery<Long> subquery = query.subquery(Long.class);
+                    Root<ProductVariant> variantRoot = subquery.from(ProductVariant.class);
+
+                    subquery.select(variantRoot.get("productId"))
+                            .where(builder.equal(variantRoot.get("colorId"), Long.valueOf(sc.getValue().toString())));
+
+                    predicate = builder.and(predicate, root.get("id").in(subquery));
+
+                } else { // Cac attribute product
+                    SearchCriteriaQueryConsumer queryConsumer = new SearchCriteriaQueryConsumer(builder, predicate, root);
+                    queryConsumer.accept(sc);
+                    predicate = builder.and(predicate, queryConsumer.getPredicate());
+                }
+            }
         }
 
         query.where(predicate).distinct(true); // Tranh trung product do nhieu variant
@@ -246,7 +261,6 @@ public class ProductServiceImpl implements ProductService {
         }
 
         query.orderBy(orders);
-
 
         return entityManager.createQuery(query)
                 .setFirstResult((int) pageable.getOffset())
@@ -266,9 +280,23 @@ public class ProductServiceImpl implements ProductService {
         Predicate predicate = builder.conjunction();
 
         if(!CollectionUtils.isEmpty(criteriaList)){ // search job
-            SearchCriteriaQueryConsumer queryConsumer = new SearchCriteriaQueryConsumer(builder, predicate, root);
-            criteriaList.forEach(queryConsumer);
-            predicate = builder.and(predicate, queryConsumer.getPredicate());
+            for (SearchCriteria sc : criteriaList) {
+                // If colorId
+                if ("colorId".equalsIgnoreCase(sc.getKey())) {
+                    Subquery<Long> subquery = countQuery.subquery(Long.class);
+                    Root<ProductVariant> variantRoot = subquery.from(ProductVariant.class);
+
+                    subquery.select(variantRoot.get("productId"))
+                            .where(builder.equal(variantRoot.get("colorId"), Long.valueOf(sc.getValue().toString())));
+
+                    predicate = builder.and(predicate, root.get("id").in(subquery));
+
+                } else { // Cac attribute product
+                    SearchCriteriaQueryConsumer queryConsumer = new SearchCriteriaQueryConsumer(builder, predicate, root);
+                    queryConsumer.accept(sc);
+                    predicate = builder.and(predicate, queryConsumer.getPredicate());
+                }
+            }
         }
 
         countQuery.select(builder.count(root));
