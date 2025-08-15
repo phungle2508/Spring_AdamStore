@@ -6,26 +6,30 @@ import Spring_AdamStore.constants.RoleEnum;
 import Spring_AdamStore.dto.request.UserCreationRequest;
 import Spring_AdamStore.dto.request.UserUpdateRequest;
 import Spring_AdamStore.dto.response.*;
+import Spring_AdamStore.entity.sql.*;
 import Spring_AdamStore.entity.sql.relationship.UserHasRole;
 import Spring_AdamStore.entity.sql.relationship.UserHasRoleId;
-import Spring_AdamStore.entity.sql.Address;
-import Spring_AdamStore.entity.sql.Promotion;
-import Spring_AdamStore.entity.sql.Role;
-import Spring_AdamStore.entity.sql.User;
 import Spring_AdamStore.exception.AppException;
 import Spring_AdamStore.exception.ErrorCode;
 import Spring_AdamStore.exception.FileException;
 import Spring_AdamStore.mapper.*;
+import Spring_AdamStore.repository.criteria.SearchCriteria;
+import Spring_AdamStore.repository.criteria.SearchCriteriaQueryConsumer;
 import Spring_AdamStore.repository.sql.*;
 import Spring_AdamStore.repository.sql.relationship.PromotionUsageRepository;
 import Spring_AdamStore.repository.sql.relationship.UserHasRoleRepository;
 import Spring_AdamStore.service.*;
 import Spring_AdamStore.service.relationship.UserHasRoleService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.*;
+import jakarta.persistence.criteria.Order;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -33,8 +37,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static Spring_AdamStore.constants.EntityStatus.ACTIVE;
@@ -47,7 +54,6 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final UserHasRoleService userHasRoleService;
     private final RoleRepository roleRepository;
     private final UserHasRoleRepository userHasRoleRepository;
     private final AddressRepository addressRepository;
@@ -61,6 +67,8 @@ public class UserServiceImpl implements UserService {
     private final UserMappingHelper userMappingHelper;
     private final AddressMappingHelper addressMappingHelper;
     private final FileService fileService;
+    @PersistenceContext
+    private EntityManager entityManager;
 
 
     @Override
@@ -115,6 +123,92 @@ public class UserServiceImpl implements UserService {
                 .totalItems(userPage.getTotalElements())
                 .items(userMapper.toUserResponseList(userPage.getContent(), userMappingHelper))
                 .build();
+    }
+
+    @Override
+    public PageResponse<UserResponse> searchUser(Pageable pageable, List<String> search) {
+        log.info("Searching Users with pageable={} and search params={}", pageable, search);
+
+        List<SearchCriteria> criteriaList = new ArrayList<>();
+
+        // lay danh sach cac dieu kien search
+        if(search != null){
+            for(String s : search){
+                Pattern pattern = Pattern.compile("(\\w+?)(~|>|<)(.*)");
+                Matcher matcher = pattern.matcher(s);
+                if(matcher.find()){
+                    criteriaList.add(new SearchCriteria(matcher.group(1), matcher.group(2), matcher.group(3)));
+                }
+            }
+        }
+
+        List<User> userList = getUserList(pageable, criteriaList);
+
+        Long totalElements = getTotalElements(criteriaList);
+        int totalPages = (int) Math.ceil((double) totalElements / pageable.getPageSize());
+
+        return PageResponse.<UserResponse>builder()
+                .page(pageable.getPageNumber())
+                .size(pageable.getPageSize())
+                .totalPages(totalPages)
+                .totalItems(totalElements)
+                .items(userMapper.toUserResponseList(userList, userMappingHelper))
+                .build();
+    }
+
+    private List<User> getUserList(Pageable pageable, List<SearchCriteria> criteriaList) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<User> query = builder.createQuery(User.class);
+        Root<User> root = query.from(User.class);
+
+        // Xu ly dieu kien tim kiem
+        Predicate predicate = builder.conjunction();
+
+        if(!CollectionUtils.isEmpty(criteriaList)){ // search
+            SearchCriteriaQueryConsumer queryConsumer = new SearchCriteriaQueryConsumer(builder, predicate, root);
+            criteriaList.forEach(queryConsumer);
+
+            predicate = builder.and(predicate, queryConsumer.getPredicate());
+        }
+
+        query.where(predicate);
+
+        // Sort
+        List<Order> orders = new ArrayList<>();
+        for (Sort.Order order : pageable.getSort()) {
+            String property = order.getProperty();
+
+            Path<?> path = root.get(property);
+            orders.add(order.isAscending() ? builder.asc(path) : builder.desc(path));
+        }
+
+        query.orderBy(orders);
+
+        return entityManager.createQuery(query)
+                .setFirstResult((int) pageable.getOffset())
+                .setMaxResults(pageable.getPageSize())
+                .getResultList();
+    }
+
+    private Long getTotalElements(List<SearchCriteria> criteriaList){
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> countQuery = builder.createQuery(Long.class);
+
+        Root<User> root = countQuery.from(User.class);
+
+        // Xu ly dieu kien tim kiem
+        Predicate predicate = builder.conjunction();
+
+        if(!CollectionUtils.isEmpty(criteriaList)){ // search job
+            SearchCriteriaQueryConsumer queryConsumer = new SearchCriteriaQueryConsumer(builder, predicate, root);
+            criteriaList.forEach(queryConsumer);
+            predicate = builder.and(predicate, queryConsumer.getPredicate());
+        }
+
+        countQuery.select(builder.count(root));
+        countQuery.where(predicate);
+
+        return entityManager.createQuery(countQuery).getSingleResult();
     }
 
     @Override

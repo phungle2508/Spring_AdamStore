@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface UserService {
 
@@ -20,6 +21,8 @@ public interface UserService {
     UserResponse fetchUserById(Long id);
 
     PageResponse<UserResponse> fetchAllUsers(Pageable pageable);
+
+    PageResponse<UserResponse> searchUser(Pageable pageable, List<String> search);
 
     UserResponse update(Long id, UserUpdateRequest request);
 
@@ -32,4 +35,6 @@ public interface UserService {
     UserResponse restore(long id);
 
     UserResponse updateAvatar(MultipartFile file) throws FileException, IOException;
+
+
 }
