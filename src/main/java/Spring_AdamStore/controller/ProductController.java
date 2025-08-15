@@ -59,7 +59,7 @@ public class ProductController {
     description = "Api này để lấy các Products (ACTIVE) cho user")
     @GetMapping("/public/products")
     public ApiResponse<PageResponse<ProductResponse>> fetchAll(@ParameterObject @PageableDefault Pageable pageable){
-        log.info("Received request to fetch all products for User");
+        log.info("Received request to Fetch All Products for User with pageable: {}", pageable);
 
         return ApiResponse.<PageResponse<ProductResponse>>builder()
                 .code(HttpStatus.OK.value())
@@ -73,7 +73,7 @@ public class ProductController {
             description = "Api này để lấy các Products (cả ACTIVE và INACTIVE) cho admin")
     @GetMapping("/admin/products")
     public ApiResponse<PageResponse<ProductResponse>> fetchAllProductsForAdmin(@ParameterObject @PageableDefault Pageable pageable){
-        log.info("Received request to fetch all products for Admin");
+        log.info("Received request to Fetch All Products for Admin with pageable: {}", pageable);
 
         return ApiResponse.<PageResponse<ProductResponse>>builder()
                 .code(HttpStatus.OK.value())
@@ -87,6 +87,8 @@ public class ProductController {
     @PutMapping("/admin/products/{id}")
     public ApiResponse<ProductResponse> update(@Min(value = 1, message = "ID phải lớn hơn 0")
                                             @PathVariable Long id, @Valid @RequestBody ProductUpdateRequest request){
+        log.info("Received request to Update Product by id: {} with data: {}", id, request);
+
         return ApiResponse.<ProductResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Update Product By Id")
@@ -100,6 +102,8 @@ public class ProductController {
     @DeleteMapping("/admin/products/{id}")
     public ApiResponse<Void> delete(@Min(value = 1, message = "ID phải lớn hơn 0")
                                     @PathVariable Long id){
+        log.info("Received request to Soft Delete Product by id: {}", id);
+
         productService.delete(id);
         return ApiResponse.<Void>builder()
                 .code(HttpStatus.NO_CONTENT.value())
@@ -113,6 +117,8 @@ public class ProductController {
     @PatchMapping("/admin/products/{id}/restore")
     public ApiResponse<ProductResponse> restore(@Min(value = 1, message = "Id phải lớn hơn 0")
                                                @PathVariable long id) {
+        log.info("Received request to Restore Product by id: {}", id);
+
         return ApiResponse.<ProductResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Restore Product By Id")
@@ -120,10 +126,13 @@ public class ProductController {
                 .build();
     }
 
+
     @Operation(description = "Api này dùng để search product, giá trị của search: field~value hoặc field>value hoặc field<value")
     @GetMapping("/public/products/search")
     public ApiResponse<PageResponse<ProductResponse>> searchProduct(@ParameterObject @PageableDefault Pageable pageable,
                                                                     @RequestParam(required = false) List<String> search){
+        log.info("Received request to Search Products with pageable: {} and search params: {}", pageable, search);
+
         return ApiResponse.<PageResponse<ProductResponse>>builder()
                 .code(HttpStatus.OK.value())
                 .result(productService.searchProduct(pageable, search))
@@ -131,10 +140,13 @@ public class ProductController {
                 .build();
     }
 
+
     @GetMapping("/public/products/{productId}/reviews")
     public ApiResponse<PageResponse<ReviewResponse>> fetchReviewsByProductId(@ParameterObject @PageableDefault Pageable pageable,
                                                                              @Min(value = 1, message = "ID phải lớn hơn 0")
                                                                          @PathVariable Long productId) {
+        log.info("Received request to Fetch Reviews by productId: {} with pageable: {}", productId, pageable);
+
         return ApiResponse.<PageResponse<ReviewResponse>>builder()
                 .code(HttpStatus.OK.value())
                 .message("Fetch Reviews By Product Id")
@@ -143,13 +155,14 @@ public class ProductController {
     }
 
 
-
     @Operation(summary = "Fetch All product-variants by product for Admin",
             description = "Api này dùng để lấy tất ca Product-Variants (cả ACTIVE và INACTIVE) theo Product cho admin")
     @GetMapping("/admin/products/{productId}/product-variants/admin")
     public ApiResponse<PageResponse<ProductVariantResponse>> getVariantsByProductIdForAdmin(@ParameterObject @PageableDefault Pageable pageable,
                                                                                     @Min(value = 1, message = "ID phải lớn hơn 0")
                                                                                     @PathVariable Long productId){
+        log.info("Received request to Fetch All product-variants by productId: {} for Admin with pageable: {}", productId, pageable);
+
         return ApiResponse.<PageResponse<ProductVariantResponse>>builder()
                 .code(HttpStatus.OK.value())
                 .message("Fetch All product-variants by product for Admin")

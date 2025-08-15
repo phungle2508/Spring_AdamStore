@@ -21,6 +21,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j(topic = "PROMOTION-CONTROLLER")
 @RequiredArgsConstructor
 @Validated
@@ -65,6 +67,20 @@ public class PromotionController {
                 .code(HttpStatus.OK.value())
                 .result(promotionService.fetchAll(pageable))
                 .message("Fetch All Promotions For Admin")
+                .build();
+    }
+
+
+    @Operation(description = "Api này dùng để search Promotions, giá trị của search: field~value hoặc field>value hoặc field<value")
+    @GetMapping("/public/promotions/search")
+    public ApiResponse<PageResponse<PromotionResponse>> searchPromotion(@ParameterObject @PageableDefault Pageable pageable,
+                                                              @RequestParam(required = false) List<String> search){
+        log.info("Received request to Search Promotions with pageable: {} and search params: {}", pageable, search);
+
+        return ApiResponse.<PageResponse<PromotionResponse>>builder()
+                .code(HttpStatus.OK.value())
+                .result(promotionService.searchPromotion(pageable, search))
+                .message("Search Promotions based on attributes with pagination")
                 .build();
     }
 

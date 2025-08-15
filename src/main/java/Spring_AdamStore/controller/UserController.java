@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Slf4j(topic = "USER-CONTROLLER")
 @RequiredArgsConstructor
@@ -73,6 +74,21 @@ public class UserController {
                 .build();
     }
 
+
+    @Operation(description = "Api này dùng để search Users, giá trị của search: field~value hoặc field>value hoặc field<value")
+    @GetMapping("/admin/users/search")
+    public ApiResponse<PageResponse<UserResponse>> searchUser(@ParameterObject @PageableDefault Pageable pageable,
+                                                                    @RequestParam(required = false) List<String> search){
+        log.info("Received request to Search Users with pageable: {} and search params: {}", pageable, search);
+
+        return ApiResponse.<PageResponse<UserResponse>>builder()
+                .code(HttpStatus.OK.value())
+                .result(userService.searchUser(pageable, search))
+                .message("Search Users based on attributes with pagination")
+                .build();
+    }
+
+
     @Operation(summary = "Update User (No update Password)",
             description = "API này được sử dụng để update user")
     @PutMapping("/private/users/{id}")
@@ -86,7 +102,6 @@ public class UserController {
                 .result(userService.update(id, request))
                 .build();
     }
-
 
 
     @Operation(summary = "Soft Delete User")

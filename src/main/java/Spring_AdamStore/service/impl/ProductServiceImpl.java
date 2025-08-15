@@ -151,6 +151,8 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     @Override
     public void delete(Long id) {
+        log.info("Deleting product id={}", id);
+
         Product product = findProductById(id);
 
         List<ProductVariant> productVariantList = productVariantService.findAllProductVariantByProductId(id);
@@ -162,6 +164,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse restore(long id) {
+        log.info("Restoring product id={}", id);
+
         Product product = productRepository.findProductById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
 
@@ -176,6 +180,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public PageResponse<ProductVariantResponse> getVariantsByProductIdForAdmin(Pageable pageable, Long productId) {
+        log.info("Fetching all variants for product id={} (admin) with pageable={}", productId, pageable);
+
         Page<ProductVariant> productVariantPage = productVariantRepository.findAllVariantsByProductId(productId, pageable);
 
         return PageResponse.<ProductVariantResponse>builder()
@@ -190,6 +196,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public PageResponse<ProductResponse> searchProduct(Pageable pageable, List<String> search) {
+        log.info("Searching products with pageable={} and search params={}", pageable, search);
+
        List<SearchCriteria> criteriaList = new ArrayList<>();
 
         // lay danh sach cac dieu kien search
@@ -307,6 +315,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public PageResponse<ReviewResponse> fetchReviewsByProductId(Pageable pageable, Long productId) {
+        log.info("Fetching reviews for productId={} with pageable={}", productId, pageable);
+
         Product product = findProductById(productId);
 
         Page<Review> reviewPage = reviewRepository.findAllByProductId(product.getId(), pageable);
