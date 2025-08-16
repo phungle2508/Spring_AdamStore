@@ -134,7 +134,7 @@ public class UserServiceImpl implements UserService {
         // lay danh sach cac dieu kien search
         if(search != null){
             for(String s : search){
-                Pattern pattern = Pattern.compile("(\\w+?)(~|>|<)(.*)");
+                Pattern pattern = Pattern.compile("(\\w+?)(~|>|<|=)(.*)");
                 Matcher matcher = pattern.matcher(s);
                 if(matcher.find()){
                     criteriaList.add(new SearchCriteria(matcher.group(1), matcher.group(2), matcher.group(3)));

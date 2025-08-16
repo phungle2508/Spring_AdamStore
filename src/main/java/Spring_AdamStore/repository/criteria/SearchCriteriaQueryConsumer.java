@@ -28,10 +28,10 @@ public class SearchCriteriaQueryConsumer implements Consumer<SearchCriteria> {
         else{
             // String => LIKE
             if(root.get(param.getKey()).getJavaType().equals(String.class)){
-                predicate = builder.and(predicate, builder.like(root.get(param.getKey()),"%" + param.getValue().toString() + "%"));
+                predicate = builder.and(predicate, builder.like(builder.lower(root.get(param.getKey())),"%" + param.getValue().toString().toLowerCase() + "%"));
             }
             // equals =
-            else{
+            else if (param.getOperation().equals("=")) {
                 predicate = builder.and(predicate, builder.equal(root.get(param.getKey()), param.getValue().toString()));
             }
         }
