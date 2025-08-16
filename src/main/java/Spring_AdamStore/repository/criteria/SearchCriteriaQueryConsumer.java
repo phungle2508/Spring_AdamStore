@@ -31,7 +31,7 @@ public class SearchCriteriaQueryConsumer implements Consumer<SearchCriteria> {
                 predicate = builder.and(predicate, builder.like(builder.lower(root.get(param.getKey())),"%" + param.getValue().toString().toLowerCase() + "%"));
             }
             // equals =
-            else{
+            else if (param.getOperation().equals("=")) {
                 predicate = builder.and(predicate, builder.equal(root.get(param.getKey()), param.getValue().toString()));
             }
         }
