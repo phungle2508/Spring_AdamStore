@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -20,7 +21,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate orderDate;
+    private LocalDateTime orderDate;
     private Double totalPrice;
 
     @Enumerated(EnumType.STRING)
@@ -28,7 +29,7 @@ public class Order {
 
 
     @UpdateTimestamp
-    private LocalDate updatedAt;
+    private LocalDateTime updatedAt;
 
     private Long addressId;
 

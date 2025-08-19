@@ -15,6 +15,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class OrderStatusScheduler {
     public void updateOrderStatusProcessingToShipped() {
         log.info("Update Order From Processing To Shipped");
 
-        LocalDate currentDate = LocalDate.now();
+        LocalDateTime currentDate = LocalDateTime.now();
 
         List<Order> orderList = orderRepository.findByOrderStatusAndOrderDateBefore(OrderStatus.PROCESSING,
                 currentDate.minusDays(processingToShippedDays));
@@ -58,7 +59,7 @@ public class OrderStatusScheduler {
     public void updateOrderStatusShippedToDelivered() {
         log.info("Update Order From Shipped To Delivered");
 
-        LocalDate currentDate = LocalDate.now();
+        LocalDateTime currentDate = LocalDateTime.now();
 
         List<Order> orderList = orderRepository.findByOrderStatusAndOrderDateBefore(OrderStatus.SHIPPED,
                 currentDate.minusDays(shippedToDeliveredDays));
@@ -95,7 +96,7 @@ public class OrderStatusScheduler {
     public void cancelPendingOrdersOverOneDay() {
         log.info("Cancel Pending Orders Over One Day");
 
-        LocalDate currentDate = LocalDate.now();
+        LocalDateTime currentDate = LocalDateTime.now();
 
         List<Order> orderList = orderRepository.findByOrderStatusAndOrderDateBefore(PENDING,
                 currentDate.minusDays(pendingToCancelDays));

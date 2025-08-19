@@ -2,11 +2,11 @@
 CREATE TABLE orders (
             id BIGSERIAL PRIMARY KEY,
 
-            order_date DATE NOT NULL,
+            order_date TIMESTAMP NOT NULL,
             total_price DOUBLE PRECISION NOT NULL,
             order_status VARCHAR(50) NOT NULL,
 
-            updated_at DATE,
+            updated_at TIMESTAMP,
 
             address_id BIGINT,
             user_id BIGINT,
@@ -18,6 +18,7 @@ CREATE TABLE orders (
 -- Index
 CREATE INDEX idx_order_user_id ON orders (user_id);
 CREATE INDEX idx_order_address_id ON orders (address_id);
+CREATE INDEX idx_order_order_date ON orders (order_date);
 
 -- Order Item
 CREATE TABLE order_items (

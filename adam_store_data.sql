@@ -37,6 +37,7 @@ INSERT INTO public.addresses VALUES (14, true, true, 'ACTIVE', '0327399921', 's�
 INSERT INTO public.addresses VALUES (15, true, true, 'ACTIVE', '0337299158', 'số 106', '1B1510', 1542, 201, 13, 'hieu123@gmail.com', 'hieu123@gmail.com', '2025-08-09', '2025-08-09');
 INSERT INTO public.addresses VALUES (16, true, true, 'ACTIVE', '0337299666', 'số 1126', '1B1510', 1542, 201, 16, 'duy123@gmail.com', 'duy123@gmail.com', '2025-08-14', '2025-08-14');
 INSERT INTO public.addresses VALUES (17, true, true, 'ACTIVE', '0337299996', 'số 248', '1B1510', 1542, 201, 14, 'kimgiap123@gmail.com', 'kimgiap123@gmail.com', '2025-08-14', '2025-08-14');
+INSERT INTO public.addresses VALUES (18, true, true, 'ACTIVE', '0331219247', 'số 199', '1B1510', 1542, 201, 17, 'tuan123@gmail.com', 'tuan123@gmail.com', '2025-08-19', '2025-08-19');
 
 
 --
@@ -68,6 +69,7 @@ INSERT INTO public.users VALUES (13, 'Điêu Hiếu', 'hieu123@gmail.com', '$2a$
 INSERT INTO public.users VALUES (14, 'Giáp Kim', 'kimgiap123@gmail.com', '$2a$10$EsZ/47URypqh2vTOWWTIGOcOx65hW8v4gGseiAwpIOlnvd3L7vK1e', NULL, NULL, NULL, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-14', '2025-08-14');
 INSERT INTO public.users VALUES (15, 'Nguyên Minh', 'minh123@gmail.com', '$2a$10$fIMilNVKYfu62OESe8y3t.02uKOqZMuDCIMHfc/IYDZholxgHwiki', NULL, NULL, NULL, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-14', '2025-08-14');
 INSERT INTO public.users VALUES (16, 'Ngọc Duy', 'duy123@gmail.com', '$2a$10$wdCpBokII48tW2OIBBElAen4R0b9UvLV97g3/mEuUB9wkmWsmfSvi', NULL, NULL, NULL, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-14', '2025-08-14');
+INSERT INTO public.users VALUES (17, 'Tuấn Nguyễn', 'tuan123@gmail.com', '$2a$10$..mzW/G71A.s0WAr5xrfXeZxZqgCzjMmfO7lIIxHh08psnu/7h882', NULL, NULL, NULL, 'ACTIVE', 'lean270804@gmail.com', 'lean270804@gmail.com', '2025-08-19', '2025-08-19');
 
 
 --
@@ -90,6 +92,7 @@ INSERT INTO public.carts VALUES (13, '2025-08-09', '2025-08-09', 13);
 INSERT INTO public.carts VALUES (14, '2025-08-14', '2025-08-14', 14);
 INSERT INTO public.carts VALUES (15, '2025-08-14', '2025-08-14', 15);
 INSERT INTO public.carts VALUES (16, '2025-08-14', '2025-08-14', 16);
+INSERT INTO public.carts VALUES (17, '2025-08-19', '2025-08-19', 17);
 
 
 --
@@ -177,9 +180,9 @@ INSERT INTO public.products VALUES (56, 'ÁO MĂNG TÔ PHỐI VẢI KẺ CA RÔ 
 INSERT INTO public.products VALUES (57, 'ÁO KHOÁC DENIM DÁNG RELAXED FIT', 'Áo khoác denim dáng relaxed fit, phong cách, dễ phối đồ, phù hợp đi chơi hoặc dạo phố.', true, 0, 5, 0, 850000, 880000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-15', '2025-08-15', 4);
 INSERT INTO public.products VALUES (58, 'ÁO KHOÁC BIKER GIẢ DA', 'Áo khoác biker giả da thời trang, cá tính, dễ phối đồ, phù hợp đi chơi, đi làm.', true, 0, 5, 0, 930000, 990000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-15', '2025-08-15', 4);
 INSERT INTO public.products VALUES (59, 'ÁO KHOÁC REGULAR FIT 100% VẢI LINEN', 'Áo khoác Regular Fit 100% vải linen, nhẹ, thoáng mát, phong cách sang trọng, phù hợp đi làm hoặc dạo phố.', true, 0, 5, 0, 860000, 900000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-15', '2025-08-15', 4);
-INSERT INTO public.products VALUES (60, 'QUẦN SHORT BERMUDA VẢI DENIM RÁCH', 'Quần short Bermuda vải denim rách, phong cách cá tính, dễ phối đồ, phù hợp đi chơi, dạo phố.', true, 0, 5, 0, 800, 8320, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-15', '2025-08-15', 5);
 INSERT INTO public.products VALUES (61, 'QUẦN SHORT BERMUDA DENIM MỎNG STRAIGHT FIT', 'Quần short Bermuda denim mỏng straight fit, thoải mái, dễ phối đồ, phù hợp đi chơi, dạo phố.', true, 0, 5, 0, 830000, 880000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-15', '2025-08-15', 5);
 INSERT INTO public.products VALUES (62, 'QUẦN SHORT DENIM', 'Quần short denim cá tính, bền màu, dễ phối đồ, phù hợp đi chơi, dạo phố.', true, 0, 5, 0, 550000, 620000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-15', '2025-08-15', 5);
+INSERT INTO public.products VALUES (60, 'QUẦN SHORT BERMUDA VẢI DENIM RÁCH', 'Quần short Bermuda vải denim rách, phong cách cá tính, dễ phối đồ, phù hợp đi chơi, dạo phố.', true, 0, 5, 0, 800000, 850000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-15', '2025-08-15', 5);
 INSERT INTO public.products VALUES (63, 'QUẦN SHORT BERMUDA DENIM BAGGY FIT HIỆU ỨNG VINTAGE', 'Quần short Bermuda denim baggy fit với hiệu ứng vintage, phong cách thời trang, phù hợp đi chơi và dạo phố.', true, 0, 5, 0, 590000, 650000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-15', '2025-08-15', 5);
 INSERT INTO public.products VALUES (64, 'ÁO PHÔNG CÓ MIẾNG ĐÁP IN CHỮ', 'Áo phông thiết kế với miếng đáp in chữ độc đáo, chất liệu thoáng mát, phù hợp mặc hằng ngày.', true, 0, 5, 0, 630000, 680000, 'ACTIVE', 'admin@gmail.com', 'admin@gmail.com', '2025-08-15', '2025-08-15', 1);
 
@@ -310,7 +313,6 @@ INSERT INTO public.product_variants VALUES (194, true, 780000, 100, 'ACTIVE', 12
 INSERT INTO public.product_variants VALUES (195, true, 780000, 100, 'ACTIVE', 12, 3, 3);
 INSERT INTO public.product_variants VALUES (196, true, 780000, 100, 'ACTIVE', 12, 1, 4);
 INSERT INTO public.product_variants VALUES (197, true, 780000, 100, 'ACTIVE', 12, 3, 2);
-INSERT INTO public.product_variants VALUES (199, true, 780000, 100, 'ACTIVE', 12, 2, 5);
 INSERT INTO public.product_variants VALUES (102, true, 900000, 97, 'ACTIVE', 7, 2, 1);
 INSERT INTO public.product_variants VALUES (7, true, 450000, 96, 'ACTIVE', 1, 3, 1);
 INSERT INTO public.product_variants VALUES (110, true, 900000, 99, 'ACTIVE', 7, 1, 3);
@@ -677,7 +679,6 @@ INSERT INTO public.product_variants VALUES (498, true, 900000, 100, 'ACTIVE', 32
 INSERT INTO public.product_variants VALUES (499, true, 920000, 100, 'ACTIVE', 32, 3, 5);
 INSERT INTO public.product_variants VALUES (500, true, 900000, 100, 'ACTIVE', 32, 1, 3);
 INSERT INTO public.product_variants VALUES (501, true, 900000, 100, 'ACTIVE', 32, 2, 3);
-INSERT INTO public.product_variants VALUES (502, true, 880000, 100, 'ACTIVE', 32, 1, 1);
 INSERT INTO public.product_variants VALUES (505, true, 920000, 100, 'ACTIVE', 32, 2, 6);
 INSERT INTO public.product_variants VALUES (506, true, 920000, 100, 'ACTIVE', 32, 2, 5);
 INSERT INTO public.product_variants VALUES (507, true, 920000, 100, 'ACTIVE', 32, 3, 6);
@@ -785,7 +786,6 @@ INSERT INTO public.product_variants VALUES (604, true, 680000, 100, 'ACTIVE', 39
 INSERT INTO public.product_variants VALUES (605, true, 650000, 100, 'ACTIVE', 39, 1, 3);
 INSERT INTO public.product_variants VALUES (606, true, 680000, 100, 'ACTIVE', 39, 2, 5);
 INSERT INTO public.product_variants VALUES (607, true, 650000, 100, 'ACTIVE', 39, 1, 4);
-INSERT INTO public.product_variants VALUES (608, true, 620000, 100, 'ACTIVE', 39, 1, 2);
 INSERT INTO public.product_variants VALUES (609, true, 620000, 100, 'ACTIVE', 39, 2, 1);
 INSERT INTO public.product_variants VALUES (610, true, 500000, 100, 'ACTIVE', 40, 2, 4);
 INSERT INTO public.product_variants VALUES (611, true, 480000, 100, 'ACTIVE', 40, 1, 1);
@@ -855,7 +855,6 @@ INSERT INTO public.product_variants VALUES (665, true, 790000, 100, 'ACTIVE', 44
 INSERT INTO public.product_variants VALUES (666, true, 790000, 100, 'ACTIVE', 44, 3, 1);
 INSERT INTO public.product_variants VALUES (667, true, 830000, 100, 'ACTIVE', 44, 2, 4);
 INSERT INTO public.product_variants VALUES (668, true, 790000, 100, 'ACTIVE', 44, 1, 2);
-INSERT INTO public.product_variants VALUES (669, true, 790000, 100, 'ACTIVE', 44, 2, 1);
 INSERT INTO public.product_variants VALUES (670, true, 850000, 100, 'ACTIVE', 44, 3, 6);
 INSERT INTO public.product_variants VALUES (671, true, 830000, 100, 'ACTIVE', 44, 3, 4);
 INSERT INTO public.product_variants VALUES (672, true, 850000, 100, 'ACTIVE', 44, 3, 5);
@@ -1086,8 +1085,6 @@ INSERT INTO public.product_variants VALUES (898, true, 900000, 100, 'ACTIVE', 59
 INSERT INTO public.product_variants VALUES (899, true, 880000, 100, 'ACTIVE', 59, 4, 4);
 INSERT INTO public.product_variants VALUES (900, true, 880000, 100, 'ACTIVE', 59, 1, 3);
 INSERT INTO public.product_variants VALUES (901, true, 860000, 100, 'ACTIVE', 59, 4, 2);
-INSERT INTO public.product_variants VALUES (902, true, 880000, 100, 'ACTIVE', 59, 4, 3);
-INSERT INTO public.product_variants VALUES (903, true, 880000, 100, 'ACTIVE', 59, 2, 3);
 INSERT INTO public.product_variants VALUES (904, true, 880000, 100, 'ACTIVE', 59, 1, 4);
 INSERT INTO public.product_variants VALUES (905, true, 860000, 100, 'ACTIVE', 59, 2, 2);
 INSERT INTO public.product_variants VALUES (906, true, 860000, 100, 'ACTIVE', 59, 1, 1);
@@ -1145,6 +1142,12 @@ INSERT INTO public.product_variants VALUES (890, true, 960000, 95, 'ACTIVE', 58,
 INSERT INTO public.product_variants VALUES (920, true, 850000, 97, 'ACTIVE', 60, 1, 6);
 INSERT INTO public.product_variants VALUES (860, true, 860000, 99, 'ACTIVE', 56, 3, 5);
 INSERT INTO public.product_variants VALUES (780, true, 660000, 98, 'ACTIVE', 50, 2, 1);
+INSERT INTO public.product_variants VALUES (199, true, 780000, 99, 'ACTIVE', 12, 2, 5);
+INSERT INTO public.product_variants VALUES (608, true, 620000, 98, 'ACTIVE', 39, 1, 2);
+INSERT INTO public.product_variants VALUES (502, true, 880000, 99, 'ACTIVE', 32, 1, 1);
+INSERT INTO public.product_variants VALUES (903, true, 880000, 98, 'ACTIVE', 59, 2, 3);
+INSERT INTO public.product_variants VALUES (902, true, 880000, 99, 'ACTIVE', 59, 4, 3);
+INSERT INTO public.product_variants VALUES (669, true, 790000, 98, 'ACTIVE', 44, 2, 1);
 
 
 --
@@ -1525,73 +1528,76 @@ INSERT INTO public.files VALUES (338, 'adam-store/images/psiwbyuudllphpsmh2lh', 
 -- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.orders VALUES (1, '2025-08-01', 450000, 'DELIVERED', '2025-08-10', 1, 2);
-INSERT INTO public.orders VALUES (2, '2025-08-01', 1351500, 'DELIVERED', '2025-08-10', 2, 2);
-INSERT INTO public.orders VALUES (3, '2025-08-01', 2077500, 'DELIVERED', '2025-08-10', 1, 2);
-INSERT INTO public.orders VALUES (4, '2025-08-01', 1260000, 'DELIVERED', '2025-08-10', 3, 3);
-INSERT INTO public.orders VALUES (5, '2025-08-01', 1368500, 'DELIVERED', '2025-08-10', 4, 3);
-INSERT INTO public.orders VALUES (6, '2025-08-01', 846000, 'DELIVERED', '2025-08-10', 5, 5);
-INSERT INTO public.orders VALUES (7, '2025-08-01', 2006000, 'DELIVERED', '2025-08-10', 5, 5);
-INSERT INTO public.orders VALUES (8, '2025-08-01', 1190000, 'DELIVERED', '2025-08-10', 6, 6);
-INSERT INTO public.orders VALUES (10, '2025-08-01', 630000, 'DELIVERED', '2025-08-10', 6, 6);
-INSERT INTO public.orders VALUES (11, '2025-08-01', 1810000, 'DELIVERED', '2025-08-10', 6, 6);
-INSERT INTO public.orders VALUES (12, '2025-08-03', 1665000, 'DELIVERED', '2025-08-10', 7, 7);
-INSERT INTO public.orders VALUES (13, '2025-08-03', 697000, 'DELIVERED', '2025-08-10', 7, 7);
-INSERT INTO public.orders VALUES (14, '2025-08-03', 1260000, 'DELIVERED', '2025-08-10', 8, 8);
-INSERT INTO public.orders VALUES (15, '2025-08-03', 2850000, 'DELIVERED', '2025-08-10', 8, 8);
-INSERT INTO public.orders VALUES (16, '2025-08-03', 2560000, 'DELIVERED', '2025-08-10', 8, 8);
-INSERT INTO public.orders VALUES (17, '2025-08-03', 710000, 'DELIVERED', '2025-08-10', 8, 8);
-INSERT INTO public.orders VALUES (18, '2025-08-03', 960000, 'DELIVERED', '2025-08-10', 8, 8);
-INSERT INTO public.orders VALUES (19, '2025-08-03', 3285000, 'DELIVERED', '2025-08-10', 9, 9);
-INSERT INTO public.orders VALUES (20, '2025-08-03', 697000, 'DELIVERED', '2025-08-10', 9, 9);
-INSERT INTO public.orders VALUES (21, '2025-08-04', 3390000, 'DELIVERED', '2025-08-14', 1, 2);
-INSERT INTO public.orders VALUES (22, '2025-08-04', 1950000, 'DELIVERED', '2025-08-14', 2, 2);
-INSERT INTO public.orders VALUES (52, '2025-08-13', 2650000, 'PROCESSING', '2025-08-13', 14, 12);
-INSERT INTO public.orders VALUES (53, '2025-08-13', 3190000, 'PROCESSING', '2025-08-13', 14, 12);
-INSERT INTO public.orders VALUES (54, '2025-08-13', 2930000, 'PROCESSING', '2025-08-13', 2, 2);
-INSERT INTO public.orders VALUES (50, '2025-08-10', 2220000, 'CANCELLED', '2025-08-14', 2, 2);
-INSERT INTO public.orders VALUES (51, '2025-08-10', 1520000, 'SHIPPED', '2025-08-14', 2, 2);
-INSERT INTO public.orders VALUES (38, '2025-08-09', 3890000, 'CANCELLED', '2025-08-14', 13, 11);
-INSERT INTO public.orders VALUES (37, '2025-08-09', 4370000, 'SHIPPED', '2025-08-14', 13, 11);
-INSERT INTO public.orders VALUES (42, '2025-08-09', 2570000, 'CANCELLED', '2025-08-14', 14, 12);
-INSERT INTO public.orders VALUES (39, '2025-08-09', 2540000, 'SHIPPED', '2025-08-14', 13, 11);
-INSERT INTO public.orders VALUES (45, '2025-08-09', 3470000, 'CANCELLED', '2025-08-14', 10, 7);
-INSERT INTO public.orders VALUES (40, '2025-08-09', 2160000, 'SHIPPED', '2025-08-14', 14, 12);
-INSERT INTO public.orders VALUES (41, '2025-08-09', 2023000, 'SHIPPED', '2025-08-14', 13, 12);
-INSERT INTO public.orders VALUES (49, '2025-08-10', 2730000, 'CANCELLED', '2025-08-14', 10, 7);
-INSERT INTO public.orders VALUES (43, '2025-08-09', 1504500, 'SHIPPED', '2025-08-14', 15, 13);
-INSERT INTO public.orders VALUES (44, '2025-08-09', 2500000, 'SHIPPED', '2025-08-14', 15, 13);
-INSERT INTO public.orders VALUES (46, '2025-08-09', 2770000, 'SHIPPED', '2025-08-14', 10, 7);
-INSERT INTO public.orders VALUES (47, '2025-08-09', 3390000, 'SHIPPED', '2025-08-14', 10, 7);
-INSERT INTO public.orders VALUES (48, '2025-08-10', 2050000, 'SHIPPED', '2025-08-14', 10, 7);
-INSERT INTO public.orders VALUES (23, '2025-08-04', 2230000, 'DELIVERED', '2025-08-14', 5, 3);
-INSERT INTO public.orders VALUES (24, '2025-08-04', 2470000, 'DELIVERED', '2025-08-14', 9, 9);
-INSERT INTO public.orders VALUES (25, '2025-08-04', 1430000, 'DELIVERED', '2025-08-14', 9, 9);
-INSERT INTO public.orders VALUES (26, '2025-08-05', 3000000, 'DELIVERED', '2025-08-14', 1, 2);
-INSERT INTO public.orders VALUES (27, '2025-08-07', 1850000, 'DELIVERED', '2025-08-14', 4, 3);
-INSERT INTO public.orders VALUES (28, '2025-08-08', 4310000, 'DELIVERED', '2025-08-14', 10, 7);
-INSERT INTO public.orders VALUES (29, '2025-08-08', 3870000, 'DELIVERED', '2025-08-14', 10, 7);
-INSERT INTO public.orders VALUES (30, '2025-08-08', 5580000, 'DELIVERED', '2025-08-14', 10, 7);
-INSERT INTO public.orders VALUES (31, '2025-08-08', 710000, 'DELIVERED', '2025-08-14', 10, 7);
-INSERT INTO public.orders VALUES (32, '2025-08-08', 2750000, 'DELIVERED', '2025-08-14', 10, 7);
-INSERT INTO public.orders VALUES (33, '2025-08-08', 3500000, 'DELIVERED', '2025-08-14', 11, 5);
-INSERT INTO public.orders VALUES (34, '2025-08-08', 2890000, 'DELIVERED', '2025-08-14', 11, 5);
-INSERT INTO public.orders VALUES (35, '2025-08-08', 1921000, 'DELIVERED', '2025-08-14', 12, 10);
-INSERT INTO public.orders VALUES (36, '2025-08-08', 1504500, 'DELIVERED', '2025-08-14', 13, 11);
-INSERT INTO public.orders VALUES (63, '2025-08-14', 5140000, 'PENDING', '2025-08-14', 17, 14);
-INSERT INTO public.orders VALUES (55, '2025-08-14', 2006000, 'PROCESSING', '2025-08-14', 16, 16);
-INSERT INTO public.orders VALUES (58, '2025-08-14', 3260000, 'PENDING', '2025-08-14', 16, 16);
-INSERT INTO public.orders VALUES (59, '2025-08-14', 2980000, 'PROCESSING', '2025-08-14', 16, 16);
-INSERT INTO public.orders VALUES (60, '2025-08-14', 3230000, 'PROCESSING', '2025-08-14', 17, 14);
-INSERT INTO public.orders VALUES (61, '2025-08-14', 3640000, 'PENDING', '2025-08-14', 17, 14);
-INSERT INTO public.orders VALUES (62, '2025-08-14', 3590000, 'PENDING', '2025-08-14', 17, 14);
-INSERT INTO public.orders VALUES (64, '2025-08-14', 3980000, 'PROCESSING', '2025-08-14', 17, 14);
-INSERT INTO public.orders VALUES (65, '2025-08-15', 4780000, 'PROCESSING', '2025-08-15', 2, 2);
-INSERT INTO public.orders VALUES (67, '2025-08-15', 4490000, 'PROCESSING', '2025-08-15', 2, 2);
-INSERT INTO public.orders VALUES (68, '2025-08-15', 3210000, 'PENDING', '2025-08-15', 15, 13);
-INSERT INTO public.orders VALUES (69, '2025-08-15', 3590000, 'PROCESSING', '2025-08-15', 15, 13);
-INSERT INTO public.orders VALUES (70, '2025-08-15', 2660000, 'PROCESSING', '2025-08-15', 13, 11);
-INSERT INTO public.orders VALUES (71, '2025-08-15', 2210000, 'PROCESSING', '2025-08-15', 13, 11);
+INSERT INTO public.orders VALUES (38, '2025-08-09 00:00:00', 3890000, 'CANCELLED', '2025-08-14 00:00:00', 13, 11);
+INSERT INTO public.orders VALUES (37, '2025-08-09 00:00:00', 4370000, 'SHIPPED', '2025-08-14 00:00:00', 13, 11);
+INSERT INTO public.orders VALUES (42, '2025-08-09 00:00:00', 2570000, 'CANCELLED', '2025-08-14 00:00:00', 14, 12);
+INSERT INTO public.orders VALUES (39, '2025-08-09 00:00:00', 2540000, 'SHIPPED', '2025-08-14 00:00:00', 13, 11);
+INSERT INTO public.orders VALUES (45, '2025-08-09 00:00:00', 3470000, 'CANCELLED', '2025-08-14 00:00:00', 10, 7);
+INSERT INTO public.orders VALUES (40, '2025-08-09 00:00:00', 2160000, 'SHIPPED', '2025-08-14 00:00:00', 14, 12);
+INSERT INTO public.orders VALUES (41, '2025-08-09 00:00:00', 2023000, 'SHIPPED', '2025-08-14 00:00:00', 13, 12);
+INSERT INTO public.orders VALUES (43, '2025-08-09 00:00:00', 1504500, 'SHIPPED', '2025-08-14 00:00:00', 15, 13);
+INSERT INTO public.orders VALUES (44, '2025-08-09 00:00:00', 2500000, 'SHIPPED', '2025-08-14 00:00:00', 15, 13);
+INSERT INTO public.orders VALUES (46, '2025-08-09 00:00:00', 2770000, 'SHIPPED', '2025-08-14 00:00:00', 10, 7);
+INSERT INTO public.orders VALUES (47, '2025-08-09 00:00:00', 3390000, 'SHIPPED', '2025-08-14 00:00:00', 10, 7);
+INSERT INTO public.orders VALUES (48, '2025-08-10 00:00:00', 2050000, 'SHIPPED', '2025-08-14 00:00:00', 10, 7);
+INSERT INTO public.orders VALUES (28, '2025-08-08 00:00:00', 4310000, 'DELIVERED', '2025-08-14 00:00:00', 10, 7);
+INSERT INTO public.orders VALUES (29, '2025-08-08 00:00:00', 3870000, 'DELIVERED', '2025-08-14 00:00:00', 10, 7);
+INSERT INTO public.orders VALUES (30, '2025-08-08 00:00:00', 5580000, 'DELIVERED', '2025-08-14 00:00:00', 10, 7);
+INSERT INTO public.orders VALUES (31, '2025-08-08 00:00:00', 710000, 'DELIVERED', '2025-08-14 00:00:00', 10, 7);
+INSERT INTO public.orders VALUES (32, '2025-08-08 00:00:00', 2750000, 'DELIVERED', '2025-08-14 00:00:00', 10, 7);
+INSERT INTO public.orders VALUES (33, '2025-08-08 00:00:00', 3500000, 'DELIVERED', '2025-08-14 00:00:00', 11, 5);
+INSERT INTO public.orders VALUES (34, '2025-08-08 00:00:00', 2890000, 'DELIVERED', '2025-08-14 00:00:00', 11, 5);
+INSERT INTO public.orders VALUES (35, '2025-08-08 00:00:00', 1921000, 'DELIVERED', '2025-08-14 00:00:00', 12, 10);
+INSERT INTO public.orders VALUES (36, '2025-08-08 00:00:00', 1504500, 'DELIVERED', '2025-08-14 00:00:00', 13, 11);
+INSERT INTO public.orders VALUES (1, '2025-08-01 00:00:00', 450000, 'DELIVERED', '2025-08-10 16:31:22', 1, 2);
+INSERT INTO public.orders VALUES (2, '2025-08-01 00:00:00', 1351500, 'DELIVERED', '2025-08-10 15:22:00', 2, 2);
+INSERT INTO public.orders VALUES (3, '2025-08-01 00:00:00', 2077500, 'DELIVERED', '2025-08-10 10:11:00', 1, 2);
+INSERT INTO public.orders VALUES (4, '2025-08-01 00:00:00', 1260000, 'DELIVERED', '2025-08-10 10:02:00', 3, 3);
+INSERT INTO public.orders VALUES (5, '2025-08-01 00:00:00', 1368500, 'DELIVERED', '2025-08-10 09:51:00', 4, 3);
+INSERT INTO public.orders VALUES (6, '2025-08-01 00:00:00', 846000, 'DELIVERED', '2025-08-10 09:32:00', 5, 5);
+INSERT INTO public.orders VALUES (7, '2025-08-01 00:00:00', 2006000, 'DELIVERED', '2025-08-10 08:50:00', 5, 5);
+INSERT INTO public.orders VALUES (8, '2025-08-01 00:00:00', 1190000, 'DELIVERED', '2025-08-10 08:33:00', 6, 6);
+INSERT INTO public.orders VALUES (10, '2025-08-01 00:00:00', 630000, 'DELIVERED', '2025-08-10 08:20:00', 6, 6);
+INSERT INTO public.orders VALUES (11, '2025-08-01 00:00:00', 1810000, 'DELIVERED', '2025-08-10 08:12:00', 6, 6);
+INSERT INTO public.orders VALUES (12, '2025-08-03 00:00:00', 1665000, 'DELIVERED', '2025-08-10 08:11:00', 7, 7);
+INSERT INTO public.orders VALUES (13, '2025-08-03 00:00:00', 697000, 'DELIVERED', '2025-08-10 07:59:00', 7, 7);
+INSERT INTO public.orders VALUES (14, '2025-08-03 00:00:00', 1260000, 'DELIVERED', '2025-08-10 07:46:00', 8, 8);
+INSERT INTO public.orders VALUES (15, '2025-08-03 00:00:00', 2850000, 'DELIVERED', '2025-08-10 07:40:00', 8, 8);
+INSERT INTO public.orders VALUES (16, '2025-08-03 00:00:00', 2560000, 'DELIVERED', '2025-08-10 07:02:00', 8, 8);
+INSERT INTO public.orders VALUES (17, '2025-08-03 00:00:00', 710000, 'DELIVERED', '2025-08-10 05:00:00', 8, 8);
+INSERT INTO public.orders VALUES (18, '2025-08-03 00:00:00', 960000, 'DELIVERED', '2025-08-10 04:00:00', 8, 8);
+INSERT INTO public.orders VALUES (19, '2025-08-03 00:00:00', 3285000, 'DELIVERED', '2025-08-10 01:55:00', 9, 9);
+INSERT INTO public.orders VALUES (20, '2025-08-03 00:00:00', 697000, 'DELIVERED', '2025-08-10 01:33:00', 9, 9);
+INSERT INTO public.orders VALUES (21, '2025-08-04 00:00:00', 3390000, 'DELIVERED', '2025-08-14 01:22:00', 1, 2);
+INSERT INTO public.orders VALUES (22, '2025-08-04 00:00:00', 1950000, 'DELIVERED', '2025-08-14 01:14:00', 2, 2);
+INSERT INTO public.orders VALUES (23, '2025-08-04 00:00:00', 2230000, 'DELIVERED', '2025-08-14 00:55:00', 5, 3);
+INSERT INTO public.orders VALUES (24, '2025-08-04 00:00:00', 2470000, 'DELIVERED', '2025-08-14 00:33:00', 9, 9);
+INSERT INTO public.orders VALUES (25, '2025-08-04 00:00:00', 1430000, 'DELIVERED', '2025-08-14 00:22:00', 9, 9);
+INSERT INTO public.orders VALUES (26, '2025-08-05 00:00:00', 3000000, 'DELIVERED', '2025-08-14 00:16:00', 1, 2);
+INSERT INTO public.orders VALUES (27, '2025-08-07 00:00:00', 1850000, 'DELIVERED', '2025-08-14 00:02:00', 4, 3);
+INSERT INTO public.orders VALUES (49, '2025-08-10 00:00:00', 2730000, 'CANCELLED', '2025-08-14 00:02:00', 10, 7);
+INSERT INTO public.orders VALUES (50, '2025-08-10 00:00:00', 2220000, 'CANCELLED', '2025-08-14 00:19:00', 2, 2);
+INSERT INTO public.orders VALUES (51, '2025-08-10 00:00:00', 1520000, 'SHIPPED', '2025-08-14 00:36:00', 2, 2);
+INSERT INTO public.orders VALUES (52, '2025-08-13 00:00:00', 2650000, 'PROCESSING', '2025-08-13 00:56:00', 14, 12);
+INSERT INTO public.orders VALUES (53, '2025-08-13 00:00:00', 3190000, 'PROCESSING', '2025-08-13 01:02:00', 14, 12);
+INSERT INTO public.orders VALUES (54, '2025-08-13 00:00:00', 2930000, 'PROCESSING', '2025-08-13 01:12:00', 2, 2);
+INSERT INTO public.orders VALUES (55, '2025-08-14 00:00:00', 2006000, 'PROCESSING', '2025-08-14 01:33:00', 16, 16);
+INSERT INTO public.orders VALUES (58, '2025-08-14 00:00:00', 3260000, 'PENDING', '2025-08-14 07:23:00', 16, 16);
+INSERT INTO public.orders VALUES (59, '2025-08-14 00:00:00', 2980000, 'PROCESSING', '2025-08-14 07:33:00', 16, 16);
+INSERT INTO public.orders VALUES (60, '2025-08-14 00:00:00', 3230000, 'PROCESSING', '2025-08-14 08:25:00', 17, 14);
+INSERT INTO public.orders VALUES (61, '2025-08-14 00:00:00', 3640000, 'PENDING', '2025-08-14 08:44:00', 17, 14);
+INSERT INTO public.orders VALUES (62, '2025-08-14 00:00:00', 3590000, 'PENDING', '2025-08-14 09:53:00', 17, 14);
+INSERT INTO public.orders VALUES (63, '2025-08-14 00:00:00', 5140000, 'PENDING', '2025-08-14 10:23:00', 17, 14);
+INSERT INTO public.orders VALUES (64, '2025-08-14 00:00:00', 3980000, 'PROCESSING', '2025-08-14 10:50:00', 17, 14);
+INSERT INTO public.orders VALUES (65, '2025-08-15 00:00:00', 4780000, 'PROCESSING', '2025-08-15 12:02:00', 2, 2);
+INSERT INTO public.orders VALUES (67, '2025-08-15 00:00:00', 4490000, 'PROCESSING', '2025-08-15 15:30:00', 2, 2);
+INSERT INTO public.orders VALUES (68, '2025-08-15 00:00:00', 3210000, 'PENDING', '2025-08-15 16:20:00', 15, 13);
+INSERT INTO public.orders VALUES (69, '2025-08-15 00:00:00', 3590000, 'PROCESSING', '2025-08-15 19:15:00', 15, 13);
+INSERT INTO public.orders VALUES (70, '2025-08-15 00:00:00', 2660000, 'PROCESSING', '2025-08-15 19:22:00', 13, 11);
+INSERT INTO public.orders VALUES (71, '2025-08-15 00:00:00', 2210000, 'PROCESSING', '2025-08-15 19:32:00', 13, 11);
+INSERT INTO public.orders VALUES (72, '2025-08-19 14:17:21.127319', 1759500, 'PROCESSING', '2025-08-19 14:17:21.170112', 18, 17);
+INSERT INTO public.orders VALUES (73, '2025-08-19 14:17:36.817853', 2690000, 'PROCESSING', '2025-08-19 14:17:36.841814', 18, 17);
+INSERT INTO public.orders VALUES (74, '2025-08-19 14:18:26.881119', 2510000, 'PROCESSING', '2025-08-19 14:18:35.188078', 15, 13);
 
 
 --
@@ -1717,6 +1723,12 @@ INSERT INTO public.order_items VALUES (119, 1, 750000, 650, 70);
 INSERT INTO public.order_items VALUES (120, 2, 930000, 702, 70);
 INSERT INTO public.order_items VALUES (121, 1, 700000, 580, 71);
 INSERT INTO public.order_items VALUES (122, 2, 730000, 698, 71);
+INSERT INTO public.order_items VALUES (123, 1, 780000, 199, 72);
+INSERT INTO public.order_items VALUES (124, 2, 620000, 608, 72);
+INSERT INTO public.order_items VALUES (125, 1, 880000, 502, 73);
+INSERT INTO public.order_items VALUES (126, 2, 880000, 903, 73);
+INSERT INTO public.order_items VALUES (127, 1, 880000, 902, 74);
+INSERT INTO public.order_items VALUES (128, 2, 790000, 669, 74);
 
 
 --
@@ -1790,6 +1802,9 @@ INSERT INTO public.payment_history VALUES (64, false, 'VNPAY', 3210000, 'PENDING
 INSERT INTO public.payment_history VALUES (65, false, 'CASH', 3590000, 'PENDING', '2025-08-15 11:40:39.821202', 69);
 INSERT INTO public.payment_history VALUES (66, false, 'CASH', 2660000, 'PENDING', '2025-08-15 11:41:55.935007', 70);
 INSERT INTO public.payment_history VALUES (67, false, 'CASH', 2210000, 'PENDING', '2025-08-15 11:42:12.33754', 71);
+INSERT INTO public.payment_history VALUES (68, false, 'CASH', 1759500, 'PENDING', '2025-08-19 14:17:21.14985', 72);
+INSERT INTO public.payment_history VALUES (69, false, 'CASH', 2690000, 'PENDING', '2025-08-19 14:17:36.823629', 73);
+INSERT INTO public.payment_history VALUES (70, true, 'VNPAY', 2510000, 'PAID', '2025-08-19 14:18:35.175189', 74);
 
 
 --
@@ -1835,6 +1850,7 @@ INSERT INTO public.promotion_usages VALUES (17, 357000, '2025-08-09 22:25:33.816
 INSERT INTO public.promotion_usages VALUES (18, 265500, '2025-08-09 22:31:15.201508', 13, 2, 43);
 INSERT INTO public.promotion_usages VALUES (19, 354000, '2025-08-14 00:15:36.087045', 16, 2, 55);
 INSERT INTO public.promotion_usages VALUES (20, 570000, '2025-08-14 00:18:38.64839', 14, 2, 60);
+INSERT INTO public.promotion_usages VALUES (21, 310500, '2025-08-19 14:17:21.14673', 17, 2, 72);
 
 
 --
@@ -1901,6 +1917,12 @@ INSERT INTO public.refresh_tokens VALUES (57, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJh
 INSERT INTO public.refresh_tokens VALUES (58, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsZWFuMjcwODA0QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJMw6ogVsSDbiBBbiIsImV4cCI6MTc1Njk2MDY3OCwiaWF0IjoxNzU1MjMyNjc4LCJqdGkiOiJiODkxY2FmYy0xMGMwLTQ5NjktYTVkYS0yN2U1MWRmMzhjODQifQ.9Xpt8rphn7x3gen3s7nLZuAqDvN2V1SS9eDRRxW_-Z53XpMvhlr_pxVmjKtL6MjfYLSD-gDIRQrCuZ2Iga5XoQ', '2025-09-04 11:37:58.608903');
 INSERT INTO public.refresh_tokens VALUES (59, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoaWV1MTIzQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiLEkGnDqnUgSGnhur91IiwiZXhwIjoxNzU2OTYwNzg3LCJpYXQiOjE3NTUyMzI3ODcsImp0aSI6Ijk4ZjcxNWE2LTg5ODctNDg0Yy1hNzA3LWQ3ZjFlOTJlMDVjNyJ9.Q6DV5KctiR5zayQDla4tgSQfEoJQloo7XpP4jnQffUEmxUsJSu1ZluyBUEWoS19gqs6XtnJ_G5gfRlFZrrn6yg', '2025-09-04 11:39:47.002412');
 INSERT INTO public.refresh_tokens VALUES (60, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYW5oMTIzQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJUaeG6v24gTeG6oW5oIiwiZXhwIjoxNzU2OTYwODY4LCJpYXQiOjE3NTUyMzI4NjgsImp0aSI6IjdjZjczNjZmLWJhM2YtNGJlMi05M2MzLTg1NmJjZGZmYjY3MSJ9.GvMGvo5HL6TeN7KtFWFUTwCUqCCdDATSjV9ZYYcul5sGCDB9Ct3Kb-KrVVMa6FXMZHKkRqlURQXT5e98cSsHYg', '2025-09-04 11:41:08.182329');
+INSERT INTO public.refresh_tokens VALUES (61, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlcyI6WyJBRE1JTiJdLCJpc3MiOiJBZG1pbiIsImV4cCI6MTc1Njk4MjI5MiwiaWF0IjoxNzU1MjU0MjkyLCJqdGkiOiI0MGQ2YTNjYS1jMTdmLTQ1YmEtYWQ3MC03MzliZWVlNmZhMzAifQ.Ndc_Vp673vGrH1Yeaw6UzjWFsbww6PjO8gFFj5yInOEVnoL66DYJdkgCHbdJWVizYMj-vhiUJxQnjdPZOF5KuQ', '2025-09-04 17:38:12.046756');
+INSERT INTO public.refresh_tokens VALUES (62, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlcyI6WyJBRE1JTiJdLCJpc3MiOiJBZG1pbiIsImV4cCI6MTc1NzMxNDc5NCwiaWF0IjoxNzU1NTg2Nzk0LCJqdGkiOiIyZjUzYzgwZC01NTEwLTQwNzQtYTY0NS0wYjgzZmY1YzNlMzYifQ.cvvXGxITfD2CpFDKsTcsPocJrA2gP42uyU506BqKasJ09fx6xL7Fw50wd_DZ7RSpQIBFBupZxK1dDWchsab9DQ', '2025-09-08 13:59:54.635475');
+INSERT INTO public.refresh_tokens VALUES (63, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsZWFuMjcwODA0QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJMw6ogVsSDbiBBbiIsImV4cCI6MTc1NzMxNTczNCwiaWF0IjoxNzU1NTg3NzM0LCJqdGkiOiJiYzNiN2NkNy1iYzg5LTRkYTQtODFlNi0yNjg3MjEyYTkwNzgifQ.jIucVCG_jUP-iYwtLYp5A0SAlqkGx-JzveC3-za-LVppArJa9VWGXDufvCzmEbUPAeluhSD0eMaLjgv2qmsJKg', '2025-09-08 14:15:34.185343');
+INSERT INTO public.refresh_tokens VALUES (64, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0dWFuMTIzQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaXNzIjoiVHXhuqVuIE5ndXnhu4VuIiwiZXhwIjoxNzU3MzE1Nzg4LCJpYXQiOjE3NTU1ODc3ODgsImp0aSI6ImU1NGI2MTY0LWQ0Y2YtNDA0Yy1iMTcxLTdkZTZmMzJiMGMyYiJ9.e0AwUnuEjtJqLMLYGQCcfQCi0h5sH3gsKIDDxmNyPX2GIewMsQidzYkDSfFxfmbRByCd6xxBezTPymiYRt34ZA', '2025-09-08 14:16:28.106866');
+INSERT INTO public.refresh_tokens VALUES (65, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoaWV1MTIzQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiLEkGnDqnUgSGnhur91IiwiZXhwIjoxNzU3MzE1ODY3LCJpYXQiOjE3NTU1ODc4NjcsImp0aSI6IjMzNjQ2ZWVhLTcwMTYtNGU0YS04MTE3LTIxNjAwYTU3MmRmYSJ9.IiVECAagHwaT7Z2X4H0tWBDtqg_6jS-9xlNpx6ztFhAXPknwA8QkKWFlw-dmRR9T30BFUKC2wk3khXtA3RIG3A', '2025-09-08 14:17:47.346127');
+INSERT INTO public.refresh_tokens VALUES (66, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYW5oMTIzQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJUaeG6v24gTeG6oW5oIiwiZXhwIjoxNzU3MzE1OTM3LCJpYXQiOjE3NTU1ODc5MzcsImp0aSI6ImE3Y2JkZDNkLTFmYzQtNGQyOC04ZjU0LTg1YmI1OGM5ZDllMSJ9.E3tWfitVCUpMJXu6gyxDuq9u35Fbz5FRAOEsSltKQ2UJk8aOP8I_NtS7nG2zTeE4TRbuuZCRWgVPuZa_f4QR2A', '2025-09-08 14:18:57.89705');
 
 
 --
@@ -1983,13 +2005,14 @@ INSERT INTO public.user_has_role VALUES (13, 2, 'ACTIVE');
 INSERT INTO public.user_has_role VALUES (14, 1, 'ACTIVE');
 INSERT INTO public.user_has_role VALUES (15, 1, 'ACTIVE');
 INSERT INTO public.user_has_role VALUES (16, 1, 'ACTIVE');
+INSERT INTO public.user_has_role VALUES (17, 1, 'ACTIVE');
 
 
 --
 -- Name: addresses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.addresses_id_seq', 17, true);
+SELECT pg_catalog.setval('public.addresses_id_seq', 18, true);
 
 
 --
@@ -2010,7 +2033,7 @@ SELECT pg_catalog.setval('public.cart_items_id_seq', 24, true);
 -- Name: carts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.carts_id_seq', 16, true);
+SELECT pg_catalog.setval('public.carts_id_seq', 17, true);
 
 
 --
@@ -2038,21 +2061,21 @@ SELECT pg_catalog.setval('public.files_id_seq', 338, true);
 -- Name: order_items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.order_items_id_seq', 122, true);
+SELECT pg_catalog.setval('public.order_items_id_seq', 128, true);
 
 
 --
 -- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.orders_id_seq', 71, true);
+SELECT pg_catalog.setval('public.orders_id_seq', 74, true);
 
 
 --
 -- Name: payment_history_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.payment_history_id_seq', 67, true);
+SELECT pg_catalog.setval('public.payment_history_id_seq', 70, true);
 
 
 --
@@ -2080,7 +2103,7 @@ SELECT pg_catalog.setval('public.products_id_seq', 64, true);
 -- Name: promotion_usages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.promotion_usages_id_seq', 20, true);
+SELECT pg_catalog.setval('public.promotion_usages_id_seq', 21, true);
 
 
 --
@@ -2094,7 +2117,7 @@ SELECT pg_catalog.setval('public.promotions_id_seq', 7, true);
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 60, true);
+SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 66, true);
 
 
 --
@@ -2122,7 +2145,7 @@ SELECT pg_catalog.setval('public.sizes_id_seq', 7, true);
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 16, true);
+SELECT pg_catalog.setval('public.users_id_seq', 17, true);
 
 
 --

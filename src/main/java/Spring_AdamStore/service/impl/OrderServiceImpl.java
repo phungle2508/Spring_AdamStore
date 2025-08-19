@@ -25,6 +25,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 @Service
@@ -64,7 +66,7 @@ public class OrderServiceImpl implements OrderService {
                 .addressId(findAddressById(request.getAddressId()).getId())
                 .orderStatus(orderStatus)
                 .totalPrice(totalPrice)
-                .orderDate(LocalDate.now())
+                .orderDate(LocalDateTime.now())
                 .build();
 
         orderRepository.save(order);
@@ -183,7 +185,10 @@ public class OrderServiceImpl implements OrderService {
     public PageResponse<OrderResponse> searchOrdersForAdmin(Pageable pageable, LocalDate startDate, LocalDate endDate, OrderStatus orderStatus) {
         log.info("Admin search orders from {} to {}, with status: {}", startDate, endDate, orderStatus);
 
-        Page<Order> orderPage = orderRepository.findOrdersByDateAndStatus(startDate, endDate, orderStatus, pageable);
+        LocalDateTime startDateTime = startDate.atStartOfDay();
+        LocalDateTime endDateTime = endDate.atTime(LocalTime.MAX);
+
+        Page<Order> orderPage = orderRepository.findOrdersByDateAndStatus(startDateTime, endDateTime, orderStatus, pageable);
 
         return PageResponse.<OrderResponse>builder()
                 .page(orderPage.getNumber())
