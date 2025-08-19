@@ -1,9 +1,9 @@
 package Spring_AdamStore.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -15,7 +15,8 @@ public class OrderRevenueDTO {
      private String customerName;
      private Double totalPrice;
      private String paymentMethod;
-     private LocalDate orderDate;
+     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+     private LocalDateTime orderDate;
      private String orderStatus;
 
 }

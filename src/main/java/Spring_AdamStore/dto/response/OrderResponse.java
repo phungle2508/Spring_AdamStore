@@ -1,18 +1,10 @@
 package Spring_AdamStore.dto.response;
 
 import Spring_AdamStore.constants.OrderStatus;
-import Spring_AdamStore.dto.basic.UserBasic;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.JoinColumn;
 import lombok.*;
-import lombok.experimental.FieldDefaults;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -23,7 +15,8 @@ import java.util.List;
 public class OrderResponse {
 
     private Long id;
-    private LocalDate orderDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime orderDate;
     private Double discountAmount;
     private Double totalPrice;
     private OrderStatus orderStatus;

@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Slf4j(topic = "STATISTICS-SERVICE")
@@ -39,8 +40,11 @@ public class StatisticsServiceImpl implements StatisticsService {
     public OrderStatsDTO getOrderRevenueSummary(LocalDate startDate, LocalDate endDate) {
         log.info("Calculating total orders and revenue from {} to {}", startDate, endDate);
 
+        LocalDateTime startDateTime = startDate.atStartOfDay();
+        LocalDateTime endDateTime = endDate.atTime(LocalTime.MAX);
+
         List<Order> orders = orderRepository.findAllByOrderDateBetweenAndOrderStatus(
-                startDate, endDate, OrderStatus.DELIVERED);
+                startDateTime, endDateTime, OrderStatus.DELIVERED);
 
         long totalOrders = orders.size();
         double totalRevenue = orders.stream()
@@ -55,7 +59,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         log.info("Getting monthly revenue from {} to {}", startDate, endDate);
 
         LocalDateTime startDateTime = startDate.atStartOfDay();
-        LocalDateTime endDateTime = endDate.atTime(23, 59, 59);
+        LocalDateTime endDateTime = endDate.atTime(LocalTime.MAX);
 
         return paymentHistoryRepository.getRevenueByMonth(startDateTime, endDateTime);
     }
@@ -64,7 +68,10 @@ public class StatisticsServiceImpl implements StatisticsService {
     public List<TopSellingDTO> getTopSellingProducts(LocalDate startDate, LocalDate endDate) {
         log.info("Fetching top-selling products from {} to {}", startDate, endDate);
 
-        return productRepository.findTopSellingProductsBetween(startDate, endDate);
+        LocalDateTime startDateTime = startDate.atStartOfDay();
+        LocalDateTime endDateTime = endDate.atTime(LocalTime.MAX);
+
+        return productRepository.findTopSellingProductsBetween(startDateTime, endDateTime);
     }
 
     public void exportOrderRevenueToExcel(LocalDate startDate, LocalDate endDate, HttpServletResponse response){
@@ -115,8 +122,11 @@ public class StatisticsServiceImpl implements StatisticsService {
     private List<OrderRevenueDTO> getOrderRevenueByDate(LocalDate startDate, LocalDate endDate) {
         log.info("Fetching daily order revenue from {} to {}", startDate, endDate);
 
+        LocalDateTime startDateTime = startDate.atStartOfDay();
+        LocalDateTime endDateTime = endDate.atTime(LocalTime.MAX);
+
         List<Order> orderList = orderRepository.findAllByOrderDateBetweenAndOrderStatus(
-                startDate, endDate, OrderStatus.DELIVERED);
+                startDateTime, endDateTime, OrderStatus.DELIVERED);
 
         return orderMapper.tOrderRevenueDtoList(orderList, orderMappingHelper);
     }
