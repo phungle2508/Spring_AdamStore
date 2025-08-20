@@ -39,6 +39,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         SELECT new Spring_AdamStore.dto.response.TopSellingDTO(
             p.id,
             p.name,
+            COALESCE(MIN(f.imageUrl), ''),
             p.status,
             SUM(oi.quantity),
             SUM(CAST(oi.quantity * oi.unitPrice AS double))
@@ -47,6 +48,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         JOIN ProductVariant pv ON oi.productVariantId = pv.id
         JOIN Product p ON pv.productId = p.id
         JOIN Order o ON oi.orderId = o.id
+        LEFT JOIN FileEntity f ON f.productId = p.id
         WHERE o.orderStatus = 'DELIVERED'
           AND o.orderDate BETWEEN :startDate AND :endDate
         GROUP BY p.id, p.name, p.status

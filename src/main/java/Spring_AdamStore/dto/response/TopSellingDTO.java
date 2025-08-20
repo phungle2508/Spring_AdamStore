@@ -15,6 +15,7 @@ public class TopSellingDTO {
 
     private Long productId;
     private String productName;
+    private String imageUrl;
     private EntityStatus status;
     private Long soldQuantity;
     private Double totalRevenue;
