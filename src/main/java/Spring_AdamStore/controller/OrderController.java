@@ -3,7 +3,6 @@ package Spring_AdamStore.controller;
 import Spring_AdamStore.constants.OrderStatus;
 import Spring_AdamStore.dto.ghn.response.ShippingFeeResponse;
 import Spring_AdamStore.dto.request.OrderRequest;
-import Spring_AdamStore.dto.request.PaymentCallbackRequest;
 import Spring_AdamStore.dto.request.ShippingRequest;
 import Spring_AdamStore.dto.request.OrderAddressRequest;
 import Spring_AdamStore.dto.response.*;
@@ -174,19 +173,18 @@ public class OrderController {
     @Operation(summary = "Payment CallBack for Order",
             description = "Api này dùng để xử lý sau khi thanh toán đơn hàng")
     @PostMapping("/private/orders/vn-pay-callback")
-    public ApiResponse<OrderResponse> payCallbackHandler(@Valid @RequestBody PaymentCallbackRequest request) {
-        log.info("Received VNPay callback with response: {}", request);
+    public ApiResponse<OrderResponse> payCallbackHandler(@RequestParam String responseCode, @RequestParam Long orderId) {
+        log.info("Received VNPay callback for Order ID: {}", orderId);
 
-        String status = request.getResponseCode();
-        if (status.equals("00")) {
+        if (responseCode.equals("00")) {
             return ApiResponse.<OrderResponse>builder()
                     .code(1000)
                     .message("Thanh toán thành công")
-                    .result(paymentService.updateOrderAfterPayment(request))
+                    .result(paymentService.updateOrderAfterPayment(orderId))
                     .build();
         } else {
-            log.error("Thanh toán không thành công với mã phản hồi: " + status);
-            paymentService.handleFailedPayment(request);
+            log.error("Thanh toán không thành công với mã phản hồi: " + responseCode);
+            paymentService.handleFailedPayment(orderId);
             return new ApiResponse<>(4000, "Thanh toán thất bại", null);
         }
     }
