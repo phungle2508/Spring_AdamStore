@@ -4,7 +4,6 @@ import Spring_AdamStore.config.VNPAYConfig;
 import Spring_AdamStore.constants.OrderStatus;
 import Spring_AdamStore.constants.PaymentMethod;
 import Spring_AdamStore.constants.PaymentStatus;
-import Spring_AdamStore.dto.request.PaymentCallbackRequest;
 import Spring_AdamStore.dto.response.OrderResponse;
 import Spring_AdamStore.dto.response.VNPayResponse;
 import Spring_AdamStore.entity.sql.Order;
@@ -78,8 +77,8 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     @Transactional
-    public OrderResponse updateOrderAfterPayment(PaymentCallbackRequest request) {
-        Order order = findOrderById(request.getOrderId());
+    public OrderResponse updateOrderAfterPayment(Long orderId) {
+        Order order = findOrderById(orderId);
         order.setOrderStatus(OrderStatus.PROCESSING);
 
         PaymentHistory paymentHistory = paymentHistoryRepository
@@ -95,8 +94,8 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public void handleFailedPayment(PaymentCallbackRequest request){
-        Order order = findOrderById(request.getOrderId());
+    public void handleFailedPayment(Long orderId){
+        Order order = findOrderById(orderId);
         PaymentHistory  paymentHistory = paymentHistoryRepository
                 .findByOrderIdAndPaymentStatusAndPaymentMethod(order.getId(), PaymentStatus.PENDING, PaymentMethod.VNPAY)
                 .orElseThrow(() -> new AppException(ErrorCode.PAYMENT_HISTORY_NOT_EXISTED));
