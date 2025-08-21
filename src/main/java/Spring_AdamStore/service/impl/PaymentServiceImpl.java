@@ -61,6 +61,9 @@ public class PaymentServiceImpl implements PaymentService {
 
         vnpParamsMap.put("vnp_IpAddr", VNPayUtil.getIpAddress(request));
 
+        vnpParamsMap.put("vnp_TxnRef", String.valueOf(order.getId()));
+        vnpParamsMap.put("vnp_OrderInfo", "Thanh toan don hang:" + order.getId());
+
         // Tao chuoi da ma hoa
         String queryUrl = VNPayUtil.getPaymentURL(vnpParamsMap, true);
 
