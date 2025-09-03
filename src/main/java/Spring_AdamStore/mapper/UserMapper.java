@@ -1,6 +1,5 @@
 package Spring_AdamStore.mapper;
 
-import Spring_AdamStore.dto.basic.UserBasic;
 import Spring_AdamStore.dto.request.RegisterRequest;
 import Spring_AdamStore.dto.request.UserCreationRequest;
 import Spring_AdamStore.dto.request.UserUpdateRequest;
@@ -28,5 +27,4 @@ public interface UserMapper {
 
     List<UserResponse> toUserResponseList(List<User> userList, @Context UserMappingHelper context);
 
-    UserBasic toUserBasic(User user);
 }

@@ -17,3 +17,4 @@ CREATE TABLE payment_history (
 -- Index
 CREATE INDEX idx_payment_history_order_id ON payment_history (order_id);
 CREATE INDEX idx_payment_history_payment_time ON payment_history (payment_time);
+CREATE INDEX idx_payment_history_payment_status ON payment_history (payment_status);
