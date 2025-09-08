@@ -14,3 +14,4 @@ CREATE TABLE files (
 
 -- Index
 CREATE INDEX idx_file_product_id ON files (product_id);
+CREATE INDEX idx_file_image_url ON files (image_url);

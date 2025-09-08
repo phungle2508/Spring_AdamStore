@@ -54,7 +54,6 @@ public class AuthServiceImpl implements AuthService {
     private final RedisVerificationCodeService redisVerificationCodeService;
     private final RedisPendingUserRepository redisPendingUserRepository;
     private final CurrentUserService currentUserService;
-    private final EmailService emailService;
     private final RoleRepository roleRepository;
     private final UserMappingHelper userMappingHelper;
     private final KafkaTemplate<String, Object> kafkaTemplate;
