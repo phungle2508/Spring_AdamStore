@@ -106,7 +106,7 @@ public class StatisticsServiceImpl implements StatisticsService {
                 sheet.autoSizeColumn(i);
             }
 
-            String fileName = "order_revenue_" + startDate + "_to_" + endDate + ".xlsx";
+            String fileName = "Danh_Sach_Don_Hang_" + startDate + "_toi_" + endDate + ".xlsx";
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
 

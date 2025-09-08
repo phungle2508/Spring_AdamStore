@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 public class UserMappingHelper {
 
     private final RoleRepository roleRepository;
-    private final UserHasRoleRepository userHasRoleRepository;
     private final RoleMapper roleMapper;
 
     public Set<EntityBasic> getRoles(Long userId) {

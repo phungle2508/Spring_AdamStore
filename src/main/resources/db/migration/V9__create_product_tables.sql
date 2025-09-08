@@ -25,6 +25,8 @@ CREATE TABLE products (
 
 -- Index
 CREATE INDEX idx_product_category_id ON products (category_id);
+CREATE INDEX idx_product_name ON products (name);
+CREATE INDEX idx_product_min_price ON products (min_price);
 
 
 -- Product Variant

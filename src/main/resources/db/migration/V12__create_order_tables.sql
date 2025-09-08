@@ -19,6 +19,7 @@ CREATE TABLE orders (
 CREATE INDEX idx_order_user_id ON orders (user_id);
 CREATE INDEX idx_order_address_id ON orders (address_id);
 CREATE INDEX idx_order_order_date ON orders (order_date);
+CREATE INDEX idx_order_order_status ON orders (order_status);
 
 -- Order Item
 CREATE TABLE order_items (
