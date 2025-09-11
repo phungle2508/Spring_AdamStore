@@ -87,15 +87,14 @@ public class AuthController {
 
     @Operation(summary = "Change Password",
             description = "API này được sử dụng để thay đổi password khi user đã đăng nhập")
-    @PostMapping("/private/auth/change-password")
-    public ApiResponse<UserResponse> changePassword(@Valid @RequestBody ChangePasswordRequest request){
-        log.info("Received change password request");
+    @PutMapping("/private/auth/change-password")
+    public ApiResponse<Void> changePassword(@Valid @RequestBody ChangePasswordRequest request){
+        log.info("Received change password request for user");
 
         authService.changePassword(request);
-        return ApiResponse.<UserResponse>builder()
+        return ApiResponse.<Void>builder()
                 .code(HttpStatus.OK.value())
-                .result(authService.getMyInfo())
-                .message("My Info")
+                .message("Password changed successfully")
                 .build();
     }
 
